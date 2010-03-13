@@ -1,0 +1,50 @@
+# Specifies intentionally untracked file system entries to ignore.
+#
+# Notes:
+# 1. Do not commit .gitignore files in sub directories of the repository,
+# as they would have to be explicitly excluded when generating the installer,
+# building the project and in other situations.
+# 2. Use the full path to a dir when you want to exclude a directory
+# and everything it contains. Start with repo-root, which is "/",
+# and do NOT use a "/" at the end, as this would fail if that dir is a symlink.
+# good example:
+# /game/maps
+# bad examples:
+# game/maps
+# game/maps/
+#
+# For more details about how this file works, see:
+# http://www.kernel.org/pub/software/scm/git/docs/gitignore.html
+#
+ 
+# Generated
+/smc/*.log
+/smc/*.exe
+/smc/*.dll
+/smc/*.manifest
+/smc/stdout.txt
+/smc/stderr.txt
+
+# Visual Studio
+/smc/makefiles/MSVC9.0/Debug
+/smc/makefiles/MSVC9.0/Mixed
+/smc/makefiles/MSVC9.0/Release
+/smc/makefiles/MSVC9.0/*.user
+/smc/makefiles/MSVC9.0/*.aps
+/smc/makefiles/AQtime
+/smc/extras/binaries
+*.ncb
+*.suo
+*.bsc
+*.ilk
+*.pgd
+*.pgc
+
+# Installer
+/smc/extras/Setup/*.exe
+
+# Extra
+/usable
+/*.txt
+/*.rtf
+/*.lnk
