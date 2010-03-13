@@ -1,0 +1,422 @@
+/***************************************************************************
+ * global_game.h  -  global header
+ *
+ * Copyright (C) 2003 - 2009 Florian Richter
+ ***************************************************************************/
+/*
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
+   
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#ifndef SMC_GLOBAL_GAME_H
+#define SMC_GLOBAL_GAME_H
+
+namespace SMC
+{
+
+// For non-Windows platforms
+#ifdef HAVE_CONFIG_H
+	#include "config.h"
+#endif
+
+/* *** *** *** *** *** *** *** Secret Maryo ! *** *** *** *** *** *** *** *** *** *** */
+
+// Caption
+#define CAPTION "Secret Maryo Chronicles"
+// Version
+static const float smc_version = 2.0f;
+
+/* *** *** *** *** *** *** *** Object Direction *** *** *** *** *** *** *** *** *** *** */
+
+enum ObjectDirection
+{
+	// undefined
+	DIR_UNDEFINED	= -1,
+
+	// default
+	DIR_LEFT	= 0,
+	DIR_RIGHT	= 1,
+	DIR_UP		= 2,
+	DIR_DOWN	= 3,
+
+	DIR_TOP		= 2,
+	DIR_BOTTOM	= 3,
+
+	// multi
+	DIR_TOP_LEFT = 4,
+	DIR_TOP_RIGHT = 5,
+	DIR_BOTTOM_LEFT = 6,
+	DIR_BOTTOM_RIGHT = 7,
+	DIR_LEFT_TOP = 21,
+	DIR_LEFT_BOTTOM = 22,
+	DIR_RIGHT_TOP = 23,
+	DIR_RIGHT_BOTTOM = 24,
+
+	DIR_UP_LEFT = 4,
+	DIR_UP_RIGHT = 5,
+	DIR_DOWN_LEFT = 6,
+	DIR_DOWN_RIGHT = 7,
+	DIR_LEFT_UP = 21,
+	DIR_LEFT_DOWN = 22,
+	DIR_RIGHT_UP = 23,
+	DIR_RIGHT_DOWN = 24,
+
+	// extra
+	DIR_HORIZONTAL	= 10,	// left or right
+	DIR_VERTICAL	= 11,	// up or down
+	DIR_ALL			= 20,	// all directions
+
+	// special
+	DIR_FIRST		= 100,	// Overworld first waypoint
+	DIR_LAST		= 101	// Overworld last waypoint
+};
+
+/* *** *** *** *** *** *** *** Default Color *** *** *** *** *** *** *** *** *** *** */
+
+enum DefaultColor
+{
+	COL_DEFAULT	= -1,
+	COL_WHITE	= 0,
+	COL_BLACK	= 1,
+	COL_RED		= 2,
+	COL_ORANGE	= 3,
+	COL_YELLOW	= 4,
+	COL_GREEN	= 5,
+	COL_BLUE	= 6,
+	COL_BROWN	= 7,
+	COL_GREY	= 8
+};
+
+/* *** *** *** *** *** *** *** Game Mode *** *** *** *** *** *** *** *** *** *** */
+
+enum GameMode
+{
+	MODE_NOTHING		= 0,
+	MODE_LEVEL			= 1,
+	MODE_OVERWORLD		= 2,
+	MODE_MENU			= 3,
+	MODE_LEVEL_SETTINGS	= 4
+};
+
+enum GameModeType
+{
+	MODE_TYPE_DEFAULT		= 0,
+	MODE_TYPE_LEVEL_CUSTOM	= 1,
+	MODE_TYPE_LEVEL_CUSTOM_EDITOR	= 2
+};
+
+/* *** *** *** *** *** *** *** Game Action *** *** *** *** *** *** *** *** *** *** */
+
+enum GameAction
+{
+	GA_NONE				= 0,
+	GA_DOWNGRADE_PLAYER	= 1,
+	GA_ENTER_MENU		= 2,
+	GA_ENTER_MENU_CREDITS = 3,
+	GA_ENTER_WORLD		= 4,
+	GA_ENTER_LEVEL		= 5,
+	GA_ACTIVATE_LEVEL_EXIT	= 6,
+	GA_ENTER_LEVEL_SETTINGS	= 7
+};
+
+/* *** *** *** *** *** Level draw type *** *** *** *** *** *** *** *** *** *** *** *** */
+
+enum LevelDrawType
+{
+	LVL_DRAW		= 0,	// only draw
+	LVL_DRAW_NO_BG	= 1,	// only draws and without background gradient and image
+	LVL_DRAW_BG		= 2		// only draws the background gradient and image
+};
+
+/* *** *** *** *** *** *** *** Paths *** *** *** *** *** *** *** *** *** *** */
+
+#ifdef __APPLE__
+	// always undefine data path to allow dynamic datapath detection
+	#ifdef DATA_DIR
+		#undef DATA_DIR
+	#endif
+	#define DATA_DIR "."
+#else
+	#ifndef DATA_DIR
+		#define DATA_DIR "data"
+	#endif
+#endif
+
+// Core
+#define GAME_OVERWORLD_DIR "world"
+#define GAME_LEVEL_DIR "levels"
+#define GAME_PIXMAPS_DIR "pixmaps"
+#define GAME_SOUNDS_DIR "sounds"
+#define GAME_MUSIC_DIR "music"
+#define GAME_EDITOR_DIR "editor"
+#define GAME_ICON_DIR "icon"
+#define GAME_SCHEMA_DIR "schema"
+#define GAME_TRANSLATION_DIR "translations"
+// GUI
+#define GUI_SCHEME_DIR "gui/schemes"
+#define GUI_IMAGESET_DIR "gui/imagesets"
+#define GUI_FONT_DIR "gui/font"
+#define GUI_LAYOUT_DIR "gui/layout"
+#define GUI_LOOKNFEEL_DIR "gui/looknfeel"
+// User
+#define USER_SAVEGAME_DIR "savegames"
+#define USER_SCREENSHOT_DIR "screenshots"
+#define USER_LEVEL_DIR "levels"
+#define USER_WORLD_DIR "worlds"
+#define USER_IMGCACHE_DIR "cache"
+
+/* *** *** *** *** *** *** *** Pre-declare *** *** *** *** *** *** *** *** *** *** */
+
+// Allows use of pointers in header files without including individual headers
+// which decreases dependencies between files
+
+/* *** speedfactor framerate *** */
+static const int speedfactor_fps = 32;
+
+/* *** level engine version *** */
+static const int level_engine_version = 36;
+/* *** world engine version *** */
+static const int world_engine_version = 2;
+
+/* *** Sprite Types *** */
+
+enum SpriteType
+{
+	TYPE_UNDEFINED = 0,
+	// global
+	TYPE_SPRITE = 1,
+	TYPE_PASSIVE = 44,
+	TYPE_FRONT_PASSIVE = 45,
+	TYPE_MASSIVE = 46,
+	TYPE_HALFMASSIVE = 5,
+	TYPE_CLIMBABLE = 47,
+	TYPE_ENEMY = 2,
+	TYPE_PLAYER = 3,
+	TYPE_ACTIVESPRITE = 4,
+	// game
+	TYPE_MOUSECURSOR = 100,
+	// overworld
+	TYPE_OW_WAYPOINT = 55,
+	TYPE_OW_LINE_START = 57,
+	TYPE_OW_LINE_END = 58,
+	// level
+	TYPE_LEVEL_EXIT = 18,
+	TYPE_LEVEL_ENTRY = 54,
+	TYPE_ENEMY_STOPPER = 20,
+	TYPE_BONUSBOX = 26,
+	TYPE_SPINBOX = 27,
+	TYPE_TEXT_BOX = 59,
+	TYPE_MOVING_PLATFORM = 38,
+	// enemy
+	TYPE_FURBALL = 10,
+	TYPE_FURBALL_BOSS = 62,
+	TYPE_TURTLE = 19,
+	TYPE_TURTLE_BOSS = 56,
+	TYPE_FLYON = 29,
+	TYPE_ROKKO = 30,
+	TYPE_KRUSH = 36,
+	TYPE_THROMP = 41,
+	TYPE_EATO = 42,
+	TYPE_GEE = 43,
+	TYPE_SPIKA = 31,
+	TYPE_STATIC_ENEMY = 50,
+	TYPE_SPIKEBALL = 64,
+	// items
+	TYPE_POWERUP = 23,
+	TYPE_MUSHROOM_DEFAULT = 25,
+	TYPE_MUSHROOM_LIVE_1 = 35,
+	TYPE_MUSHROOM_POISON = 49,
+	TYPE_MUSHROOM_BLUE = 51,
+	TYPE_MUSHROOM_GHOST = 52,
+	TYPE_FIREPLANT = 24,
+	TYPE_JGOLDPIECE = 22, // Jumping Goldpiece
+	TYPE_FGOLDPIECE = 48, // Falling Goldpiece
+	TYPE_GOLDPIECE = 8,
+	TYPE_MOON = 37,
+	TYPE_JSTAR = 39, // Jumping Star
+	// special
+	TYPE_BALL = 28,
+	TYPE_SOUND = 60,
+	TYPE_ANIMATION = 61,
+	TYPE_PATH = 63,
+	// HUD
+	TYPE_STATUSTEXT = 9,
+	TYPE_POINTDISPLAY = 12,
+	TYPE_GAMETIMEDISPLAY = 13,
+	TYPE_DEBUGDISPLAY = 14,
+	TYPE_LIFEDISPLAY = 15,
+	TYPE_GOLDDISPLAY = 16,
+	TYPE_MENUBG = 17,
+	TYPE_ITEMBOXDISPLAY = 32
+};
+
+/* *** Massive Types *** */
+
+enum MassiveType
+{
+	MASS_PASSIVE = 0,
+	MASS_MASSIVE = 1,
+	MASS_HALFMASSIVE = 2,
+	MASS_CLIMBABLE = 3
+};
+
+/* *** Ground Types *** */
+
+enum GroundType
+{
+	GROUND_NORMAL = 0,
+	GROUND_EARTH = 1,
+	GROUND_ICE = 2,
+	GROUND_SAND = 3,
+	GROUND_STONE = 4,
+	GROUND_PLASTIC = 5
+};
+
+/* *** Array Types *** */
+
+enum ArrayType
+{
+	ARRAY_UNDEFINED = 0,
+	// normal blocking object (level default)
+	ARRAY_MASSIVE = 1,
+	// normal passive object
+	ARRAY_PASSIVE = 2,
+	// enemy
+	ARRAY_ENEMY = 3,
+	// special object
+	ARRAY_ACTIVE = 4,
+	// hud
+	ARRAY_HUD = 5,
+	// animation
+	ARRAY_ANIM = 6,
+	// player
+	ARRAY_PLAYER = 7
+};
+
+/* *** *** *** *** *** *** *** collision validation types *** *** *** *** *** *** *** *** *** *** */
+
+enum Col_Valid_Type
+{
+	// not valid
+	COL_VTYPE_NOT_VALID = 0,
+	// internal
+	COL_VTYPE_INTERNAL = 1,
+	// blocking
+	COL_VTYPE_BLOCKING = 2,
+	// no validation possible for a sub-function
+	COL_VTYPE_NOT_POSSIBLE = 3
+};
+
+/* *** Input identifier ***  */
+
+enum input_identifier
+{
+	INP_UNKNOWN = 0,
+	INP_UP = 1,
+	INP_DOWN = 2,
+	INP_LEFT = 3,
+	INP_RIGHT = 4,
+	INP_JUMP = 5,
+	INP_SHOOT = 6,
+	INP_ACTION = 7,
+	// Request Item
+	INP_ITEM = 8,
+	// General Exit/Leave/Cancel
+	INP_EXIT = 9
+};
+
+/* *** Ball Effect types ***  */
+
+enum ball_effect
+{
+	FIREBALL_DEFAULT = 1,
+	FIREBALL_EXPLOSION = 2,
+	ICEBALL_DEFAULT = 3,
+	ICEBALL_EXPLOSION = 4
+};
+
+/* *** Performance timer types ***  */
+
+enum performance_timer_type
+{
+	// update
+	PERF_UPDATE_PROCESS_INPUT = 0,
+	PERF_UPDATE_LEVEL = 1,
+	PERF_UPDATE_LEVEL_EDITOR = 2,
+	PERF_UPDATE_HUD = 3,
+	PERF_UPDATE_PLAYER = 4,
+	PERF_UPDATE_PLAYER_COLLISIONS = 23,
+	PERF_UPDATE_LATE_LEVEL = 22,
+	PERF_UPDATE_LEVEL_COLLISIONS = 5,
+	PERF_UPDATE_CAMERA = 6,
+	// update overworld
+	PERF_UPDATE_OVERWORLD = 17,
+	// update menu
+	PERF_UPDATE_MENU = 18,
+	// update level settings
+	PERF_UPDATE_LEVEL_SETTINGS = 19,
+	// draw level
+	PERF_DRAW_LEVEL_LAYER1 = 7,
+	PERF_DRAW_LEVEL_PLAYER = 8,
+	PERF_DRAW_LEVEL_LAYER2 = 9,
+	PERF_DRAW_LEVEL_HUD = 10,
+	PERF_DRAW_LEVEL_EDITOR = 11,
+	// draw overworld
+	PERF_DRAW_OVERWORLD = 16,
+	// draw menu
+	PERF_DRAW_MENU = 14,
+	// draw level settings
+	PERF_DRAW_LEVEL_SETTINGS = 15,
+	// draw
+	PERF_DRAW_MOUSE = 12,
+	// rendering
+	PERF_RENDER_GAME = 13,
+	PERF_RENDER_GUI = 20,
+	PERF_RENDER_BUFFER = 21
+};
+
+/* *** Classes ***  */
+
+class cCamera;
+class cCircle_Request;
+class cEditor_Object_Settings_Item;
+class cGL_Surface;
+class cGradient_Request;
+class cImage_settings_data;
+class cLayer_Line_Point_Start;
+class cLevel;
+class cLine_collision;
+class cLine_Request;
+class cLevel_Settings;
+class cMenu_Base;
+class cObjectCollisionType;
+class cObjectCollision;
+class cOverworld;
+class cOverworld_Player;
+class cParticle_Emitter;
+class cPath;
+class cPath_State;
+class cRect_Request;
+class cSave_Level_Object;
+class cSaved_Texture;
+class cSize_Float;
+class cSize_Int;
+class cSprite_Manager;
+class cSurface_Request;
+class cSprite;
+class cWorld_Sprite_Manager;
+class Color;
+class GL_rect;
+class GL_line;
+class GL_point;
+
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
+} // namespace SMC
+
+#endif

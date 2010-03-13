@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="level_settings_tab_background" >
+        <Property Name="Text" Value="Background" />
+        <Property Name="InheritsAlpha" Value="False" />
+        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Window Type="TaharezLook/StaticText" Name="text_bg_color" >
+            <Property Name="Text" Value="Gradient" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.01,0},{0.11,0},{0.06,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_bg_color_red" >
+            <Property Name="Text" Value="Red" />
+            <Property Name="HorzFormatting" Value="HorzCentred" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.14,0},{0.01,0},{0.215,0},{0.06,0}}" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_bg_color_green" >
+            <Property Name="Text" Value="Green" />
+            <Property Name="HorzFormatting" Value="HorzCentred" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.22,0},{0.01,0},{0.295,0},{0.06,0}}" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_bg_color_blue" >
+            <Property Name="Text" Value="Blue" />
+            <Property Name="HorzFormatting" Value="HorzCentred" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.01,0},{0.375,0},{0.06,0}}" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_bg_images" >
+            <Property Name="Text" Value="Images" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.017598,0},{0.202262,0},{0.097968,0},{0.250517,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_bg_images_image" >
+            <Property Name="Text" Value="Filename" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.14,0},{0.34,0},{0.25,0},{0.39,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_bg_images_type" >
+            <Property Name="Text" Value="Type" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.14,0},{0.26,0},{0.25,0},{0.31,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_bg_images_preview" >
+            <Property Name="Text" Value="Preview" />
+            <Property Name="Tooltip" Value="Gradient and selected background image preview" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.4,0},{0.01,0},{0.5,0},{0.06,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_bg_image_speed" >
+            <Property Name="Text" Value="Speed X" />
+            <Property Name="Tooltip" Value="Image x scrolling speed. A value of 5 is the camera speed" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.14,0},{0.41,0},{0.25,0},{0.46,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_bg_image_posx" >
+            <Property Name="Text" Value="Pos X" />
+            <Property Name="Tooltip" Value="Position x" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.5,0},{0.41,0},{0.56,0},{0.46,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/Editbox" Name="editbox_bg_color_start_red" >
+            <Property Name="Tooltip" Value="Background color 1 red" />
+            <Property Name="MaxTextLength" Value="3" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.14,0},{0.07,0},{0.215,0},{0.12,0}}" />
+            <Property Name="ValidationString" Value="[0-9]*" />
+        </Window>
+        <Window Type="TaharezLook/Editbox" Name="editbox_bg_color_start_green" >
+            <Property Name="Tooltip" Value="Background color 1 green" />
+            <Property Name="MaxTextLength" Value="3" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.22,0},{0.07,0},{0.295,0},{0.12,0}}" />
+            <Property Name="ValidationString" Value="[0-9]*" />
+        </Window>
+        <Window Type="TaharezLook/Editbox" Name="editbox_bg_color_start_blue" >
+            <Property Name="Tooltip" Value="Background color 1 blue" />
+            <Property Name="MaxTextLength" Value="3" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.07,0},{0.375,0},{0.12,0}}" />
+            <Property Name="ValidationString" Value="[0-9]*" />
+        </Window>
+        <Window Type="TaharezLook/Editbox" Name="editbox_bg_color_end_red" >
+            <Property Name="Tooltip" Value="Background color 2 red" />
+            <Property Name="MaxTextLength" Value="3" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.14,0},{0.13,0},{0.215,0},{0.18,0}}" />
+            <Property Name="ValidationString" Value="[0-9]*" />
+        </Window>
+        <Window Type="TaharezLook/Editbox" Name="editbox_bg_color_end_green" >
+            <Property Name="Tooltip" Value="Background color 2 green" />
+            <Property Name="MaxTextLength" Value="3" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.22,0},{0.13,0},{0.295,0},{0.18,0}}" />
+            <Property Name="ValidationString" Value="[0-9]*" />
+        </Window>
+        <Window Type="TaharezLook/Editbox" Name="editbox_bg_color_end_blue" >
+            <Property Name="Tooltip" Value="Background color 2 blue" />
+            <Property Name="MaxTextLength" Value="3" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.13,0},{0.375,0},{0.18,0}}" />
+            <Property Name="ValidationString" Value="[0-9]*" />
+        </Window>
+        <Window Type="TaharezLook/Listbox" Name="listbox_backgrounds" >
+            <Property Name="Tooltip" Value="Backgrounds list" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.013296,0},{0.349544,0},{0.128994,0},{0.486703,0}}" />
+            <Property Name="MouseCursorImage" Value="set:TaharezLook image:MouseTarget" />
+        </Window>
+        <Window Type="TaharezLook/Editbox" Name="editbox_bg_image_name" >
+            <Property Name="Tooltip" Value="Background image filename" />
+            <Property Name="MaxTextLength" Value="1073741823" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.25,0},{0.34,0},{0.8,0},{0.39,0}}" />
+        </Window>
+        <Window Type="TaharezLook/Spinner" Name="spinner_bg_image_speed_x" >
+            <Property Name="Tooltip" Value="Image x scrolling speed" />
+            <Property Name="StepSize" Value="1" />
+            <Property Name="CurrentValue" Value="0" />
+            <Property Name="MaximumValue" Value="32767" />
+            <Property Name="MinimumValue" Value="0" />
+            <Property Name="TextInputMode" Value="FloatingPoint" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.25,0},{0.41,0},{0.35,0},{0.46,0}}" />
+        </Window>
+        <Window Type="TaharezLook/Spinner" Name="spinner_bg_image_speed_y" >
+            <Property Name="Tooltip" Value="Image y scrolling speed" />
+            <Property Name="StepSize" Value="1" />
+            <Property Name="CurrentValue" Value="0" />
+            <Property Name="MaximumValue" Value="32767" />
+            <Property Name="MinimumValue" Value="0" />
+            <Property Name="TextInputMode" Value="FloatingPoint" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.39,0},{0.41,0},{0.49,0},{0.46,0}}" />
+        </Window>
+        <Window Type="TaharezLook/Editbox" Name="editbox_bg_image_posx" >
+            <Property Name="Tooltip" Value="Image position x" />
+            <Property Name="MaxTextLength" Value="1073741823" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.56,0},{0.41,0},{0.66,0},{0.46,0}}" />
+            <Property Name="ValidationString" Value="[-+]?[0-9]*\.?[0-9]*" />
+        </Window>
+        <Window Type="TaharezLook/Combobox" Name="combo_bg_image_type" >
+            <Property Name="Text" Value="Disabled" />
+            <Property Name="Tooltip" Value="Background image type" />
+            <Property Name="ReadOnly" Value="True" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="ClippedByParent" Value="False" />
+            <Property Name="UnifiedAreaRect" Value="{{0.25,0},{0.26,0},{0.45,0},{0.43,0}}" />
+            <Property Name="MaxEditTextLength" Value="1073741823" />
+        </Window>
+        <Window Type="TaharezLook/Button" Name="button_add_background_image" >
+            <Property Name="Text" Value="Add" />
+            <Property Name="Tooltip" Value="Add a background image" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.013129,0},{0.254437,0},{0.096879,0},{0.294438,0}}" />
+            <Property Name="MouseCursorImage" Value="set:TaharezLook image:MouseArrow" />
+        </Window>
+        <Window Type="TaharezLook/Button" Name="button_delete_background_image" >
+            <Property Name="Text" Value="Delete" />
+            <Property Name="Tooltip" Value="Delete a background image" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.013131,0},{0.304877,0},{0.098131,0},{0.341545,0}}" />
+            <Property Name="MouseCursorImage" Value="set:TaharezLook image:MouseArrow" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_color_start" >
+            <Property Name="Text" Value="Color Start" />
+            <Property Name="Tooltip" Value="Start Color" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.07,0},{0.135,0},{0.12,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_color_end" >
+            <Property Name="Text" Value="Color End" />
+            <Property Name="Tooltip" Value="End Color" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.13,0},{0.135,0},{0.18,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="window_background_preview" >
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.4,0},{0.07,0},{0.6,0},{0.22,0}}" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_bg_image_speed_y" >
+            <Property Name="Text" Value="Y" />
+            <Property Name="Tooltip" Value="Image x scrolling speed" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.36,0},{0.41,0},{0.39,0},{0.46,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_bg_image_posy" >
+            <Property Name="Text" Value="Y" />
+            <Property Name="Tooltip" Value="Position y" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.67,0},{0.41,0},{0.7,0},{0.46,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/Editbox" Name="editbox_bg_image_posy" >
+            <Property Name="Tooltip" Value="Image position y" />
+            <Property Name="MaxTextLength" Value="1073741823" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.7,0},{0.41,0},{0.8,0},{0.46,0}}" />
+            <Property Name="ValidationString" Value="[-+]?[0-9]*\.?[0-9]*" />
+        </Window>
+        <Window Type="TaharezLook/Editbox" Name="editbox_bg_image_posz" >
+            <Property Name="Tooltip" Value="Image position z" />
+            <Property Name="MaxTextLength" Value="1073741823" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.84,0},{0.41,0},{0.94,0},{0.46,0}}" />
+            <Property Name="ValidationString" Value="[-+]?[0-9]*\.?[0-9]*" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_bg_image_posz" >
+            <Property Name="Text" Value="Z" />
+            <Property Name="Tooltip" Value="Use values ranging from 0.00011 to 0.121" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.81,0},{0.41,0},{0.84,0},{0.46,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_bg_image_const_vel_x" >
+            <Property Name="Text" Value="Const V. X" />
+            <Property Name="Tooltip" Value="Constant x scrolling velocity" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.14,0},{0.47,0},{0.25,0},{0.52,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/Spinner" Name="spinner_bg_image_const_vel_x" >
+            <Property Name="Tooltip" Value="Constant x scrolling velocity" />
+            <Property Name="StepSize" Value="1" />
+            <Property Name="CurrentValue" Value="0" />
+            <Property Name="MaximumValue" Value="32767" />
+            <Property Name="MinimumValue" Value="-32767" />
+            <Property Name="TextInputMode" Value="FloatingPoint" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.25,0},{0.47,0},{0.35,0},{0.52,0}}" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_bg_image_const_vel_y" >
+            <Property Name="Text" Value="Y" />
+            <Property Name="Tooltip" Value="Constant y scrolling velocity" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.36,0},{0.47,0},{0.39,0},{0.52,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/Spinner" Name="spinner_bg_image_const_vel_y" >
+            <Property Name="Tooltip" Value="Constant y scrolling velocity" />
+            <Property Name="StepSize" Value="1" />
+            <Property Name="CurrentValue" Value="0" />
+            <Property Name="MaximumValue" Value="32767" />
+            <Property Name="MinimumValue" Value="-32767" />
+            <Property Name="TextInputMode" Value="FloatingPoint" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.39,0},{0.47,0},{0.49,0},{0.52,0}}" />
+        </Window>
+    </Window>
+</GUILayout>

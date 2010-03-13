@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Items>
+	<Item>
+		<Property Name="object_name" Value="box" />
+		<Property Name="object_tags" Value="level;box" />
+		<Property Name="type" Value="bonus" />
+		<Property Name="animation" Value="Default" />
+		<Property Name="item" Value="8" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="box" />
+		<Property Name="object_tags" Value="level;box" />
+		<Property Name="type" Value="bonus" />
+		<Property Name="animation" Value="Default" />
+		<Property Name="item" Value="8" />
+		<Property Name="gold_color" Value="red" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="box" />
+		<Property Name="object_tags" Value="level;box" />
+		<Property Name="type" Value="bonus" />
+		<Property Name="item" Value="25" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="box" />
+		<Property Name="object_tags" Value="level;box" />
+		<Property Name="type" Value="bonus" />
+		<Property Name="item" Value="24" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="box" />
+		<Property Name="object_tags" Value="level;box" />
+		<Property Name="type" Value="bonus" />
+		<Property Name="item" Value="51" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="box" />
+		<Property Name="object_tags" Value="level;box" />
+		<Property Name="type" Value="bonus" />
+		<Property Name="item" Value="52" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="box" />
+		<Property Name="object_tags" Value="level;box" />
+		<Property Name="type" Value="bonus" />
+		<Property Name="item" Value="35" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="box" />
+		<Property Name="object_tags" Value="level;box" />
+		<Property Name="type" Value="bonus" />
+		<Property Name="item" Value="39" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="box" />
+		<Property Name="object_tags" Value="level;box" />
+		<Property Name="type" Value="bonus" />
+		<Property Name="item" Value="49" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="box" />
+		<Property Name="object_tags" Value="level;box" />
+		<Property Name="type" Value="bonus" />
+		<Property Name="item" Value="0" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="box" />
+		<Property Name="object_tags" Value="level;box" />
+		<Property Name="type" Value="bonus" />
+		<Property Name="item" Value="0" />
+		<Property Name="invisible" Value="1" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="box" />
+		<Property Name="object_tags" Value="level;box" />
+		<Property Name="type" Value="spin" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="box" />
+		<Property Name="object_tags" Value="level;box" />
+		<Property Name="type" Value="text" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="static" />
+		<Property Name="rotation_speed" Value="-5.5" />
+		<Property Name="image" Value="enemy/static/saw/default.png" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="static" />
+		<Property Name="rotation_speed" Value="2.5" />
+		<Property Name="image" Value="enemy/static/blocks/spike_1/1_grey.png" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="static" />
+		<Property Name="rotation_speed" Value="2.5" />
+		<Property Name="image" Value="enemy/static/blocks/spike_1/1_orange.png" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="static" />
+		<Property Name="rotation_speed" Value="0" />
+		<Property Name="image" Value="enemy/static/blocks/spike_1/2_grey.png" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="static" />
+		<Property Name="rotation_speed" Value="0" />
+		<Property Name="image" Value="enemy/static/blocks/desert/1.png" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="static" />
+		<Property Name="rotation_speed" Value="0" />
+		<Property Name="fire_resistant" Value="1" />
+		<Property Name="ice_resistance" Value="1" />
+		<Property Name="image" Value="enemy/static/metal_1/1_up.png" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="static" />
+		<Property Name="rotation_speed" Value="0" />
+		<Property Name="fire_resistant" Value="1" />
+		<Property Name="ice_resistance" Value="1" />
+		<Property Name="image" Value="enemy/static/metal_1/1.png" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="furball" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="furball" />
+		<Property Name="direction" Value="left" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="furball" />
+		<Property Name="color" Value="blue" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="furball" />
+		<Property Name="color" Value="black" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="furball" />
+		<Property Name="direction" Value="left" />
+		<Property Name="color" Value="blue" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="turtle" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="turtle" />
+		<Property Name="direction" Value="left" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="turtle" />
+		<Property Name="color" Value="green" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="turtle" />
+		<Property Name="direction" Value="left" />
+		<Property Name="color" Value="green" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="krush" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="krush" />
+		<Property Name="direction" Value="left" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="flyon" />
+		<Property Name="direction" Value="up" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="flyon" />
+		<Property Name="direction" Value="down" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="flyon" />
+		<Property Name="direction" Value="left" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="flyon" />
+		<Property Name="direction" Value="right" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="eato" />
+		<Property Name="direction" Value="top_left" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="eato" />
+		<Property Name="direction" Value="top_right" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="eato" />
+		<Property Name="direction" Value="left_top" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="eato" />
+		<Property Name="direction" Value="left_bottom" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="eato" />
+		<Property Name="direction" Value="right_top" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="eato" />
+		<Property Name="direction" Value="right_bottom" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="eato" />
+		<Property Name="direction" Value="bottom_left" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="eato" />
+		<Property Name="direction" Value="bottom_right" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="rokko" />
+		<Property Name="direction" Value="right" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="rokko" />
+		<Property Name="direction" Value="left" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="thromp" />
+		<Property Name="direction" Value="up" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="thromp" />
+		<Property Name="direction" Value="down" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="thromp" />
+		<Property Name="direction" Value="left" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="thromp" />
+		<Property Name="direction" Value="right" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="thromp" />
+		<Property Name="image_dir" Value="enemy/thromp/desert_1/" />
+		<Property Name="direction" Value="up" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="thromp" />
+		<Property Name="image_dir" Value="enemy/thromp/desert_1/" />
+		<Property Name="direction" Value="down" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="thromp" />
+		<Property Name="image_dir" Value="enemy/thromp/desert_1/" />
+		<Property Name="direction" Value="left" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="thromp" />
+		<Property Name="image_dir" Value="enemy/thromp/desert_1/" />
+		<Property Name="direction" Value="right" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="spika" />
+		<Property Name="color" Value="orange" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="spika" />
+		<Property Name="color" Value="green" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="spika" />
+		<Property Name="color" Value="grey" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="spikeball" />
+		<Property Name="color" Value="grey" />
+		<Property Name="direction" Value="left" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="spikeball" />
+		<Property Name="color" Value="grey" />
+		<Property Name="direction" Value="right" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="gee" />
+		<Property Name="color" Value="yellow" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="gee" />
+		<Property Name="color" Value="red" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="gee" />
+		<Property Name="color" Value="green" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="gee" />
+		<Property Name="color" Value="yellow" />
+		<Property Name="direction" Value="vertical" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="gee" />
+		<Property Name="color" Value="red" />
+		<Property Name="direction" Value="vertical" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="gee" />
+		<Property Name="color" Value="green" />
+		<Property Name="direction" Value="vertical" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemy" />
+		<Property Name="object_tags" Value="level;enemy" />
+		<Property Name="type" Value="turtleboss" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="item" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="type" Value="goldpiece" />
+		<Property Name="color" Value="yellow" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="item" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="type" Value="goldpiece" />
+		<Property Name="color" Value="red" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="item" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="type" Value="mushroom" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="item" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="type" Value="mushroom" />
+		<Property Name="mushroom_type" Value="51" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="item" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="type" Value="mushroom" />
+		<Property Name="mushroom_type" Value="52" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="item" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="type" Value="mushroom" />
+		<Property Name="mushroom_type" Value="35" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="item" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="type" Value="mushroom" />
+		<Property Name="mushroom_type" Value="49" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="item" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="type" Value="fireplant" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="item" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="type" Value="jstar" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="item" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="type" Value="moon" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="enemystopper" />
+		<Property Name="object_tags" Value="level;special" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="levelexit" />
+		<Property Name="object_tags" Value="level;special" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="levelexit" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="type" Value="1" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="levelexit" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="type" Value="1" />
+		<Property Name="direction" Value="up" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="levelexit" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="type" Value="1" />
+		<Property Name="direction" Value="right" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="levelexit" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="type" Value="1" />
+		<Property Name="direction" Value="left" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="level_entry" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="direction" Value="up" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="level_entry" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="type" Value="0" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="moving_platform" />
+		<Property Name="object_tags" Value="level;special" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="moving_platform" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="direction" Value="down" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="falling_platform" />
+		<Property Name="object_tags" Value="level;special" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="sound" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="file" Value="waterdrop_1.ogg" />
+		<Property Name="delay_min" Value="350" />
+		<Property Name="delay_max" Value="400" />
+		<Property Name="volume_min" Value="80" />
+		<Property Name="volume_max" Value="100" />
+		<Property Name="volume_distance_full" Value="400" />
+		<Property Name="volume_distance_zero" Value="1000" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="particle_emitter" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="file" Value="animation/particles/dirt.png" />
+		<Property Name="size_x" Value="10" />
+		<Property Name="size_y" Value="10" />
+		<Property Name="emitter_time_to_live" Value="-1" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="path" />
+		<Property Name="object_tags" Value="level;special" />
+		<Property Name="segment_0_x1" Value="0" />
+		<Property Name="segment_0_y1" Value="0" />
+		<Property Name="segment_0_x2" Value="0" />
+		<Property Name="segment_0_y2" Value="200" />
+		<Property Name="segment_1_x1" Value="0" />
+		<Property Name="segment_1_y1" Value="200" />
+		<Property Name="segment_1_x2" Value="500" />
+		<Property Name="segment_1_y2" Value="200" />
+		<Property Name="segment_2_x1" Value="500" />
+		<Property Name="segment_2_y1" Value="200" />
+		<Property Name="segment_2_x2" Value="500" />
+		<Property Name="segment_2_y2" Value="0" />
+	</Item>
+</Items>

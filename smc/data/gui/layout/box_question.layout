@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="box_question" >
+        <Property Name="AlwaysOnTop" Value="True" />
+        <Property Name="InheritsAlpha" Value="False" />
+        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Property Name="MousePassThroughEnabled" Value="False" />
+        <Window Type="TaharezLook/FrameWindow" Name="box_question_window" >
+            <Property Name="Text" Value="Question" />
+            <Property Name="Tooltip" Value="Box wants an answer !" />
+            <Property Name="SizingEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="TitlebarEnabled" Value="True" />
+            <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.3375,0},{0.7,0},{0.6,0}}" />
+            <Window Type="TaharezLook/StaticText" Name="box_question_text" >
+                <Property Name="Text" Value="question text" />
+                <Property Name="Tooltip" Value="The Question Text." />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.04,0},{0.26,0},{0.95,0},{0.75,0}}" />
+            </Window>
+            <Window Type="TaharezLook/Button" Name="box_question_button_yes" >
+                <Property Name="Text" Value="Yes" />
+                <Property Name="Tooltip" Value="Yes, please." />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.04,0},{0.8,0},{0.28,0},{0.98,0}}" />
+            </Window>
+            <Window Type="TaharezLook/Button" Name="box_question_button_no" >
+                <Property Name="Text" Value="No" />
+                <Property Name="Tooltip" Value="NOOO !" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.33,0},{0.8,0},{0.58,0},{0.98,0}}" />
+            </Window>
+            <Window Type="TaharezLook/Button" Name="box_question_button_cancel" >
+                <Property Name="Text" Value="Cancel" />
+                <Property Name="Tooltip" Value="Cancel the action." />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.7,0},{0.8,0},{0.95,0},{0.98,0}}" />
+            </Window>
+        </Window>
+    </Window>
+</GUILayout>

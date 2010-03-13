@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="menu_main" >
+        <Property Name="InheritsAlpha" Value="False" />
+        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Property Name="MousePassThroughEnabled" Value="True" />
+        <Window Type="TaharezLook/StaticText" Name="text_version" >
+            <Property Name="Text" Value="Version" />
+            <Property Name="Tooltip" Value="Current Game Version." />
+            <Property Name="TextColours" Value="tl:FF00BB00 tr:FF00CC00 bl:FF00CC00 br:FF00FF00" />
+            <Property Name="HorzFormatting" Value="HorzCentred" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.8,0},{0.94,0},{0.99,0},{0.99,0}}" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_website" >
+            <Property Name="Text" Value="www.secretmaryo.org" />
+            <Property Name="Tooltip" Value="Latest News, User Levels and Worlds, Wiki and a Community Forum." />
+            <Property Name="TextColours" Value="tl:FFFFAA22 tr:FFFFAA22 bl:FFFF8822 br:FFFF8822" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="ClippedByParent" Value="False" />
+            <Property Name="UnifiedAreaRect" Value="{{0.7,0},{0.1325,0},{0.95,0},{0.1925,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+    </Window>
+</GUILayout>

@@ -1,0 +1,128 @@
+/***************************************************************************
+ * img_manager.h  -  header for the corresponding cpp file
+ *
+ * Copyright (C) 2003 - 2009 Florian Richter
+ ***************************************************************************/
+/*
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
+   
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#ifndef SMC_IMG_MANAGER_H
+#define SMC_IMG_MANAGER_H
+
+#include "../core/global_basic.h"
+#include "../video/video.h"
+#include "../core/obj_manager.h"
+#include "../video/gl_surface.h"
+
+namespace SMC
+{
+
+/* *** *** *** *** *** cSaved_Texture *** *** *** *** *** *** *** *** *** *** *** *** */
+
+// software texture data
+class cSaved_Texture
+{
+public:
+	cSaved_Texture( void );
+	~cSaved_Texture( void );
+
+	// base surface
+	cGL_Surface *base;
+
+	// pixel data
+	GLubyte *pixels;
+
+	// size
+	GLint width;
+	GLint height;
+	// format
+	GLint format;
+
+	// settings
+	GLint min_filter;
+	GLint mag_filter;
+	GLint wrap_s;
+	GLint wrap_t;
+};
+
+typedef vector<cSaved_Texture *> Saved_Texture_List;
+typedef vector<cGL_Surface *> GL_Surface_List;
+
+/* *** *** *** *** *** *** cImage_Manager *** *** *** *** *** *** *** *** *** *** *** */
+
+//  Keeps track of all the images in memory
+//
+// Operators:
+//  - cImage_Manager [path]
+//  - cImage_Manager [identifier]
+class cImage_Manager : public cObject_Manager<cGL_Surface>
+{
+public:
+	cImage_Manager( void );
+	virtual ~cImage_Manager( void );
+
+	// Add a surface
+	virtual void Add( cGL_Surface *obj );
+
+	// Return the surface by path
+	cGL_Surface *Get_Pointer( const std::string &path ) const;
+
+	// Return the copied image
+	cGL_Surface *Copy( const std::string &path );
+
+	cGL_Surface *operator [] ( unsigned int identifier )
+	{
+		return cObject_Manager<cGL_Surface>::Get_Pointer( identifier );
+	}
+
+	cGL_Surface *operator [] ( const std::string &path )
+	{
+		return Get_Pointer( path );
+	}
+
+	/* Save hardware textures in software memory
+	 * from_file: if set don't store in software memory but load again from file
+	 * draw_gui : if set use the loading screen gui for drawing
+	*/
+	void Grab_Textures( bool from_file = 0, bool draw_gui = 0  );
+
+	/* Load the saved software textures back into hardware textures or
+	 * load textures from file if set
+	 * draw_gui : if set use the loading screen gui for drawing
+	*/
+	void Restore_Textures( bool draw_gui = 0 );
+
+	// Delete all surface textures, but keep object vector entries
+	void Delete_Image_Textures( void );
+
+	// Delete all hardware surfaces
+	void Delete_Hardware_Textures( void );
+
+	// Delete all Surfaces
+	virtual void Delete_All( void );
+
+	// highest opengl texture id found
+	GLuint high_texture_id;
+
+private:
+	// saved textures for reloading
+	Saved_Texture_List saved_textures;
+};
+
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
+// Image Manager
+extern cImage_Manager *pImage_Manager;
+
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
+} // namespace SMC
+
+#endif

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Items>
+	<Item>
+		<Property Name="object_name" Value="waypoint" />
+		<Property Name="object_tags" Value="world;generic" />
+		<Property Name="level" Value="lvl_1" />
+		<Property Name="access" Value="0" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="line" />
+		<Property Name="object_tags" Value="world;generic" />
+	</Item>
+	<Item>
+		<Property Name="object_name" Value="sound" />
+		<Property Name="object_tags" Value="world;generic" />
+		<Property Name="file" Value="waterdrop_1.ogg" />
+		<Property Name="delay_min" Value="350" />
+		<Property Name="delay_max" Value="400" />
+		<Property Name="volume_min" Value="80" />
+		<Property Name="volume_max" Value="100" />
+		<Property Name="volume_distance_full" Value="400" />
+		<Property Name="volume_distance_zero" Value="1000" />
+	</Item>
+</Items>

@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xsd:element name="Savegame" type="SaveType" />
+	
+	<xsd:complexType name="SaveType">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="Information" type="PropertyType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="Player" type="PropertyType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="Level" type="LevelType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="Overworld_Data" type="PropertyType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="Overworld" type="OverworldType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="LevelType">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="Property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="Level_Object" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="OverworldType">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="Property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="Overworld_Level" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="PropertyType">
+		<xsd:sequence>
+			<xsd:element name="Property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PropertyBaseType">
+		<xsd:attribute name="Name" type="xsd:string" use="required"/>
+		<xsd:attribute name="Value" type="xsd:string" use="required"/>
+	</xsd:complexType>
+</xsd:schema>

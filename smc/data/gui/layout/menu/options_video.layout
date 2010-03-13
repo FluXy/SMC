@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="menu_video" >
+        <Property Name="InheritsAlpha" Value="False" />
+        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Property Name="MousePassThroughEnabled" Value="True" />
+        <Window Type="TaharezLook/TabControl" Name="tabcontrol_video" >
+            <Property Name="Alpha" Value="0.7" />
+            <Property Name="TabHeight" Value="{0,25}" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="TabPanePosition" Value="Top" />
+            <Property Name="UnifiedAreaRect" Value="{{0.25,0},{0.25,0},{0.95,0},{0.79,0}}" />
+            <Window Type="DefaultWindow" Name="video_tab_video" >
+                <Property Name="Text" Value="Video" />
+                <Property Name="InheritsAlpha" Value="False" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+                <Window Type="TaharezLook/Combobox" Name="combo_resolution" >
+                    <Property Name="Tooltip" Value="Set the Screen Resolution. Lowering this value boosts FPS but lowers Visual Detail." />
+                    <Property Name="ReadOnly" Value="True" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="ClippedByParent" Value="False" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.05,0},{0.5,0},{0.38,0}}" />
+                    <Property Name="MaxEditTextLength" Value="1073741823" />
+                </Window>
+                <Window Type="TaharezLook/Combobox" Name="combo_bpp" >
+                    <Property Name="Tooltip" Value="Set the Bits per Pixel. Only lower this value if you don&apos;t support it." />
+                    <Property Name="ReadOnly" Value="True" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="ClippedByParent" Value="False" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.13,0},{0.5,0},{0.38,0}}" />
+                    <Property Name="MaxEditTextLength" Value="1073741823" />
+                </Window>
+                <Window Type="TaharezLook/Combobox" Name="combo_fullscreen" >
+                    <Property Name="Tooltip" Value="Should the Game run in Fullscreen or in Windowed Mode. Windowed Mode is usually used for bug hunting" />
+                    <Property Name="ReadOnly" Value="True" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="ClippedByParent" Value="False" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.21,0},{0.5,0},{0.46,0}}" />
+                    <Property Name="MaxEditTextLength" Value="1073741823" />
+                </Window>
+                <Window Type="TaharezLook/Combobox" Name="combo_vsync" >
+                    <Property Name="Tooltip" Value="Vertical synchronization synchronizes each frame with the vertical refresh, thus ensuring that only whole frames are seen on-screen which removes visual tearing. This looks smoother and should be enabled." />
+                    <Property Name="ReadOnly" Value="True" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="ClippedByParent" Value="False" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.29,0},{0.5,0},{0.54,0}}" />
+                    <Property Name="MaxEditTextLength" Value="1073741823" />
+                </Window>
+                <Window Type="TaharezLook/Slider" Name="slider_geometry_quality" >
+                    <Property Name="Tooltip" Value="Set the geometry quality. Affects the quality of point, line and color drawing and texture coordinate interpolation." />
+                    <Property Name="CurrentValue" Value="0" />
+                    <Property Name="MaximumValue" Value="1" />
+                    <Property Name="ClickStepSize" Value="0.1" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.37,0},{0.5,0},{0.44,0}}" />
+                </Window>
+                <Window Type="TaharezLook/Slider" Name="slider_texture_quality" >
+                    <Property Name="Tooltip" Value="Set the texture quality. Affects filter quality and texture size." />
+                    <Property Name="CurrentValue" Value="0" />
+                    <Property Name="MaximumValue" Value="1" />
+                    <Property Name="ClickStepSize" Value="0.1" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.45,0},{0.5,0},{0.52,0}}" />
+                </Window>
+                <Window Type="TaharezLook/StaticText" Name="text_resolution" >
+                    <Property Name="Text" Value="Resolution" />
+                    <Property Name="FrameEnabled" Value="False" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.05,0},{0.3,0},{0.12,0}}" />
+                    <Property Name="BackgroundEnabled" Value="False" />
+                </Window>
+                <Window Type="TaharezLook/StaticText" Name="text_bpp" >
+                    <Property Name="Text" Value="Bpp" />
+                    <Property Name="FrameEnabled" Value="False" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.13,0},{0.3,0},{0.2,0}}" />
+                    <Property Name="BackgroundEnabled" Value="False" />
+                </Window>
+                <Window Type="TaharezLook/StaticText" Name="text_fullscreen" >
+                    <Property Name="Text" Value="Fullscreen" />
+                    <Property Name="FrameEnabled" Value="False" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.21,0},{0.3,0},{0.28,0}}" />
+                    <Property Name="BackgroundEnabled" Value="False" />
+                </Window>
+                <Window Type="TaharezLook/StaticText" Name="text_vsync" >
+                    <Property Name="Text" Value="VSync" />
+                    <Property Name="FrameEnabled" Value="False" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.29,0},{0.3,0},{0.36,0}}" />
+                    <Property Name="BackgroundEnabled" Value="False" />
+                </Window>
+                <Window Type="TaharezLook/StaticText" Name="text_geometry_quality" >
+                    <Property Name="Text" Value="Geometry Quality" />
+                    <Property Name="FrameEnabled" Value="False" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.37,0},{0.3,0},{0.44,0}}" />
+                    <Property Name="BackgroundEnabled" Value="False" />
+                </Window>
+                <Window Type="TaharezLook/StaticText" Name="text_texture_quality" >
+                    <Property Name="Text" Value="Texture Quality" />
+                    <Property Name="FrameEnabled" Value="False" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.45,0},{0.3,0},{0.52,0}}" />
+                    <Property Name="BackgroundEnabled" Value="False" />
+                </Window>
+                <Window Type="TaharezLook/Button" Name="button_apply" >
+                    <Property Name="Text" Value="Apply" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.82,0},{0.9,0},{0.98,0},{0.98,0}}" />
+                </Window>
+                <Window Type="TaharezLook/Button" Name="button_recreate_cache" >
+                    <Property Name="Text" Value="Recreate Cache" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.5,0},{0.9,0},{0.8,0},{0.98,0}}" />
+                </Window>
+                <Window Type="TaharezLook/Button" Name="button_reset" >
+                    <Property Name="Text" Value="Reset" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.02,0},{0.9,0},{0.16,0},{0.98,0}}" />
+                </Window>
+            </Window>
+        </Window>
+    </Window>
+</GUILayout>

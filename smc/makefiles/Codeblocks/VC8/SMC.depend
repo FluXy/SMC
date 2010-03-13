@@ -1,0 +1,2816 @@
+# depslib dependency file v1.0
+1141156109 c:\documents and settings\administrator\desktop\smc\smc\src\audio.cpp
+	"audio.h"
+
+1139864614 c:\documents and settings\administrator\desktop\smc\smc\src\audio.h
+	"globals.h"
+
+1139947233 c:\documents and settings\administrator\desktop\smc\smc\src\globals.h
+	"config.h"
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	<vector>
+	<time.h>
+	<math.h>
+	"SDL.h"
+	"SDL_opengl.h"
+	"SDL_ttf.h"
+	"SDL_image.h"
+	"SDL_mixer.h"
+	"CEGUI.h"
+	"renderers/OpenGLGUIRenderer/openglrenderer.h"
+	"CEGUIXMLParser.h"
+	"CEGUIXMLHandler.h"
+	"CEGUIXMLAttributes.h"
+	"video/img_manager.h"
+	"obj_manager.h"
+	"framerate.h"
+	"collision.h"
+	"file_parser.h"
+	"video/img_settings.h"
+	"video/video.h"
+	"user/savegame.h"
+	"audio.h"
+	"video/animation.h"
+	"input/joystick.h"
+	"gui/menu.h"
+	"objects/sprite.h"
+	"objects/active.h"
+	"input/mouse.h"
+	"level/level_settings.h"
+	"level/leveleditor.h"
+	"level/level.h"
+	"objects/goldpiece.h"
+	"objects/moving_platform.h"
+	"objects/cloud.h"
+	"objects/levelexit.h"
+	"objects/powerup.h"
+	"objects/fireball.h"
+	"objects/box.h"
+	"player.h"
+	"enemies/enemy.h"
+	"enemies/turtle.h"
+	"enemies/goomba.h"
+	"enemies/jpiranha.h"
+	"enemies/banzai_bill.h"
+	"enemies/rex.h"
+	"user/preferences.h"
+	"overworld/waypoint.h"
+	"overworld/layer.h"
+	"overworld/player.h"
+	"overworld/overworld.h"
+	"gui/dialog.h"
+	"gui/hud.h"
+
+1139864613 c:\documents and settings\administrator\desktop\smc\smc\src\video\img_manager.h
+	"../globals.h"
+	"video.h"
+
+1141019950 c:\documents and settings\administrator\desktop\smc\smc\src\video\video.h
+	"../globals.h"
+
+1139864614 c:\documents and settings\administrator\desktop\smc\smc\src\obj_manager.h
+	"globals.h"
+	"objects/sprite.h"
+
+1139864610 c:\documents and settings\administrator\desktop\smc\smc\src\objects\sprite.h
+	"../globals.h"
+	"../collision.h"
+
+1139864614 c:\documents and settings\administrator\desktop\smc\smc\src\collision.h
+	"globals.h"
+
+1141254399 c:\documents and settings\administrator\desktop\smc\smc\src\framerate.h
+
+1139864614 c:\documents and settings\administrator\desktop\smc\smc\src\file_parser.h
+	"globals.h"
+
+1139864612 c:\documents and settings\administrator\desktop\smc\smc\src\video\img_settings.h
+	"../globals.h"
+
+1139864614 c:\documents and settings\administrator\desktop\smc\smc\src\user\savegame.h
+	"../globals.h"
+
+1139864613 c:\documents and settings\administrator\desktop\smc\smc\src\video\animation.h
+	"../globals.h"
+	"../objects/sprite.h"
+
+1139864612 c:\documents and settings\administrator\desktop\smc\smc\src\input\joystick.h
+	"../globals.h"
+
+1141156107 c:\documents and settings\administrator\desktop\smc\smc\src\gui\menu.h
+	"../globals.h"
+	"../level/level.h"
+
+1141156108 c:\documents and settings\administrator\desktop\smc\smc\src\level\level.h
+	"../globals.h"
+
+1139864610 c:\documents and settings\administrator\desktop\smc\smc\src\objects\active.h
+	"../globals.h"
+
+1139864612 c:\documents and settings\administrator\desktop\smc\smc\src\input\mouse.h
+	"../globals.h"
+
+1141156108 c:\documents and settings\administrator\desktop\smc\smc\src\level\level_settings.h
+	"../globals.h"
+	"../gui/dialog.h"
+
+1139864608 c:\documents and settings\administrator\desktop\smc\smc\src\gui\dialog.h
+	"../globals.h"
+
+1141019952 c:\documents and settings\administrator\desktop\smc\smc\src\level\leveleditor.h
+	"../globals.h"
+
+1139864610 c:\documents and settings\administrator\desktop\smc\smc\src\objects\goldpiece.h
+	"../globals.h"
+
+1139864610 c:\documents and settings\administrator\desktop\smc\smc\src\objects\moving_platform.h
+	"../globals.h"
+
+1139864610 c:\documents and settings\administrator\desktop\smc\smc\src\objects\cloud.h
+	"../globals.h"
+
+1139864610 c:\documents and settings\administrator\desktop\smc\smc\src\objects\levelexit.h
+	"../globals.h"
+
+1139864610 c:\documents and settings\administrator\desktop\smc\smc\src\objects\powerup.h
+	"../globals.h"
+
+1141156108 c:\documents and settings\administrator\desktop\smc\smc\src\objects\fireball.h
+	"../globals.h"
+
+1139864611 c:\documents and settings\administrator\desktop\smc\smc\src\objects\box.h
+	"../globals.h"
+
+1139864614 c:\documents and settings\administrator\desktop\smc\smc\src\player.h
+	"globals.h"
+
+1139864609 c:\documents and settings\administrator\desktop\smc\smc\src\enemies\enemy.h
+	"../globals.h"
+
+1139864609 c:\documents and settings\administrator\desktop\smc\smc\src\enemies\turtle.h
+	"../globals.h"
+
+1139864609 c:\documents and settings\administrator\desktop\smc\smc\src\enemies\goomba.h
+	"../globals.h"
+
+1139864609 c:\documents and settings\administrator\desktop\smc\smc\src\enemies\jpiranha.h
+	"../globals.h"
+
+1139864609 c:\documents and settings\administrator\desktop\smc\smc\src\enemies\banzai_bill.h
+	"../globals.h"
+
+1139864609 c:\documents and settings\administrator\desktop\smc\smc\src\enemies\rex.h
+	"../globals.h"
+
+1141156109 c:\documents and settings\administrator\desktop\smc\smc\src\user\preferences.h
+
+1141156107 c:\documents and settings\administrator\desktop\smc\smc\src\overworld\waypoint.h
+	"../globals.h"
+
+1139947227 c:\documents and settings\administrator\desktop\smc\smc\src\overworld\layer.h
+	"../globals.h"
+
+1139947227 c:\documents and settings\administrator\desktop\smc\smc\src\overworld\player.h
+	"../globals.h"
+
+1141019948 c:\documents and settings\administrator\desktop\smc\smc\src\overworld\overworld.h
+	"../globals.h"
+
+1139864608 c:\documents and settings\administrator\desktop\smc\smc\src\gui\hud.h
+	"../globals.h"
+
+1139864614 c:\documents and settings\administrator\desktop\smc\smc\src\collision.cpp
+	"globals.h"
+
+1139864614 c:\documents and settings\administrator\desktop\smc\smc\src\file_parser.cpp
+	"globals.h"
+
+1141156109 c:\documents and settings\administrator\desktop\smc\smc\src\globals.cpp
+	"globals.h"
+	"main.h"
+	<algorithm>
+
+1139864614 c:\documents and settings\administrator\desktop\smc\smc\src\main.h
+	"globals.h"
+
+1141251789 c:\documents and settings\administrator\desktop\smc\smc\src\main.cpp
+	"globals.h"
+	"main.h"
+
+1139864614 c:\documents and settings\administrator\desktop\smc\smc\src\obj_manager.cpp
+	"globals.h"
+
+1141156109 c:\documents and settings\administrator\desktop\smc\smc\src\player.cpp
+	"globals.h"
+	"main.h"
+
+1139864609 c:\documents and settings\administrator\desktop\smc\smc\src\enemies\banzai_bill.cpp
+	"../globals.h"
+
+1139864609 c:\documents and settings\administrator\desktop\smc\smc\src\enemies\enemy.cpp
+	"../globals.h"
+
+1139864609 c:\documents and settings\administrator\desktop\smc\smc\src\enemies\goomba.cpp
+	"../globals.h"
+
+1139864609 c:\documents and settings\administrator\desktop\smc\smc\src\enemies\jpiranha.cpp
+	"../globals.h"
+
+1141019949 c:\documents and settings\administrator\desktop\smc\smc\src\enemies\rex.cpp
+	"../globals.h"
+
+1139864609 c:\documents and settings\administrator\desktop\smc\smc\src\enemies\turtle.cpp
+	"../globals.h"
+
+1139947228 c:\documents and settings\administrator\desktop\smc\smc\src\gui\dialog.cpp
+	"../globals.h"
+
+1139864608 c:\documents and settings\administrator\desktop\smc\smc\src\gui\hud.cpp
+	"../globals.h"
+
+1141254399 c:\documents and settings\administrator\desktop\smc\smc\src\gui\menu.cpp
+	"../globals.h"
+	"../main.h"
+
+1141019950 c:\documents and settings\administrator\desktop\smc\smc\src\input\joystick.cpp
+	"../globals.h"
+	"../main.h"
+
+1139947228 c:\documents and settings\administrator\desktop\smc\smc\src\input\mouse.cpp
+	"../globals.h"
+	"../main.h"
+
+1141156108 c:\documents and settings\administrator\desktop\smc\smc\src\level\level.cpp
+	"../globals.h"
+
+1141156108 c:\documents and settings\administrator\desktop\smc\smc\src\level\level_settings.cpp
+	"../globals.h"
+	"../main.h"
+
+1141156108 c:\documents and settings\administrator\desktop\smc\smc\src\level\leveleditor.cpp
+	"../globals.h"
+	"../main.h"
+
+1139864610 c:\documents and settings\administrator\desktop\smc\smc\src\objects\active.cpp
+	"../globals.h"
+
+1139864610 c:\documents and settings\administrator\desktop\smc\smc\src\objects\box.cpp
+	"../globals.h"
+
+1139864610 c:\documents and settings\administrator\desktop\smc\smc\src\objects\cloud.cpp
+	"../globals.h"
+
+1139864610 c:\documents and settings\administrator\desktop\smc\smc\src\objects\fireball.cpp
+	"../globals.h"
+
+1139864610 c:\documents and settings\administrator\desktop\smc\smc\src\objects\goldpiece.cpp
+	"../globals.h"
+
+1139864610 c:\documents and settings\administrator\desktop\smc\smc\src\objects\levelexit.cpp
+	"../globals.h"
+
+1139864610 c:\documents and settings\administrator\desktop\smc\smc\src\objects\moving_platform.cpp
+	"../globals.h"
+
+1141019949 c:\documents and settings\administrator\desktop\smc\smc\src\objects\powerup.cpp
+	"../globals.h"
+
+1141156108 c:\documents and settings\administrator\desktop\smc\smc\src\objects\sprite.cpp
+	"../globals.h"
+	"../main.h"
+
+1139947227 c:\documents and settings\administrator\desktop\smc\smc\src\overworld\layer.cpp
+	"../globals.h"
+
+1141254399 c:\documents and settings\administrator\desktop\smc\smc\src\overworld\overworld.cpp
+	"../globals.h"
+	"../main.h"
+
+1139947227 c:\documents and settings\administrator\desktop\smc\smc\src\overworld\player.cpp
+	"../globals.h"
+
+1139947227 c:\documents and settings\administrator\desktop\smc\smc\src\overworld\waypoint.cpp
+	"../globals.h"
+
+1141156109 c:\documents and settings\administrator\desktop\smc\smc\src\user\preferences.cpp
+	"../globals.h"
+
+1139864614 c:\documents and settings\administrator\desktop\smc\smc\src\user\savegame.cpp
+	"../globals.h"
+
+1139864612 c:\documents and settings\administrator\desktop\smc\smc\src\video\animation.cpp
+	"../globals.h"
+
+1139864613 c:\documents and settings\administrator\desktop\smc\smc\src\video\img_manager.cpp
+	"../globals.h"
+
+1139864613 c:\documents and settings\administrator\desktop\smc\smc\src\video\img_settings.cpp
+	"../globals.h"
+
+1141254399 c:\documents and settings\administrator\desktop\smc\smc\src\video\video.cpp
+	"../globals.h"
+
+1165419116 source:c:\svn\smc\src\enemies\enemy.cpp
+	"../enemies/enemy.h"
+	"../core/camera.h"
+
+1165419335 c:\svn\smc\src\enemies\enemy.h
+	"../objects/objectsprite.h"
+	"../video/animation.h"
+	"../core/framerate.h"
+	"../audio/audio.h"
+	"../player/player.h"
+	"../gui/hud.h"
+	"../core/obj_manager.h"
+
+1161807920 c:\svn\smc\src\objects\objectsprite.h
+	"../objects/sprite.h"
+
+1163427166 c:\svn\smc\src\objects\sprite.h
+	"../objects/basicsprite.h"
+	"../core/collision.h"
+
+1167475748 c:\svn\smc\src\objects\basicsprite.h
+	"../video/video.h"
+	"../video/renderer.h"
+
+1167475744 c:\svn\smc\src\video\video.h
+	"../core/globals.h"
+	"../video/gl_surface.h"
+	"../core/math/rect.h"
+
+1165491754 c:\svn\smc\src\core\globals.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	<vector>
+	<time.h>
+	<math.h>
+	<algorithm>
+	"config.h"
+	"SDL.h"
+	"SDL_opengl.h"
+	"SDL_ttf.h"
+	"SDL_image.h"
+	"SDL_mixer.h"
+	"CEGUI.h"
+	"RendererModules/OpenGLGUIRenderer/openglrenderer.h"
+	"CEGUIXMLParser.h"
+	"CEGUIXMLHandler.h"
+	"CEGUIXMLAttributes.h"
+
+1151381864 c:\programmierung\c++\libraries\sdl\include\sdl.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_audio.h"
+	"SDL_cdrom.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_loadso.h"
+	"SDL_mutex.h"
+	"SDL_rwops.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_video.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381864 c:\programmierung\c++\libraries\sdl\include\sdl_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381866 c:\programmierung\c++\libraries\sdl\include\sdl_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<iconv.h>
+	"begin_code.h"
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	"close_code.h"
+
+1151381866 c:\programmierung\c++\libraries\sdl\include\sdl_config.h
+	"SDL_platform.h"
+	<stdarg.h>
+
+1151381866 c:\programmierung\c++\libraries\sdl\include\sdl_platform.h
+
+1151381860 c:\programmierung\c++\libraries\sdl\include\begin_code.h
+
+1151381862 c:\programmierung\c++\libraries\sdl\include\close_code.h
+
+1151381862 c:\programmierung\c++\libraries\sdl\include\sdl_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381864 c:\programmierung\c++\libraries\sdl\include\sdl_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381864 c:\programmierung\c++\libraries\sdl\include\sdl_endian.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381866 c:\programmierung\c++\libraries\sdl\include\sdl_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381866 c:\programmierung\c++\libraries\sdl\include\sdl_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	<process.h>
+	"close_code.h"
+
+1151381866 c:\programmierung\c++\libraries\sdl\include\sdl_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381862 c:\programmierung\c++\libraries\sdl\include\sdl_cdrom.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381864 c:\programmierung\c++\libraries\sdl\include\sdl_cpuinfo.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381864 c:\programmierung\c++\libraries\sdl\include\sdl_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_active.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_quit.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381862 c:\programmierung\c++\libraries\sdl\include\sdl_active.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381864 c:\programmierung\c++\libraries\sdl\include\sdl_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keysym.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381864 c:\programmierung\c++\libraries\sdl\include\sdl_keysym.h
+
+1151381864 c:\programmierung\c++\libraries\sdl\include\sdl_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381866 c:\programmierung\c++\libraries\sdl\include\sdl_video.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381864 c:\programmierung\c++\libraries\sdl\include\sdl_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381866 c:\programmierung\c++\libraries\sdl\include\sdl_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1151381864 c:\programmierung\c++\libraries\sdl\include\sdl_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381866 c:\programmierung\c++\libraries\sdl\include\sdl_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381866 c:\programmierung\c++\libraries\sdl\include\sdl_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381866 c:\programmierung\c++\libraries\sdl\include\sdl_opengl.h
+	"SDL_config.h"
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<gl.h>
+	<glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<windows.h>
+	<stddef.h>
+
+1147854076 c:\programmierung\c++\libraries\sdl\include\sdl_ttf.h
+	"SDL.h"
+	"begin_code.h"
+	"close_code.h"
+
+1147823954 c:\programmierung\c++\libraries\sdl\include\sdl_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1147851952 c:\programmierung\c++\libraries\sdl\include\sdl_mixer.h
+	"SDL_types.h"
+	"SDL_rwops.h"
+	"SDL_audio.h"
+	"SDL_byteorder.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1151381866 c:\programmierung\c++\libraries\sdl\include\sdl_types.h
+	"SDL_stdinc.h"
+
+1151381862 c:\programmierung\c++\libraries\sdl\include\sdl_byteorder.h
+	"SDL_endian.h"
+
+1116772634 c:\programmierung\c++\libraries\sdl\include\cegui.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIRect.h"
+	"CEGUIExceptions.h"
+	"CEGUITexture.h"
+	"CEGUIRenderer.h"
+	"CEGUIImageset.h"
+	"CEGUIImagesetManager.h"
+	"CEGUILogger.h"
+	"CEGUIMouseCursor.h"
+	"CEGUIFont.h"
+	"CEGUIFontManager.h"
+	"CEGUIEventArgs.h"
+	"CEGUIEvent.h"
+	"CEGUIEventSet.h"
+	"CEGUIGlobalEventSet.h"
+	"CEGUIProperty.h"
+	"CEGUIPropertySet.h"
+	"CEGUIWindow.h"
+	"CEGUIWindowFactory.h"
+	"CEGUIWindowFactoryManager.h"
+	"CEGUIWindowManager.h"
+	"CEGUIScheme.h"
+	"CEGUISchemeManager.h"
+	"CEGUISystem.h"
+	"CEGUIScriptModule.h"
+	"CEGUIRenderableFrame.h"
+	"CEGUIRenderableImage.h"
+	"elements/CEGUIButtonBase.h"
+	"elements/CEGUIPushButton.h"
+	"elements/CEGUICheckbox.h"
+	"elements/CEGUIRadioButton.h"
+	"elements/CEGUITitlebar.h"
+	"elements/CEGUIFrameWindow.h"
+	"elements/CEGUIProgressBar.h"
+	"elements/CEGUIEditbox.h"
+	"elements/CEGUIThumb.h"
+	"elements/CEGUISlider.h"
+	"elements/CEGUIScrollbar.h"
+	"elements/CEGUIStatic.h"
+	"elements/CEGUIListbox.h"
+	"elements/CEGUICombobox.h"
+	"elements/CEGUIListHeader.h"
+	"elements/CEGUIMultiColumnList.h"
+	"elements/CEGUIStaticText.h"
+	"elements/CEGUIStaticImage.h"
+	"elements/CEGUIGUISheet.h"
+	"elements/CEGUIListboxTextItem.h"
+	"elements/CEGUIComboDropList.h"
+	"elements/CEGUIMultiLineEditbox.h"
+	"elements/CEGUITabButton.h"
+	"elements/CEGUITabPane.h"
+	"elements/CEGUITabControl.h"
+	"elements/CEGUISpinner.h"
+	"elements/CEGUIDragContainer.h"
+	"elements/CEGUIScrolledContainer.h"
+	"elements/CEGUIScrollablePane.h"
+	"elements/CEGUITooltip.h"
+	"elements/CEGUIItemEntry.h"
+	"elements/CEGUITextItem.h"
+	"elements/CEGUIMenuItem.h"
+	"elements/CEGUIItemListBase.h"
+	"elements/CEGUIMenuBase.h"
+	"elements/CEGUIMenubar.h"
+	"elements/CEGUIPopupMenu.h"
+
+1121927310 c:\programmierung\c++\libraries\sdl\include\ceguibase.h
+	<cassert>
+	"CEGUIConfig.h"
+	"CEGUIVersion.h"
+	<string>
+	"CEGUIForwardRefs.h"
+
+1133006680 c:\programmierung\c++\libraries\sdl\include\ceguiconfig.h
+
+1131201782 c:\programmierung\c++\libraries\sdl\include\ceguiversion.h
+
+1116772634 c:\programmierung\c++\libraries\sdl\include\ceguiforwardrefs.h
+
+1131451758 c:\programmierung\c++\libraries\sdl\include\ceguistring.h
+	"CEGUIBase.h"
+	<string>
+	<string.h>
+	<stdexcept>
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\ceguirect.h
+	"CEGUIBase.h"
+	"CEGUIVector.h"
+	"CEGUISize.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\ceguivector.h
+	"CEGUIBase.h"
+	"CEGUISize.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\ceguisize.h
+	"CEGUIBase.h"
+
+1128270636 c:\programmierung\c++\libraries\sdl\include\ceguiexceptions.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\ceguitexture.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+
+1124986664 c:\programmierung\c++\libraries\sdl\include\ceguirenderer.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIRect.h"
+	"CEGUIColourRect.h"
+	"CEGUIEventSet.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\ceguicolourrect.h
+	"CEGUIBase.h"
+	"CEGUIcolour.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\ceguicolour.h
+	"CEGUIBase.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\ceguieventset.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIEvent.h"
+	"CEGUIIteratorBase.h"
+	<map>
+
+1128270636 c:\programmierung\c++\libraries\sdl\include\ceguievent.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIEventArgs.h"
+	"CEGUIRefPtr.h"
+	<map>
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\ceguieventargs.h
+	"CEGUIBase.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\ceguirefptr.h
+	"CEGUIBase.h"
+
+1105813100 c:\programmierung\c++\libraries\sdl\include\ceguiiteratorbase.h
+	"CEGUIBase.h"
+
+1124442860 c:\programmierung\c++\libraries\sdl\include\ceguiimageset.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIRect.h"
+	"CEGUIColourRect.h"
+	"CEGUIImagesetManager.h"
+	"CEGUIImage.h"
+	"CEGUIIteratorBase.h"
+	<map>
+
+1124442860 c:\programmierung\c++\libraries\sdl\include\ceguiimagesetmanager.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISingleton.h"
+	"CEGUIIteratorBase.h"
+	<map>
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\ceguisingleton.h
+	"CEGUIBase.h"
+	<cassert>
+
+1121935546 c:\programmierung\c++\libraries\sdl\include\ceguiimage.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIRect.h"
+	"CEGUIColourRect.h"
+	"CEGUIVector.h"
+	"CEGUISize.h"
+	"CEGUIRenderer.h"
+	<map>
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\ceguilogger.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	<fstream>
+	<sstream>
+	<vector>
+	<utility>
+	"CEGUISingleton.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\ceguimousecursor.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISingleton.h"
+	"CEGUIVector.h"
+	"CEGUIRect.h"
+	"CEGUIEventSet.h"
+	"CEGUIInputEvent.h"
+	"CEGUIUDim.h"
+
+1125227132 c:\programmierung\c++\libraries\sdl\include\ceguiinputevent.h
+	"CEGUIBase.h"
+	"CEGUIEventArgs.h"
+	"CEGUIString.h"
+	"CEGUIVector.h"
+
+1128270636 c:\programmierung\c++\libraries\sdl\include\ceguiudim.h
+	"CEGUIRect.h"
+	"CEGUIVector.h"
+
+1122015562 c:\programmierung\c++\libraries\sdl\include\ceguifont.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIRect.h"
+	"CEGUIVector.h"
+	"CEGUIColourRect.h"
+	<map>
+
+1122015562 c:\programmierung\c++\libraries\sdl\include\ceguifontmanager.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISingleton.h"
+	"CEGUIIteratorBase.h"
+	<map>
+
+1128270636 c:\programmierung\c++\libraries\sdl\include\ceguiglobaleventset.h
+	"CEGUIEventSet.h"
+	"CEGUISingleton.h"
+
+1121927310 c:\programmierung\c++\libraries\sdl\include\ceguiproperty.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\ceguipropertyset.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIIteratorBase.h"
+	"CEGUIProperty.h"
+	<map>
+
+1132165758 c:\programmierung\c++\libraries\sdl\include\ceguiwindow.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIVector.h"
+	"CEGUIRect.h"
+	"CEGUISize.h"
+	"CEGUIEventSet.h"
+	"CEGUIPropertySet.h"
+	"CEGUISystem.h"
+	"CEGUIInputEvent.h"
+	"CEGUIWindowProperties.h"
+	"CEGUIUDim.h"
+	"CEGUIRenderCache.h"
+	<vector>
+
+1128270636 c:\programmierung\c++\libraries\sdl\include\ceguisystem.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISingleton.h"
+	"CEGUIRenderer.h"
+	"CEGUIMouseCursor.h"
+	"CEGUIInputEvent.h"
+	"CEGUIResourceProvider.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\ceguiresourceprovider.h
+	"CEGUIBase.h"
+	"CEGUIDataContainer.h"
+	"CEGUIString.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\ceguidatacontainer.h
+	"CEGUIBase.h"
+	<malloc.h>
+
+1121927310 c:\programmierung\c++\libraries\sdl\include\ceguiwindowproperties.h
+	"CEGUIProperty.h"
+
+1120989158 c:\programmierung\c++\libraries\sdl\include\ceguirendercache.h
+	"CEGUIVector.h"
+	"CEGUIRect.h"
+	"CEGUIImage.h"
+	"CEGUIFont.h"
+	<vector>
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\ceguiwindowfactory.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIWindow.h"
+
+1131201348 c:\programmierung\c++\libraries\sdl\include\ceguiwindowfactorymanager.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISingleton.h"
+	"CEGUILogger.h"
+	"CEGUIIteratorBase.h"
+	<map>
+	<vector>
+
+1132165758 c:\programmierung\c++\libraries\sdl\include\ceguiwindowmanager.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISingleton.h"
+	"CEGUILogger.h"
+	"CEGUIIteratorBase.h"
+	<map>
+	<vector>
+
+1124444842 c:\programmierung\c++\libraries\sdl\include\ceguischeme.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISchemeManager.h"
+	<vector>
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\ceguischememanager.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISingleton.h"
+	"CEGUIIteratorBase.h"
+	<map>
+
+1124986664 c:\programmierung\c++\libraries\sdl\include\ceguiscriptmodule.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIEvent.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\ceguirenderableframe.h
+	"CEGUIBase.h"
+	"CEGUIRenderableElement.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\ceguirenderableelement.h
+	"CEGUIBase.h"
+	"CEGUISystem.h"
+	"CEGUIColourRect.h"
+	"CEGUIVector.h"
+	"CEGUIRenderCache.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\ceguirenderableimage.h
+	"CEGUIBase.h"
+	"CEGUIRenderableElement.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\elements\ceguibuttonbase.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIButtonBaseProperties.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\elements\ceguibuttonbaseproperties.h
+	"CEGUIProperty.h"
+
+1128270636 c:\programmierung\c++\libraries\sdl\include\elements\ceguipushbutton.h
+	"CEGUIBase.h"
+	"elements/CEGUIButtonBase.h"
+	"elements/CEGUIPushButtonProperties.h"
+	"CEGUIRenderableImage.h"
+
+1121927312 c:\programmierung\c++\libraries\sdl\include\elements\ceguipushbuttonproperties.h
+	"CEGUIProperty.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\elements\ceguicheckbox.h
+	"CEGUIBase.h"
+	"elements/CEGUIButtonBase.h"
+	"elements/CEGUICheckboxProperties.h"
+
+1106052612 c:\programmierung\c++\libraries\sdl\include\elements\ceguicheckboxproperties.h
+	"CEGUIProperty.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\elements\ceguiradiobutton.h
+	"CEGUIBase.h"
+	"elements/CEGUIButtonBase.h"
+	"elements/CEGUIRadioButtonProperties.h"
+
+1106052612 c:\programmierung\c++\libraries\sdl\include\elements\ceguiradiobuttonproperties.h
+	"CEGUIProperty.h"
+
+1121850760 c:\programmierung\c++\libraries\sdl\include\elements\ceguititlebar.h
+	"CEGUIWindow.h"
+	"elements/CEGUITitlebarProperties.h"
+
+1106052612 c:\programmierung\c++\libraries\sdl\include\elements\ceguititlebarproperties.h
+	"CEGUIProperty.h"
+
+1121850676 c:\programmierung\c++\libraries\sdl\include\elements\ceguiframewindow.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIFrameWindowProperties.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\elements\ceguiframewindowproperties.h
+	"CEGUIProperty.h"
+
+1125653758 c:\programmierung\c++\libraries\sdl\include\elements\ceguiprogressbar.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIProgressBarProperties.h"
+
+1121927312 c:\programmierung\c++\libraries\sdl\include\elements\ceguiprogressbarproperties.h
+	"CEGUIProperty.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\elements\ceguieditbox.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIEditboxProperties.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\elements\ceguieditboxproperties.h
+	"CEGUIProperty.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\elements\ceguithumb.h
+	"CEGUIPushButton.h"
+	"elements/CEGUIThumbProperties.h"
+	<utility>
+
+1106052612 c:\programmierung\c++\libraries\sdl\include\elements\ceguithumbproperties.h
+	"CEGUIProperty.h"
+
+1121501664 c:\programmierung\c++\libraries\sdl\include\elements\ceguislider.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUISliderProperties.h"
+
+1106052612 c:\programmierung\c++\libraries\sdl\include\elements\ceguisliderproperties.h
+	"CEGUIProperty.h"
+
+1121501664 c:\programmierung\c++\libraries\sdl\include\elements\ceguiscrollbar.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIScrollbarProperties.h"
+
+1106052612 c:\programmierung\c++\libraries\sdl\include\elements\ceguiscrollbarproperties.h
+	"CEGUIProperty.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\elements\ceguistatic.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"CEGUIRenderableFrame.h"
+	"elements/CEGUIStaticProperties.h"
+
+1106052612 c:\programmierung\c++\libraries\sdl\include\elements\ceguistaticproperties.h
+	"CEGUIProperty.h"
+
+1125651782 c:\programmierung\c++\libraries\sdl\include\elements\ceguilistbox.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIListboxProperties.h"
+	<vector>
+
+1125651782 c:\programmierung\c++\libraries\sdl\include\elements\ceguilistboxproperties.h
+	"CEGUIProperty.h"
+
+1121501664 c:\programmierung\c++\libraries\sdl\include\elements\ceguicombobox.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIComboboxProperties.h"
+
+1106052612 c:\programmierung\c++\libraries\sdl\include\elements\ceguicomboboxproperties.h
+	"CEGUIProperty.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\elements\ceguilistheader.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIListHeaderSegment.h"
+	"elements/CEGUIListHeaderProperties.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\elements\ceguilistheadersegment.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIListHeaderSegmentProperties.h"
+
+1106052612 c:\programmierung\c++\libraries\sdl\include\elements\ceguilistheadersegmentproperties.h
+	"CEGUIProperty.h"
+
+1106052612 c:\programmierung\c++\libraries\sdl\include\elements\ceguilistheaderproperties.h
+	"CEGUIProperty.h"
+
+1128270636 c:\programmierung\c++\libraries\sdl\include\elements\ceguimulticolumnlist.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"CEGUIListHeader.h"
+	"elements/CEGUIMultiColumnListProperties.h"
+
+1121927312 c:\programmierung\c++\libraries\sdl\include\elements\ceguimulticolumnlistproperties.h
+	"CEGUIProperty.h"
+
+1123255424 c:\programmierung\c++\libraries\sdl\include\elements\ceguistatictext.h
+	"elements/CEGUIStatic.h"
+	"elements/CEGUIStaticTextProperties.h"
+
+1110460600 c:\programmierung\c++\libraries\sdl\include\elements\ceguistatictextproperties.h
+	"CEGUIProperty.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\elements\ceguistaticimage.h
+	"elements/CEGUIStatic.h"
+	"CEGUIRenderableImage.h"
+	"elements/CEGUIStaticImageProperties.h"
+
+1106052612 c:\programmierung\c++\libraries\sdl\include\elements\ceguistaticimageproperties.h
+	"CEGUIProperty.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\elements\ceguiguisheet.h
+	"CEGUIWindow.h"
+	"CEGUIWindowFactory.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\elements\ceguilistboxtextitem.h
+	"elements/CEGUIListboxItem.h"
+
+1125651782 c:\programmierung\c++\libraries\sdl\include\elements\ceguilistboxitem.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIColourRect.h"
+	"CEGUIRenderCache.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\elements\ceguicombodroplist.h
+	"elements/CEGUIListbox.h"
+
+1128747380 c:\programmierung\c++\libraries\sdl\include\elements\ceguimultilineeditbox.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"CEGUIFont.h"
+	"elements/CEGUIMultiLineEditboxProperties.h"
+	<vector>
+
+1106052612 c:\programmierung\c++\libraries\sdl\include\elements\ceguimultilineeditboxproperties.h
+	"CEGUIProperty.h"
+
+1128270636 c:\programmierung\c++\libraries\sdl\include\elements\ceguitabbutton.h
+	"CEGUIBase.h"
+	"elements/CEGUIButtonBase.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\elements\ceguitabpane.h
+	"elements/CEGUIStatic.h"
+
+1132502442 c:\programmierung\c++\libraries\sdl\include\elements\ceguitabcontrol.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUITabControlProperties.h"
+	"elements/CEGUITabPane.h"
+	<vector>
+
+1121927312 c:\programmierung\c++\libraries\sdl\include\elements\ceguitabcontrolproperties.h
+	"CEGUIProperty.h"
+
+1121501664 c:\programmierung\c++\libraries\sdl\include\elements\ceguispinner.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUISpinnerProperties.h"
+
+1107779510 c:\programmierung\c++\libraries\sdl\include\elements\ceguispinnerproperties.h
+	"CEGUIProperty.h"
+
+1124636222 c:\programmierung\c++\libraries\sdl\include\elements\ceguidragcontainer.h
+	"CEGUIWindow.h"
+	"CEGUIWindowFactory.h"
+	"elements/CEGUIDragContainerProperties.h"
+
+1108471166 c:\programmierung\c++\libraries\sdl\include\elements\ceguidragcontainerproperties.h
+	"CEGUIProperty.h"
+
+1124636222 c:\programmierung\c++\libraries\sdl\include\elements\ceguiscrolledcontainer.h
+	"CEGUIWindow.h"
+	"CEGUIWindowFactory.h"
+	"elements/CEGUIScrolledContainerProperties.h"
+	<map>
+
+1109935898 c:\programmierung\c++\libraries\sdl\include\elements\ceguiscrolledcontainerproperties.h
+	"CEGUIProperty.h"
+
+1124636222 c:\programmierung\c++\libraries\sdl\include\elements\ceguiscrollablepane.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIScrollablePaneProperties.h"
+
+1109935898 c:\programmierung\c++\libraries\sdl\include\elements\ceguiscrollablepaneproperties.h
+	"CEGUIProperty.h"
+
+1128270636 c:\programmierung\c++\libraries\sdl\include\elements\ceguitooltip.h
+	"CEGUIWindow.h"
+	"elements/CEGUITooltipProperties.h"
+
+1111669856 c:\programmierung\c++\libraries\sdl\include\elements\ceguitooltipproperties.h
+	"CEGUIProperty.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\elements\ceguiitementry.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\elements\ceguitextitem.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIItemEntry.h"
+	"elements/CEGUITextItemProperties.h"
+	"CEGUIFont.h"
+
+1116772636 c:\programmierung\c++\libraries\sdl\include\elements\ceguitextitemproperties.h
+	"CEGUIProperty.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\elements\ceguimenuitem.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUITextItem.h"
+	"elements/CEGUIMenuItemProperties.h"
+
+1116772636 c:\programmierung\c++\libraries\sdl\include\elements\ceguimenuitemproperties.h
+	"CEGUIProperty.h"
+
+1120977536 c:\programmierung\c++\libraries\sdl\include\elements\ceguiitemlistbase.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIItemListBaseProperties.h"
+	"elements/CEGUIItemEntry.h"
+	<vector>
+
+1116772636 c:\programmierung\c++\libraries\sdl\include\elements\ceguiitemlistbaseproperties.h
+	"CEGUIProperty.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\elements\ceguimenubase.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIMenuBaseProperties.h"
+	"elements/CEGUIItemListBase.h"
+
+1116772636 c:\programmierung\c++\libraries\sdl\include\elements\ceguimenubaseproperties.h
+	"CEGUIProperty.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\elements\ceguimenubar.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIMenuBase.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\elements\ceguipopupmenu.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIPopupMenuProperties.h"
+	"elements/CEGUIMenuBase.h"
+
+1116772636 c:\programmierung\c++\libraries\sdl\include\elements\ceguipopupmenuproperties.h
+	"CEGUIProperty.h"
+
+1132775138 c:\programmierung\c++\libraries\sdl\include\renderers\openglguirenderer\openglrenderer.h
+	"CEGUIBase.h"
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<list>
+	<set>
+	"CEGUIRenderer.h"
+	"CEGUITexture.h"
+
+1124986664 c:\programmierung\c++\libraries\sdl\include\ceguixmlparser.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+
+1117846680 c:\programmierung\c++\libraries\sdl\include\ceguixmlhandler.h
+	"CEGUIBase.h"
+
+1124636222 c:\programmierung\c++\libraries\sdl\include\ceguixmlattributes.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	<map>
+
+1161807912 c:\svn\smc\src\video\gl_surface.h
+	"../core/globals.h"
+	"../core/math/point.h"
+
+1161807914 c:\svn\smc\src\core\math\point.h
+	<math.h>
+
+1163955200 c:\svn\smc\src\core\math\rect.h
+	"../../core/globals.h"
+	"../../core/math/point.h"
+
+1163330531 c:\svn\smc\src\video\renderer.h
+	"../core/globals.h"
+	"../video/video.h"
+
+1163330531 c:\svn\smc\src\core\collision.h
+	"../core/globals.h"
+	"../video/video.h"
+	"../objects/basicsprite.h"
+
+1161807912 c:\svn\smc\src\video\animation.h
+	"../objects/sprite.h"
+	"../objects/objectsprite.h"
+
+1161807916 c:\svn\smc\src\core\framerate.h
+
+1167402330 c:\svn\smc\src\audio\audio.h
+	"../core/globals.h"
+
+1167402346 c:\svn\smc\src\player\player.h
+	"../core/globals.h"
+	"../objects/fireball.h"
+	"../objects/objectsprite.h"
+
+1167475748 c:\svn\smc\src\objects\fireball.h
+	"../core/globals.h"
+	"../video/video.h"
+	"../core/collision.h"
+	"../objects/sprite.h"
+
+1161807907 c:\svn\smc\src\gui\hud.h
+	"../objects/sprite.h"
+
+1167402343 c:\svn\smc\src\core\obj_manager.h
+	"../core/globals.h"
+	"../objects/sprite.h"
+
+1161807916 c:\svn\smc\src\core\camera.h
+	"../core/globals.h"
+	"../core/math/rect.h"
+
+1165011159 source:c:\svn\smc\src\enemies\jpiranha.cpp
+	"../enemies/jpiranha.h"
+	"../core/game_core.h"
+	"../core/camera.h"
+	"../level/leveleditor.h"
+
+1165011159 c:\svn\smc\src\enemies\jpiranha.h
+	"../enemies/enemy.h"
+
+1167402343 c:\svn\smc\src\core\game_core.h
+	"../core/globals.h"
+	"../objects/sprite.h"
+
+1164061271 source:c:\svn\smc\src\enemies\rex.cpp
+	"../enemies/rex.h"
+	"../core/game_core.h"
+
+1161807909 c:\svn\smc\src\enemies\rex.h
+	"../enemies/enemy.h"
+
+1163955198 source:c:\svn\smc\src\audio\audio.cpp
+	"../audio/audio.h"
+	"../audio/sound_manager.h"
+	"../core/game_core.h"
+	"../level/level.h"
+	"../overworld/overworld.h"
+
+1161807902 c:\svn\smc\src\audio\sound_manager.h
+	"../audio/audio.h"
+
+1166827987 c:\svn\smc\src\level\level.h
+	"../core/globals.h"
+	"../level/global_effect.h"
+	"../level/level_background.h"
+	"../core/file_parser.h"
+
+1161807914 c:\svn\smc\src\level\global_effect.h
+	"../core/globals.h"
+	"../core/math/rect.h"
+	"../video/animation.h"
+
+1161807914 c:\svn\smc\src\level\level_background.h
+	"../core/globals.h"
+	"../video/video.h"
+
+1161807916 c:\svn\smc\src\core\file_parser.h
+	"../core/globals.h"
+
+1166827986 c:\svn\smc\src\overworld\overworld.h
+	"../overworld/worlds.h"
+	"../overworld/waypoint.h"
+	"../overworld/layer.h"
+	"../overworld/ow_player.h"
+	"../objects/sprite.h"
+	"../gui/hud.h"
+
+1163955198 c:\svn\smc\src\overworld\worlds.h
+	"../core/globals.h"
+	"../overworld/overworld.h"
+
+1166827986 c:\svn\smc\src\overworld\waypoint.h
+	"../core/globals.h"
+	"../video/video.h"
+
+1161807904 c:\svn\smc\src\overworld\layer.h
+	"../core/globals.h"
+	"../video/video.h"
+
+1165011158 c:\svn\smc\src\overworld\ow_player.h
+	"../core/globals.h"
+	"../gui/hud.h"
+	"../player/player.h"
+	"../overworld/layer.h"
+
+1161807902 source:c:\svn\smc\src\audio\sound_manager.cpp
+	"../audio/sound_manager.h"
+
+1161807916 source:c:\svn\smc\src\core\camera.cpp
+	"../core/camera.h"
+	"../core/game_core.h"
+	"../player/player.h"
+	"../level/leveleditor.h"
+	"../core/framerate.h"
+	"../input/mouse.h"
+
+1167475743 c:\svn\smc\src\level\leveleditor.h
+	"../core/globals.h"
+	"../video/video.h"
+	"../objects/sprite.h"
+	"../gui/hud.h"
+
+1167402330 c:\svn\smc\src\input\mouse.h
+	"../core/globals.h"
+	"../objects/sprite.h"
+	"../core/math/rect.h"
+	"../core/math/vector.h"
+
+1163955200 c:\svn\smc\src\core\math\vector.h
+	"../../core/globals.h"
+
+1163330531 source:c:\svn\smc\src\core\collision.cpp
+	"../core/globals.h"
+	"../core/collision.h"
+	"../objects/sprite.h"
+	"../core/obj_manager.h"
+	"../player/player.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\config.h
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\cegui.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIRect.h"
+	"CEGUIExceptions.h"
+	"CEGUITexture.h"
+	"CEGUIRenderer.h"
+	"CEGUIImageset.h"
+	"CEGUIImagesetManager.h"
+	"CEGUILogger.h"
+	"CEGUIMouseCursor.h"
+	"CEGUIFont.h"
+	"CEGUIFontManager.h"
+	"CEGUIEventArgs.h"
+	"CEGUIEvent.h"
+	"CEGUIEventSet.h"
+	"CEGUIGlobalEventSet.h"
+	"CEGUIProperty.h"
+	"CEGUIPropertySet.h"
+	"CEGUIWindow.h"
+	"CEGUIWindowFactory.h"
+	"CEGUIWindowFactoryManager.h"
+	"CEGUIWindowManager.h"
+	"CEGUIWindowRenderer.h"
+	"CEGUIWindowRendererManager.h"
+	"CEGUIScheme.h"
+	"CEGUISchemeManager.h"
+	"CEGUISystem.h"
+	"CEGUIScriptModule.h"
+	"CEGUICoordConverter.h"
+	"CEGUIPropertyHelper.h"
+	"falagard/CEGUIFalWidgetLookManager.h"
+	"elements/CEGUIButtonBase.h"
+	"elements/CEGUIPushButton.h"
+	"elements/CEGUICheckbox.h"
+	"elements/CEGUIRadioButton.h"
+	"elements/CEGUITitlebar.h"
+	"elements/CEGUIFrameWindow.h"
+	"elements/CEGUIProgressBar.h"
+	"elements/CEGUIEditbox.h"
+	"elements/CEGUIThumb.h"
+	"elements/CEGUISlider.h"
+	"elements/CEGUIScrollbar.h"
+	"elements/CEGUIListbox.h"
+	"elements/CEGUICombobox.h"
+	"elements/CEGUIListHeader.h"
+	"elements/CEGUIMultiColumnList.h"
+	"elements/CEGUIGUISheet.h"
+	"elements/CEGUIListboxTextItem.h"
+	"elements/CEGUIComboDropList.h"
+	"elements/CEGUIMultiLineEditbox.h"
+	"elements/CEGUITabButton.h"
+	"elements/CEGUITabControl.h"
+	"elements/CEGUISpinner.h"
+	"elements/CEGUIDragContainer.h"
+	"elements/CEGUIScrolledContainer.h"
+	"elements/CEGUIScrollablePane.h"
+	"elements/CEGUITooltip.h"
+	"elements/CEGUIItemEntry.h"
+	"elements/CEGUIMenuItem.h"
+	"elements/CEGUIItemListBase.h"
+	"elements/CEGUIMenuBase.h"
+	"elements/CEGUIMenubar.h"
+	"elements/CEGUIPopupMenu.h"
+	"elements/CEGUIScrolledItemListBase.h"
+	"elements/CEGUIItemListbox.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguibase.h
+	<cassert>
+	"CEGUIConfig.h"
+	"CEGUIVersion.h"
+	<string>
+	"CEGUIForwardRefs.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiconfig.h
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiversion.h
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiforwardrefs.h
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguistring.h
+	"CEGUIBase.h"
+	<string>
+	<string.h>
+	<stdexcept>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguirect.h
+	"CEGUIBase.h"
+	"CEGUIVector.h"
+	"CEGUISize.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguivector.h
+	"CEGUIBase.h"
+	"CEGUISize.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguisize.h
+	"CEGUIBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiexceptions.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguitexture.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguirenderer.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIRect.h"
+	"CEGUIColourRect.h"
+	"CEGUIEventSet.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguicolourrect.h
+	"CEGUIBase.h"
+	"CEGUIcolour.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguicolour.h
+	"CEGUIBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguieventset.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIEvent.h"
+	"CEGUIIteratorBase.h"
+	<map>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguievent.h
+	"CEGUIString.h"
+	"CEGUIBoundSlot.h"
+	"CEGUISubscriberSlot.h"
+	"CEGUIRefCounted.h"
+	<map>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiboundslot.h
+	"CEGUIBase.h"
+	"CEGUISubscriberSlot.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguisubscriberslot.h
+	"CEGUIBase.h"
+	"CEGUIFreeFunctionSlot.h"
+	"CEGUIFunctorCopySlot.h"
+	"CEGUIFunctorReferenceSlot.h"
+	"CEGUIFunctorPointerSlot.h"
+	"CEGUIMemberFunctionSlot.h"
+	"CEGUIFunctorReferenceBinder.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguifreefunctionslot.h
+	"CEGUISlotFunctorBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguislotfunctorbase.h
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguifunctorcopyslot.h
+	"CEGUISlotFunctorBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguifunctorreferenceslot.h
+	"CEGUISlotFunctorBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguifunctorpointerslot.h
+	"CEGUISlotFunctorBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguimemberfunctionslot.h
+	"CEGUISlotFunctorBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguifunctorreferencebinder.h
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguirefcounted.h
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiiteratorbase.h
+	"CEGUIBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiimageset.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIRect.h"
+	"CEGUIColourRect.h"
+	"CEGUIImagesetManager.h"
+	"CEGUIImage.h"
+	"CEGUIIteratorBase.h"
+	"CEGUIXMLSerializer.h"
+	<map>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiimagesetmanager.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISingleton.h"
+	"CEGUIIteratorBase.h"
+	<map>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguisingleton.h
+	"CEGUIBase.h"
+	<cassert>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiimage.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIRect.h"
+	"CEGUIColourRect.h"
+	"CEGUIVector.h"
+	"CEGUISize.h"
+	"CEGUIRenderer.h"
+	"CEGUIXMLSerializer.h"
+	<map>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguixmlserializer.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	<vector>
+	<iostream>
+	<CEGUI/XMLSerializer.h>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguilogger.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	<fstream>
+	<sstream>
+	<vector>
+	<utility>
+	"CEGUISingleton.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguimousecursor.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISingleton.h"
+	"CEGUIVector.h"
+	"CEGUIRect.h"
+	"CEGUIEventSet.h"
+	"CEGUIInputEvent.h"
+	"CEGUIUDim.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiinputevent.h
+	"CEGUIBase.h"
+	"CEGUIEventArgs.h"
+	"CEGUIString.h"
+	"CEGUIVector.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguieventargs.h
+	"CEGUIBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiudim.h
+	"CEGUIRect.h"
+	"CEGUIVector.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguifont.h
+	"CEGUIBase.h"
+	"CEGUIPropertySet.h"
+	"CEGUIString.h"
+	"CEGUIRect.h"
+	"CEGUIVector.h"
+	"CEGUIColourRect.h"
+	"CEGUIXMLSerializer.h"
+	"CEGUIImage.h"
+	<map>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguipropertyset.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIIteratorBase.h"
+	"CEGUIProperty.h"
+	<map>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiproperty.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIXMLSerializer.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguifontmanager.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISingleton.h"
+	"CEGUIIteratorBase.h"
+	<map>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiglobaleventset.h
+	"CEGUIEventSet.h"
+	"CEGUISingleton.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiwindow.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIVector.h"
+	"CEGUIRect.h"
+	"CEGUISize.h"
+	"CEGUIEventSet.h"
+	"CEGUIPropertySet.h"
+	"CEGUISystem.h"
+	"CEGUIInputEvent.h"
+	"CEGUIWindowProperties.h"
+	"CEGUIUDim.h"
+	"CEGUIRenderCache.h"
+	"CEGUIWindowRenderer.h"
+	<vector>
+	<set>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguisystem.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISingleton.h"
+	"CEGUIRenderer.h"
+	"CEGUIMouseCursor.h"
+	"CEGUIInputEvent.h"
+	"CEGUIResourceProvider.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiresourceprovider.h
+	"CEGUIBase.h"
+	"CEGUIDataContainer.h"
+	"CEGUIString.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguidatacontainer.h
+	"CEGUIBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiwindowproperties.h
+	"CEGUIProperty.h"
+	"CEGUIXMLSerializer.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguirendercache.h
+	"CEGUIVector.h"
+	"CEGUIRect.h"
+	"CEGUIImage.h"
+	"CEGUIFont.h"
+	<vector>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiwindowrenderer.h
+	"CEGUIWindow.h"
+	"CEGUIProperty.h"
+	<vector>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiwindowfactory.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIWindow.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiwindowfactorymanager.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISingleton.h"
+	"CEGUILogger.h"
+	"CEGUIIteratorBase.h"
+	<map>
+	<vector>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiwindowmanager.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISingleton.h"
+	"CEGUILogger.h"
+	"CEGUIIteratorBase.h"
+	<map>
+	<vector>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiwindowrenderermanager.h
+	"CEGUIWindowRenderer.h"
+	"CEGUISingleton.h"
+	<map>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguischeme.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISchemeManager.h"
+	<vector>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguischememanager.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUISingleton.h"
+	"CEGUIIteratorBase.h"
+	<map>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguiscriptmodule.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIEvent.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguicoordconverter.h
+	"CEGUIUDim.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguipropertyhelper.h
+	"CEGUIWindow.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifalwidgetlookmanager.h
+	"CEGUISingleton.h"
+	"CEGUIString.h"
+	"CEGUIExceptions.h"
+	"falagard/CEGUIFalWidgetLookFeel.h"
+	<map>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifalwidgetlookfeel.h
+	"falagard/CEGUIFalStateImagery.h"
+	"falagard/CEGUIFalWidgetComponent.h"
+	"falagard/CEGUIFalImagerySection.h"
+	"falagard/CEGUIFalPropertyInitialiser.h"
+	"falagard/CEGUIFalPropertyDefinition.h"
+	"falagard/CEGUIFalPropertyLinkDefinition.h"
+	"falagard/CEGUIFalNamedArea.h"
+	<map>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifalstateimagery.h
+	"falagard/CEGUIFalLayerSpecification.h"
+	"CEGUIWindow.h"
+	<set>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifallayerspecification.h
+	"falagard/CEGUIFalSectionSpecification.h"
+	"CEGUIWindow.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifalsectionspecification.h
+	"CEGUIWindow.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifalwidgetcomponent.h
+	"falagard/CEGUIFalDimensions.h"
+	"falagard/CEGUIFalPropertyInitialiser.h"
+	"CEGUIWindow.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifaldimensions.h
+	"falagard/CEGUIFalEnums.h"
+	"CEGUIString.h"
+	"CEGUIUDim.h"
+	"CEGUIXMLSerializer.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifalenums.h
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifalpropertyinitialiser.h
+	"CEGUIPropertySet.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifalimagerysection.h
+	"falagard/CEGUIFalImageryComponent.h"
+	"falagard/CEGUIFalTextComponent.h"
+	"falagard/CEGUIFalFrameComponent.h"
+	"CEGUIXMLSerializer.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifalimagerycomponent.h
+	"falagard/CEGUIFalComponentBase.h"
+	"CEGUIXMLSerializer.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifalcomponentbase.h
+	"falagard/CEGUIFalDimensions.h"
+	"CEGUIWindow.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifaltextcomponent.h
+	"falagard/CEGUIFalComponentBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifalframecomponent.h
+	"falagard/CEGUIFalComponentBase.h"
+	"CEGUIXMLSerializer.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifalpropertydefinition.h
+	"CEGUIFalPropertyDefinitionBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifalpropertydefinitionbase.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifalpropertylinkdefinition.h
+	"falagard/CEGUIFalPropertyDefinitionBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\falagard\ceguifalnamedarea.h
+	"falagard/CEGUIFalDimensions.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguibuttonbase.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguipushbutton.h
+	"CEGUIBase.h"
+	"elements/CEGUIButtonBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguicheckbox.h
+	"CEGUIBase.h"
+	"elements/CEGUIButtonBase.h"
+	"elements/CEGUICheckboxProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguicheckboxproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiradiobutton.h
+	"CEGUIBase.h"
+	"elements/CEGUIButtonBase.h"
+	"elements/CEGUIRadioButtonProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiradiobuttonproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguititlebar.h
+	"CEGUIWindow.h"
+	"elements/CEGUITitlebarProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguititlebarproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiframewindow.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIFrameWindowProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiframewindowproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiprogressbar.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIProgressBarProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiprogressbarproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguieditbox.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIEditboxProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguieditboxproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguithumb.h
+	"CEGUIPushButton.h"
+	"elements/CEGUIThumbProperties.h"
+	<utility>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguithumbproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguislider.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUISliderProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguisliderproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiscrollbar.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIScrollbarProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiscrollbarproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguilistbox.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIListboxProperties.h"
+	<vector>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguilistboxproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguicombobox.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIComboboxProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguicomboboxproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguilistheader.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIListHeaderSegment.h"
+	"elements/CEGUIListHeaderProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguilistheadersegment.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIListHeaderSegmentProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguilistheadersegmentproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguilistheaderproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguimulticolumnlist.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"CEGUIListHeader.h"
+	"elements/CEGUIMultiColumnListProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguimulticolumnlistproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiguisheet.h
+	"CEGUIWindow.h"
+	"CEGUIWindowFactory.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguilistboxtextitem.h
+	"elements/CEGUIListboxItem.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguilistboxitem.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	"CEGUIColourRect.h"
+	"CEGUIRenderCache.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguicombodroplist.h
+	"elements/CEGUIListbox.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguimultilineeditbox.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"CEGUIFont.h"
+	"elements/CEGUIMultiLineEditboxProperties.h"
+	<vector>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguimultilineeditboxproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguitabbutton.h
+	"CEGUIBase.h"
+	"elements/CEGUIButtonBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguitabcontrol.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUITabControlProperties.h"
+	<vector>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguitabcontrolproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguispinner.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUISpinnerProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguispinnerproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguidragcontainer.h
+	"CEGUIWindow.h"
+	"CEGUIWindowFactory.h"
+	"elements/CEGUIDragContainerProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguidragcontainerproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiscrolledcontainer.h
+	"CEGUIWindow.h"
+	"CEGUIWindowFactory.h"
+	"elements/CEGUIScrolledContainerProperties.h"
+	<map>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiscrolledcontainerproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiscrollablepane.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIScrollablePaneProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiscrollablepaneproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguitooltip.h
+	"CEGUIWindow.h"
+	"elements/CEGUITooltipProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguitooltipproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiitementry.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIItemEntryProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiitementryproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguimenuitem.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIItemEntry.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiitemlistbase.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIItemListBaseProperties.h"
+	"elements/CEGUIItemEntry.h"
+	<vector>
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiitemlistbaseproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguimenubase.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIMenuBaseProperties.h"
+	"elements/CEGUIItemListBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguimenubaseproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguimenubar.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIMenuBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguipopupmenu.h
+	"CEGUIBase.h"
+	"CEGUIWindow.h"
+	"elements/CEGUIPopupMenuProperties.h"
+	"elements/CEGUIMenuBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguipopupmenuproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiscrolleditemlistbase.h
+	"elements/CEGUIItemListBase.h"
+	"elements/CEGUIScrollbar.h"
+	"elements/CEGUIScrolledItemListBaseProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiscrolleditemlistbaseproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiitemlistbox.h
+	"elements/CEGUIScrolledItemListBase.h"
+	"elements/CEGUIItemListboxProperties.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\elements\ceguiitemlistboxproperties.h
+	"CEGUIProperty.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\renderermodules\openglguirenderer\openglrenderer.h
+	"CEGUIBase.h"
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<list>
+	<set>
+	"CEGUIRenderer.h"
+	"CEGUITexture.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguixmlparser.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguixmlhandler.h
+	"CEGUIBase.h"
+
+1162743240 c:\programmierung\c++\libraries\cegui\include\ceguixmlattributes.h
+	"CEGUIBase.h"
+	"CEGUIString.h"
+	<map>
+
+1161807916 source:c:\svn\smc\src\core\file_parser.cpp
+	"../core/globals.h"
+	"../core/file_parser.h"
+
+1161807916 source:c:\svn\smc\src\core\framerate.cpp
+	"../core/globals.h"
+	"../core/framerate.h"
+
+1167402343 source:c:\svn\smc\src\core\game_core.cpp
+	"../core/game_core.h"
+	"../core/main.h"
+	"../video/font.h"
+	"../audio/audio.h"
+	"../core/framerate.h"
+	"../input/keyboard.h"
+	"../input/mouse.h"
+	"../input/joystick.h"
+
+1163955201 c:\svn\smc\src\core\main.h
+	"../core/globals.h"
+
+1167402339 c:\svn\smc\src\video\font.h
+	"../core/globals.h"
+	"../video/video.h"
+	"../video/img_manager.h"
+
+1164271190 c:\svn\smc\src\video\img_manager.h
+	"../core/globals.h"
+	"../video/video.h"
+
+1165011158 c:\svn\smc\src\input\keyboard.h
+	"../core/globals.h"
+
+1161807916 source:c:\svn\smc\src\core\globals.cpp
+	"../core/globals.h"
+	"../core/main.h"
+
+1164271191 source:c:\svn\smc\src\core\main.cpp
+	"../core/globals.h"
+	"../core/game_core.h"
+	"../core/main.h"
+	"../level/level.h"
+	"../gui/menu.h"
+	"../core/framerate.h"
+	"../core/camera.h"
+	"../video/video.h"
+	"../video/font.h"
+	"../user/preferences.h"
+	"../video/img_manager.h"
+	"../audio/sound_manager.h"
+	"../core/obj_manager.h"
+	"../level/leveleditor.h"
+	"../input/joystick.h"
+	"../overworld/worlds.h"
+	"../overworld/overworld.h"
+	"../player/player.h"
+	"../input/mouse.h"
+	"../user/savegame.h"
+	"../input/keyboard.h"
+	<sys/stat.h>
+
+1164043130 c:\svn\smc\src\gui\menu.h
+	"../core/globals.h"
+	"../gui/menu_data.h"
+	"../level/level.h"
+	"../video/animation.h"
+	"../video/video.h"
+	"../gui/hud.h"
+
+1164043130 c:\svn\smc\src\gui\menu_data.h
+	"../core/globals.h"
+	"../gui/menu.h"
+	"../gui/hud.h"
+
+1161807922 c:\svn\smc\src\user\preferences.h
+	"../core/globals.h"
+
+1161807898 c:\svn\smc\src\input\joystick.h
+	"../core/globals.h"
+
+1167402348 c:\svn\smc\src\user\savegame.h
+	"../core/globals.h"
+	"../objects/basicsprite.h"
+
+1161807914 source:c:\svn\smc\src\core\math\point.cpp
+
+1161807915 source:c:\svn\smc\src\core\math\rect.cpp
+
+1161807914 source:c:\svn\smc\src\core\math\vector.cpp
+	"../../core/globals.h"
+	"../../core/math/vector.h"
+
+1167402343 source:c:\svn\smc\src\core\obj_manager.cpp
+	"../core/obj_manager.h"
+	"../core/game_core.h"
+	"../player/player.h"
+	"../input/mouse.h"
+
+1165419468 source:c:\svn\smc\src\enemies\eato.cpp
+	"../enemies/eato.h"
+	"../core/game_core.h"
+
+1161807909 c:\svn\smc\src\enemies\eato.h
+	"../enemies/enemy.h"
+
+1165419523 source:c:\svn\smc\src\enemies\gee.cpp
+	"../enemies/gee.h"
+	"../core/game_core.h"
+	"../core/camera.h"
+	"../level/leveleditor.h"
+
+1165011159 c:\svn\smc\src\enemies\gee.h
+	"../enemies/enemy.h"
+
+1164061129 source:c:\svn\smc\src\enemies\gumba.cpp
+	"../enemies/gumba.h"
+	"../core/game_core.h"
+
+1163330530 c:\svn\smc\src\enemies\gumba.h
+	"../enemies/enemy.h"
+
+1165419431 source:c:\svn\smc\src\enemies\rokko.cpp
+	"../enemies/rokko.h"
+	"../core/game_core.h"
+
+1161807909 c:\svn\smc\src\enemies\rokko.h
+	"../enemies/enemy.h"
+
+1165419564 source:c:\svn\smc\src\enemies\spika.cpp
+	"../enemies/spika.h"
+	"../core/game_core.h"
+	"../core/camera.h"
+
+1163330530 c:\svn\smc\src\enemies\spika.h
+	"../enemies/enemy.h"
+
+1165419449 source:c:\svn\smc\src\enemies\thromp.cpp
+	"../enemies/thromp.h"
+	"../core/game_core.h"
+	"../core/camera.h"
+	"../level/leveleditor.h"
+
+1161807909 c:\svn\smc\src\enemies\thromp.h
+	"../enemies/enemy.h"
+
+1167475738 source:c:\svn\smc\src\enemies\turtle.cpp
+	"../enemies/turtle.h"
+	"../core/game_core.h"
+	"../objects/box.h"
+
+1167475738 c:\svn\smc\src\enemies\turtle.h
+	"../enemies/enemy.h"
+
+1167475748 c:\svn\smc\src\objects\box.h
+	"../core/globals.h"
+	"../objects/active.h"
+
+1167475748 c:\svn\smc\src\objects\active.h
+	"../core/globals.h"
+	"../objects/objectsprite.h"
+
+1167402339 source:c:\svn\smc\src\gui\hud.cpp
+	"../gui/hud.h"
+	"../core/game_core.h"
+	"../player/player.h"
+	"../audio/audio.h"
+	"../core/camera.h"
+	"../video/font.h"
+	"../core/framerate.h"
+	"../level/level.h"
+	"../level/leveleditor.h"
+	"../core/obj_manager.h"
+
+1164043130 source:c:\svn\smc\src\gui\menu.cpp
+	"../core/globals.h"
+	"../gui/menu.h"
+	"../core/main.h"
+	"../core/game_core.h"
+	"../core/framerate.h"
+	"../input/mouse.h"
+	"../input/keyboard.h"
+	"../audio/audio.h"
+	"../player/player.h"
+	"../level/leveleditor.h"
+	"../core/camera.h"
+
+1167402339 source:c:\svn\smc\src\gui\menu_data.cpp
+	"../core/globals.h"
+	"../gui/menu_data.h"
+	"../audio/audio.h"
+	"../core/camera.h"
+	"../gui/hud.h"
+	"../core/game_core.h"
+	"../video/font.h"
+	"../overworld/overworld.h"
+	"../user/preferences.h"
+	"../input/joystick.h"
+	"../core/framerate.h"
+	"../user/savegame.h"
+	"../level/leveleditor.h"
+
+1165011158 source:c:\svn\smc\src\input\joystick.cpp
+	"../core/globals.h"
+	"../input/keyboard.h"
+	"../input/joystick.h"
+	"../user/preferences.h"
+	"../core/game_core.h"
+
+1167402330 source:c:\svn\smc\src\input\keyboard.cpp
+	"../core/game_core.h"
+	"../core/main.h"
+	"../input/keyboard.h"
+	"../input/mouse.h"
+	"../input/joystick.h"
+	"../level/leveleditor.h"
+	"../user/preferences.h"
+	"../player/player.h"
+	"../gui/menu.h"
+	"../overworld/overworld.h"
+	"../core/framerate.h"
+	"../audio/audio.h"
+	"../core/camera.h"
+	"../core/obj_manager.h"
+
+1167402330 source:c:\svn\smc\src\input\mouse.cpp
+	"../core/globals.h"
+	"../core/main.h"
+	"../input/mouse.h"
+	"../input/keyboard.h"
+	"../core/game_core.h"
+	"../level/leveleditor.h"
+	"../gui/menu.h"
+	"../core/camera.h"
+	"../core/obj_manager.h"
+	"../player/player.h"
+	"../user/preferences.h"
+	"../core/framerate.h"
+	"../objects/goldpiece.h"
+	"../objects/goldbox.h"
+	"../objects/levelexit.h"
+	"../objects/goldbox.h"
+	"../objects/bonusbox.h"
+	"../enemies/gumba.h"
+	"../video/font.h"
+
+1161807920 c:\svn\smc\src\objects\goldpiece.h
+	"../core/globals.h"
+	"../objects/active.h"
+
+1167402346 c:\svn\smc\src\objects\goldbox.h
+	"../core/globals.h"
+	"../objects/box.h"
+	"../objects/goldpiece.h"
+
+1164063011 c:\svn\smc\src\objects\levelexit.h
+	"../core/globals.h"
+	"../objects/active.h"
+
+1167475748 c:\svn\smc\src\objects\bonusbox.h
+	"../core/globals.h"
+	"../objects/box.h"
+	"../objects/powerup.h"
+
+1161807920 c:\svn\smc\src\objects\powerup.h
+	"../core/globals.h"
+	"../objects/active.h"
+
+1161807914 source:c:\svn\smc\src\level\global_effect.cpp
+	"../level/global_effect.h"
+	"../core/framerate.h"
+	"../level/leveleditor.h"
+	"../core/camera.h"
+	"../core/game_core.h"
+
+1167475743 source:c:\svn\smc\src\level\level.cpp
+	"../level/level.h"
+	"../core/game_core.h"
+	"../core/main.h"
+	"../core/camera.h"
+	"../gui/hud.h"
+	"../user/preferences.h"
+	"../audio/audio.h"
+	"../core/framerate.h"
+	"../player/player.h"
+	"../core/obj_manager.h"
+	"../objects/goldpiece.h"
+	"../objects/levelexit.h"
+	"../objects/goldbox.h"
+	"../video/font.h"
+	"../level/leveleditor.h"
+	"../input/mouse.h"
+	"../input/joystick.h"
+	"../user/savegame.h"
+	"../overworld/worlds.h"
+	"../overworld/overworld.h"
+	"../enemies/turtle.h"
+	"../enemies/bosses/turtle_boss.h"
+	"../enemies/rokko.h"
+	"../enemies/rex.h"
+	"../enemies/gumba.h"
+	"../enemies/jpiranha.h"
+	"../enemies/thromp.h"
+	"../enemies/eato.h"
+	"../enemies/gee.h"
+	"../enemies/spika.h"
+	"../objects/powerup.h"
+	"../objects/enemystopper.h"
+	"../objects/spinbox.h"
+	"../objects/bonusbox.h"
+	"../objects/moving_platform.h"
+	"../objects/falling_platform.h"
+
+1167475748 c:\svn\smc\src\objects\enemystopper.h
+	"../core/globals.h"
+	"../objects/active.h"
+
+1161807920 c:\svn\smc\src\objects\spinbox.h
+	"../core/globals.h"
+	"../objects/box.h"
+
+1167475748 c:\svn\smc\src\objects\moving_platform.h
+	"../core/globals.h"
+	"../objects/active.h"
+
+1167475743 source:c:\svn\smc\src\level\level_background.cpp
+	"../level/level_background.h"
+	"../user/preferences.h"
+	"../core/camera.h"
+
+1167475743 source:c:\svn\smc\src\level\level_settings.cpp
+	"../core/globals.h"
+	"../core/main.h"
+	"../core/game_core.h"
+	"../core/camera.h"
+	"../level/level_settings.h"
+	"../input/mouse.h"
+	"../level/level.h"
+	"../video/font.h"
+	"../video/video.h"
+
+1163330531 c:\svn\smc\src\level\level_settings.h
+	"../core/globals.h"
+	"../gui/hud.h"
+
+1167475743 source:c:\svn\smc\src\level\leveleditor.cpp
+	"../core/globals.h"
+	"../level/leveleditor.h"
+	"../audio/audio.h"
+	"../gui/hud.h"
+	"../video/animation.h"
+	"../core/camera.h"
+	"../input/mouse.h"
+	"../input/keyboard.h"
+	"../video/font.h"
+	"../core/game_core.h"
+	"../objects/spinbox.h"
+	"../objects/goldbox.h"
+	"../objects/bonusbox.h"
+	"../enemies/gumba.h"
+	"../enemies/rokko.h"
+	"../enemies/jpiranha.h"
+	"../enemies/turtle.h"
+	"../enemies/bosses/turtle_boss.h"
+	"../enemies/rex.h"
+	"../enemies/thromp.h"
+	"../enemies/eato.h"
+	"../enemies/gee.h"
+	"../enemies/spika.h"
+	"../objects/levelexit.h"
+	"../objects/moving_platform.h"
+	"../objects/falling_platform.h"
+	"../objects/enemystopper.h"
+	"../core/framerate.h"
+	"../core/obj_manager.h"
+	"../level/level_settings.h"
+	"../user/preferences.h"
+	"../level/level.h"
+	"../overworld/overworld.h"
+
+1167475748 source:c:\svn\smc\src\objects\active.cpp
+	"../objects/active.h"
+
+1167402346 source:c:\svn\smc\src\objects\basicsprite.cpp
+	"../objects/basicsprite.h"
+	"../objects/sprite.h"
+	"../core/game_core.h"
+	"../core/obj_manager.h"
+	"../core/camera.h"
+	"../core/framerate.h"
+	"../level/leveleditor.h"
+	"../player/player.h"
+	"../gui/hud.h"
+
+1167475748 source:c:\svn\smc\src\objects\bonusbox.cpp
+	"../objects/bonusbox.h"
+	"../objects/star.h"
+	"../gui/hud.h"
+	"../player/player.h"
+	"../audio/audio.h"
+	"../core/framerate.h"
+	"../core/obj_manager.h"
+	"../core/camera.h"
+	"../level/leveleditor.h"
+
+1161807920 c:\svn\smc\src\objects\star.h
+	"../core/globals.h"
+	"../objects/powerup.h"
+
+1167475748 source:c:\svn\smc\src\objects\box.cpp
+	"../objects/box.h"
+	"../audio/audio.h"
+	"../core/camera.h"
+	"../core/framerate.h"
+	"../level/leveleditor.h"
+	"../core/obj_manager.h"
+	"../core/game_core.h"
+	"../video/animation.h"
+
+1167475748 source:c:\svn\smc\src\objects\enemystopper.cpp
+	"../objects/enemystopper.h"
+	"../level/leveleditor.h"
+	"../core/game_core.h"
+	"../core/camera.h"
+
+1167475748 source:c:\svn\smc\src\objects\fireball.cpp
+	"../objects/fireball.h"
+	"../core/game_core.h"
+	"../enemies/enemy.h"
+	"../objects/goldpiece.h"
+	"../enemies/gee.h"
+	"../enemies/spika.h"
+	"../level/leveleditor.h"
+
+1167402346 source:c:\svn\smc\src\objects\goldbox.cpp
+	"../objects/goldbox.h"
+	"../audio/audio.h"
+	"../core/game_core.h"
+	"../level/leveleditor.h"
+
+1167402346 source:c:\svn\smc\src\objects\goldpiece.cpp
+	"../objects/goldpiece.h"
+	"../core/game_core.h"
+	"../player/player.h"
+	"../audio/audio.h"
+	"../core/framerate.h"
+	"../level/leveleditor.h"
+	"../video/animation.h"
+	"../gui/hud.h"
+
+1164064154 source:c:\svn\smc\src\objects\levelexit.cpp
+	"../objects/levelexit.h"
+	"../player/player.h"
+	"../core/game_core.h"
+	"../user/preferences.h"
+	"../input/joystick.h"
+	"../core/camera.h"
+	"../audio/audio.h"
+	"../level/leveleditor.h"
+	"../core/framerate.h"
+	"../level/level.h"
+	"../gui/hud.h"
+	"../input/keyboard.h"
+
+1165011159 source:c:\svn\smc\src\objects\moving_platform.cpp
+	"../objects/moving_platform.h"
+	"../core/camera.h"
+	"../core/game_core.h"
+	"../level/leveleditor.h"
+
+1161807920 source:c:\svn\smc\src\objects\objectsprite.cpp
+	"../objects/objectsprite.h"
+	"../core/game_core.h"
+
+1164064568 source:c:\svn\smc\src\objects\powerup.cpp
+	"../objects/powerup.h"
+	"../player/player.h"
+	"../gui/hud.h"
+	"../core/framerate.h"
+	"../core/camera.h"
+	"../video/animation.h"
+	"../level/leveleditor.h"
+
+1163513506 source:c:\svn\smc\src\objects\spinbox.cpp
+	"../objects/spinbox.h"
+	"../core/obj_manager.h"
+	"../core/framerate.h"
+
+1163427166 source:c:\svn\smc\src\objects\sprite.cpp
+	"../core/globals.h"
+	"../objects/sprite.h"
+	"../core/main.h"
+	"../core/framerate.h"
+	"../core/game_core.h"
+	"../core/camera.h"
+	"../core/obj_manager.h"
+	"../user/preferences.h"
+	"../input/joystick.h"
+	"../audio/audio.h"
+	"../player/player.h"
+	"../enemies/turtle.h"
+	"../input/keyboard.h"
+
+1161807920 source:c:\svn\smc\src\objects\star.cpp
+	"../objects/star.h"
+	"../player/player.h"
+	"../core/framerate.h"
+	"../video/animation.h"
+
+1165253375 source:c:\svn\smc\src\overworld\layer.cpp
+	"../overworld/layer.h"
+	"../video/renderer.h"
+	"../core/camera.h"
+	"../overworld/overworld.h"
+
+1167402330 source:c:\svn\smc\src\overworld\overworld.cpp
+	"../core/globals.h"
+	"../core/main.h"
+	"../overworld/overworld.h"
+	"../audio/audio.h"
+	"../core/game_core.h"
+	"../level/leveleditor.h"
+	"../core/camera.h"
+	"../core/framerate.h"
+	"../gui/menu.h"
+	"../user/preferences.h"
+	"../video/font.h"
+	"../input/mouse.h"
+	"../input/joystick.h"
+	"../input/keyboard.h"
+
+1166827986 source:c:\svn\smc\src\overworld\ow_player.cpp
+	"../overworld/ow_player.h"
+	"../core/game_core.h"
+	"../core/framerate.h"
+	"../core/camera.h"
+	"../overworld/overworld.h"
+	"../level/level.h"
+	"../video/font.h"
+	"../audio/audio.h"
+
+1166827986 source:c:\svn\smc\src\overworld\waypoint.cpp
+	"../overworld/waypoint.h"
+	"../overworld/overworld.h"
+	"../core/framerate.h"
+	"../core/camera.h"
+	"../user/preferences.h"
+
+1165253375 source:c:\svn\smc\src\overworld\worlds.cpp
+	"../overworld/worlds.h"
+	"../core/game_core.h"
+
+1167402346 source:c:\svn\smc\src\player\player.cpp
+	"../core/globals.h"
+	"../player/player.h"
+	"../core/main.h"
+	"../video/animation.h"
+	"../core/game_core.h"
+	"../user/preferences.h"
+	"../input/joystick.h"
+	"../core/obj_manager.h"
+	"../core/framerate.h"
+	"../audio/audio.h"
+	"../enemies/turtle.h"
+	"../overworld/overworld.h"
+	"../level/level.h"
+	"../gui/menu.h"
+	"../core/camera.h"
+	"../level/leveleditor.h"
+	"../objects/levelexit.h"
+	"../input/keyboard.h"
+
+1166827987 source:c:\svn\smc\src\user\preferences.cpp
+	"../user/preferences.h"
+	"../audio/audio.h"
+	"../video/video.h"
+	"../core/game_core.h"
+	"../core/camera.h"
+
+1167475748 source:c:\svn\smc\src\user\savegame.cpp
+	"../core/globals.h"
+	"../user/savegame.h"
+	"../user/preferences.h"
+	"../core/game_core.h"
+	"../core/camera.h"
+	"../core/obj_manager.h"
+	"../level/level.h"
+	"../overworld/worlds.h"
+	"../objects/bonusbox.h"
+	"../objects/goldbox.h"
+
+1161807912 source:c:\svn\smc\src\video\animation.cpp
+	"../video/animation.h"
+	"../core/framerate.h"
+	"../core/camera.h"
+
+1167402339 source:c:\svn\smc\src\video\font.cpp
+	"../video/font.h"
+
+1161807912 source:c:\svn\smc\src\video\gl_surface.cpp
+	"../video/gl_surface.h"
+	"../video/video.h"
+	"../video/renderer.h"
+	"../video/img_manager.h"
+
+1166827987 source:c:\svn\smc\src\video\img_manager.cpp
+	"../video/img_manager.h"
+
+1161807912 source:c:\svn\smc\src\video\img_settings.cpp
+	"../video/img_settings.h"
+	"../core/game_core.h"
+
+1161807912 c:\svn\smc\src\video\img_settings.h
+	"../core/globals.h"
+	"../core/file_parser.h"
+	"../video/img_settings.h"
+	"../video/video.h"
+
+1161807912 source:c:\svn\smc\src\video\renderer.cpp
+	"../video/renderer.h"
+	"../core/globals.h"
+	"../core/game_core.h"
+
+1167475744 source:c:\svn\smc\src\video\video.cpp
+	"../video/video.h"
+	"../gui/hud.h"
+	"../user/preferences.h"
+	"../core/framerate.h"
+	"../video/font.h"
+	"../core/game_core.h"
+	"../video/img_settings.h"
+	"../core/camera.h"
+	"CEGUIDefaultResourceProvider.h"
+
+1163420182 c:\svn\smc\src\objects\blankbox.h
+	"../core/globals.h"
+	"../objects/box.h"
+
+1163439457 source:c:\svn\smc\src\objects\blankbox.cpp
+	"../objects/blankbox.h"
+	"../audio/audio.h"
+	"../core/game_core.h"
+	"../level/leveleditor.h"
+
+1167402346 c:\svn\smc\src\objects\invisiblebox.h
+	"../core/globals.h"
+	"../objects/box.h"
+
+1167402346 source:c:\svn\smc\src\objects\invisiblebox.cpp
+	"../objects/invisiblebox.h"
+	"../audio/audio.h"
+	"../core/game_core.h"
+	"../level/leveleditor.h"
+	"../core/camera.h"
+
+1167402346 source:c:\svn\smc\src\objects\emptybox.cpp
+	"../objects/emptybox.h"
+	"../audio/audio.h"
+
+1167402346 c:\svn\smc\src\objects\emptybox.h
+	"../core/globals.h"
+	"../objects/box.h"
+
+1167475748 c:\svn\smc\src\objects\falling_platform.h
+	"../core/globals.h"
+	"../objects/active.h"
+
+1167475748 source:c:\svn\smc\src\objects\falling_platform.cpp
+	"../objects/falling_platform.h"
+	"../core/camera.h"
+	"../core/game_core.h"
+	"../level/leveleditor.h"
+	"../gui/hud.h"
+	"../core/framerate.h"
+	"../player/player.h"
+
+1167475738 source:c:\svn\smc\src\enemies\bosses\turtle_boss.cpp
+	"../../enemies/bosses/turtle_boss.h"
+	"../../core/game_core.h"
+	"../../objects/box.h"
+
+1167475738 c:\svn\smc\src\enemies\bosses\turtle_boss.h
+	"../../enemies/enemy.h"
+

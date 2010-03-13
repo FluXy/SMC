@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="menu_overworld" >
+        <Property Name="InheritsAlpha" Value="False" />
+        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Property Name="MousePassThroughEnabled" Value="True" />
+        <Window Type="TaharezLook/TabControl" Name="tabcontrol_main" >
+            <Property Name="TabHeight" Value="{0,22.4934}" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="TabPanePosition" Value="Top" />
+            <Property Name="UnifiedAreaRect" Value="{{0.182812,0},{0.241666,0},{0.840625,0},{0.793749,0}}" />
+            <Window Type="DefaultWindow" Name="tab_world" >
+                <Property Name="Text" Value="World" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+                <Window Type="TaharezLook/Listbox" Name="listbox_worlds" >
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.015,0},{0.105,0},{0.5,0},{0.9,0}}" />
+                </Window>
+                <Window Type="TaharezLook/Editbox" Name="editbox_world_comment" >
+                    <Property Name="ReadOnly" Value="True" />
+                    <Property Name="MaxTextLength" Value="1073741823" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.53,0},{0.21,0},{0.98,0},{0.3,0}}" />
+                </Window>
+                <Window Type="TaharezLook/StaticText" Name="text_world_comment" >
+                    <Property Name="Text" Value="Comment" />
+                    <Property Name="Tooltip" Value="World Comment" />
+                    <Property Name="FrameEnabled" Value="False" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.53,0},{0.11,0},{0.8,0},{0.19,0}}" />
+                    <Property Name="BackgroundEnabled" Value="False" />
+                </Window>
+                <Window Type="TaharezLook/StaticText" Name="text_world_select" >
+                    <Property Name="Text" Value="Select Overworld" />
+                    <Property Name="TextColours" Value="tl:FFAAFFAA tr:FFAAFFAA bl:FFAAFFAA br:FFAAFFAA" />
+                    <Property Name="FrameEnabled" Value="False" />
+                    <Property Name="HorzFormatting" Value="HorzCentred" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.015,0},{0,0},{0.497184,0},{0.1,0}}" />
+                    <Property Name="BackgroundEnabled" Value="False" />
+                </Window>
+            </Window>
+            <Window Type="DefaultWindow" Name="tab_level" >
+                <Property Name="Text" Value="Level" />
+                <Property Name="Visible" Value="False" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+                <Window Type="TaharezLook/Listbox" Name="listbox_levels" >
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.015,0},{0.105,0},{0.5,0},{0.9,0}}" />
+                </Window>
+                <Window Type="TaharezLook/StaticText" Name="text_level_select" >
+                    <Property Name="Text" Value="Select Level" />
+                    <Property Name="TextColours" Value="tl:FFAAFFAA tr:FFAAFFAA bl:FFAAFFAA br:FFAAFFAA" />
+                    <Property Name="FrameEnabled" Value="False" />
+                    <Property Name="HorzFormatting" Value="HorzCentred" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.015,0},{0,0},{0.5,0},{0.1,0}}" />
+                    <Property Name="BackgroundEnabled" Value="False" />
+                </Window>
+                <Window Type="TaharezLook/StaticText" Name="text_level_info" >
+                    <Property Name="Text" >- Level Colors -
+
+Orange : Game
+Green   : User
+Grey     : Deprecated
+Mixed   : See the colors</Property>
+                    <Property Name="TextColours" Value="tl:FFF8BF26 tr:FFF8BF26 bl:FFF8BF26 br:FFF8BF26" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="VertFormatting" Value="TopAligned" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.55,0},{0.105,0},{0.940903,0},{0.488335,0}}" />
+                </Window>
+                <Window Type="TaharezLook/Button" Name="button_level_new" >
+                    <Property Name="Text" Value="New" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.02,0},{0.92,0},{0.13,0},{0.99,0}}" />
+                </Window>
+                <Window Type="TaharezLook/Button" Name="button_level_edit" >
+                    <Property Name="Text" Value="Edit" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.16,0},{0.92,0},{0.28,0},{0.99,0}}" />
+                </Window>
+                <Window Type="TaharezLook/Button" Name="button_level_delete" >
+                    <Property Name="Text" Value="Delete" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.31,0},{0.92,0},{0.45,0},{0.99,0}}" />
+                </Window>
+            </Window>
+        </Window>
+        <Window Type="TaharezLook/Button" Name="button_back" >
+            <Property Name="Text" Value="Back" />
+            <Property Name="AlwaysOnTop" Value="True" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.63,0},{0.75,0},{0.71,0},{0.79,0}}" />
+        </Window>
+        <Window Type="TaharezLook/Button" Name="button_enter" >
+            <Property Name="Text" Value="Enter" />
+            <Property Name="AlwaysOnTop" Value="True" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.74,0},{0.75,0},{0.83,0},{0.79,0}}" />
+        </Window>
+    </Window>
+</GUILayout>
