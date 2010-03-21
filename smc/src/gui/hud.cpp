@@ -972,7 +972,7 @@ void cDebugDisplay :: Update( void )
 		m_text_debug_text->setVisible( 1 );
 
 		// update position
-		CEGUI::Font *font = CEGUI::FontManager::getSingleton().getFont( "bluebold_medium" );
+		CEGUI::Font *font = &CEGUI::FontManager::getSingleton().get( "bluebold_medium" );
 		float text_width = font->getTextExtent( gui_text ) * global_downscalex;
 
 		if( text_width > 800.0f )

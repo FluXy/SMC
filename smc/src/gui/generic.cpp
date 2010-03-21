@@ -226,7 +226,7 @@ int cDialogBox_Question :: Enter( std::string text, bool with_cancel /* = 0 */ )
 
 
 	// align text
-	CEGUI::Font *font = CEGUI::FontManager::getSingleton().getFont( "bluebold_medium" );
+	CEGUI::Font *font = &CEGUI::FontManager::getSingleton().get( "bluebold_medium" );
 	// fixme : Can't handle multiple lines of text
 	float text_width = font->getTextExtent( text ) * global_downscalex;
 
@@ -359,7 +359,7 @@ void Draw_Static_Text( const std::string &text, const Color *color_text /* = &wh
 	text_default->setText( gui_text );
 
 	// align text
-	CEGUI::Font *font = CEGUI::FontManager::getSingleton().getFont( "bluebold_medium" );
+	CEGUI::Font *font = &CEGUI::FontManager::getSingleton().get( "bluebold_medium" );
 	float text_width = font->getTextExtent( gui_text ) * global_downscalex;
 
 	text_default->setWidth( CEGUI::UDim( 0, ( text_width + 15 ) * global_upscalex ) );
@@ -367,7 +367,7 @@ void Draw_Static_Text( const std::string &text, const Color *color_text /* = &wh
 	text_default->moveToFront();
 
 	// set window height
-	text_default->setHeight( CEGUI::UDim( 0, font->getFontHeight() * font->getFormattedLineCount( gui_text, text_default->getUnclippedInnerRect(), CEGUI::LeftAligned ) + ( 12 * global_upscaley ) ) );
+	text_default->setHeight( CEGUI::UDim( 0, font->getFontHeight() + ( 12 * global_upscaley ) ) );
 
 	while( draw )
 	{

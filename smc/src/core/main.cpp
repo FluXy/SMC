@@ -438,13 +438,15 @@ void Exit_Game( void )
 
 	if( pGuiSystem )
 	{
-		delete pGuiSystem;
+		CEGUI::ResourceProvider* rp = pGuiSystem->getResourceProvider();
+		pGuiSystem->destroy();
 		pGuiSystem = NULL;
+		delete rp;
 	}
 
 	if( pGuiRenderer )
 	{
-		delete pGuiRenderer;
+		pGuiRenderer->destroy( *pGuiRenderer );
 		pGuiRenderer = NULL;
 	}
 
@@ -504,7 +506,7 @@ bool Handle_Input_Global( SDL_Event *ev )
 		}
 		case SDL_VIDEORESIZE:
 		{
-			pGuiRenderer->setDisplaySize( CEGUI::Size( static_cast<float>(ev->resize.w), static_cast<float>(ev->resize.h) ) );
+			pGuiSystem->notifyDisplaySizeChanged( CEGUI::Size( static_cast<float>(ev->resize.w), static_cast<float>(ev->resize.h) ) );
 			break;
 		}
 		case SDL_KEYDOWN:

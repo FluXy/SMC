@@ -90,7 +90,7 @@ void cVideo :: Init_CEGUI_Fake( void ) const
 	std::string log_dump_dir = "/dev/null";
 #endif
 	// create fake system and renderer
-	pGuiSystem = new CEGUI::System( new cFake_Renderer(), rp, NULL, NULL, "", log_dump_dir );
+	pGuiSystem = &CEGUI::System::create( *new cFake_Renderer(), rp, NULL, NULL, NULL, "", log_dump_dir );
 }
 
 void cVideo :: Delete_CEGUI_Fake( void ) const
@@ -98,7 +98,7 @@ void cVideo :: Delete_CEGUI_Fake( void ) const
 	CEGUI::ResourceProvider *rp = pGuiSystem->getResourceProvider();
 	CEGUI::Renderer *renderer = pGuiSystem->getRenderer();
 
-	delete pGuiSystem;
+	pGuiSystem->destroy();
 	pGuiSystem = NULL;
 	delete renderer;
 	delete rp;
@@ -109,7 +109,7 @@ void cVideo :: Init_CEGUI( void ) const
 	// create renderer
 	try
 	{
-		pGuiRenderer = new CEGUI::OpenGLRenderer( 0, screen->w, screen->h );
+		pGuiRenderer = &CEGUI::OpenGLRenderer::create( CEGUI::Size( screen->w, screen->h ) );
 	}
 	// catch CEGUI Exceptions
 	catch( CEGUI::Exception &ex )
@@ -118,10 +118,10 @@ void cVideo :: Init_CEGUI( void ) const
 		exit( EXIT_FAILURE );
 	}
 
-	/* create Resource Provider
-	 * no need to destroy it later since it is handled by the CEGUI renderer
-	*/
-	CEGUI::DefaultResourceProvider *rp = static_cast<CEGUI::DefaultResourceProvider *>(pGuiRenderer->createResourceProvider());
+	pGuiRenderer->enableExtraStateSettings(true);
+
+	// create Resource Provider
+	CEGUI::DefaultResourceProvider *rp = new CEGUI::DefaultResourceProvider;
 
 	// set Resource Provider directories
 	rp->setResourceGroupDirectory( "schemes", DATA_DIR "/" GUI_SCHEME_DIR "/" );
@@ -147,7 +147,7 @@ void cVideo :: Init_CEGUI( void ) const
 	// create system
 	try
 	{
-		pGuiSystem = new CEGUI::System( pGuiRenderer, rp, NULL, NULL, "", pResource_Manager->user_data_dir + "cegui.log" );
+		pGuiSystem = &CEGUI::System::create( *pGuiRenderer, rp, NULL, NULL, NULL, "", pResource_Manager->user_data_dir + "cegui.log" );
 	}
 	// catch CEGUI Exceptions
 	catch( CEGUI::Exception &ex )
@@ -174,7 +174,7 @@ void cVideo :: Init_CEGUI_Data( void ) const
 	// load the scheme file, which auto-loads the imageset
 	try
 	{
-		CEGUI::SchemeManager::getSingleton().loadScheme( "TaharezLook.scheme" );
+		CEGUI::SchemeManager::getSingleton().create( "TaharezLook.scheme" );
 	}
 	// catch CEGUI Exceptions
 	catch( CEGUI::Exception &ex )
@@ -186,9 +186,7 @@ void cVideo :: Init_CEGUI_Data( void ) const
 	// default mouse cursor
 	pGuiSystem->setDefaultMouseCursor( "TaharezLook", "MouseArrow" );
 	// force new mouse image
-	CEGUI::MouseCursor::getSingleton().setImage( &CEGUI::ImagesetManager::getSingleton().getImageset( "TaharezLook" )->getImage( "MouseArrow" ) );
-	// hide CEGUI mouse always because we render it manually
-	CEGUI::MouseCursor::getSingleton().hide();
+	CEGUI::MouseCursor::getSingleton().setImage( &CEGUI::ImagesetManager::getSingleton().get( "TaharezLook" ).getImage( "MouseArrow" ) );
 	// default tooltip
 	pGuiSystem->setDefaultTooltip( "TaharezLook/Tooltip" );
 	// create default root window
@@ -488,7 +486,7 @@ void cVideo :: Init_Video( bool reload_textures_from_file /* = 0 */, bool use_pr
 		pFont->Restore_Textures();
 
 		// send new size to CEGUI
-		pGuiRenderer->setDisplaySize( CEGUI::Size( static_cast<float>(screen_w), static_cast<float>(screen_h) ) );
+		pGuiSystem->notifyDisplaySizeChanged( CEGUI::Size( static_cast<float>(screen_w), static_cast<float>(screen_h) ) );
 
 		// check if CEGUI is initialized
 		bool cegui_initialized = pGuiSystem->getGUISheet() != NULL;

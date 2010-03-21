@@ -1477,7 +1477,7 @@ void cSprite :: Editor_Add( const CEGUI::String &name, const CEGUI::String &tool
 	window_name->setText( name );
 	window_name->setTooltipText( tooltip );
 	// get text width
-	CEGUI::Font *font = CEGUI::FontManager::getSingleton().getFont( "bluebold_medium" );
+	CEGUI::Font *font = &CEGUI::FontManager::getSingleton().get( "bluebold_medium" );
 	float text_width = 12.0f + font->getTextExtent( name ) * global_downscalex;
 	// all names should have the same width
 	if( text_width > m_editor_window_name_width )

@@ -62,8 +62,7 @@ public:
 	*/
 	virtual	CEGUI::Size getPixelSize( void ) const;
 	// draw
-	void draw( const CEGUI::Vector3 &position, float alpha, const CEGUI::Rect &clipper ) const;
-	void draw( CEGUI::RenderCache &cache, const CEGUI::Rect &targetRect, float zBase, float alpha, const CEGUI::Rect *clipper) const;
+    void draw(CEGUI::GeometryBuffer& buffer, const CEGUI::Rect& targetRect, float alpha, const CEGUI::Rect* clipper) const;
 	// draw image
 	void Draw_Image( void );
 

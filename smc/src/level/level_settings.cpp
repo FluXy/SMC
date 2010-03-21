@@ -171,8 +171,8 @@ void cLevel_Settings :: Init( void )
 	editbox->setText( int_to_string( m_bg_color_2.blue ).c_str() );
 	// preview window
 	CEGUI::Window *window_background_preview = CEGUI::WindowManager::getSingleton().getWindow( "window_background_preview" );
-	m_background_preview->Set_Pos_X( window_background_preview->getUnclippedPixelRect().d_left * global_downscalex, 1 );
-	m_background_preview->Set_Pos_Y( window_background_preview->getUnclippedPixelRect().d_top * global_downscaley, 1 );
+	m_background_preview->Set_Pos_X( window_background_preview->getUnclippedOuterRect().d_left * global_downscalex, 1 );
+	m_background_preview->Set_Pos_Y( window_background_preview->getUnclippedOuterRect().d_top * global_downscaley, 1 );
 
 	Update_BG_Colors( CEGUI::EventArgs() );
 
@@ -600,8 +600,8 @@ void cLevel_Settings :: Set_Background_Image_Preview( std::string filename )
 
 	// set default rect
 	CEGUI::Window *window_background_preview = CEGUI::WindowManager::getSingleton().getWindow( "window_background_preview" );
-	m_background_preview->m_rect.m_w = window_background_preview->getUnclippedPixelRect().getWidth() * global_downscalex;
-	m_background_preview->m_rect.m_h = window_background_preview->getUnclippedPixelRect().getHeight() * global_downscaley;
+	m_background_preview->m_rect.m_w = window_background_preview->getUnclippedOuterRect().getWidth() * global_downscalex;
+	m_background_preview->m_rect.m_h = window_background_preview->getUnclippedOuterRect().getHeight() * global_downscaley;
 
 	if( !File_Exists( filename ) )
 	{

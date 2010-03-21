@@ -119,16 +119,10 @@ CEGUI::Size cEditor_Item_Object :: getPixelSize( void ) const
 	return tmp;
 }
 
-void cEditor_Item_Object :: draw( const CEGUI::Vector3 &position, float alpha, const CEGUI::Rect &clipper ) const
+void cEditor_Item_Object :: draw( CEGUI::GeometryBuffer &buffer, const CEGUI::Rect &targetRect, float alpha, const CEGUI::Rect *clipper ) const
 {
 	// draw text
-	list_text->draw( position, alpha, clipper );
-}
-
-void cEditor_Item_Object :: draw( CEGUI::RenderCache &cache, const CEGUI::Rect &targetRect, float zBase, float alpha, const CEGUI::Rect *clipper ) const
-{
-	// draw text
-	list_text->draw( cache, targetRect, zBase, alpha, clipper );
+	list_text->draw( buffer, targetRect, alpha, clipper );
 }
 
 void cEditor_Item_Object :: Draw_Image( void )
@@ -540,12 +534,12 @@ void cEditor :: Draw( void )
 	if( m_editor_window->getXPosition().asRelative( 1 ) >= 0.0f )
 	{
 		// Listbox dimension
-		float list_posy = m_listbox_items->getUnclippedPixelRect().d_top * global_downscaley;
-		float list_height = m_listbox_items->getUnclippedPixelRect().getHeight() * global_downscaley;
+		float list_posy = m_listbox_items->getUnclippedOuterRect().d_top * global_downscaley;
+		float list_height = m_listbox_items->getUnclippedOuterRect().getHeight() * global_downscaley;
 		// Vertical ScrollBar Position
 		float scroll_pos = m_listbox_items->getVertScrollbar()->getScrollPosition() * global_downscaley;
 		// font height
-		float font_height = CEGUI::FontManager::getSingleton().getFont( "bluebold_medium" )->getFontHeight() * global_downscaley;
+		float font_height = CEGUI::FontManager::getSingleton().get( "bluebold_medium" ).getFontHeight() * global_downscaley;
 
 		// draw items
 		for( unsigned int i = 0; i < m_listbox_items->getItemCount(); i++ )

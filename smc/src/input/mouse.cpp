@@ -421,17 +421,14 @@ void cMouseCursor :: Draw( void )
 
 void cMouseCursor :: Render( void ) const
 {
-	if( !m_active )
+	CEGUI::MouseCursor *mouse = CEGUI::MouseCursor::getSingletonPtr();
+
+	if( m_active == mouse->isVisible() )
 	{
 		return;
 	}
 
-	// Render CEGUI Mouse
-	pGuiRenderer->setQueueingEnabled( 0 );
-	CEGUI::MouseCursor *mouse = CEGUI::MouseCursor::getSingletonPtr();
-	mouse->setVisible( 1 );
-	mouse->draw();
-	mouse->setVisible( 0 );
+	mouse->setVisible( m_active );
 }
 
 void cMouseCursor :: Update_Position( void )
