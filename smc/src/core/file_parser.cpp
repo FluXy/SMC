@@ -15,6 +15,7 @@
 
 #include "../core/global_basic.h"
 #include "../core/file_parser.h"
+#include "../core/game_core.h"
 #include <cstdio>
 
 namespace SMC
@@ -60,82 +61,30 @@ bool cFile_parser :: Parse( const std::string &filename )
 	return 1;
 }
 
-bool cFile_parser :: Parse_Line( std::string command, int line )
+bool cFile_parser :: Parse_Line( std::string str_line, int line_num )
 {
-	// completely empty
-	if( command.empty() )
+	if( str_line.empty() )
 	{
 		return 1;
 	}
 
 	// linux support
-	while( 1 )
-	{
-		std::string::size_type pos = command.find( '\r' );
-
-		if( pos == std::string::npos )
-		{
-			break;
-		}
-
-		command.erase( pos, 1 );
-
-		if( command.empty() )
-		{
-			return 1;
-		}
-	}
-
+	string_erase_all( str_line, '\r' );
 	// no tabs
-	while( 1 )
-	{
-		std::string::size_type pos = command.find( '\t' );
-
-		if( pos == std::string::npos )
-		{
-			break;
-		}
-
-		command.replace( pos, 1, " " );
-	}
-
-	// remove trailing spaces
-	while( 1 )
-	{
-		std::string::size_type pos = command.find_last_of( ' ' );
-
-		if( pos == std::string::npos || pos != command.length() - 1 )
-		{
-			break;
-		}
-
-		command.erase( pos, 1 );
-
-		if( command.empty() )
-		{
-			return 1;
-		}
-	}
-
+	string_replace_all( str_line, "\t", " " );
 	// remove beginning spaces
-	while( *command.begin() == ' ' )
-	{
-		command.erase( 0, 1 );
+	string_trim_from_begin( str_line, ' ' );
+	// remove trailing spaces
+	string_trim_from_end( str_line, ' ' );
 
-		if( command.empty() )
-		{
-			return 1;
-		}
-	}
-
-	// ignore comments and empty lines
-	if( command.empty() || *command.begin() == '#' )
+	// ignore empty lines and comments
+	if( str_line.empty() || *str_line.begin() == '#' )
 	{
 		// no error
 		return 1;
 	}
 
-	std::string tempstr = command;
+	std::string tempstr = str_line;
 	int count = 1;
 
 	// Count spaces
@@ -145,7 +94,7 @@ bool cFile_parser :: Parse_Line( std::string command, int line )
 		count++;
 	}
 
-	tempstr = command;
+	tempstr = str_line;
 	
 	std::string *parts = new std::string[ count + 1 ];
 	
@@ -169,7 +118,7 @@ bool cFile_parser :: Parse_Line( std::string command, int line )
 	parts[part_count] = tempstr;
 
 	// Message handler
-	bool success = HandleMessage( parts, part_count, line );
+	bool success = HandleMessage( parts, part_count, line_num );
 
 	delete []parts;
 

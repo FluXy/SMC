@@ -34,9 +34,9 @@ public:
 	bool Parse( const std::string &filename );
 
 	// Parses a line of a description file into string parts
-	bool Parse_Line( std::string command, int line );
+	bool Parse_Line( std::string str_line, int line_num );
 
-	// Handles the File Line
+	// Handle one line of the file
 	virtual bool HandleMessage( const std::string *parts, unsigned int count, unsigned int line );
 
 	// data filename
