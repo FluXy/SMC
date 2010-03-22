@@ -1290,28 +1290,39 @@ void Relocate_Image( CEGUI::XMLAttributes &xml_attributes, const std::string &fi
 	}
 }
 
+void string_replace_all( std::string &str, const std::string &search, const std::string &format )
+{
+	size_t pos = 0;
+
+	while( (pos = str.find(search, pos)) != std::string::npos )
+	{
+		str.replace( pos, search.length(), format );
+		pos += format.length();
+	}
+}
+
+std::string string_trim_from_end( std::string str, const char search )
+{
+	// find last position from end which is not the given character
+	size_t pos = str.find_last_not_of( search );
+
+	// if all match or empty
+	if( pos == std::string::npos )
+	{
+		return std::string();
+	}
+	else
+	{
+		return str.substr( 0, pos + 1 );
+	}
+}
+
 std::string int_to_string( const int number )
 {
 	std::ostringstream temp;
 	temp << number;
 
 	return temp.str();
-}
-
-std::string string_trim_from_end( std::string str, const char c )
-{
-	// find last position from end which is not the given character
-	size_t endpos = str.find_last_not_of( c );
-
-	// if all match or empty
-	if( endpos == std::string::npos )
-	{
-		return str;
-	}
-	else
-	{
-		return str.substr( 0, endpos + 1 );
-	}
 }
 
 // from stringencoders for float_to_string

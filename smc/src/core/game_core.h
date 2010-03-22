@@ -135,8 +135,31 @@ void Preload_Sounds( bool draw_gui = 0 );
 // Changes the image path in the given xml attributes to the new one
 void Relocate_Image( CEGUI::XMLAttributes &xml_attributes, const std::string &filename_old, const std::string &filename_new, const CEGUI::String &attribute_name = "image" );
 
-// Trim the string from the end with the given character
-std::string string_trim_from_end( std::string str, const char c );
+/* Replace all occurrences of the search with the format string
+ * todo : use boost::algorithm::replace_all ?
+*/
+void string_replace_all( std::string &str, const std::string &search, const std::string &format );
+
+/* Remove all occurrences of the search in the string
+ * todo : use boost::algorithm::erase_all ?
+*/
+inline void string_erase_all( std::string &str, const char search )
+{
+	str.erase( std::remove(str.begin(), str.end(), search), str.end() );
+};
+
+/* Trim the string from the beginning with the given character
+ * todo : use algorithm::trim_left ?
+*/
+inline void string_trim_from_begin( std::string &str, const char search )
+{
+	str.erase( str.find_last_not_of( search ) + 1 );
+};
+
+/* Trim the string from the end with the given character
+ * todo : use algorithm::trim_right ?
+*/
+std::string string_trim_from_end( std::string str, const char search );
 // Return the number as a string
 std::string int_to_string( const int number );
 /* Return the float as a string
