@@ -2642,6 +2642,9 @@ void cMenu_Options_Controls :: Build_Shortcut_List( bool joystick /* = 0 */ )
 			}
 		}
 
+		// CEGUI eats [] if not escaped
+		string_replace_all( shortcut_key, "[", "\\[" );
+
 		item = new CEGUI::ListboxTextItem( shortcut_key );
 		// if not default
 		if( shortcut_not_the_default )
