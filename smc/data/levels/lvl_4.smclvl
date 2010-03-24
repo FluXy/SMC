@@ -3,7 +3,7 @@
 	<information>
 		<Property name="game_version" value="2" />
 		<Property name="engine_version" value="36" />
-		<Property name="save_time" value="1263175622" />
+		<Property name="save_time" value="1269455059" />
 	</information>
 	<settings>
 		<Property name="lvl_author" value="SMC_Team" />
@@ -21,8 +21,19 @@
 		<Property name="bg_color_1_green" value="80" />
 		<Property name="bg_color_1_blue" value="20" />
 		<Property name="bg_color_2_red" value="60" />
-		<Property name="bg_color_2_green" value="70" />
+		<Property name="bg_color_2_green" value="20" />
 		<Property name="bg_color_2_blue" value="0" />
+	</background>
+	<background>
+		<Property name="type" value="1" />
+		<Property name="posx" value="80" />
+		<Property name="posy" value="-200" />
+		<Property name="posz" value="0.00011" />
+		<Property name="image" value="game/background/moon_big_1.png" />
+		<Property name="speedx" value="0.05" />
+		<Property name="speedy" value="0.05" />
+		<Property name="const_velx" value="0" />
+		<Property name="const_vely" value="0" />
 	</background>
 	<player>
 		<Property name="posx" value="42" />
