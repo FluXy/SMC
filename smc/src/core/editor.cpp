@@ -1096,6 +1096,13 @@ bool cEditor :: Load_Item_Menu( std::string item_tags )
 			if( tag_pos >= array_tags.size() )
 			{
 				cGL_Surface *image = pVideo->Get_Surface( settings->m_base );
+
+				if( !image )
+				{
+					printf( "Warning : Could not load editor sprite image base : %s\n", settings->m_base.c_str() );
+					break;
+				}
+				
 				// Create sprite
 				cSprite *new_sprite = new cSprite( m_sprite_manager );
 				new_sprite->Set_Image( image );
