@@ -1,7 +1,7 @@
 /***************************************************************************
  * vector.cpp  -  vector class
  *
- * Copyright (C) 2006 - 2009 Florian Richter
+ * Copyright (C) 2006 - 2010 Florian Richter
  * Copyright (C) 2007 Clanlib Team ( original Vector class )
  ***************************************************************************/
 /*

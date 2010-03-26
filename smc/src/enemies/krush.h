@@ -1,7 +1,7 @@
 /***************************************************************************
  * krush.h  -  headers for the corresponding cpp file
  *
- * Copyright (C) 2004 - 2009 Florian Richter
+ * Copyright (C) 2004 - 2010 Florian Richter
  ***************************************************************************/
 /*
    This program is free software; you can redistribute it and/or modify

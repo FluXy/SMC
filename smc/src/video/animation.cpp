@@ -1,7 +1,7 @@
 /***************************************************************************
  * animation.cpp  -  Animation and Particle classes
  *
- * Copyright (C) 2003 - 2009 Florian Richter
+ * Copyright (C) 2003 - 2010 Florian Richter
  ***************************************************************************/
 /*
    This program is free software; you can redistribute it and/or modify

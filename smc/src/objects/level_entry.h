@@ -1,7 +1,7 @@
 /***************************************************************************
  * level_entry.h  -  header for the corresponding cpp file
  *
- * Copyright (C) 2007 - 2009 Florian Richter
+ * Copyright (C) 2007 - 2010 Florian Richter
  ***************************************************************************/
 /*
    This program is free software; you can redistribute it and/or modify

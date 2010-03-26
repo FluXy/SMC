@@ -1,7 +1,7 @@
 /***************************************************************************
  * global_effect.cpp  -  class for handling level global effects
  *
- * Copyright (C) 2006 - 2009 Florian Richter
+ * Copyright (C) 2006 - 2010 Florian Richter
  ***************************************************************************/
 /*
    This program is free software; you can redistribute it and/or modify

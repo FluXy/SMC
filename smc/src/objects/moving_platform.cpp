@@ -1,7 +1,7 @@
 /***************************************************************************
  * moving_platform.cpp  -  default moving platforms handler
  *
- * Copyright (C) 2005 - 2009 Florian Richter
+ * Copyright (C) 2005 - 2010 Florian Richter
  ***************************************************************************/
 /*
    This program is free software; you can redistribute it and/or modify

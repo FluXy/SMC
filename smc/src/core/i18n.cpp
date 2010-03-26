@@ -1,7 +1,7 @@
 /***************************************************************************
  * i18n.cpp  -  internationalization with gettext
  *
- * Copyright (C) 2008 - 2009 Florian Richter
+ * Copyright (C) 2008 - 2010 Florian Richter
  ***************************************************************************/
 /*
    This program is free software; you can redistribute it and/or modify

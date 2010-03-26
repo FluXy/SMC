@@ -1,7 +1,7 @@
 /***************************************************************************
  * level_background.cpp  -  level background image and color handling class
  *
- * Copyright (C) 2005 - 2009 Florian Richter
+ * Copyright (C) 2005 - 2010 Florian Richter
  ***************************************************************************/
 /*
    This program is free software; you can redistribute it and/or modify
