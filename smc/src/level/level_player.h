@@ -34,8 +34,7 @@ enum Maryo_type
 	MARYO_FIRE = 3,
 	MARYO_ICE = 4,
 	MARYO_CAPE = 5,
-	MARYO_GHOST = 6,
-	MARYO_DOG_SMALL = 21 // todo
+	MARYO_GHOST = 6
 };
 
 /* *** *** *** *** *** *** *** *** Maryo image array positions *** *** *** *** *** *** *** *** *** */
