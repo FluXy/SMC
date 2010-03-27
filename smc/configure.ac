@@ -1,5 +1,5 @@
 AC_PREREQ(2.57)
-AC_INIT(smc, 1.9)
+AC_INIT(smc, 1.9, , smc, http://www.secretmaryo.org/)
 AC_CANONICAL_TARGET
 AC_CONFIG_HEADERS(config.h)
 AM_INIT_AUTOMAKE(foreign)
