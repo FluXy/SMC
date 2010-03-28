@@ -1085,14 +1085,16 @@ cSprite *Get_World_Object( const CEGUI::String &element, CEGUI::XMLAttributes &a
 {
 	if( element == "sprite" )
 	{
-		// old position name
-		if( attributes.exists( "filename" ) )
+		// old version : change file and position name
+		if( engine_version < 2 )
 		{
-			attributes.add( "image", attributes.getValueAsString( "filename" ) );
-			attributes.add( "posx", attributes.getValueAsString( "pos_x" ) );
-			attributes.add( "posy", attributes.getValueAsString( "pos_y" ) );
+			if( attributes.exists( "filename" ) )
+			{
+				attributes.add( "image", attributes.getValueAsString( "filename" ) );
+				attributes.add( "posx", attributes.getValueAsString( "pos_x" ) );
+				attributes.add( "posy", attributes.getValueAsString( "pos_y" ) );
+			}
 		}
-
 		// if V.1.9 and lower : move y coordinate bottom to 0
 		if( engine_version < 2 )
 		{
@@ -1101,13 +1103,46 @@ cSprite *Get_World_Object( const CEGUI::String &element, CEGUI::XMLAttributes &a
 				attributes.add( "posy", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "posy" ) - 600.0f ) );
 			}
 		}
+		// if V.1.9 and lower : change old bridge to bridge 1 vertical
+		if( engine_version < 3 )
+		{
+			Relocate_Image( attributes, "world/objects/bridge/bridge_1.png", "world/objects/bridge/bridge_1_ver_start.png" );
+		}
 
 		// create sprite
-		cSprite *object = new cSprite( attributes, sprite_manager );
+		cSprite *sprite = new cSprite( attributes, sprite_manager );
 		// set sprite type
-		object->Set_Sprite_Type( TYPE_PASSIVE );
+		sprite->Set_Sprite_Type( TYPE_PASSIVE );
 
-		return object;
+		// needs image
+		if( sprite->m_image )
+		{
+			// if V.1.9 and lower : change old bridge to bridge 1 vertical
+			if( engine_version < 3 )
+			{
+				if( sprite->m_image->m_filename.compare( DATA_DIR "/" GAME_PIXMAPS_DIR "/" "world/objects/bridge/bridge_1_ver_start.png" ) == 0 )
+				{
+					// move a bit to the left
+					sprite->Move( -7.0f, 0.0f, 1 );
+					sprite->m_start_pos_x = sprite->m_pos_x;
+
+					// create other tiles now
+					cSprite *copy = sprite->Copy();
+
+					// middle
+					copy->Set_Image( pVideo->Get_Surface( "world/objects/bridge/bridge_1_ver_middle.png" ), 1 );
+					copy->Set_Pos_Y( copy->m_start_pos_y + 32, 1 );
+					sprite_manager->Add( copy );
+					// end
+					copy = copy->Copy();
+					copy->Set_Image( pVideo->Get_Surface( "world/objects/bridge/bridge_1_ver_end.png" ), 1 );
+					copy->Set_Pos_Y( copy->m_start_pos_y + 32, 1 );
+					sprite_manager->Add( copy );
+				}
+			}
+		}
+
+		return sprite;
 	}
 	else if( element == "waypoint" )
 	{

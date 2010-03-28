@@ -181,7 +181,7 @@ static const int speedfactor_fps = 32;
 /* *** level engine version *** */
 static const int level_engine_version = 36;
 /* *** world engine version *** */
-static const int world_engine_version = 2;
+static const int world_engine_version = 3;
 
 /* *** Sprite Types *** */
 
