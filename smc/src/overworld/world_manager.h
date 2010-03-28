@@ -39,7 +39,7 @@ public:
 	/* Create a new world
 	 * returns true if successful
 	*/
-	bool New( const std::string &name );
+	bool New( std::string name );
 
 	// Load all overworlds
 	// todo : should only load overworld info

@@ -191,6 +191,26 @@ cOverworld :: ~cOverworld( void )
 	delete m_hud_world_name;
 }
 
+bool cOverworld :: New( std::string name )
+{
+	if( name.empty() )
+	{
+		return 0;
+	}
+	
+	Unload();
+
+	// set path
+	m_description->m_path = name;
+	// default name is the path
+	m_description->m_name = name;
+
+	m_background_color = Color( 0.2f, 0.5f, 0.1f );
+	m_engine_version = world_engine_version;
+
+	return 1;
+}
+
 bool cOverworld :: Load( void )
 {
 	Unload();
@@ -450,6 +470,9 @@ void cOverworld :: Leave( const GameMode next_mode /* = MODE_NOTHING */ )
 	{
 		return;
 	}
+
+	// reset mouse
+	pMouseCursor->Reset( 0 );
 
 	// world to world
 	if( next_mode == MODE_OVERWORLD )

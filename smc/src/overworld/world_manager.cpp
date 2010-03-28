@@ -52,27 +52,24 @@ cOverworld_Manager :: ~cOverworld_Manager( void )
 	delete m_camera;
 }
 
-bool cOverworld_Manager :: New( const std::string &name )
+bool cOverworld_Manager :: New( std::string name )
 {
+	string_trim( name, ' ' );
+
 	// no name given
 	if( name.empty() )
 	{
 		return 0;
 	}
 
-	// already available
-	if( Dir_Exists( pResource_Manager->user_data_dir + USER_WORLD_DIR + "/" + name ) )
+	// name already exists
+	if( Get_from_Path( name ) )
 	{
 		return 0;
 	}
 
 	cOverworld *overworld = new cOverworld();
-
-	// set path
-	overworld->m_description->m_path = name;
-	// default name is the path
-	overworld->m_description->m_name = name;
-
+	overworld->New( name );
 	objects.push_back( overworld );
 
 	return 1;

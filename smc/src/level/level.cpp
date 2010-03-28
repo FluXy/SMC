@@ -97,6 +97,7 @@ bool cLevel :: New( std::string filename )
 {
 	Unload();
 
+	string_trim( filename, ' ' );
 	ifstream ifs;
 
 	// if no name is given create name

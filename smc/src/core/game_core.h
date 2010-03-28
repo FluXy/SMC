@@ -149,17 +149,25 @@ inline void string_erase_all( std::string &str, const char search )
 };
 
 /* Trim the string from the beginning with the given character
- * todo : use algorithm::trim_left ?
+ * todo : use boost::algorithm::trim_left ?
 */
 inline void string_trim_from_begin( std::string &str, const char search )
 {
 	str.erase( str.find_last_not_of( search ) + 1 );
 };
-
 /* Trim the string from the end with the given character
- * todo : use algorithm::trim_right ?
+ * todo : use boost::algorithm::trim_right ?
 */
 std::string string_trim_from_end( std::string str, const char search );
+/* Trim the string from the beginning and end with the given character
+ * todo : use boost::algorithm::trim ?
+*/
+inline void string_trim( std::string &str, const char search )
+{
+	string_trim_from_begin( str, search );
+	string_trim_from_end( str, search );
+};
+
 // Return the number as a string
 std::string int_to_string( const int number );
 /* Return the float as a string

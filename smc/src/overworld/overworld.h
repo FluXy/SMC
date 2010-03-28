@@ -83,6 +83,8 @@ public:
 	cOverworld( void );
 	virtual ~cOverworld( void );
 
+	// New
+	bool New( std::string name );
 	// Load
 	bool Load( void );
 	// Unload

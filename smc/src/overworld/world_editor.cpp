@@ -185,7 +185,9 @@ bool cEditor_World :: Function_New( void )
 
 	if( pOverworld_Manager->New( world_name ) )
 	{
-		pOverworld_Manager->Set_Active( world_name );
+		Game_Action = GA_ENTER_WORLD;
+		Game_Action_Data.add( "world", world_name.c_str() );
+
 		pHud_Debug->Set_Text( _("Created ") + world_name );
 		return 1;
 	}
