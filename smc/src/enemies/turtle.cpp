@@ -118,11 +118,14 @@ void cTurtle :: Load_From_Savegame( cSave_Level_Object *save_object )
 		{
 			Set_Turtle_Moving_State( mov_state );
 			// set shell image without position changes
-			cSprite::Set_Image( m_images[5].m_image );
+			cSprite::Set_Image( m_images[5 + 5].m_image );
 		}
 	}
 	
-	Update_Rotation_Hor();
+	if( m_turtle_state != TURTLE_SHELL_RUN )
+	{
+		Update_Rotation_Hor();
+	}
 }
 
 cSave_Level_Object *cTurtle :: Save_To_Savegame( void )
@@ -169,7 +172,8 @@ void cTurtle :: Set_Color( DefaultColor col )
 
 	if( m_color_type == COL_RED )
 	{
-		filename_dir = "red";
+		//filename_dir = "red";
+		filename_dir = "green";
 		m_kill_points = 50;
 	}
 	else if( m_color_type == COL_GREEN )
@@ -188,19 +192,23 @@ void cTurtle :: Set_Color( DefaultColor col )
 	Clear_Images();
 
 	// Walk
-	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/walk_0.png" ) );
 	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/walk_1.png" ) );
 	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/walk_2.png" ) );
-	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/walk_1.png" ) );
+	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/walk_3.png" ) );
+	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/walk_4.png" ) );
+	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/walk_5.png" ) );
+	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/walk_6.png" ) );
+	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/walk_7.png" ) );
+	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/walk_8.png" ) );
+	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/walk_9.png" ) );
 	// Walk Turn
-	//Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/turn_1.png" ) );
-	Add_Image( NULL );
+	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/turn.png" ) );
 	// Shell
-	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/shell_front.png" ) );
-	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/shell_move_1.png" ) );
-	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/shell_move_2.png" ) );
-	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/shell_move_3.png" ) );
-	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/shell_active.png" ) );
+	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/shell.png" ) );
+	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/shell_look_1.png" ) );
+	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/shell_look_2.png" ) );
+	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/shell_look_3.png" ) );
+	Add_Image( pVideo->Get_Surface( "enemy/turtle/" + filename_dir + "/roll.png" ) );
 
 	Set_Image_Num( 0, 1 );
 	Create_Name();
@@ -214,12 +222,15 @@ void cTurtle :: Turn_Around( ObjectDirection col_dir /* = DIR_UNDEFINED */ )
 	{
 		m_velx *= 0.5f;
 		// hack : disable turn image
-		//Set_Image_Num( 4 );
-		//Set_Animation( 0 );
-		//Reset_Animation();
+		Set_Image_Num( 4 + 5 );
+		Set_Animation( 0 );
+		Reset_Animation();
 	}
 
-	Update_Rotation_Hor();
+	if( m_turtle_state != TURTLE_SHELL_RUN )
+	{
+		Update_Rotation_Hor();
+	}
 }
 
 void cTurtle :: DownGrade( bool force /* = 0 */ )
@@ -259,7 +270,7 @@ void cTurtle :: DownGrade( bool force /* = 0 */ )
 			Move( 0.0f, m_images[0].m_image->m_h - m_images[5].m_image->m_h, 1 );
 		}
 
-		Set_Image_Num( 5 );
+		Set_Image_Num( 5 + 5 );
 	}
 }
 
@@ -314,10 +325,11 @@ void cTurtle :: Set_Turtle_Moving_State( Turtle_state new_state )
 	{
 		m_state = STA_WALK;
 		m_camera_range = 1500;
+		Set_Rotation_Z( 0.0f );
 
 		Set_Animation( 1 );
-		Set_Animation_Image_Range( 0, 3 );
-		Set_Time_All( 130, 1 );
+		Set_Animation_Image_Range( 0, 3 + 5 );
+		Set_Time_All( 80, 1 );
 		Reset_Animation();
 		Set_Image_Num( m_anim_img_start );
 	}
@@ -325,21 +337,21 @@ void cTurtle :: Set_Turtle_Moving_State( Turtle_state new_state )
 	{
 		m_state = STA_STAY;
 		m_camera_range = 2000;
+		Set_Rotation_Y( 0.0f );
 
 		Set_Animation( 0 );
 		// set stay image
-		Set_Animation_Image_Range( 5, 5 );
+		Set_Animation_Image_Range( 5 + 5, 5 + 5 );
 		Set_Image_Num( m_anim_img_start );
 	}
 	else if( new_state == TURTLE_SHELL_RUN )
 	{
 		m_state = STA_RUN;
 		m_camera_range = 5000;
+		Set_Rotation_Y( 0.0f );
 
-		Set_Animation( 1 );
-		Set_Animation_Image_Range( 6, 9 );
-		Set_Time_All( 80, 1 );
-		Reset_Animation();
+		Set_Animation( 0 );
+		Set_Animation_Image_Range( 6 - 1 + 5, 6 - 1 + 5 );
 		Set_Image_Num( m_anim_img_start );
 	}
 
@@ -363,7 +375,7 @@ void cTurtle :: Update( void )
 	if( m_turtle_state == TURTLE_WALK )
 	{
 		// if turn around image
-		if( m_curr_img == 4 )
+		if( m_curr_img == 4 + 5 )
 		{
 			m_anim_counter += pFramerate->m_elapsed_ticks;
 
@@ -399,11 +411,11 @@ void cTurtle :: Update( void )
 			{
 				if( static_cast<int>(m_counter) % 5 == 1 )
 				{
-					Set_Image_Num( 9 ); // active
+					Set_Image_Num( 9 - 3 + 5 ); // active
 				}
 				else
 				{
-					Set_Image_Num( 5 ); // front
+					Set_Image_Num( 5 + 5 ); // front
 				}
 			}
 			// activate
@@ -429,6 +441,12 @@ void cTurtle :: Update( void )
 	else if( m_turtle_state == TURTLE_SHELL_RUN )
 	{
 		Update_Velocity();
+
+		// update rotation
+		if( m_velx != 0 )
+		{
+			Add_Rotation_Z( ( m_velx / ( m_image->m_w * 0.015f ) ) * pFramerate->m_speed_factor );
+		}
 	}
 
 	if( m_player_counter > 0.0f )

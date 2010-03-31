@@ -3213,8 +3213,8 @@ void cLevel_Player :: Get_Item( SpriteType item_type, bool force /* = 0 */, cMov
 		m_active_object->m_state = STA_OBJ_LINKED;
 		m_active_object->Update_Valid_Update();
 		m_active_object->Reset_On_Ground();
-		m_active_object->m_velx = 0;
-		m_active_object->m_vely = 0;
+		m_active_object->m_velx = 0.0f;
+		m_active_object->m_vely = 0.0f;
 		
 		
 		cTurtle *turtle = static_cast<cTurtle *>(m_active_object);
@@ -3222,7 +3222,7 @@ void cLevel_Player :: Get_Item( SpriteType item_type, bool force /* = 0 */, cMov
 		turtle->m_counter = 0.0f;
 		// clear player counter
 		turtle->m_player_counter = 0.0f;
-		turtle->Set_Image_Num( 5 );
+		turtle->Set_Image_Num( 5 + 5 );
 
 		// load holding images
 		Load_Images();
