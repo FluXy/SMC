@@ -231,15 +231,16 @@ void cBall :: Generate_Particles( cParticle_Emitter *anim /* = NULL */ ) const
 	}
 
 	anim->Set_Emitter_Rect( m_col_rect );
-	anim->Set_Image( pVideo->Get_Surface( "animation/particles/light.png" ) );
 	anim->Set_Pos_Z( m_pos_z + 0.0001f );
 	if( m_ball_type == FIREBALL_DEFAULT )
 	{
+		anim->Set_Image( pVideo->Get_Surface( "animation/particles/fire_2.png" ) );
 		anim->Set_Time_to_Live( 0.2f );
-		anim->Set_Color( Color( static_cast<Uint8>(250), 140, 90 ) );
 	}
-	else if( m_ball_type == ICEBALL_DEFAULT )
+	// ice
+	else
 	{
+		anim->Set_Image( pVideo->Get_Surface( "animation/particles/light.png" ) );
 		anim->Set_Time_to_Live( 0.5f );
 		anim->Set_Color( Color( static_cast<Uint8>(90), 90, 255 ) );
 	}
