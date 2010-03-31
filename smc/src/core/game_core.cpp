@@ -1099,12 +1099,11 @@ void Preload_Images( bool draw_gui /* = 0 */ )
 	image_files.push_back( "animation/light_1/1.png" );
 	image_files.push_back( "animation/light_1/2.png" );
 	image_files.push_back( "animation/light_1/3.png" );
-	// Fire animation
-	image_files.push_back( "animation/fire_1/1.png" );
-	image_files.push_back( "animation/fire_1/2.png" );
-	image_files.push_back( "animation/fire_1/3.png" );
-	image_files.push_back( "animation/fire_1/4.png" );
-	// Particle animation
+	// Particle animations
+	image_files.push_back( "animation/particles/fire_1.png" );
+	image_files.push_back( "animation/particles/fire_2.png" );
+	image_files.push_back( "animation/particles/fire_3.png" );
+	image_files.push_back( "animation/particles/fire_4.png" );
 	image_files.push_back( "animation/particles/smoke.png" );
 	image_files.push_back( "animation/particles/smoke_black.png" );
 	image_files.push_back( "animation/particles/light.png" );

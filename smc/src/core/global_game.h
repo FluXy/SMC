@@ -179,7 +179,7 @@ enum LevelDrawType
 static const int speedfactor_fps = 32;
 
 /* *** level engine version *** */
-static const int level_engine_version = 36;
+static const int level_engine_version = 37;
 /* *** world engine version *** */
 static const int world_engine_version = 3;
 

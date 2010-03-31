@@ -1134,6 +1134,15 @@ void cLevel :: elementEnd( const CEGUI::String &element )
 		}
 		else if( element == "global_effect" )
 		{
+			// if V.1.9 and lower : change fire_1 animation to particles
+			if( m_engine_version < 37 )
+			{
+				Relocate_Image( m_xml_attributes, "animation/fire_1/1.png", "animation/particles/fire_1.png", "image" );
+				Relocate_Image( m_xml_attributes, "animation/fire_1/2.png", "animation/particles/fire_2.png", "image" );
+				Relocate_Image( m_xml_attributes, "animation/fire_1/3.png", "animation/particles/fire_3.png", "image" );
+				Relocate_Image( m_xml_attributes, "animation/fire_1/4.png", "animation/particles/fire_4.png", "image" );
+			}
+
 			m_global_effect->Create_From_Stream( m_xml_attributes );
 		}
 		else if( element == "player" )
@@ -1152,12 +1161,12 @@ void cLevel :: elementEnd( const CEGUI::String &element )
 			// 10 and lower
 			if( m_engine_version <= 10 )
 			{
-				m_player_start_pos_y += 58;
+				m_player_start_pos_y += 58.0f;
 			}
 			// 20 and lower
 			else if( m_engine_version <= 20 )
 			{
-				m_player_start_pos_y -= 48;
+				m_player_start_pos_y -= 48.0f;
 			}
 
 			// direction
@@ -1194,7 +1203,7 @@ void cLevel :: elementEnd( const CEGUI::String &element )
 	}
 }
 
-cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttributes &attributes, int engine_version /* = level_engine_version */, cSprite_Manager *sprite_manager )
+cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager )
 {
 	// element could change
 	CEGUI::String element = xml_element;
@@ -1206,6 +1215,14 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 		{
 			// change to passive
 			attributes.add( "type", "passive" );
+		}
+		// if V.1.9 and lower : change fire_1 animation to particles
+		if( engine_version < 37 )
+		{
+			Relocate_Image( attributes, "animation/fire_1/1.png", "animation/particles/fire_1.png" );
+			Relocate_Image( attributes, "animation/fire_1/2.png", "animation/particles/fire_2.png" );
+			Relocate_Image( attributes, "animation/fire_1/3.png", "animation/particles/fire_3.png" );
+			Relocate_Image( attributes, "animation/fire_1/4.png", "animation/particles/fire_4.png" );
 		}
 		// if V.1.9 and lower : move y coordinate bottom to 0
 		if( engine_version < 35 )
@@ -1808,6 +1825,17 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 	}
 	else if( element == "particle_emitter" )
 	{
+		// Note : If you relocate images don't forget the global effect
+
+		// if V.1.9 and lower : change fire_1 animation to particles
+		if( engine_version < 37 )
+		{
+			Relocate_Image( attributes, "animation/fire_1/1.png", "animation/particles/fire_1.png", "file" );
+			Relocate_Image( attributes, "animation/fire_1/2.png", "animation/particles/fire_2.png", "file" );
+			Relocate_Image( attributes, "animation/fire_1/3.png", "animation/particles/fire_3.png", "file" );
+			Relocate_Image( attributes, "animation/fire_1/4.png", "animation/particles/fire_4.png", "file" );
+		}
+
 		// if V.1.9 and lower : move y coordinate bottom to 0
 		if( engine_version < 35 )
 		{

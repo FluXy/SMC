@@ -294,10 +294,10 @@ void cAnimation_Fireball :: Init_Anim( void )
 		cAnimation_Fireball_Item *obj = (*itr);
 
 		// images
-		obj->Add_Image( pVideo->Get_Surface( "animation/fire_1/4.png" ) );
-		obj->Add_Image( pVideo->Get_Surface( "animation/fire_1/3.png" ) );
-		obj->Add_Image( pVideo->Get_Surface( "animation/fire_1/2.png" ) );
-		obj->Add_Image( pVideo->Get_Surface( "animation/fire_1/1.png" ) );
+		obj->Add_Image( pVideo->Get_Surface( "animation/particles/fire_4.png" ) );
+		obj->Add_Image( pVideo->Get_Surface( "animation/particles/fire_3.png" ) );
+		obj->Add_Image( pVideo->Get_Surface( "animation/particles/fire_2.png" ) );
+		obj->Add_Image( pVideo->Get_Surface( "animation/particles/fire_1.png" ) );
 		obj->Set_Image_Num( 0 );
 
 		// velocity
