@@ -441,7 +441,11 @@ void cTurtle :: Update( void )
 	else if( m_turtle_state == TURTLE_SHELL_RUN )
 	{
 		Update_Velocity();
+	}
 
+	// shell
+	if( m_turtle_state == TURTLE_SHELL_STAND || m_turtle_state == TURTLE_SHELL_RUN )
+	{
 		// update rotation
 		if( m_velx != 0 )
 		{
