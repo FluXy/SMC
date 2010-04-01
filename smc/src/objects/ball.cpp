@@ -222,7 +222,7 @@ void cBall :: Draw( cSurface_Request *request /* = NULL */ )
 	}
 	else if( m_ball_type == ICEBALL_DEFAULT )
 	{
-		Set_Color_Combine( m_glim_counter / 2.5f, m_glim_counter / 2.5f, m_glim_counter / 1.7f, GL_ADD );
+		Set_Color_Combine( m_glim_counter / 6.0f, m_glim_counter / 6.0f, m_glim_counter / 6.0f, GL_ADD );
 	}
 
 	cAnimated_Sprite::Draw( request );
