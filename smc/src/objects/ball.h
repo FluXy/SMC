@@ -17,14 +17,14 @@
 #define SMC_BALL_H
 
 #include "../video/video.h"
-#include "../objects/movingsprite.h"
+#include "../objects/animated_sprite.h"
 
 namespace SMC
 {
 
 /* *** *** *** *** *** *** *** Ball class *** *** *** *** *** *** *** *** *** *** */
 
-class cBall : public cMovingSprite
+class cBall : public cAnimated_Sprite
 {
 public:
 	cBall( cSprite_Manager *sprite_manager, float x, float y, const cSprite *origin_object = NULL, ball_effect btype = FIREBALL_DEFAULT );

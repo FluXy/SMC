@@ -31,7 +31,7 @@ namespace SMC
 /* *** *** *** *** *** *** cBall *** *** *** *** *** *** *** *** *** *** *** */
 
 cBall :: cBall( cSprite_Manager *sprite_manager, float x, float y, const cSprite *origin_object /* = NULL */, ball_effect btype /* = FIREBALL_DEFAULT */  )
-: cMovingSprite( sprite_manager )
+: cAnimated_Sprite( sprite_manager )
 {
 	m_sprite_array = ARRAY_ACTIVE;
 	m_type = TYPE_BALL;
@@ -51,7 +51,14 @@ cBall :: cBall( cSprite_Manager *sprite_manager, float x, float y, const cSprite
 
 	if( btype == FIREBALL_DEFAULT || btype == FIREBALL_EXPLOSION )
 	{
-		Set_Image( pVideo->Get_Surface( "animation/fireball/1.png" ) );
+		Add_Image( pVideo->Get_Surface( "animation/fireball/1.png" ) );
+		Add_Image( pVideo->Get_Surface( "animation/fireball/2.png" ) );
+		Add_Image( pVideo->Get_Surface( "animation/fireball/3.png" ) );
+		Set_Image_Num( 0, 1 );
+		Set_Animation( 1 );
+		Set_Animation_Image_Range( 0, 2 );
+		Set_Time_All( 120, 1 );
+
 		m_ball_type = FIREBALL_DEFAULT;
 	}
 	else if( btype == ICEBALL_DEFAULT || btype == ICEBALL_EXPLOSION )
@@ -62,7 +69,7 @@ cBall :: cBall( cSprite_Manager *sprite_manager, float x, float y, const cSprite
 	else
 	{
 		printf( "Warning : Ball unknown type %d\n", btype );
-		cMovingSprite::Destroy();
+		cAnimated_Sprite::Destroy();
 		return;
 	}
 
@@ -131,7 +138,7 @@ void cBall :: Destroy( void )
 		pActive_Animation_Manager->Add( anim );
 	}
 
-	cMovingSprite::Destroy();
+	cAnimated_Sprite::Destroy();
 }
 
 void cBall :: Update( void )
@@ -146,6 +153,8 @@ void cBall :: Update( void )
 	{
 		Destroy();
 	}
+
+	Update_Animation();
 
 	// right
 	if( m_velx > 0.0f )
@@ -216,7 +225,7 @@ void cBall :: Draw( cSurface_Request *request /* = NULL */ )
 		Set_Color_Combine( m_glim_counter / 2.5f, m_glim_counter / 2.5f, m_glim_counter / 1.7f, GL_ADD );
 	}
 
-	cMovingSprite::Draw( request );
+	cAnimated_Sprite::Draw( request );
 }
 
 void cBall :: Generate_Particles( cParticle_Emitter *anim /* = NULL */ ) const
@@ -316,7 +325,7 @@ void cBall :: Handle_Collision( cObjectCollision *collision )
 		return;
 	}
 
-	cMovingSprite::Handle_Collision( collision );
+	cAnimated_Sprite::Handle_Collision( collision );
 }
 
 void cBall :: Handle_Collision_Player( cObjectCollision *collision )
