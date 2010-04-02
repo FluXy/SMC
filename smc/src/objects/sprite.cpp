@@ -509,12 +509,12 @@ void cSprite :: Set_Image( cGL_Surface *new_image, bool new_start_image /* = 0 *
 		m_delete_image = del_img;
 
 		// if no name is set use the first image name
-		if( !m_name.length() )
+		if( m_name.empty() )
 		{
 			m_name = m_image->m_name;
 		}
 		// if no editor tags are set use the first image editor tags
-		if( !m_editor_tags.length() )
+		if( m_editor_tags.empty() )
 		{
 			m_editor_tags = m_image->m_editor_tags;
 		}
@@ -538,7 +538,11 @@ void cSprite :: Set_Image( cGL_Surface *new_image, bool new_start_image /* = 0 *
 		{
 			m_start_rect.m_w = m_start_image->m_w;
 			m_start_rect.m_h = m_start_image->m_h;
-			m_name = m_start_image->m_name;
+
+			if( m_name.empty() )
+			{
+				m_name = m_start_image->m_name;
+			}
 		}
 		else
 		{
