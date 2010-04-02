@@ -290,6 +290,11 @@ void cCollidingSprite :: Handle_Collision( cObjectCollision *collision )
 
 /* *** *** *** *** *** *** *** cSprite *** *** *** *** *** *** *** *** *** *** */
 
+const float cSprite::m_pos_z_passive_start = 0.01f;
+const float cSprite::m_pos_z_massive_start = 0.08f;
+const float cSprite::m_pos_z_front_passive_start = 0.1f;
+const float cSprite::m_pos_z_halfmassive_start = 0.04f;
+
 cSprite :: cSprite( cSprite_Manager *sprite_manager )
 : cCollidingSprite( sprite_manager )
 {
@@ -551,31 +556,31 @@ void cSprite :: Set_Sprite_Type( SpriteType type )
 	// set first because of massive-type z calculation
 	m_type = type;
 
-	if( type == TYPE_MASSIVE )
+	if( m_type == TYPE_MASSIVE )
 	{
 		m_sprite_array = ARRAY_MASSIVE;
 		Set_Massive_Type( MASS_MASSIVE );
 		m_can_be_ground = 1;
 	}
-	else if( type == TYPE_PASSIVE )
+	else if( m_type == TYPE_PASSIVE )
 	{
 		m_sprite_array = ARRAY_PASSIVE;
 		Set_Massive_Type( MASS_PASSIVE );
 		m_can_be_ground = 0;
 	}
-	else if( type == TYPE_FRONT_PASSIVE )
+	else if( m_type == TYPE_FRONT_PASSIVE )
 	{
 		m_sprite_array = ARRAY_PASSIVE;
 		Set_Massive_Type( MASS_PASSIVE );
 		m_can_be_ground = 0;
 	}
-	else if( type == TYPE_HALFMASSIVE )
+	else if( m_type == TYPE_HALFMASSIVE )
 	{
 		m_sprite_array = ARRAY_ACTIVE;
 		Set_Massive_Type( MASS_HALFMASSIVE );
 		m_can_be_ground = 1;
 	}
-	else if( type == TYPE_CLIMBABLE )
+	else if( m_type == TYPE_CLIMBABLE )
 	{
 		m_sprite_array = ARRAY_ACTIVE;
 		Set_Massive_Type( MASS_CLIMBABLE );
@@ -1290,35 +1295,33 @@ void cSprite :: Draw_Image( cSurface_Request *request /* = NULL */ ) const
 	}
 }
 
-void cSprite :: Set_Massive_Type( MassiveType mtype )
+void cSprite :: Set_Massive_Type( MassiveType type )
 {
-	// set massivetype z position
-	if( mtype == MASS_MASSIVE )
+	m_massive_type = type;
+
+	// set massive-type z position
+	if( m_massive_type == MASS_MASSIVE )
 	{
-		m_pos_z = 0.08f;
+		m_pos_z = m_pos_z_massive_start;
 	}
-	else if( mtype == MASS_PASSIVE )
+	else if( m_massive_type == MASS_PASSIVE )
 	{
 		if( m_type == TYPE_FRONT_PASSIVE )
 		{
-			m_pos_z = 0.1f;
+			m_pos_z = m_pos_z_front_passive_start;
 		}
 		else
 		{
-			m_pos_z = 0.01f;
+			m_pos_z = m_pos_z_passive_start;
 		}
 	}
-	else if( mtype == MASS_CLIMBABLE || mtype == MASS_HALFMASSIVE )
+	else if( m_massive_type == MASS_CLIMBABLE || m_massive_type == MASS_HALFMASSIVE )
 	{
-		m_pos_z = 0.04f;
+		m_pos_z = m_pos_z_halfmassive_start;
 	}
 
-	m_massive_type = mtype;
-
-	/* set correct Z position
-	 * fixme : this could use the wrong sprite manager
-	*/
-	m_sprite_manager->Set_Pos_Z( this );
+	// make it the latest sprite
+	m_sprite_manager->Move_To_Back( this );
 }
 
 bool cSprite :: Is_On_Top( const cSprite *obj ) const

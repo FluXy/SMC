@@ -357,7 +357,7 @@ public:
 	/* Set the massive type
 	 * should be called after setting the new array
 	*/
-	virtual void Set_Massive_Type( MassiveType mtype );
+	virtual void Set_Massive_Type( MassiveType type );
 
 	// Check if this sprite is on top of the given object
 	bool Is_On_Top( const cSprite *obj ) const;
@@ -381,6 +381,17 @@ public:
 
 		return 0;
 	};
+	// returns true if this is a sprite that is in the sprite manager
+	inline bool Is_Sprite_Managed( void ) const
+	{
+		if( m_sprite_array == ARRAY_MASSIVE || m_sprite_array == ARRAY_PASSIVE || m_sprite_array == ARRAY_ENEMY || m_sprite_array == ARRAY_ACTIVE )
+		{
+			return 1;
+		}
+
+		return 0;
+	};
+
 	/* set this sprite to destroyed and completely disable it
 	 * sprite is still in the sprite manager but only to get possibly replaced
 	*/
@@ -506,6 +517,12 @@ public:
 	Editor_Object_Settings_List m_editor_windows;
 	// width for all name windows based on largest name text width
 	float m_editor_window_name_width;
+
+	// default z positions
+	static const float m_pos_z_passive_start;
+	static const float m_pos_z_massive_start;
+	static const float m_pos_z_front_passive_start;
+	static const float m_pos_z_halfmassive_start;
 };
 
 typedef vector<cSprite *> cSprite_List;

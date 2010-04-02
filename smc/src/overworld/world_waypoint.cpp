@@ -54,7 +54,7 @@ void cWaypoint :: Init( void )
 	m_sprite_array = ARRAY_PASSIVE;
 	m_type = TYPE_OW_WAYPOINT;
 	m_massive_type = MASS_PASSIVE;
-	m_pos_z = 0.08f;
+	m_pos_z = cSprite::m_pos_z_massive_start;
 	m_camera_range = 0;
 	
 	m_waypoint_type = WAYPOINT_NORMAL;

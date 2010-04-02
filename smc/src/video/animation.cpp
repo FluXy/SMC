@@ -254,7 +254,7 @@ void cAnimation_Goldpiece :: Draw( cSurface_Request *request /* = NULL */ )
 		obj->Draw();
 	}
 	
-	if( time_to_live > 11 || time_to_live < 0 )
+	if( time_to_live > 11.0f || time_to_live < 0.0f )
 	{
 		Set_Active( 0 );
 	}
@@ -628,7 +628,7 @@ void cParticle_Emitter :: Init( void )
 {
 	animtype = PARTICLE_EXPLOSION;
 	m_editor_pos_z = 0.111f;
-	m_sprite_array = ARRAY_ANIM;
+	m_sprite_array = ARRAY_ACTIVE;
 	m_type = TYPE_ANIMATION;
 	m_name = "Particle Emitter";
 

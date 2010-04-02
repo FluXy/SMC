@@ -1633,7 +1633,6 @@ void cLevel_Player :: Release_Item( bool set_position /* = 1 */, bool no_action 
 			{
 				turtle->m_velx = -turtle->m_velx_max;
 			}
-			
 		}
 
 		if( !turtle->m_dead )

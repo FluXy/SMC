@@ -175,7 +175,7 @@ bool cEditor_Level :: Key_Down( SDLKey key )
 			// change state of the base object
 			if( Switch_Object_State( mouse_obj ) )
 			{
-				// change all object states to the base object state
+				// change selected objects state to the base object state
 				for( SelectedObjectList::iterator itr = pMouseCursor->m_selected_objects.begin(); itr != pMouseCursor->m_selected_objects.end(); ++itr )
 				{
 					cSprite *obj = (*itr)->m_obj;

@@ -169,8 +169,6 @@ public:
 	virtual cSprite *Get_Object( const CEGUI::String &element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager );
 
 	// #### Editor Functions
-	// move the draw position of object to the front or back
-	void Change_Draw_Position( cSprite *obj, bool move_back ) const;
 	/* copy the given object(s) next to itself into the given direction
 	 * if offset is given it will be used instead of the auto calculated direction size
 	 * returns the new object(s)

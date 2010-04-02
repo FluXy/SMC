@@ -80,6 +80,112 @@ cSprite *cSprite_Manager :: Copy( unsigned int identifier )
 	return objects[identifier]->Copy();
 }
 
+void cSprite_Manager :: Set_Pos_Z( cSprite *sprite )
+{
+	// don't set animation z position
+	if( sprite->m_type == TYPE_ANIMATION )
+	{
+		return;
+	}
+
+	// set new z position if unset
+	if( sprite->m_pos_z <= m_z_pos_data[sprite->m_type] )
+	{
+		sprite->m_pos_z = m_z_pos_data[sprite->m_type] + 0.000001f;
+	}
+	// if editor z position is given
+	if( sprite->m_editor_pos_z > 0.0f )
+	{
+		if( sprite->m_editor_pos_z <= m_z_pos_data_editor[sprite->m_type] )
+		{
+			sprite->m_editor_pos_z = m_z_pos_data_editor[sprite->m_type] + 0.000001f;
+		}
+	}
+
+
+	// update z position
+	if( sprite->m_pos_z > m_z_pos_data[sprite->m_type] )
+	{
+		m_z_pos_data[sprite->m_type] = sprite->m_pos_z;
+	}
+	// if editor z position is given
+	if( sprite->m_editor_pos_z > 0.0f )
+	{
+		if( sprite->m_editor_pos_z > m_z_pos_data_editor[sprite->m_type] )
+		{
+			m_z_pos_data_editor[sprite->m_type] = sprite->m_editor_pos_z;
+		}
+	}
+}
+
+void cSprite_Manager :: Move_To_Front( cSprite *sprite )
+{
+	// not needed
+	if( objects.size() <= 1 )
+	{
+		return;
+	}
+
+	cSprite *first = objects.front();
+
+	// if already in front
+	if( sprite == first )
+	{
+		return;
+	}
+
+	// get iterator
+	cSprite_List::iterator itr = std::find( objects.begin(), objects.end(), sprite );
+
+	// not available
+	if( itr == objects.end() )
+	{
+		// fixme : should not happen but it does
+		return;
+	}
+
+	objects.erase( itr );
+	objects.front() = sprite;
+	objects.insert( objects.begin() + 1, first );
+
+	// make it the first z position
+	sprite->m_pos_z = Get_First( sprite->m_type )->m_pos_z - 0.000001f;
+}
+
+void cSprite_Manager :: Move_To_Back( cSprite *sprite )
+{
+	// not needed
+	if( objects.size() <= 1 )
+	{
+		return;
+	}
+	
+	cSprite *last = objects.back();
+
+	// if already in back
+	if( sprite == last )
+	{
+		return;
+	}
+
+	// get iterator
+	cSprite_List::iterator itr = std::find( objects.begin(), objects.end(), sprite );
+
+	// not available
+	if( itr == objects.end() )
+	{
+		// fixme : should not happen but it does
+		return;
+	}
+
+	objects.erase( itr );
+	objects.back() = sprite;
+	objects.insert( objects.end() - 1, last );
+
+	// make it the last z position
+	sprite->m_pos_z = Get_Last( sprite->m_type )->m_pos_z + 0.000001f;
+}
+
 void cSprite_Manager :: Delete_All( bool delayed /* = 0 */ )
 {
 	// delayed
@@ -143,14 +249,14 @@ cSprite *cSprite_Manager :: Get_Last( const SpriteType type ) const
 	return last;
 }
 
-cSprite *cSprite_Manager :: Get_from_Position( int posx, int posy, const SpriteType type /* = TYPE_UNDEFINED */ ) const
+cSprite *cSprite_Manager :: Get_from_Position( int start_pos_x, int start_pos_y, const SpriteType type /* = TYPE_UNDEFINED */ ) const
 {
 	for( cSprite_List::const_iterator itr = objects.begin(); itr != objects.end(); ++itr )
 	{
 		// get object pointer
 		cSprite *obj = (*itr);
 
-		if( static_cast<int>(obj->m_start_pos_x) != posx || static_cast<int>(obj->m_start_pos_y) != posy )
+		if( static_cast<int>(obj->m_start_pos_x) != start_pos_x || static_cast<int>(obj->m_start_pos_y) != start_pos_y )
 		{
 			continue;
 		}
@@ -264,44 +370,6 @@ unsigned int cSprite_Manager :: Get_Size_Array( const ArrayType sprite_array )
 	}
 
 	return count;
-}
-
-void cSprite_Manager :: Set_Pos_Z( cSprite *sprite )
-{
-	// don't set animation z position
-	if( sprite->m_sprite_array == ARRAY_ANIM )
-	{
-		return;
-	}
-
-	// set new z position if unset
-	if( sprite->m_pos_z <= m_z_pos_data[sprite->m_type] )
-	{
-		sprite->m_pos_z = m_z_pos_data[sprite->m_type] + 0.000001f;
-	}
-	// if editor Z position is given
-	if( sprite->m_editor_pos_z > 0 )
-	{
-		if( sprite->m_editor_pos_z <= m_z_pos_data_editor[sprite->m_type] )
-		{
-			sprite->m_editor_pos_z = m_z_pos_data_editor[sprite->m_type] + 0.000001f;
-		}
-	}
-
-
-	// update z position
-	if( sprite->m_pos_z > m_z_pos_data[sprite->m_type] )
-	{
-		m_z_pos_data[sprite->m_type] = sprite->m_pos_z;
-	}
-	// if editor Z position is given
-	if( sprite->m_editor_pos_z > 0 )
-	{
-		if( sprite->m_editor_pos_z > m_z_pos_data_editor[sprite->m_type] )
-		{
-			m_z_pos_data_editor[sprite->m_type] = sprite->m_editor_pos_z;
-		}
-	}
 }
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */

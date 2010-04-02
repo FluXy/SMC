@@ -719,7 +719,13 @@ bool cEditor :: Key_Down( SDLKey key )
 		{
 			cSelectedObject *sel_obj = (*itr);
 
-			Change_Draw_Position( sel_obj->m_obj, 0 );
+			if( !sel_obj->m_obj->Is_Sprite_Managed() )
+			{
+				continue;
+			}
+
+			// last object is in front of others
+			m_sprite_manager->Move_To_Back( sel_obj->m_obj );
 		}
 	}
 	// push selected objects into the back
@@ -729,7 +735,13 @@ bool cEditor :: Key_Down( SDLKey key )
 		{
 			cSelectedObject *sel_obj = (*itr);
 
-			Change_Draw_Position( sel_obj->m_obj, 1 );
+			if( !sel_obj->m_obj->Is_Sprite_Managed() )
+			{
+				continue;
+			}
+
+			// first object is behind others
+			m_sprite_manager->Move_To_Front( sel_obj->m_obj );
 		}
 	}
 	// copy into direction
@@ -1329,58 +1341,6 @@ cSprite *cEditor :: Get_Object( const CEGUI::String &element, CEGUI::XMLAttribut
 {
 	// virtual
 	return NULL;
-}
-
-void cEditor :: Change_Draw_Position( cSprite *obj, bool move_back ) const
-{
-	// empty object
-	if( !obj )
-	{
-		return;
-	}
-
-	// check if valid object
-	if( !( obj->m_sprite_array == ARRAY_MASSIVE || obj->m_sprite_array == ARRAY_PASSIVE || obj->m_sprite_array == ARRAY_ACTIVE ) )
-	{
-		return;
-	}
-
-	// move to front
-	if( !move_back )
-	{
-		// last object is drawn first
-		cSprite *last = m_sprite_manager->objects.back();
-
-		// if already in front
-		if( obj == last )
-		{
-			return;
-		}
-
-		m_sprite_manager->Delete( obj, 0 );
-		m_sprite_manager->objects.back() = obj;
-		m_sprite_manager->objects.insert( m_sprite_manager->objects.end() - 1, last );
-
-		obj->m_pos_z = m_sprite_manager->Get_Last( obj->m_type )->m_pos_z + 0.000001f;
-	}
-	// move to back
-	else
-	{
-		// first object is drawn last
-		cSprite *first = m_sprite_manager->objects.front();
-
-		// if already in back
-		if( obj == first )
-		{
-			return;
-		}
-
-		m_sprite_manager->Delete( obj, 0 );
-		m_sprite_manager->objects.front() = obj;
-		m_sprite_manager->objects.insert( m_sprite_manager->objects.begin() + 1, first );
-
-		obj->m_pos_z = m_sprite_manager->Get_First( obj->m_type )->m_pos_z - 0.000001f;
-	}
 }
 
 cSprite_List cEditor :: Copy_Direction( const cSprite_List &objects, const ObjectDirection dir ) const

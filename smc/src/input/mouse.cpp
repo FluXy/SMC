@@ -971,10 +971,10 @@ cSprite *cMouseCursor :: Copy( const cSprite *copy_object, float px, float py ) 
 		return NULL;
 	}
 
-	// invalid array
-	if( !( copy_object->m_sprite_array == ARRAY_MASSIVE || copy_object->m_sprite_array == ARRAY_PASSIVE || copy_object->m_sprite_array == ARRAY_ACTIVE || copy_object->m_sprite_array == ARRAY_ENEMY || copy_object->m_sprite_array == ARRAY_ANIM ) )
+	// if invalid
+	if( !copy_object->Is_Sprite_Managed() )
 	{
-		printf( "Warning : cMouseCursor copy : unknown object array : %d\n", copy_object->m_sprite_array );
+		printf( "Warning : cMouseCursor copy : invalid object array : %d\n", copy_object->m_sprite_array );
 		return NULL;
 	}
 
@@ -1006,8 +1006,8 @@ void cMouseCursor :: Delete( cSprite *sprite )
 		return;
 	}
 
-	// invalid array
-	if( !( sprite->m_sprite_array == ARRAY_PASSIVE || sprite->m_sprite_array == ARRAY_MASSIVE || sprite->m_sprite_array == ARRAY_ACTIVE || sprite->m_sprite_array == ARRAY_ENEMY || sprite->m_sprite_array == ARRAY_ANIM ) )
+	// if invalid
+	if( !sprite->Is_Sprite_Managed() )
 	{
 		return;
 	}

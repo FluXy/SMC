@@ -150,7 +150,11 @@ void cTurtle :: Set_Direction( const ObjectDirection dir, bool new_start_directi
 	}
 
 	cEnemy::Set_Direction( dir, new_start_direction );
-	Update_Rotation_Hor( new_start_direction );
+
+	if( m_turtle_state != TURTLE_SHELL_RUN )
+	{
+		Update_Rotation_Hor( new_start_direction );
+	}
 
 	if( new_start_direction )
 	{

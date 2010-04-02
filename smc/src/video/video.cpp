@@ -118,7 +118,7 @@ void cVideo :: Init_CEGUI( void ) const
 		exit( EXIT_FAILURE );
 	}
 
-	pGuiRenderer->enableExtraStateSettings(true);
+	pGuiRenderer->enableExtraStateSettings( 1 );
 
 	// create Resource Provider
 	CEGUI::DefaultResourceProvider *rp = new CEGUI::DefaultResourceProvider;
@@ -2307,7 +2307,7 @@ void Loading_Screen_Draw( void )
 
 	// clear screen
 	pVideo->Clear_Screen();
-	pVideo->Draw_Rect( NULL, 0.01f, &black );
+	pVideo->Draw_Rect( NULL, 0.00001f, &black );
 
 	// Render
 	pRenderer->Render();

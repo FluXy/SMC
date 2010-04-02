@@ -35,25 +35,39 @@ public:
 	 */
 	virtual void Add( cSprite *sprite );
 
-	// Return the copied sprite
+	// Return a sprite copy
 	cSprite *Copy( unsigned int identifier );
+
+	// Set the sprite z position and update the z pos list
+	void Set_Pos_Z( cSprite *sprite );
+
+	/* Move the sprite to the front of the array
+	 * the sprite is then behind other sprites on the screen
+	 * this also sets the z position
+	*/
+	void Move_To_Front( cSprite *sprite );
+	/* Move the sprite to the back of the array
+	 * the sprite is then in front of other sprites on the screen
+	 * this also sets the z position
+	*/
+	void Move_To_Back( cSprite *sprite );
 
 	/* Delete all objects
 	 * if delayed is set deletion will only occur if replaced
 	 */
 	virtual void Delete_All( bool delayed = 0 );
 
-	// Return the first Z positioned object from the given type
+	// Return the first z position object from the given type
 	cSprite *Get_First( const SpriteType type ) const;
-	// Return the last Z positioned object from the given type
+	// Return the last z position object from the given type
 	cSprite *Get_Last( const SpriteType type ) const;
 	/* Return the matching object from the given startposition
 	 * type : if not set to zero only returns the object with the given type
 	*/
-	cSprite *Get_from_Position( int posx, int posy, const SpriteType type = TYPE_UNDEFINED ) const;
+	cSprite *Get_from_Position( int start_pos_x, int start_pos_y, const SpriteType type = TYPE_UNDEFINED ) const;
 
 	/* Get a sorted Objects Array
-	 * editor_sort : if set sorts from editor zpos
+	 * editor_sort : if set sorts from editor z pos
 	 * with_player : include player
 	*/
 	void Get_Objects_sorted( cSprite_List &new_objects, bool editor_sort = 0, bool with_player = 0 ) const;
@@ -109,9 +123,6 @@ public:
 	{
 		return Get_Pointer( identifier );
 	}
-
-	// Set the sprite Z position and update the zpos list
-	void Set_Pos_Z( cSprite *sprite );
 
 	typedef vector<float> ZposList;
 	// biggest type z position
