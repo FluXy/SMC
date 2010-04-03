@@ -539,7 +539,8 @@ void cSprite :: Set_Image( cGL_Surface *new_image, bool new_start_image /* = 0 *
 			m_start_rect.m_w = m_start_image->m_w;
 			m_start_rect.m_h = m_start_image->m_h;
 
-			if( m_name.empty() )
+			// always set the image name for basic sprites
+			if( Is_Basic_Sprite() )
 			{
 				m_name = m_start_image->m_name;
 			}
