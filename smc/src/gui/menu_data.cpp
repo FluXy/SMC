@@ -3208,6 +3208,9 @@ void cMenu_Credits :: Init( void )
 	// Most Valued Persons (MVP)
 	Add_Credits_Line( "-- Most Valued Persons (MVP) --", 0, 20, lightgrey, 1.0f );
 
+	Add_Credits_Line( "... (Crabmaster)", 0, 20, Color( 0.8f, 0.35f, 0.25f ), 1.0f );
+	Add_Credits_Line( " - Graphic Designer", 0, -3 );
+
 	Add_Credits_Line( "Tristan Heaven (nyhm)", 0, 20, lightblue, 1.0f );
 	Add_Credits_Line( " - Gentoo eBuild Maintainer", 0, -3 );
 
