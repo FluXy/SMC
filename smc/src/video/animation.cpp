@@ -739,7 +739,7 @@ void cParticle_Emitter :: Pre_Update( void )
 
 	// update ahead
 	const float old_speedfactor = pFramerate->m_speed_factor;
-	pFramerate->m_speed_factor = 4.0f;
+	pFramerate->m_speed_factor = 1.0f;
 
 	float ttl;
 
@@ -751,12 +751,13 @@ void cParticle_Emitter :: Pre_Update( void )
 	// use time to live as seconds
 	else
 	{
-		ttl = (m_time_to_live * speedfactor_fps) / pFramerate->m_speed_factor;
+		ttl = m_time_to_live * speedfactor_fps;
 	}
 
 	for( float i = 0.0f; i < ttl; i++ )
 	{
 		Update_Particles();
+		Update_Position();
 	}
 
 	pFramerate->m_speed_factor = old_speedfactor;
@@ -928,12 +929,6 @@ void cParticle_Emitter :: Update( void )
 	m_emitter_living_time += pFramerate->m_speed_factor * ( static_cast<float>(speedfactor_fps) * 0.001f );
 
 	Update_Particles();
-
-	// no particles are active
-	if( m_objects.empty() )
-	{
-		Set_Active( 0 );
-	}
 }
 
 void cParticle_Emitter :: Update_Particles( void )
@@ -971,6 +966,11 @@ void cParticle_Emitter :: Update_Particles( void )
 		}
 
 		m_emit_counter += pFramerate->m_speed_factor * ( static_cast<float>(speedfactor_fps) * 0.001f );
+	}
+	// no particles are active
+	else if( m_objects.empty() )
+	{
+		Set_Active( 0 );
 	}
 }
 
@@ -1091,8 +1091,10 @@ void cParticle_Emitter :: Keep_Particles_In_Rect( const GL_rect &clip_rect, Part
 			}
 			else if( mode == PCM_REVERSE )
 			{
-				obj->Move( clip_rect.m_w + obj_rect.m_w - 1.0f, 0, 1 );
-				obj->Set_Velocity( -obj->m_velx, obj->m_vely );
+				if( obj->m_velx < 0.0f )
+				{
+					obj->Set_Velocity( -obj->m_velx, obj->m_vely );
+				}
 			}
 			else if( mode == PCM_DELETE )
 			{
@@ -1109,8 +1111,10 @@ void cParticle_Emitter :: Keep_Particles_In_Rect( const GL_rect &clip_rect, Part
 			}
 			else if( mode == PCM_REVERSE )
 			{
-				obj->Move( -clip_rect.m_w - obj_rect.m_w + 1.0f, 0, 1 );
-				obj->Set_Velocity( -obj->m_velx, obj->m_vely );
+				if( obj->m_velx > 0.0f )
+				{
+					obj->Set_Velocity( -obj->m_velx, obj->m_vely );
+				}
 			}
 			else if( mode == PCM_DELETE )
 			{
@@ -1127,8 +1131,10 @@ void cParticle_Emitter :: Keep_Particles_In_Rect( const GL_rect &clip_rect, Part
 			}
 			else if( mode == PCM_REVERSE )
 			{
-				obj->Move( 0, clip_rect.m_h + obj_rect.m_h - 1.0f, 1 );
-				obj->Set_Velocity( obj->m_velx, -obj->m_vely );
+				if( obj->m_vely < 0.0f )
+				{
+					obj->Set_Velocity( obj->m_velx, -obj->m_vely );
+				}
 			}
 			else if( mode == PCM_DELETE )
 			{
@@ -1145,8 +1151,10 @@ void cParticle_Emitter :: Keep_Particles_In_Rect( const GL_rect &clip_rect, Part
 			}
 			else if( mode == PCM_REVERSE )
 			{
-				obj->Move( 0, -clip_rect.m_h - obj_rect.m_h + 1.0f, 1 );
-				obj->Set_Velocity( obj->m_velx, -obj->m_vely );
+				if( obj->m_vely > 0.0f )
+				{
+					obj->Set_Velocity( obj->m_velx, -obj->m_vely );
+				}
 			}
 			else if( mode == PCM_DELETE )
 			{
@@ -1245,15 +1253,18 @@ void cParticle_Emitter :: Set_Emitter_Rect( float x, float y, float w /* = 0 */,
 	m_rect.m_w = w;
 	m_rect.m_h = h;
 
-	// invalid width
-	if( m_rect.m_w < 5.0f )
+	if( !m_spawned )
 	{
-		m_rect.m_w = 5.0f;
-	}
-	// invalid height
-	if( m_rect.m_h < 5.0f )
-	{
-		m_rect.m_h = 5.0f;
+		// invalid width
+		if( m_rect.m_w < 5.0f )
+		{
+			m_rect.m_w = 5.0f;
+		}
+		// invalid height
+		if( m_rect.m_h < 5.0f )
+		{
+			m_rect.m_h = 5.0f;
+		}
 	}
 
 	m_col_rect.m_w = m_rect.m_w;

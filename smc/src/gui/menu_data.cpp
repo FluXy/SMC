@@ -98,8 +98,12 @@ void cMenu_Base :: Exit( void )
 
 void cMenu_Base :: Update( void )
 {
-	// animation
-	pMenuCore->m_animation_manager->Update();
+	if( m_exit_to_gamemode != MODE_LEVEL && m_exit_to_gamemode != MODE_OVERWORLD )
+	{
+		// animation
+		pMenuCore->m_animation_manager->Update();
+	}
+
 	// hud
 	pHud_Manager->Update();
 }
@@ -3419,31 +3423,51 @@ void cMenu_Credits :: Update( void )
 				new_value = 1.0f;
 
 				// add particles
-				if( obj->m_combine_color[0] < 1 )
+				if( obj->m_combine_color[0] < 1.0f )
 				{
 					cParticle_Emitter *anim = new cParticle_Emitter( pMenuCore->m_handler->m_level->m_sprite_manager );
-					anim->Set_Emitter_Rect( Get_Random_Float( game_res_w * 0.1f, game_res_w * 0.8f ), Get_Random_Float( game_res_h * 0.1f, game_res_h * 0.2f ), Get_Random_Float( 0, 10 ), Get_Random_Float( 0, 10 ) );
-					anim->Set_Quota( 5 + (rand() % 25) );
+					anim->Set_Emitter_Rect( Get_Random_Float( game_res_w * 0.1f, game_res_w * 0.8f ), -Get_Random_Float( game_res_h * 0.8f, game_res_h * 0.9f ), Get_Random_Float( 0.0f, 5.0f ), Get_Random_Float( 0.0f, 5.0f ) );
+					unsigned int quota = 4;
+					
+					// multi-explosion
 					if( rand() % 2 )
 					{
-						anim->Set_Image( pVideo->Get_Surface( "animation/particles/snowflake_1.png" ) );
-						anim->Set_Direction_Range( Get_Random_Float( 30, 70 ), 80 );
+						anim->Set_Image_Filename( "animation/particles/fire_2.png" );
+						anim->Set_Emitter_Time_to_Live( 0.4f );
+						anim->Set_Emitter_Iteration_Interval( 0.05f );
+						anim->Set_Direction_Range( 0, 360 );
 						anim->Set_Scale( 0.3f, 0.2f );
 						anim->Set_Blending( BLEND_ADD );
+						anim->Set_Time_to_Live( 1.8f, 1.2f );
+						anim->Set_Speed( 2.1f, 0.5f );
 					}
+					// star explosion
 					else
 					{
-						anim->Set_Image( pVideo->Get_Surface( "animation/particles/star.png" ) );
+						quota += rand() % 25;
+						anim->Set_Image_Filename( "animation/particles/fire_3.png" );
 						anim->Set_Direction_Range( 0, 360 );
 						anim->Set_Scale( 0.2f, 0.1f );
+
+						if( quota < 10 )
+						{
+							anim->Set_Time_to_Live( 2.8f, 0.5f );
+							anim->Set_Speed( 0.8f, 0.3f );
+						}
+						else
+						{
+							anim->Set_Time_to_Live( 1.4f, 0.5f );
+							anim->Set_Fading_Size( 1 );
+							anim->Set_Speed( 1.6f, 0.5f );
+						}
 					}
-					anim->Set_Time_to_Live( 1.4f, 0.5f );
-					anim->Set_Fading_Size( 1 );
+					
+					anim->Set_Quota( quota );
 					anim->Set_Color( Color( static_cast<Uint8>( 100 + ( rand() % 155 ) ), 100 + ( rand() % 155 ), 100 + ( rand() % 155 ) ) );
-					anim->Set_Speed( 1.6f, 0.7f );
 					anim->Set_Const_Rotation_Z( -5, 10 );
 					anim->Set_Vertical_Gravity( 0.02f );
 					anim->Set_Pos_Z( 0.16f );
+					anim->Emit();
 					pMenuCore->m_animation_manager->Add( anim );
 				}
 			}

@@ -1000,7 +1000,7 @@ bool cOverworld :: Goto_Next_Level( void )
 
 		// animation
 		cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
-		anim->Set_Pos( next_waypoint->m_rect.m_x + ( next_waypoint->m_rect.m_w * 0.5f ), next_waypoint->m_rect.m_y + ( next_waypoint->m_rect.m_h * 0.5f ) );
+		anim->Set_Emitter_Rect( next_waypoint->m_rect.m_x + ( next_waypoint->m_rect.m_w * 0.5f ), next_waypoint->m_rect.m_y + ( next_waypoint->m_rect.m_h * 0.5f ), 1.0f, 1.0f );
 		anim->Set_Emitter_Time_to_Live( 1.5f );
 		anim->Set_Emitter_Iteration_Interval( 0.05f );
 		anim->Set_Quota( 1 );
