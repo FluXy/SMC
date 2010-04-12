@@ -17,12 +17,12 @@
 #define SMC_LEVEL_H
 
 #include "../core/global_basic.h"
-#include "../level/global_effect.h"
 #include "../level/level_background.h"
 #include "../core/file_parser.h"
 #include "../level/level_manager.h"
 #include "../objects/level_entry.h"
 #include "../audio/random_sound.h"
+#include "../video/animation.h"
 // CEGUI
 #include "CEGUIXMLHandler.h"
 #include "CEGUIXMLAttributes.h"
@@ -137,8 +137,6 @@ public:
 
 	// background manager
 	cBackground_Manager *m_background_manager;
-	// global effect
-	cGlobal_effect *m_global_effect;
 	// animation manager
 	cAnimation_Manager *m_animation_manager;
 	// sprite manager

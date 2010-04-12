@@ -34,10 +34,6 @@ cLevel_Settings :: cLevel_Settings( cSprite_Manager *sprite_manager, cLevel *lev
 
 	// Main
 	m_background_preview = new cHudSprite( sprite_manager );
-	// Global Effects
-	m_global_effect_preview = new cHudSprite( sprite_manager );
-	m_global_effect_preview->Set_Pos( game_res_w * 0.75f, game_res_h * 0.2f );
-	m_global_effect_preview->Set_Shadow( lightgrey, 2 );
 
 	m_level = level;
 	m_camera = new cCamera( sprite_manager );
@@ -50,7 +46,6 @@ cLevel_Settings :: ~cLevel_Settings( void )
 	Unload();
 
 	delete m_background_preview;
-	delete m_global_effect_preview;
 	delete m_camera;
 }
 
@@ -179,64 +174,9 @@ void cLevel_Settings :: Init( void )
 
 	Update_BG_Colors( CEGUI::EventArgs() );
 
-	// global effect
-	// filename
-	editbox = static_cast<CEGUI::Editbox *>(wmgr.getWindow( "editbox_global_effect_file" ));
-	editbox->subscribeEvent( CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber( &cLevel_Settings::Update_Global_Effect_Image, this ) );
-	// type
-	combobox = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "combo_global_effect_type" ));
-	combobox->addItem( new CEGUI::ListboxTextItem( "Disabled" ) );
-	combobox->addItem( new CEGUI::ListboxTextItem( "Default" ) );
-	// Z Position
-	editbox = static_cast<CEGUI::Editbox *>(wmgr.getWindow( "editbox_global_effect_pos_z" ));
-	editbox->setText( float_to_string( m_level->m_global_effect->m_pos_z ) );
-	editbox = static_cast<CEGUI::Editbox *>(wmgr.getWindow( "editbox_global_effect_pos_z_rand" ));
-	editbox->setText( float_to_string( m_level->m_global_effect->posz_rand ) );
-	// creation rect
-	spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_rect_x" ));
-	spinner->setCurrentValue( m_level->m_global_effect->m_start_pos_x );
-	spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_rect_y" ));
-	spinner->setCurrentValue( m_level->m_global_effect->m_start_pos_y );
-	spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_rect_w" ));
-	spinner->setCurrentValue( m_level->m_global_effect->m_rect.m_w );
-	spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_rect_h" ));
-	spinner->setCurrentValue( m_level->m_global_effect->m_rect.m_h );
-	// time to live
-	spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_time_to_live" ));
-	spinner->setCurrentValue( m_level->m_global_effect->time_to_live );
-	// scale
-	spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_scale" ));
-	spinner->setCurrentValue( m_level->m_global_effect->size_scale );
-	spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_scale_rand" ));
-	spinner->setCurrentValue( m_level->m_global_effect->size_scale_rand );
-	// emitter iteration interval
-	spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_emitter_iteration_interval" ));
-	spinner->setCurrentValue( m_level->m_global_effect->emitter_iteration_interval );
-	// velocity
-	spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_vel" ));
-	spinner->setCurrentValue( m_level->m_global_effect->vel );
-	spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_vel_rand" ));
-	spinner->setCurrentValue( m_level->m_global_effect->vel_rand );
-	// angle
-	spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_angle_start" ));
-	spinner->setCurrentValue( m_level->m_global_effect->angle_start );
-	spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_angle_range" ));
-	spinner->setCurrentValue( m_level->m_global_effect->angle_range );
-	// rotation z
-	spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_rot_z" ));
-	spinner->setCurrentValue( m_level->m_global_effect->m_rot_z );
-	// constant rotation z
-	spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_const_rot_z" ));
-	spinner->setCurrentValue( m_level->m_global_effect->const_rotz );
-	spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_const_rot_z_rand" ));
-	spinner->setCurrentValue( m_level->m_global_effect->const_rotz_rand );
-
 	Clear_Layer_Field();
 
 	Load_BG_Image_List();
-	Load_Global_Effect();
-
-	Update_Global_Effect_Image( CEGUI::EventArgs() );
 }
 
 void cLevel_Settings :: Enter( void )
@@ -292,43 +232,6 @@ void cLevel_Settings :: Leave( void )
 	// Gradient
 	m_level->m_background_manager->Get_Pointer(0)->Set_Color_1( m_bg_color_1 );
 	m_level->m_background_manager->Get_Pointer(0)->Set_Color_2( m_bg_color_2 );
-
-	// # Global Effect Tab
-	m_level->m_global_effect->m_image_filename = wmgr.getWindow( "editbox_global_effect_file" )->getText().c_str();
-	m_level->m_global_effect->Set_Pos_Z( string_to_float( ( static_cast<CEGUI::Editbox *>(wmgr.getWindow( "editbox_global_effect_pos_z" )))->getText().c_str() ), string_to_float( ( static_cast<CEGUI::Editbox *>(CEGUI::WindowManager::getSingleton().getWindow( "editbox_global_effect_pos_z_rand" )))->getText().c_str() ) );
-	m_level->m_global_effect->Set_Type( wmgr.getWindow( "combo_global_effect_type" )->getText().c_str() );
-	m_level->m_global_effect->Init_Anim();
-	// creation rect
-	CEGUI::Spinner *spinner_rect_x = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_rect_x" ));
-	CEGUI::Spinner *spinner_rect_y = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_rect_y" ));
-	CEGUI::Spinner *spinner_rect_w = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_rect_w" ));
-	CEGUI::Spinner *spinner_rect_h = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_rect_h" ));
-	m_level->m_global_effect->Set_Emitter_Rect( spinner_rect_x->getCurrentValue(), spinner_rect_y->getCurrentValue(), spinner_rect_w->getCurrentValue(), spinner_rect_h->getCurrentValue() );
-	// lifetime
-	CEGUI::Spinner *spinner_time_to_live = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_time_to_live" ));
-	m_level->m_global_effect->Set_Time_to_Live( spinner_time_to_live->getCurrentValue() );
-	// scale
-	CEGUI::Spinner *spinner_scale = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_scale" ));
-	CEGUI::Spinner *spinner_scale_rand = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_scale_rand" ));
-	m_level->m_global_effect->Set_Scale( spinner_scale->getCurrentValue(), spinner_scale_rand->getCurrentValue() );
-	// Emitter Iteration Interval
-	CEGUI::Spinner *spinner_emitter_iteration_interval = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_emitter_iteration_interval" ));
-	m_level->m_global_effect->Set_Emitter_Iteration_Interval( spinner_emitter_iteration_interval->getCurrentValue() );
-	// velocity
-	CEGUI::Spinner *spinner_vel = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_vel" ));
-	CEGUI::Spinner *spinner_vel_rand = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_vel_rand" ));
-	m_level->m_global_effect->Set_Speed( spinner_vel->getCurrentValue(), spinner_vel_rand->getCurrentValue() );
-	// direction
-	CEGUI::Spinner *spinner_angle_start = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_angle_start" ));
-	CEGUI::Spinner *spinner_angle_range = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_angle_range" ));
-	m_level->m_global_effect->Set_Direction_Range( spinner_angle_start->getCurrentValue(), spinner_angle_range->getCurrentValue() );
-	// rotation z
-	CEGUI::Spinner *spinner_rot_z = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_rot_z" ));
-	m_level->m_global_effect->Set_Rotation_Z( spinner_rot_z->getCurrentValue(), 1 );
-	// constant rotation z
-	CEGUI::Spinner *spinner_const_rot_z = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_const_rot_z" ));
-	CEGUI::Spinner *spinner_const_rot_z_rand = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_global_effect_const_rot_z_rand" ));
-	m_level->m_global_effect->Set_Const_Rotation_Z( spinner_const_rot_z->getCurrentValue(), spinner_const_rot_z_rand->getCurrentValue() );
 }
 
 void cLevel_Settings :: Unload( void )
@@ -346,7 +249,6 @@ void cLevel_Settings :: Unload( void )
 
 	// clear preview images
 	m_background_preview->Set_Image( NULL, 1 );
-	m_global_effect_preview->Set_Image( NULL, 1 );
 
 	m_active = 0;
 }
@@ -388,16 +290,6 @@ void cLevel_Settings :: Draw( void )
 		// add request
 		pRenderer_GUI->Add( request );
 	}
-	// Global Effect Tab
-	else if( m_tabcontrol->getSelectedTabIndex() == 2 )
-	{
-		// create request
-		cSurface_Request *request = new cSurface_Request();
-		// draw global effect preview
-		m_global_effect_preview->Draw( request );
-		// add request
-		pRenderer_GUI->Add( request );
-	}
 
 	// update performance timer
 	pFramerate->m_perf_timer[PERF_DRAW_LEVEL_SETTINGS]->Update();
@@ -433,7 +325,6 @@ void cLevel_Settings :: Set_Level( cLevel *level )
 void cLevel_Settings :: Set_Sprite_Manager( cSprite_Manager *sprite_manager )
 {
 	m_background_preview->Set_Sprite_Manager( sprite_manager );
-	m_global_effect_preview->Set_Sprite_Manager( sprite_manager );
 	m_camera->Set_Sprite_Manager( sprite_manager );
 }
 
@@ -720,54 +611,6 @@ void cLevel_Settings :: Clear_Layer_Field( void )
 	wmgr.getWindow( "spinner_bg_image_const_vel_x" )->setText( "" );
 	wmgr.getWindow( "spinner_bg_image_const_vel_y" )->setText( "" );
 	Set_Background_Image_Preview( "" );
-}
-
-void cLevel_Settings :: Load_Global_Effect( void )
-{
-	CEGUI::Editbox *editbox = static_cast<CEGUI::Editbox *>(CEGUI::WindowManager::getSingleton().getWindow( "editbox_global_effect_file" ));
-	editbox->setText( m_level->m_global_effect->m_image_filename.c_str() );
-
-	editbox = static_cast<CEGUI::Editbox *>(CEGUI::WindowManager::getSingleton().getWindow( "combo_global_effect_type" ));
-	editbox->setText( m_level->m_global_effect->Get_Type_Name().c_str() );
-}
-
-void cLevel_Settings :: Set_Global_Effect_Image_Preview( std::string filename )
-{
-	Convert_Path_Separators( filename );
-
-	if( !File_Exists( filename ) )
-	{
-		m_global_effect_preview->Set_Image( NULL );
-		return;
-	}
-
-	cGL_Surface *temp = pVideo->Get_Surface( filename );
-	
-	if( !temp )
-	{
-		return;
-	}
-
-	// reset scale
-	m_global_effect_preview->m_scale_x = 1.0f;
-	m_global_effect_preview->m_scale_y = 1.0f;
-	// Set image
-	m_global_effect_preview->Set_Image( temp );
-	// Set Zoom
-	float zoom = pVideo->Get_Scale( temp, 100.0f, 100.0f );
-	m_global_effect_preview->m_scale_x *= zoom;
-	m_global_effect_preview->m_scale_y *= zoom;
-}
-
-bool cLevel_Settings :: Update_Global_Effect_Image( const CEGUI::EventArgs &event )
-{
-	std::string ge_filename = CEGUI::WindowManager::getSingleton().getWindow( "editbox_global_effect_file" )->getText().c_str();
-
-	// image preview
-	ge_filename.insert( 0, DATA_DIR "/" GAME_PIXMAPS_DIR "/" );
-	Set_Global_Effect_Image_Preview( ge_filename );
-
-	return 1;
 }
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */

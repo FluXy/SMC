@@ -306,7 +306,7 @@ void cEnemy :: Generate_Hit_Animation( cParticle_Emitter *anim /* = NULL */ ) co
 	
 	if( create_anim )
 	{
-		// add animation
+		anim->Emit();
 		pActive_Animation_Manager->Add( anim );
 	}
 }

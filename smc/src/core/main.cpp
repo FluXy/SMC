@@ -279,6 +279,7 @@ void Init_Game( void )
 	pAudio->Init();
 
 	pLevel_Player = new cLevel_Player( NULL );
+	pLevel_Player->m_disallow_managed_delete = 1;
 	// set the first active player available
 	pActive_Player = pLevel_Player;
 	pLevel_Manager = new cLevel_Manager();

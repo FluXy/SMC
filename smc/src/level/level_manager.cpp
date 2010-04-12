@@ -411,8 +411,18 @@ void cLevel_Manager :: Goto_Sub_Level( std::string str_level, const std::string 
 							pAudio->Update();
 							// Move camera
 							pActive_Camera->Set_Pos( start_path_pos_x + path_state.m_pos_x, start_path_pos_y + path_state.m_pos_y );
-							// keep global effect particles on screen
-							pActive_Level->m_global_effect->Update_Particles();
+
+							// keep particles on screen
+							for( cSprite_List::iterator itr = pActive_Level->m_sprite_manager->objects.begin(); itr != pActive_Level->m_sprite_manager->objects.end(); ++itr )
+							{
+								cSprite *obj = (*itr);
+
+								if( obj->m_type == TYPE_PARTICLE_EMITTER )
+								{
+									cParticle_Emitter *emitter = static_cast<cParticle_Emitter *>(obj);
+									emitter->Update_Position();
+								}
+							}
 
 							// draw
 							Draw_Game();

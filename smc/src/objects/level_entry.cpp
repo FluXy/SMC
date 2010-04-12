@@ -24,6 +24,7 @@
 #include "../video/renderer.h"
 #include "../level/level.h"
 #include "../core/i18n.h"
+#include "../core/sprite_manager.h"
 // CEGUI
 #include "CEGUIXMLAttributes.h"
 
@@ -283,8 +284,17 @@ void cLevel_Entry :: Activate( void )
 			pAudio->Update();
 			// center camera
 			pActive_Camera->Center();
-			// keep global effect particles on screen
-			pActive_Level->m_global_effect->Update_Particles();
+			// keep particles on screen
+			for( cSprite_List::iterator itr = m_sprite_manager->objects.begin(); itr != m_sprite_manager->objects.end(); ++itr )
+			{
+				cSprite *obj = (*itr);
+
+				if( obj->m_type == TYPE_PARTICLE_EMITTER )
+				{
+					cParticle_Emitter *emitter = static_cast<cParticle_Emitter *>(obj);
+					emitter->Update_Position();
+				}
+			}
 			// draw
 			Draw_Game();
 

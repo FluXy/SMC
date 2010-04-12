@@ -373,11 +373,15 @@ void cSpikeball :: Update( void )
 		m_running_particle_counter += pFramerate->m_speed_factor * 0.5f;
 
 		// create particles
-		while( m_running_particle_counter > 1.0f )
+		if( m_running_particle_counter > 1.0f )
 		{
 			cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
 			anim->Set_Emitter_Rect( m_col_rect.m_x, m_col_rect.m_y + m_col_rect.m_h - 2.0f, m_col_rect.m_w );
+			anim->Set_Quota( static_cast<int>(m_running_particle_counter) );
 			anim->Set_Pos_Z( m_pos_z - 0.000001f );
+			anim->Set_Image( pVideo->Get_Surface( "animation/particles/smoke_black.png" ) );
+			anim->Set_Time_to_Live( 0.6f );
+			anim->Set_Scale( 0.2f );
 
 			float vel;
 
@@ -390,9 +394,6 @@ void cSpikeball :: Update( void )
 				vel = -m_velx;
 			}
 
-			anim->Set_Image( pVideo->Get_Surface( "animation/particles/smoke_black.png" ) );
-			anim->Set_Time_to_Live( 0.6f );
-			anim->Set_Scale( 0.2f );
 			anim->Set_Speed( vel * 0.08f, 0.1f + vel * 0.1f );
 
 			if( m_direction == DIR_RIGHT )
@@ -404,10 +405,10 @@ void cSpikeball :: Update( void )
 				anim->Set_Direction_Range( 270.0f, 90.0f );
 			}
 
-			// add animation
+			anim->Emit();
 			pActive_Animation_Manager->Add( anim );
 
-			m_running_particle_counter--;
+			m_running_particle_counter -= static_cast<int>(m_running_particle_counter);
 		}
 	}
 

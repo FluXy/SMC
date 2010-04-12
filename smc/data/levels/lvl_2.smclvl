@@ -2,8 +2,8 @@
 <level>
 	<information>
 		<Property name="game_version" value="2" />
-		<Property name="engine_version" value="36" />
-		<Property name="save_time" value="1265729322" />
+		<Property name="engine_version" value="38" />
+		<Property name="save_time" value="1270980009" />
 	</information>
 	<settings>
 		<Property name="lvl_author" value="SMC_Team" />
@@ -46,35 +46,51 @@
 		<Property name="const_velx" value="0" />
 		<Property name="const_vely" value="0" />
 	</background>
-	<global_effect>
-		<Property name="type" value="1" />
-		<Property name="image" value="animation/particles/light.png" />
-		<Property name="rect_x" value="0" />
-		<Property name="rect_y" value="-20" />
-		<Property name="rect_w" value="800" />
-		<Property name="rect_h" value="0" />
-		<Property name="z" value="0.00012" />
-		<Property name="z_rand" value="0" />
-		<Property name="time_to_live" value="10" />
-		<Property name="time_to_live_rand" value="0" />
-		<Property name="emitter_iteration_interval" value="0.4" />
-		<Property name="scale" value="0.2" />
-		<Property name="scale_rand" value="0.2" />
-		<Property name="speed" value="3" />
-		<Property name="speed_rand" value="0.5" />
-		<Property name="dir_range_start" value="260" />
-		<Property name="dir_range_size" value="20" />
-		<Property name="rot_x" value="0" />
-		<Property name="rot_y" value="0" />
-		<Property name="rot_z" value="0" />
-		<Property name="const_rotz" value="0" />
-		<Property name="const_rotz_rand" value="0" />
-	</global_effect>
 	<player>
 		<Property name="posx" value="81" />
 		<Property name="posy" value="-124" />
 		<Property name="direction" value="right" />
 	</player>
+	<particle_emitter>
+		<Property name="image" value="animation/particles/light.png" />
+		<Property name="pos_z" value="0.00012" />
+		<Property name="pos_z_rand" value="0" />
+		<Property name="emitter_based_on_camera_pos" value="1" />
+		<Property name="pos_x" value="0" />
+		<Property name="pos_y" value="1" />
+		<Property name="size_x" value="800" />
+		<Property name="size_y" value="5" />
+		<Property name="emitter_time_to_live" value="-1" />
+		<Property name="emitter_interval" value="0.4" />
+		<Property name="quota" value="1" />
+		<Property name="time_to_live" value="10" />
+		<Property name="time_to_live_rand" value="0" />
+		<Property name="vel" value="3" />
+		<Property name="vel_rand" value="0.5" />
+		<Property name="rot_x" value="0" />
+		<Property name="rot_y" value="0" />
+		<Property name="rot_z" value="0" />
+		<Property name="start_rot_z_uses_direction" value="0" />
+		<Property name="const_rot_x" value="0" />
+		<Property name="const_rot_x_rand" value="0" />
+		<Property name="const_rot_y" value="0" />
+		<Property name="const_rot_y_rand" value="0" />
+		<Property name="const_rot_z" value="0" />
+		<Property name="const_rot_z_rand" value="0" />
+		<Property name="angle_start" value="260" />
+		<Property name="angle_range" value="20" />
+		<Property name="size_scale" value="0.2" />
+		<Property name="size_scale_rand" value="0.2" />
+		<Property name="gravity_x" value="0" />
+		<Property name="gravity_x_rand" value="0" />
+		<Property name="gravity_y" value="0" />
+		<Property name="gravity_y_rand" value="0" />
+		<Property name="clip_x" value="0" />
+		<Property name="clip_y" value="-600" />
+		<Property name="clip_w" value="800" />
+		<Property name="clip_h" value="620" />
+		<Property name="clip_mode" value="0" />
+	</particle_emitter>
 	<sprite>
 		<Property name="posx" value="10954" />
 		<Property name="posy" value="-111" />
@@ -5687,9 +5703,10 @@
 		<Property name="color" value="yellow" />
 	</item>
 	<particle_emitter>
-		<Property name="file" value="animation/particles/light.png" />
+		<Property name="image" value="animation/particles/light.png" />
 		<Property name="pos_z" value="0.07" />
 		<Property name="pos_z_rand" value="0" />
+		<Property name="emitter_based_on_camera_pos" value="0" />
 		<Property name="pos_x" value="9431" />
 		<Property name="pos_y" value="-188" />
 		<Property name="size_x" value="60" />
@@ -5719,6 +5736,11 @@
 		<Property name="gravity_x_rand" value="0" />
 		<Property name="gravity_y" value="0" />
 		<Property name="gravity_y_rand" value="0" />
+		<Property name="clip_x" value="0" />
+		<Property name="clip_y" value="0" />
+		<Property name="clip_w" value="0" />
+		<Property name="clip_h" value="0" />
+		<Property name="clip_mode" value="0" />
 	</particle_emitter>
 	<level_entry>
 		<Property name="posx" value="9455" />

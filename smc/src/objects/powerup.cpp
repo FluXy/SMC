@@ -341,10 +341,12 @@ void cMushroom :: Update( void )
 	{
 		m_counter += pFramerate->m_speed_factor * 0.8f;
 
-		while( m_counter > 1.0f )
+		if( m_counter > 1.0f )
 		{
 			cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
-			anim->Set_Pos( m_col_rect.m_x + Get_Random_Float( 0, m_col_rect.m_w ), m_col_rect.m_y + Get_Random_Float( 0, m_col_rect.m_h ) );
+			anim->Set_Image( pVideo->Get_Surface( "animation/particles/light.png" ) );
+			anim->Set_Emitter_Rect( m_col_rect.m_x, m_col_rect.m_y, m_col_rect.m_w, m_col_rect.m_h );
+			anim->Set_Quota( static_cast<int>(m_counter) );
 			anim->Set_Pos_Z( m_pos_z - 0.000001f );
 			anim->Set_Direction_Range( 180, 180 );
 			anim->Set_Scale( 0.4f, 0.1f );
@@ -352,7 +354,7 @@ void cMushroom :: Update( void )
 			if( m_type ==  TYPE_MUSHROOM_LIVE_1 )
 			{
 				anim->Set_Time_to_Live( 0.4f );
-				anim->Set_Color( Color( static_cast<Uint8>(rand() % 30), 100 + ( rand() % 150 ), rand() % 30 ) );
+				anim->Set_Color( Color( static_cast<Uint8>(0), 100, 0 ), Color( static_cast<Uint8>(30), 150, 30, 0 ) );
 				anim->Set_Speed( 0.5f, 0.5f );
 				anim->Set_Blending( BLEND_ADD );
 			}
@@ -360,15 +362,14 @@ void cMushroom :: Update( void )
 			else if( m_type == TYPE_MUSHROOM_BLUE )
 			{
 				anim->Set_Time_to_Live( 0.6f );
-				anim->Set_Color( Color( static_cast<Uint8>(180 + ( rand() % 50 ) ), 180 + ( rand() % 50 ), 255, 128 ) );
+				anim->Set_Color( Color( static_cast<Uint8>(180), 180, 255, 128 ), Color( static_cast<Uint8>(50), 50, 0, 0 ) );
 				anim->Set_Speed( 0.2f, 0.1f );
 			}
-			
-			anim->Set_Image( pVideo->Get_Surface( "animation/particles/light.png" ) );
 
+			anim->Emit();
 			pActive_Animation_Manager->Add( anim );
 
-			m_counter--;
+			m_counter -= static_cast<int>(m_counter);
 		}
 
 		if( m_type == TYPE_MUSHROOM_BLUE )
@@ -408,21 +409,22 @@ void cMushroom :: Update( void )
 		{
 			m_counter += pFramerate->m_speed_factor * 0.7f;
 
-			while( m_counter > 1.0f )
+			if( m_counter > 1.0f )
 			{
 				cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
-				anim->Set_Emitter_Rect( m_col_rect.m_x + (m_col_rect.m_w * 0.3f), m_col_rect.m_y + (m_col_rect.m_h * 0.91f), Get_Random_Float( 0, m_col_rect.m_w * 0.4f ), 0 );
+				anim->Set_Emitter_Rect( m_col_rect.m_x + (m_col_rect.m_w * 0.3f), m_col_rect.m_y + (m_col_rect.m_h * 0.91f), m_col_rect.m_w * 0.4f, 0 );
+				anim->Set_Quota( static_cast<int>(m_counter) );
 				anim->Set_Pos_Z( m_pos_z - 0.000001f );
 				anim->Set_Time_to_Live( 1.4f, 0.4f );
 				anim->Set_Scale( 0.7f, 0.2f );
-				anim->Set_Color( Color( static_cast<Uint8>( 120 + rand() % 40 ), 190 + ( rand() % 60 ), 0 + rand() % 10 ) );
+				anim->Set_Color( Color( static_cast<Uint8>(120), 190, 0 ), Color( static_cast<Uint8>(40), 60, 10, 0 ) );
 				anim->Set_Blending( BLEND_ADD );
 				anim->Set_Speed( 0.0f, 0.0f );
 				anim->Set_Image( pVideo->Get_Surface( "animation/particles/slime_1.png" ) );
-
+				anim->Emit();
 				pActive_Animation_Manager->Add( anim );
 
-				m_counter--;
+				m_counter -= static_cast<int>(m_counter);
 			}
 		}
 	}
@@ -603,23 +605,23 @@ void cFirePlant :: Update( void )
 	// particle animation
 	m_particle_counter += pFramerate->m_speed_factor * 0.8f;
 
-	while( m_particle_counter > 1.0f )
+	if( m_particle_counter > 1.0f )
 	{
 		cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
-		anim->Set_Pos( m_col_rect.m_x + Get_Random_Float( 0.0f, m_col_rect.m_w ), m_col_rect.m_y + Get_Random_Float( 0.0f, m_col_rect.m_h * 0.5f ) );
+		anim->Set_Image( pVideo->Get_Surface( "animation/particles/light.png" ) );
+		anim->Set_Emitter_Rect( m_col_rect.m_x, m_col_rect.m_y, m_col_rect.m_w, m_col_rect.m_h * 0.5f );
+		anim->Set_Quota( static_cast<int>(m_particle_counter) );
 		anim->Set_Pos_Z( m_pos_z + 0.000001f );
 		anim->Set_Direction_Range( 180.0f, 180.0f );
 		anim->Set_Scale( 0.4f, 0.1f );
 		anim->Set_Time_to_Live( 0.4f );
-		anim->Set_Color( Color( static_cast<Uint8>(255), 50 + ( rand() % 50 ), 0 ) );
+		anim->Set_Color( Color( static_cast<Uint8>(255), 50, 0 ), Color( static_cast<Uint8>(0), 50, 0, 0 ) );
 		anim->Set_Speed( 0.2f, 0.1f );
 		anim->Set_Blending( BLEND_ADD );
-		
-		anim->Set_Image( pVideo->Get_Surface( "animation/particles/light.png" ) );
-
+		anim->Emit();
 		pActive_Animation_Manager->Add( anim );
 
-		m_particle_counter--;
+		m_particle_counter -= static_cast<int>(m_particle_counter);
 	}
 }
 
@@ -731,24 +733,25 @@ void cMoon :: Update( void )
 
 	Update_Animation();
 
-	m_particle_counter += pFramerate->m_speed_factor;
+	m_particle_counter += pFramerate->m_speed_factor * 0.06;
 
 	// particles
-	if( m_particle_counter > 15.0f )
+	if( m_particle_counter >= 1.0f )
 	{
 		cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
-		anim->Set_Pos( m_pos_x + Get_Random_Float( 28.0f, 40.0f ), m_pos_y + Get_Random_Float( 10.0f, 30.0f ) );
-		anim->Set_Pos_Z( m_pos_z - 0.0001f );
 		anim->Set_Image( pVideo->Get_Surface( "animation/particles/light.png" ) );
+		anim->Set_Emitter_Rect( m_pos_x + 26.0f, m_pos_y + 10.0f, 10.0f, 28.0f );
+		anim->Set_Quota( static_cast<int>(m_particle_counter) );
+		anim->Set_Pos_Z( m_pos_z - 0.0001f );
 		anim->Set_Speed( 0.2f, 0.2f );
 		anim->Set_Scale( 0.2f );
 		anim->Set_Time_to_Live( 0.9f );
 		anim->Set_Color( Color( static_cast<Uint8>(200), 200, 0 ) );
 		anim->Set_Blending( BLEND_ADD );
-
+		anim->Emit();
 		pActive_Animation_Manager->Add( anim );
 
-		m_particle_counter = 0.0f;
+		m_particle_counter -= static_cast<int>(m_particle_counter);
 	}
 }
 

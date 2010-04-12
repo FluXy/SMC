@@ -470,7 +470,7 @@ void cMouseCursor :: Update_Doubleclick( void )
 	}
 }
 
-void cMouseCursor :: Left_Click( void )
+void cMouseCursor :: Left_Click_Down( void )
 {
 	if( m_mover_mode )
 	{
@@ -588,13 +588,9 @@ void cMouseCursor :: Update_Mouse_Object( void )
 
 	if( m_left )
 	{
-		// set new position
-		m_hovering_object->m_obj->Set_Pos( static_cast<float>( static_cast<int>(m_pos_x) - m_hovering_object->m_mouse_offset_x ), static_cast<float>( static_cast<int>(m_pos_y) - m_hovering_object->m_mouse_offset_y ), 1 );
-
-		// update object settings position
-		if( m_active_object && m_active_object == m_hovering_object->m_obj )
+		if( !Is_Selected_Object( m_hovering_object->m_obj, 1 ) )
 		{
-			m_active_object->Editor_Position_Update();
+			Set_Object_Position( m_hovering_object );
 		}
 	}
 	else
@@ -885,14 +881,7 @@ void cMouseCursor :: Update_Selected_Objects( void )
 		// left mouse is pressed
 		if( m_left )
 		{
-			// set new position
-			sel_obj->m_obj->Set_Pos( static_cast<float>(static_cast<int>(m_pos_x) - sel_obj->m_mouse_offset_x), static_cast<float>(static_cast<int>(m_pos_y) - sel_obj->m_mouse_offset_y), 1 );
-
-			// update object settings position
-			if( m_active_object && m_active_object == sel_obj->m_obj )
-			{
-				m_active_object->Editor_Position_Update();
-			}
+			Set_Object_Position( sel_obj );
 		}
 	}
 }
@@ -1000,14 +989,14 @@ cSprite *cMouseCursor :: Copy( const cSprite *copy_object, float px, float py ) 
 
 void cMouseCursor :: Delete( cSprite *sprite )
 {
-	// invalid
-	if( !sprite )
+	// if invalid
+	if( !sprite || !sprite->Is_Sprite_Managed() )
 	{
 		return;
 	}
 
-	// if invalid
-	if( !sprite->Is_Sprite_Managed() )
+	// if this can not be auto-deleted
+	if( sprite->m_disallow_managed_delete )
 	{
 		return;
 	}
@@ -1033,6 +1022,18 @@ void cMouseCursor :: Delete( cSprite *sprite )
 	if( editor_enabled )
 	{
 		sprite->Destroy();
+	}
+}
+
+void cMouseCursor :: Set_Object_Position( cSelectedObject *sel_obj )
+{
+	// set new position
+	sel_obj->m_obj->Set_Pos( static_cast<float>( static_cast<int>(m_pos_x) - sel_obj->m_mouse_offset_x ), static_cast<float>( static_cast<int>(m_pos_y) - sel_obj->m_mouse_offset_y ), 1 );
+
+	// update object settings position
+	if( m_active_object && m_active_object == sel_obj->m_obj )
+	{
+		m_active_object->Editor_Position_Update();
 	}
 }
 

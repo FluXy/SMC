@@ -54,7 +54,7 @@ enum Maryo_imgpos
 	MARYO_IMG_SPECIAL_1 = 34
 };
 
-/* *** *** *** *** *** *** *** Player class *** *** *** *** *** *** *** *** *** *** */
+/* *** *** *** *** *** *** *** Level player *** *** *** *** *** *** *** *** *** *** */
 
 class cLevel_Player : public cAnimated_Sprite
 {

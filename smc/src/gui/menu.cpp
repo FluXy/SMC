@@ -238,7 +238,6 @@ void cMenuHandler :: Draw( bool with_background /* = 1 */ )
 	{
 		// draw menu level
 		m_level->Draw_Layer_1();
-		m_level->m_global_effect->Draw();
 	}
 
 	// menu items
@@ -279,27 +278,27 @@ cMenuCore :: cMenuCore( void )
 
 	// left side
 	cParticle_Emitter *anim = new cParticle_Emitter( m_handler->m_level->m_sprite_manager );
+	anim->Set_Image_Filename( "clouds/default_1/1_middle.png" );
 	anim->Set_Emitter_Rect( -100, static_cast<float>(-game_res_h), 0, game_res_h * 0.5f );
 	anim->Set_Emitter_Time_to_Live( -1 );
 	anim->Set_Emitter_Iteration_Interval( 16 );
 	anim->Set_Direction_Range( 350, 20 );
-	anim->Set_Image( pVideo->Get_Surface( "clouds/default_1/1_middle.png" ) );
 	anim->Set_Time_to_Live( 800 );
 	anim->Set_Fading_Alpha( 0 );
 	anim->Set_Scale( 0.2f, 0.2f );
 	anim->Set_Color( Color( static_cast<Uint8>(255), 255, 255, 200 ), Color( static_cast<Uint8>(0), 0, 0, 55 ) );
 	anim->Set_Speed( 0.05f, 0.005f );
 	anim->Set_Pos_Z( 0.0015f, 0.0004f );
-
+	
 	m_animation_manager->Add( anim );
 
 	// right side
 	anim = new cParticle_Emitter( m_handler->m_level->m_sprite_manager );
+	anim->Set_Image_Filename( "clouds/default_1/1_middle.png" );
 	anim->Set_Emitter_Rect( static_cast<float>(game_res_w) + 100, static_cast<float>(-game_res_h), 0, static_cast<float>(game_res_h) * 0.5f );
 	anim->Set_Emitter_Time_to_Live( -1 );
 	anim->Set_Emitter_Iteration_Interval( 16 );
 	anim->Set_Direction_Range( 170, 20 );
-	anim->Set_Image( pVideo->Get_Surface( "clouds/default_1/1_middle.png" ) );
 	anim->Set_Time_to_Live( 800 );
 	anim->Set_Fading_Alpha( 0 );
 	anim->Set_Scale( 0.2f, 0.2f );
@@ -561,12 +560,27 @@ void cMenuCore :: Load( const MenuID menu /* = MENU_MAIN */, const GameMode exit
 		// set camera start position
 		m_handler->m_camera->Reset_Pos();
 
-		// pre update
-		pFramerate->m_speed_factor = 4.0f;
-
-		for( unsigned int i = 0; i < speedfactor_fps * 200; i++ )
+		// pre-update animations
+		for( cSprite_List::iterator itr = m_handler->m_level->m_sprite_manager->objects.begin(); itr != m_handler->m_level->m_sprite_manager->objects.end(); ++itr )
 		{
-			m_animation_manager->Update();
+			cSprite *obj = (*itr);
+
+			if( obj->m_type == TYPE_PARTICLE_EMITTER )
+			{
+				cParticle_Emitter *emitter = static_cast<cParticle_Emitter *>(obj);
+				emitter->Pre_Update();
+			}
+		}
+		
+		for( cAnimation_Manager::cAnimation_List::iterator itr = m_animation_manager->objects.begin(); itr != m_animation_manager->objects.end(); ++itr )
+		{
+			cAnimation *obj = (*itr);
+
+			if( obj->m_type == TYPE_PARTICLE_EMITTER )
+			{
+				cParticle_Emitter *emitter = static_cast<cParticle_Emitter *>(obj);
+				emitter->Pre_Update();
+			}
 		}
 
 		pFramerate->Update();

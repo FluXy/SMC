@@ -58,7 +58,7 @@ cBonusBox :: ~cBonusBox( void )
 
 void cBonusBox :: Init( void )
 {
-	m_type = TYPE_BONUSBOX;
+	m_type = TYPE_BONUS_BOX;
 	m_force_best_item = 0;
 	m_camera_range = 5000;
 	m_can_be_on_ground = 0;
@@ -178,7 +178,7 @@ void cBonusBox :: Set_Bonus_Type( SpriteType bonus_type )
 	{
 		m_item_image = pVideo->Get_Surface( "game/items/mushroom_green.png" );
 	}
-	else if( box_type == TYPE_JSTAR )
+	else if( box_type == TYPE_STAR )
 	{
 		m_item_image = pVideo->Get_Surface( "game/items/star.png" );
 	}
@@ -281,7 +281,7 @@ void cBonusBox :: Activate( void )
 		}
 		else if( r == 4 )
 		{
-			box_type = TYPE_JSTAR;
+			box_type = TYPE_STAR;
 		}
 
 		random = 1;
@@ -333,7 +333,7 @@ void cBonusBox :: Activate( void )
 		mushroom->Set_Type( box_type );
 		box_item = static_cast<cMovingSprite *>(mushroom);
 	}
-	else if( box_type == TYPE_JSTAR )
+	else if( box_type == TYPE_STAR )
 	{
 		pAudio->Play_Sound( "sprout_1.ogg" );
 		cjStar *star = new cjStar( m_sprite_manager );
@@ -517,7 +517,7 @@ void cBonusBox :: Editor_Activate( void )
 	{
 		combobox->setText( UTF8_("Mushroom 1-UP") );
 	}
-	else if( box_type == TYPE_JSTAR )
+	else if( box_type == TYPE_STAR )
 	{
 		combobox->setText( UTF8_("Star") );
 	}
@@ -580,7 +580,7 @@ void cBonusBox :: Editor_State_Update( void )
 	CEGUI::Combobox *combobox = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "editor_bonusbox_force_best_item" ));
 
 	if( box_type == TYPE_UNDEFINED || box_type == TYPE_POWERUP || box_type == TYPE_MUSHROOM_DEFAULT || box_type == TYPE_MUSHROOM_LIVE_1 || box_type == TYPE_MUSHROOM_POISON || 
-		box_type == TYPE_MUSHROOM_GHOST || box_type == TYPE_JSTAR || box_type == TYPE_GOLDPIECE )
+		box_type == TYPE_MUSHROOM_GHOST || box_type == TYPE_STAR || box_type == TYPE_GOLDPIECE )
 	{
 		combobox->setEnabled( 0 );
 	}
@@ -639,7 +639,7 @@ bool cBonusBox :: Editor_Item_Select( const CEGUI::EventArgs &event )
 	}
 	else if( item->getText().compare( UTF8_("Star") ) == 0 )
 	{
-		Set_Bonus_Type( TYPE_JSTAR );
+		Set_Bonus_Type( TYPE_STAR );
 	}
 	else if( item->getText().compare( UTF8_("Goldpiece") ) == 0 )
 	{

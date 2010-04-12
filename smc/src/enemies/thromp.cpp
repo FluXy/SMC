@@ -273,7 +273,7 @@ void cThromp :: DownGrade( bool force /* = 0 */ )
 
 		anim->Set_Scale( 0.8f );
 		anim->Set_Direction_Range( 0.0f, 360.0f );
-		// add animation
+		anim->Emit();
 		pActive_Animation_Manager->Add( anim );
 	}
 	else
@@ -621,7 +621,7 @@ void cThromp :: Generate_Smoke( unsigned int amount /* = 20 */ ) const
 	anim->Set_Speed( 0.05f, 0.4f );
 	anim->Set_Fading_Alpha( 1 );
 	anim->Set_Const_Rotation_Z( -2, 4 );
-	// add animation
+	anim->Emit();
 	pActive_Animation_Manager->Add( anim );
 }
 

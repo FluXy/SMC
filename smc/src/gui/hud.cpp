@@ -262,7 +262,7 @@ PointsText :: ~PointsText( void )
 cMenuBackground :: cMenuBackground( cSprite_Manager *sprite_manager )
 : cHudSprite( sprite_manager )
 {
-	m_type = TYPE_MENUBG;
+	m_type = TYPE_HUD_BACKGROUND;
 	m_sprite_array = ARRAY_HUD;
 	m_name = "HUD Menu Background";
 
@@ -310,9 +310,7 @@ void cMenuBackground :: Draw( cSurface_Request *request /* = NULL */ )
 cStatusText :: cStatusText( cSprite_Manager *sprite_manager )
 : cHudSprite( sprite_manager )
 {
-	m_type = TYPE_STATUSTEXT;
 	m_sprite_array = ARRAY_HUD;
-
 	Set_Shadow( black, 1.5f );
 }
 
@@ -336,8 +334,7 @@ void cStatusText :: Draw( cSurface_Request *request /* = NULL */ )
 cPlayerPoints :: cPlayerPoints( cSprite_Manager *sprite_manager )
 : cStatusText( sprite_manager )
 {
-	m_sprite_array = ARRAY_HUD;
-	m_type = TYPE_POINTDISPLAY;
+	m_type = TYPE_HUD_POINTS;
 	m_name = "HUD Player points";
 	
 	Set_Points( pLevel_Player->m_points );
@@ -500,8 +497,7 @@ void cPlayerPoints :: Clear( void )
 cGoldDisplay :: cGoldDisplay( cSprite_Manager *sprite_manager )
 : cStatusText( sprite_manager )
 {
-	m_sprite_array = ARRAY_HUD;
-	m_type = TYPE_GOLDDISPLAY;
+	m_type = TYPE_HUD_GOLD;
 	m_name = "HUD Goldpieces";
 
 	Set_Gold( pLevel_Player->m_goldpieces );
@@ -551,8 +547,7 @@ void cGoldDisplay :: Add_Gold( int gold )
 cLiveDisplay :: cLiveDisplay( cSprite_Manager *sprite_manager )
 : cStatusText( sprite_manager )
 {
-	m_sprite_array = ARRAY_HUD;
-	m_type = TYPE_LIFEDISPLAY;
+	m_type = TYPE_HUD_LIFE;
 	m_name = "HUD Lives";
 
 	Set_Lives( pLevel_Player->m_lives );
@@ -617,8 +612,7 @@ void cLiveDisplay :: Add_Lives( int lives )
 cTimeDisplay :: cTimeDisplay( cSprite_Manager *sprite_manager )
 : cStatusText( sprite_manager )
 {
-	m_sprite_array = ARRAY_HUD;
-	m_type = TYPE_GAMETIMEDISPLAY;
+	m_type = TYPE_HUD_TIME;
 	m_name = "HUD Time";
 
 	Reset();
@@ -683,8 +677,7 @@ void cTimeDisplay :: Reset( void )
 cItemBox :: cItemBox( cSprite_Manager *sprite_manager )
 : cStatusText( sprite_manager )
 {
-	m_sprite_array = ARRAY_HUD;
-	m_type = TYPE_ITEMBOXDISPLAY;
+	m_type = TYPE_HUD_ITEMBOX;
 	m_name = "HUD Itembox";
 
 	Set_Image( pVideo->Get_Surface( "game/itembox.png" ) );
@@ -717,49 +710,51 @@ void cItemBox :: Set_Sprite_Manager( cSprite_Manager *sprite_manager )
 
 void cItemBox :: Update( void )
 {
-	if( m_item_counter )
+	if( !m_item_counter )
 	{
-		m_item->Move( 0.0f, 4.0f );
-
-		if( m_item_counter_mod )
-		{
-			m_item_counter += pFramerate->m_speed_factor * 10.0f;
-
-			if( m_item_counter >= 90.0f )
-			{
-				m_item_counter_mod = 0;
-				m_item_counter = 90.0f;
-			}
-		}
-		else
-		{
-			m_item_counter -= pFramerate->m_speed_factor * 10.0f;
-
-			if( m_item_counter <= 0.0f )
-			{
-				m_item_counter_mod = 1;
-				m_item_counter = 1.0f;
-			}
-		}
-
-		if( m_item->m_pos_y > pLevel_Manager->m_camera->m_limit_rect.m_y )
-		{
-			Reset();
-		}
-
-		cObjectCollisionType *col_list = m_item->Collision_Check( &m_item->m_col_rect, COLLIDE_ONLY_BLOCKING );
-
-		// if colliding with the player
-		if( col_list->Is_Included( TYPE_PLAYER ) )
-		{
-			// player can send an item back
-			SpriteType item_id_temp = m_item_id;
-			Reset();
-			pLevel_Player->Get_Item( item_id_temp, 1 );
-		}
-
-		delete col_list;
+		return;
 	}
+
+	m_item->Move( 0.0f, 4.0f );
+
+	if( m_item_counter_mod )
+	{
+		m_item_counter += pFramerate->m_speed_factor * 10.0f;
+
+		if( m_item_counter >= 90.0f )
+		{
+			m_item_counter_mod = 0;
+			m_item_counter = 90.0f;
+		}
+	}
+	else
+	{
+		m_item_counter -= pFramerate->m_speed_factor * 10.0f;
+
+		if( m_item_counter <= 0.0f )
+		{
+			m_item_counter_mod = 1;
+			m_item_counter = 1.0f;
+		}
+	}
+
+	if( m_item->m_pos_y > pLevel_Manager->m_camera->m_limit_rect.m_y )
+	{
+		Reset();
+	}
+
+	cObjectCollisionType *col_list = m_item->Collision_Check( &m_item->m_col_rect, COLLIDE_ONLY_BLOCKING );
+
+	// if colliding with the player
+	if( col_list->Is_Included( TYPE_PLAYER ) )
+	{
+		// player can send an item back
+		SpriteType item_id_temp = m_item_id;
+		Reset();
+		pLevel_Player->Get_Item( item_id_temp, 1 );
+	}
+
+	delete col_list;
 }
 
 void cItemBox :: Draw( cSurface_Request *request /* = NULL */ )
@@ -864,8 +859,7 @@ void cItemBox :: Reset( void )
 cDebugDisplay :: cDebugDisplay( cSprite_Manager *sprite_manager )
 : cStatusText( sprite_manager )
 {
-	m_sprite_array = ARRAY_HUD;
-	m_type = TYPE_DEBUGDISPLAY;
+	m_type = TYPE_HUD_DEBUG;
 	m_name = "HUD Debug";
 
 	m_text.clear();
@@ -948,7 +942,7 @@ void cDebugDisplay :: Update( void )
 		return;
 	}
 
-	// if time reached hide the text display
+	// if display time passed hide the text display
 	if( m_counter <= 0 )
 	{
 		m_text.clear();
@@ -1145,7 +1139,7 @@ void cDebugDisplay :: Draw_Debug_Mode( void )
 			// get object pointer
 			const cSprite *obj = (*itr);
 
-			if( obj->m_type == TYPE_BONUSBOX )
+			if( obj->m_type == TYPE_BONUS_BOX )
 			{
 				const cBonusBox *bonusbox = static_cast<const cBonusBox *>(obj);
 
@@ -1167,7 +1161,7 @@ void cDebugDisplay :: Draw_Debug_Mode( void )
 			// get object pointer
 			const cSprite *obj = (*itr);
 
-			if( obj->m_type == TYPE_BONUSBOX )
+			if( obj->m_type == TYPE_BONUS_BOX )
 			{
 				const cBonusBox *bonusbox = static_cast<const cBonusBox *>(obj);
 
@@ -1228,7 +1222,6 @@ void cDebugDisplay :: Draw_Performance_Debug_Mode( void )
 	{
 		return;
 	}
-
 
 	std::string temp_text;
 	float ypos = game_res_h * 0.08f;

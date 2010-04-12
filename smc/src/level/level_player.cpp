@@ -34,6 +34,7 @@
 #include "../core/i18n.h"
 #include "../video/gl_surface.h"
 #include "../core/filesystem/filesystem.h"
+#include "../video/renderer.h"
 
 namespace SMC
 {
@@ -44,7 +45,7 @@ const int power_jump_delta = 1000;
 const float cLevel_Player::m_default_pos_x = 200.0f;
 const float cLevel_Player::m_default_pos_y = 50.0f;
 
-/* *** *** *** *** *** *** *** *** cPlayer *** *** *** *** *** *** *** *** *** */
+/* *** *** *** *** *** *** *** *** cLevel_Player *** *** *** *** *** *** *** *** *** */
 
 cLevel_Player :: cLevel_Player( cSprite_Manager *sprite_manager )
 : cAnimated_Sprite( sprite_manager )
@@ -379,8 +380,6 @@ animation_end:
 		anim->Set_Color( Color( static_cast<Uint8>(250), 140, 90 ), Color( static_cast<Uint8>(5), 100, 0, 0 ) );
 		anim->Set_Const_Rotation_Z( -2.0f, 4.0f );
 
-		anim->Init_Anim();
-
 		for( i = 10.0f; i > 0.0f; i -= 0.011f * pFramerate->m_speed_factor )
 		{
 			while( SDL_PollEvent( &input_event ) )
@@ -644,7 +643,7 @@ void cLevel_Player :: Generate_Feet_Clouds( cParticle_Emitter *anim /* = NULL */
 
 	if( create_anim )
 	{
-		// add animation
+		anim->Emit();
 		pActive_Animation_Manager->Add( anim );
 	}
 }
@@ -766,6 +765,7 @@ void cLevel_Player :: Update_Running( void )
 			anim->Set_Scale( 0.15f );
 
 			anim->Set_Blending( BLEND_ADD );
+			anim->Emit();
 			pActive_Animation_Manager->Add( anim );
 		}
 
@@ -1129,11 +1129,12 @@ void cLevel_Player :: Update_Ducking( void )
 		// particle animation
 		m_ducked_animation_counter += pFramerate->m_speed_factor * 2;
 
-		while( m_ducked_animation_counter > 1 )
+		if( m_ducked_animation_counter > 1.0f )
 		{
 			// create particle
 			cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
 			anim->Set_Emitter_Rect( m_col_rect.m_x, m_col_rect.m_y + ( m_col_rect.m_h * 0.8f ), m_col_rect.m_w * 0.9f, m_col_rect.m_h * 0.1f );
+			anim->Set_Quota( static_cast<int>(m_ducked_animation_counter) );
 			anim->Set_Image( pVideo->Get_Surface( "animation/particles/star_2.png" ) );
 			anim->Set_Pos_Z( m_pos_z - 0.000001f, 0.000002f );
 			anim->Set_Time_to_Live( 0.3f );
@@ -1145,9 +1146,10 @@ void cLevel_Player :: Update_Ducking( void )
 			anim->Set_Scale( 0.2f );
 			anim->Set_Color( whitealpha128 );
 			anim->Set_Blending( BLEND_ADD );
+			anim->Emit();
 			pActive_Animation_Manager->Add( anim );
 
-			m_ducked_animation_counter--;
+			m_ducked_animation_counter -= static_cast<int>(m_ducked_animation_counter);
 		}
 	}
 
@@ -2265,7 +2267,7 @@ void cLevel_Player :: Update( void )
 				}
 			}
 
-			while( m_invincible_star_counter > 1.0f )
+			if( m_invincible_star_counter > 1.0f )
 			{
 				// set particle color
 				Color particle_color = orange;
@@ -2275,6 +2277,7 @@ void cLevel_Player :: Update( void )
 				// create particle
 				cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
 				anim->Set_Emitter_Rect( m_col_rect.m_x + m_col_rect.m_w * 0.1f, m_col_rect.m_y + m_col_rect.m_h * 0.1f, m_col_rect.m_w * 0.8f, m_col_rect.m_h * 0.8f );
+				anim->Set_Quota( static_cast<int>(m_invincible_star_counter) );
 				anim->Set_Image( pVideo->Get_Surface( "animation/particles/star.png" ) );
 				anim->Set_Pos_Z( m_pos_z - 0.000001f );
 				anim->Set_Time_to_Live( 0.3f );
@@ -2299,9 +2302,10 @@ void cLevel_Player :: Update( void )
 				}
 
 				anim->Set_Blending( BLEND_ADD );
+				anim->Emit();
 				pActive_Animation_Manager->Add( anim );
 
-				m_invincible_star_counter--;
+				m_invincible_star_counter -= static_cast<int>(m_invincible_star_counter);
 			}
 		}
 	}
@@ -2556,6 +2560,29 @@ void cLevel_Player :: Draw( cSurface_Request *request /* = NULL */ )
 	if( m_invincible > 0 || m_ghost_time > 0 )
 	{
 		Set_Color( white );
+	}
+
+	if( !editor_enabled )
+	{
+		// draw debug rect
+		if( game_debug )
+		{
+			// if on ground
+			if( m_ground_object )
+			{
+				// create request
+				cRect_Request *rect_request = new cRect_Request();
+				// draw
+				pVideo->Draw_Rect( &m_ground_object->m_col_rect, m_pos_z + 0.000009f, &grey, rect_request );
+				rect_request->no_camera = 0;
+				// blending
+				rect_request->blend_sfactor = GL_SRC_COLOR;
+				rect_request->blend_dfactor = GL_DST_ALPHA;
+
+				// add request
+				pRenderer->Add( rect_request );
+			}
+		}
 	}
 }
 
@@ -3192,8 +3219,8 @@ void cLevel_Player :: Get_Item( SpriteType item_type, bool force /* = 0 */, cMov
 		pAudio->Play_Sound( "item/moon.ogg", RID_MOON );
 		pHud_Lives->Add_Lives( 3 );
 	}
-	// Jumping Star
-	else if( item_type == TYPE_JSTAR ) 
+	// Star
+	else if( item_type == TYPE_STAR ) 
 	{
 		// todo : check if music is already playing
 		pAudio->Play_Music( "game/star.ogg", 0, 1, 500 );
@@ -3752,7 +3779,7 @@ bool cLevel_Player :: Ball_Add( ball_effect effect_type /* = FIREBALL_DEFAULT */
 			anim->Set_Blending( BLEND_ADD );
 			anim->Set_Speed( 0.8f, 0.7f );
 			anim->Set_Scale( 0.4f, 0.2f );
-			// add animation
+			anim->Emit();
 			pActive_Animation_Manager->Add( anim );
 
 			pAudio->Play_Sound( "item/iceball_explosion.wav", RID_MARYO_BALL );
@@ -3937,8 +3964,8 @@ Col_Valid_Type cLevel_Player :: Validate_Collision( cSprite *obj )
 
 				return COL_VTYPE_NOT_VALID;
 			}
-			case TYPE_BONUSBOX:
-			case TYPE_SPINBOX:
+			case TYPE_BONUS_BOX:
+			case TYPE_SPIN_BOX:
 			{
 				cBaseBox *box = static_cast<cBaseBox *>(obj);
 
@@ -4006,8 +4033,8 @@ Col_Valid_Type cLevel_Player :: Validate_Collision( cSprite *obj )
 	{
 		switch( obj->m_type )
 		{
-			case TYPE_BONUSBOX:
-			case TYPE_SPINBOX:
+			case TYPE_BONUS_BOX:
+			case TYPE_SPIN_BOX:
 			case TYPE_TEXT_BOX:
 			{
 				cBaseBox *box = static_cast<cBaseBox *>(obj);
@@ -4158,25 +4185,27 @@ void cLevel_Player :: Handle_Collision_Enemy( cObjectCollision *collision )
 	// enemy is frozen
 	if( enemy->m_freeze_counter )
 	{
-		// enemy rect particle ice animation
+		// animation
+		cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
+		anim->Set_Image( pVideo->Get_Surface( "animation/particles/light.png" ) );
+		anim->Set_Time_to_Live( 0.6f, 0.4f );
+		anim->Set_Color( Color( static_cast<Uint8>(160), 160, 240 ), Color( static_cast<Uint8>( rand() % 80 ), rand() % 80, rand() % 10, 0 ) );
+		anim->Set_Fading_Alpha( 1 );
+		anim->Set_Fading_Size( 1 );
+		anim->Set_Speed( 0.5f, 0.2f );
+		anim->Set_Blending( BLEND_DRIVE );
+
+		// enemy rect ice particle animation
 		for( unsigned int w = 0; w < enemy->m_col_rect.m_w; w += 10 )
 		{
 			for( unsigned int h = 0; h < enemy->m_col_rect.m_h; h += 10 )
 			{
-				// animation
-				cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
 				anim->Set_Pos( enemy->m_pos_x + w, enemy->m_pos_y + h );
-				anim->Set_Image( pVideo->Get_Surface( "animation/particles/light.png" ) );
-				anim->Set_Time_to_Live( 0.6f, 0.4f );
-				anim->Set_Color( Color( static_cast<Uint8>(160), 160, 240 ), Color( static_cast<Uint8>( rand() % 80 ), rand() % 80, rand() % 10, 0 ) );
-				anim->Set_Fading_Alpha( 1 );
-				anim->Set_Fading_Size( 1 );
-				anim->Set_Speed( 0.5f, 0.2f );
-				anim->Set_Blending( BLEND_DRIVE );
-				// add animation
-				pActive_Animation_Manager->Add( anim );
+				anim->Emit();
 			}
 		}
+		
+		pActive_Animation_Manager->Add( anim );
 
 		// ice sound
 		pAudio->Play_Sound( "item/ice_kill.wav" );
@@ -4301,8 +4330,7 @@ void cLevel_Player :: Handle_Collision_Massive( cObjectCollision *collision )
 					anim->Set_Direction_Range( 0, 180 );
 					anim->Set_Fading_Alpha( 1 );
 					anim->Set_Fading_Size( 1 );
-					
-					// add animation
+					anim->Emit();
 					pActive_Animation_Manager->Add( anim );
 				}
 			}
@@ -4367,7 +4395,7 @@ void cLevel_Player :: Handle_Collision_Massive( cObjectCollision *collision )
 		else if( m_state == STA_FLY )
 		{
 			// box collision
-			if( col_obj->m_type == TYPE_BONUSBOX || col_obj->m_type == TYPE_SPINBOX )
+			if( col_obj->m_type == TYPE_BONUS_BOX || col_obj->m_type == TYPE_SPIN_BOX )
 			{
 				cBaseBox *box = static_cast<cBaseBox *>(col_obj);
 				box->Activate_Collision( collision->m_direction );
@@ -4389,7 +4417,7 @@ void cLevel_Player :: Handle_Collision_Massive( cObjectCollision *collision )
 		else if( m_state == STA_FLY )
 		{
 			// box collision
-			if( col_obj->m_type == TYPE_BONUSBOX || col_obj->m_type == TYPE_SPINBOX )
+			if( col_obj->m_type == TYPE_BONUS_BOX || col_obj->m_type == TYPE_SPIN_BOX )
 			{
 				cBaseBox *box = static_cast<cBaseBox *>(col_obj);
 				box->Activate_Collision( collision->m_direction );

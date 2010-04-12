@@ -128,7 +128,7 @@ void cGoldpiece :: Set_Gold_Color( DefaultColor color )
 	// clear images
 	Clear_Images();
 
-	if( m_type == TYPE_FGOLDPIECE )
+	if( m_type == TYPE_FALLING_GOLDPIECE )
 	{
 		if( m_color_type == COL_RED )
 		{
@@ -201,7 +201,7 @@ void cGoldpiece :: Set_Gold_Color( DefaultColor color )
 	Set_Animation( 1 );
 	Set_Animation_Image_Range( 0, 9 );
 
-	if( m_type == TYPE_JGOLDPIECE || m_type == TYPE_FGOLDPIECE )
+	if( m_type == TYPE_JUMPING_GOLDPIECE || m_type == TYPE_FALLING_GOLDPIECE )
 	{
 		Set_Time_All( 70, 1 );
 	}
@@ -242,7 +242,7 @@ void cGoldpiece :: Activate( void )
 	pActive_Animation_Manager->Add( anim );
 
 	// if jumping double the points
-	if( m_type == TYPE_JGOLDPIECE )
+	if( m_type == TYPE_JUMPING_GOLDPIECE )
 	{
 		points *= 2;
 	}
@@ -325,7 +325,7 @@ void cGoldpiece :: Handle_Collision_Player( cObjectCollision *collision )
 cJGoldpiece :: cJGoldpiece( cSprite_Manager *sprite_manager )
 : cGoldpiece( sprite_manager )
 {
-	m_type = TYPE_JGOLDPIECE;
+	m_type = TYPE_JUMPING_GOLDPIECE;
 	m_spawned = 1;
 
 	cJGoldpiece::Set_Gold_Color( COL_YELLOW );
@@ -369,7 +369,7 @@ Col_Valid_Type cJGoldpiece :: Validate_Collision( cSprite *obj )
 cFGoldpiece :: cFGoldpiece( cSprite_Manager *sprite_manager, float x, float y, ObjectDirection dir /* = DIR_NOTHING */ )
 : cGoldpiece( sprite_manager )
 {
-	m_type = TYPE_FGOLDPIECE;
+	m_type = TYPE_FALLING_GOLDPIECE;
 	m_spawned = 1;
 	m_camera_range = 2000;
 	m_gravity_max = 25.0f;

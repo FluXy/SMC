@@ -46,7 +46,7 @@ cjStar :: ~cjStar( void )
 
 void cjStar :: Init( void )
 {
-	m_type = TYPE_JSTAR;
+	m_type = TYPE_STAR;
 	m_pos_z = 0.053f;
 
 	m_direction = DIR_RIGHT;
@@ -101,7 +101,7 @@ void cjStar :: Activate( void )
 	Generate_Particles( m_pos_x + m_col_rect.m_w * 0.5f, m_pos_y + m_col_rect.m_h * 0.5f, 1, 20 );
 
 	// activate star
-	pLevel_Player->Get_Item( TYPE_JSTAR );
+	pLevel_Player->Get_Item( TYPE_STAR );
 
 	// if spawned destroy
 	if( m_spawned )
@@ -190,14 +190,14 @@ void cjStar :: Draw( cSurface_Request *request /* = NULL */ )
 	cPowerUp::Draw();
 }
 
-void cjStar :: Generate_Particles( float x /* = 0 */, float y /* = 0 */, bool random /* = 1 */, unsigned int quota /* = 2 */ ) const
+void cjStar :: Generate_Particles( float x /* = 0.0f */, float y /* = 0.0f */, bool random /* = 1 */, unsigned int quota /* = 2 */ ) const
 {
-	if( x == 0 )
+	if( Is_Float_Equal( x, 0.0f ) )
 	{
 		x = m_pos_x;
 	}
 
-	if( y == 0 )
+	if( Is_Float_Equal( y, 0.0f ) )
 	{
 		y = m_pos_y;
 	}
@@ -209,11 +209,14 @@ void cjStar :: Generate_Particles( float x /* = 0 */, float y /* = 0 */, bool ra
 
 	// create emitter
 	cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
+	anim->Set_Image( pVideo->Get_Surface( "animation/particles/star.png" ) );
+	anim->Set_Pos_Z( m_pos_z + 0.0001f );
+
 	if( random )
 	{
 		anim->Set_Emitter_Rect( x, y, m_col_rect.m_w * 0.9f, m_col_rect.m_h * 0.9f );
 	}
-	// create without random
+	// no random position
 	else
 	{
 		anim->Set_Emitter_Rect( x, y );
@@ -221,7 +224,6 @@ void cjStar :: Generate_Particles( float x /* = 0 */, float y /* = 0 */, bool ra
 		anim->Set_Direction_Range( 180, 180 );
 	}
 	anim->Set_Quota( quota );
-	anim->Set_Image( pVideo->Get_Surface( "animation/particles/star.png" ) );
 	anim->Set_Time_to_Live( 0.4f );
 	anim->Set_Fading_Alpha( 1 );
 	anim->Set_Fading_Size( 1 );
@@ -230,6 +232,7 @@ void cjStar :: Generate_Particles( float x /* = 0 */, float y /* = 0 */, bool ra
 	anim->Set_Color( particle_color );
 	anim->Set_Blending( BLEND_ADD );
 	anim->Set_Const_Rotation_Z( -5, 10 );
+	anim->Emit();
 	pActive_Animation_Manager->Add( anim );
 }
 

@@ -42,7 +42,7 @@ cSpinBox :: ~cSpinBox( void )
 
 void cSpinBox :: Init( void )
 {
-	m_type = TYPE_SPINBOX;
+	m_type = TYPE_SPIN_BOX;
 	box_type = m_type;
 	m_camera_range = 5000;
 	m_can_be_on_ground = 0;
@@ -177,7 +177,7 @@ void cSpinBox :: Update( void )
 					// check for items
 					if( col_obj->m_type == TYPE_MUSHROOM_LIVE_1 || col_obj->m_type == TYPE_MUSHROOM_DEFAULT || 
 						col_obj->m_type == TYPE_MUSHROOM_POISON || col_obj->m_type == TYPE_MUSHROOM_BLUE || col_obj->m_type == TYPE_MUSHROOM_GHOST || 
-						col_obj->m_type == TYPE_FIREPLANT || col_obj->m_type == TYPE_JSTAR || col_obj->m_type == TYPE_FGOLDPIECE )
+						col_obj->m_type == TYPE_FIREPLANT || col_obj->m_type == TYPE_STAR || col_obj->m_type == TYPE_FALLING_GOLDPIECE )
 					{
 						// found blocking active object
 						spin_again = 1;

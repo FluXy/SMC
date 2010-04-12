@@ -179,7 +179,7 @@ enum LevelDrawType
 static const int speedfactor_fps = 32;
 
 /* *** level engine version *** */
-static const int level_engine_version = 37;
+static const int level_engine_version = 38;
 /* *** world engine version *** */
 static const int world_engine_version = 3;
 
@@ -197,7 +197,7 @@ enum SpriteType
 	TYPE_CLIMBABLE = 47,
 	TYPE_ENEMY = 2,
 	TYPE_PLAYER = 3,
-	TYPE_ACTIVESPRITE = 4,
+	TYPE_ACTIVE_SPRITE = 4,
 	// game
 	TYPE_MOUSECURSOR = 100,
 	// overworld
@@ -208,8 +208,8 @@ enum SpriteType
 	TYPE_LEVEL_EXIT = 18,
 	TYPE_LEVEL_ENTRY = 54,
 	TYPE_ENEMY_STOPPER = 20,
-	TYPE_BONUSBOX = 26,
-	TYPE_SPINBOX = 27,
+	TYPE_BONUS_BOX = 26,
+	TYPE_SPIN_BOX = 27,
 	TYPE_TEXT_BOX = 59,
 	TYPE_MOVING_PLATFORM = 38,
 	// enemy
@@ -234,25 +234,25 @@ enum SpriteType
 	TYPE_MUSHROOM_BLUE = 51,
 	TYPE_MUSHROOM_GHOST = 52,
 	TYPE_FIREPLANT = 24,
-	TYPE_JGOLDPIECE = 22, // Jumping Goldpiece
-	TYPE_FGOLDPIECE = 48, // Falling Goldpiece
+	TYPE_JUMPING_GOLDPIECE = 22,
+	TYPE_FALLING_GOLDPIECE = 48,
 	TYPE_GOLDPIECE = 8,
 	TYPE_MOON = 37,
-	TYPE_JSTAR = 39, // Jumping Star
+	TYPE_STAR = 39,
 	// special
 	TYPE_BALL = 28,
 	TYPE_SOUND = 60,
 	TYPE_ANIMATION = 61,
+	TYPE_PARTICLE_EMITTER = 65,
 	TYPE_PATH = 63,
 	// HUD
-	TYPE_STATUSTEXT = 9,
-	TYPE_POINTDISPLAY = 12,
-	TYPE_GAMETIMEDISPLAY = 13,
-	TYPE_DEBUGDISPLAY = 14,
-	TYPE_LIFEDISPLAY = 15,
-	TYPE_GOLDDISPLAY = 16,
-	TYPE_MENUBG = 17,
-	TYPE_ITEMBOXDISPLAY = 32
+	TYPE_HUD_POINTS = 12,
+	TYPE_HUD_TIME = 13,
+	TYPE_HUD_DEBUG = 14,
+	TYPE_HUD_LIFE = 15,
+	TYPE_HUD_GOLD = 16,
+	TYPE_HUD_BACKGROUND = 17,
+	TYPE_HUD_ITEMBOX = 32
 };
 
 /* *** Massive Types *** */

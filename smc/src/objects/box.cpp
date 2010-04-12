@@ -38,7 +38,7 @@ namespace SMC
 cBaseBox :: cBaseBox( cSprite_Manager *sprite_manager )
 : cAnimated_Sprite( sprite_manager )
 {
-	m_type = TYPE_ACTIVESPRITE;
+	m_type = TYPE_ACTIVE_SPRITE;
 	m_sprite_array = ARRAY_ACTIVE;
 	m_massive_type = MASS_MASSIVE;
 	m_can_be_ground = 1;
@@ -69,7 +69,7 @@ void cBaseBox :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );
-	if( box_type != TYPE_SPINBOX && box_type != TYPE_TEXT_BOX )
+	if( box_type != TYPE_SPIN_BOX && box_type != TYPE_TEXT_BOX )
 	{
 		// animation
 		Set_Animation_Type( attributes.getValueAsString( "animation", m_anim_type ).c_str() );
@@ -86,7 +86,7 @@ void cBaseBox :: Save_To_Stream( ofstream &file )
 	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
 	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
 	// type
-	if( box_type == TYPE_SPINBOX )
+	if( box_type == TYPE_SPIN_BOX )
 	{
 		file << "\t\t<Property name=\"type\" value=\"spin\" />" << std::endl;
 	}
@@ -461,7 +461,7 @@ void cBaseBox :: Update( void )
 	if( m_box_invisible == BOX_VISIBLE || ( m_box_invisible == BOX_GHOST && pLevel_Player->m_maryo_type == MARYO_GHOST ) || m_useable_count != m_start_useable_count )
 	{
 		// Spinbox animation handling
-		if( ( m_type == TYPE_SPINBOX || m_useable_count != 0 ) && m_anim_enabled )
+		if( ( m_type == TYPE_SPIN_BOX || m_useable_count != 0 ) && m_anim_enabled )
 		{
 			// Set_Image in Update_Animation overwrites col_pos
 			GL_point col_pos_temp = m_col_pos;
@@ -536,60 +536,85 @@ void cBaseBox :: Draw( cSurface_Request *request /* = NULL */ )
 void cBaseBox :: Generate_Activation_Particles( void )
 {
 	// no default/unimportant boxes
-	if( m_type == TYPE_SPINBOX || m_type == TYPE_TEXT_BOX || box_type == TYPE_GOLDPIECE )
+	if( m_type == TYPE_SPIN_BOX || m_type == TYPE_TEXT_BOX || box_type == TYPE_GOLDPIECE )
 	{
 		return;
 	}
 
 	m_particle_counter_active += pFramerate->m_speed_factor;
 
-	while( m_particle_counter_active > 0.0f )
+	if( m_particle_counter_active > 0.0f )
 	{
 		cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
-		anim->Set_Pos( m_pos_x + Get_Random_Float( 0.0f, m_rect.m_w ), m_pos_y, 1 );
+		if( box_type == TYPE_MUSHROOM_POISON )
+		{
+			anim->Set_Image( pVideo->Get_Surface( "animation/particles/green_ghost_light.png" ) );
+			anim->Set_Speed( 1.0f, 0.1f );
+			anim->Set_Time_to_Live( 1.4f );
+		}
+		else
+		{
+			anim->Set_Image( pVideo->Get_Surface( "animation/particles/light.png" ) );
+			anim->Set_Speed( 7.0f, 0.5f );
+			anim->Set_Time_to_Live( 0.2f );
+		}
+		anim->Set_Quota( static_cast<int>(m_particle_counter_active) );
+		anim->Set_Emitter_Rect( m_pos_x + 4.0f, m_pos_y + 8.0f, m_rect.m_w - 8.0f, 1.0f );
+		anim->Set_Emitter_Time_to_Live( 0.5f );
 		anim->Set_Pos_Z( m_pos_z - 0.000001f );
-		anim->Set_Direction_Range( 180, 180 );
-		anim->Set_Speed( 3.1f, 0.5f );
-		anim->Set_Scale( 0.7f, 0.1f );
+		anim->Set_Direction_Range( 260, 20 );
+		anim->Set_Scale( 0.3f, 0.1f );
 
-		Color color = white;
+		Color color;
+		Color color_rand;
 
 		if( box_type == TYPE_MUSHROOM_DEFAULT )
 		{
-			color = Color( static_cast<Uint8>( 100 + ( rand() % 100 ) ), 20 + ( rand() % 50 ), 10 + ( rand() % 30 ) );
+			color = Color( static_cast<Uint8>(180), 140, 120 );
+			color_rand = Color( static_cast<Uint8>(70), 30, 30, 0 );
 		}
 		else if( box_type == TYPE_FIREPLANT )
 		{
-			color = Color( static_cast<Uint8>( 110 + ( rand() % 150 ) ), rand() % 50, rand() % 30 );
+			color = Color( static_cast<Uint8>(220), 150, 70 );
+			color_rand = Color( static_cast<Uint8>(30), 10, 10, 0 );
 		}
 		else if( box_type == TYPE_MUSHROOM_BLUE )
 		{
-			color = Color( static_cast<Uint8>( rand() % 30 ), ( rand() % 30 ), 150 + ( rand() % 50 ) );
+			color = Color( static_cast<Uint8>(180), 180, 240 );
+			color_rand = Color( static_cast<Uint8>(40), 40, 10, 0 );
 		}
 		else if( box_type == TYPE_MUSHROOM_GHOST )
 		{
-			color = Color( static_cast<Uint8>( 100 + ( rand() % 50 ) ), 100 + ( rand() % 50 ), 100 + ( rand() % 50 ) );
+			color = Color( static_cast<Uint8>(100), 100, 100 );
+			color_rand = Color( static_cast<Uint8>(10), 10, 10, 0 );
 		}
 		else if( box_type == TYPE_MUSHROOM_LIVE_1 )
 		{
-			color = Color( static_cast<Uint8>( rand() % 30 ), 100 + ( rand() % 150 ), rand() % 30 );
+			color = Color( static_cast<Uint8>(120), 200, 120 );
+			color_rand = Color( static_cast<Uint8>(20), 50, 20, 0 );
 		}
-		else if( box_type == TYPE_JSTAR )
+		else if( box_type == TYPE_STAR )
 		{
-			color = Color( static_cast<Uint8>( 110 + ( rand() % 150 ) ), 80 + ( rand() % 50 ), rand() % 20 );
+			color = Color( static_cast<Uint8>(180), 150, 100 );
+			color_rand = Color( static_cast<Uint8>(70), 70, 0, 0 );
 		}
 		else if( box_type == TYPE_MUSHROOM_POISON )
 		{
-			color = Color( static_cast<Uint8>( 50 + rand() % 50 ), 100 + ( rand() % 150 ), rand() % 10 );
+			color = Color( static_cast<Uint8>(80), 100, 10 );
+			color_rand = Color( static_cast<Uint8>(20), 90, 20, 0 );
 		}
+		else
+		{
+			color = white;
+			color_rand = Color( static_cast<Uint8>(0), 0, 0, 0 );
+		}
+		anim->Set_Color( color, color_rand );
 
-		anim->Set_Time_to_Live( 0.3f );
-		anim->Set_Color( color );
 		anim->Set_Blending( BLEND_ADD );
-		anim->Set_Image( pVideo->Get_Surface( "animation/particles/light.png" ) );
+		anim->Emit();
 		pActive_Animation_Manager->Add( anim );
 
-		m_particle_counter_active--;
+		m_particle_counter_active -= static_cast<int>(m_particle_counter_active);
 	}
 }
 
@@ -665,7 +690,7 @@ Col_Valid_Type cBaseBox :: Validate_Collision( cSprite *obj )
 		case TYPE_MUSHROOM_POISON:
 		case TYPE_MUSHROOM_BLUE:
 		case TYPE_MUSHROOM_GHOST:
-		case TYPE_FGOLDPIECE:
+		case TYPE_FALLING_GOLDPIECE:
 		{
 			return COL_VTYPE_BLOCKING;
 		}
@@ -801,7 +826,7 @@ void cBaseBox :: Editor_Activate( void )
 
 	combobox->subscribeEvent( CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber( &cBaseBox::Editor_Invisible_Select, this ) );
 
-	if( m_type == TYPE_SPINBOX )
+	if( m_type == TYPE_SPIN_BOX )
 	{
 		// init
 		Editor_Init();
@@ -853,7 +878,7 @@ void cBaseBox :: Create_Name( void )
 	{
 		m_name = _("Box Random");
 	}
-	else if( box_type == TYPE_SPINBOX )
+	else if( box_type == TYPE_SPIN_BOX )
 	{
 		m_name = _("Spinbox");
 	}
@@ -881,7 +906,7 @@ void cBaseBox :: Create_Name( void )
 	{
 		m_name = _("Box 1-UP");
 	}
-	else if( box_type == TYPE_JSTAR )
+	else if( box_type == TYPE_STAR )
 	{
 		m_name = _("Box Star");
 	}

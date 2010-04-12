@@ -141,9 +141,6 @@ void cEditor_Item_Object :: Draw_Image( void )
 		return;
 	}
 
-	// force valid draw
-	sprite_obj->m_valid_draw = 1;
-
 	// create request
 	cSurface_Request *request = new cSurface_Request();
 
@@ -157,7 +154,7 @@ void cEditor_Item_Object :: Draw_Image( void )
 	bool scale_right_orig = sprite_obj->m_scale_right;
 	sprite_obj->Set_Scale_Directions( 0, 1, 0, 1 );
 	// draw image
-	sprite_obj->Draw_Image( request );
+	sprite_obj->Draw_Image_Editor( request );
 	// reset scale
 	sprite_obj->m_start_scale_x = 1;
 	sprite_obj->m_start_scale_y = 1;
@@ -531,7 +528,7 @@ void cEditor :: Draw( void )
 	}
 
 	// if editor window is active
-	if( m_editor_window->getXPosition().asRelative( 1 ) >= 0.0f )
+	if( m_editor_window->getXPosition().asRelative( 1.0f ) >= 0.0f )
 	{
 		// Listbox dimension
 		float list_posy = m_listbox_items->getUnclippedOuterRect().d_top * global_downscaley;
@@ -898,7 +895,7 @@ bool cEditor :: Mouse_Down( Uint8 button )
 	// left
 	if( button == SDL_BUTTON_LEFT )
 	{
-		pMouseCursor->Left_Click();
+		pMouseCursor->Left_Click_Down();
 		
 		// auto hide if enabled
 		if( pMouseCursor->m_hovering_object->m_obj && pPreferences->m_editor_mouse_auto_hide )
@@ -951,12 +948,27 @@ bool cEditor :: Mouse_Up( Uint8 button )
 	// left
 	if( button == SDL_BUTTON_LEFT )
 	{
-		pMouseCursor->End_Selection();
-
 		// unhide
 		if( pPreferences->m_editor_mouse_auto_hide )
 		{
 			pMouseCursor->Set_Active( 1 );
+		}
+
+		pMouseCursor->End_Selection();
+
+		if( pMouseCursor->m_hovering_object->m_obj )
+		{
+			for( SelectedObjectList::iterator itr = pMouseCursor->m_selected_objects.begin(); itr != pMouseCursor->m_selected_objects.end(); ++itr )
+			{
+				cSelectedObject *object = (*itr);
+
+				// pre-update to keep particles on the correct position
+				if( object->m_obj->m_type == TYPE_PARTICLE_EMITTER )
+				{
+					cParticle_Emitter *emitter = static_cast<cParticle_Emitter *>(object->m_obj);
+					emitter->Pre_Update();
+				}
+			}
 		}
 	}
 	// middle

@@ -44,7 +44,6 @@ smc_SOURCES = \
 	input/joystick.cpp \
 	input/keyboard.cpp \
 	input/mouse.cpp \
-	level/global_effect.cpp \
 	level/level_background.cpp \
 	level/level.cpp \
 	level/level_editor.cpp \

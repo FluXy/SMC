@@ -272,7 +272,7 @@ void cFlyon :: DownGrade( bool force /* = 0 */ )
 
 		anim->Set_Speed( 5.0f, 0.6f );
 		anim->Set_Scale( 0.8f );
-		// add animation
+		anim->Emit();
 		pActive_Animation_Manager->Add( anim );
 	}
 	else

@@ -22,7 +22,7 @@
 namespace SMC
 {
 
-/* *** *** *** *** *** Jumping Star *** *** *** *** *** *** *** *** *** *** *** *** */
+/* *** *** *** *** *** Star *** *** *** *** *** *** *** *** *** *** *** *** */
 
 class cjStar : public cPowerUp
 {
@@ -53,7 +53,7 @@ public:
 	virtual void Draw( cSurface_Request *request = NULL );
 
 	// Adds Star Particles
-	void Generate_Particles( float x = 0, float y = 0, bool random = 1, unsigned int quota = 2 ) const;
+	void Generate_Particles( float x = 0.0f, float y = 0.0f, bool random = 1, unsigned int quota = 2 ) const;
 
 	// collision from player
 	virtual void Handle_Collision_Player( cObjectCollision *collision );

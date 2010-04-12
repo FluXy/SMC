@@ -29,7 +29,7 @@ public:
 	cLevel_Settings( cSprite_Manager *sprite_manager, cLevel *level );
 	~cLevel_Settings( void );
 
-	// Initializes Text Sprites and Graphics
+	// Initialize
 	void Init( void );
 	// Enter
 	void Enter( void );
@@ -75,13 +75,6 @@ public:
 	// Clears the background Layer fields
 	void Clear_Layer_Field( void );
 
-	// Loads the global effect data
-	void Load_Global_Effect( void );
-	// Set the global effect image preview
-	void Set_Global_Effect_Image_Preview( std::string filename );
-	// Updates the global effect image
-	bool Update_Global_Effect_Image( const CEGUI::EventArgs &event );
-
 	// true if menu is active
 	bool m_active;
 
@@ -95,9 +88,6 @@ public:
 
 	// background image preview
 	cHudSprite *m_background_preview;
-
-	// global effect image preview
-	cHudSprite *m_global_effect_preview;
 
 	// Background colors
 	Color m_bg_color_1;

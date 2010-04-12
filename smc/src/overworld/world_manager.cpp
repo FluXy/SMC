@@ -20,6 +20,7 @@
 #include "../core/filesystem/resource_manager.h"
 #include "../overworld/world_editor.h"
 #include "../input/mouse.h"
+#include "../video/animation.h"
 // boost filesystem
 #include "boost/filesystem/convenience.hpp"
 namespace fs = boost::filesystem;
@@ -162,6 +163,18 @@ bool cOverworld_Manager :: Set_Active( cOverworld *world )
 	pOverworld_Player->Set_Sprite_Manager( world->m_sprite_manager );
 	pOverworld_Player->Set_Overworld( world );
 	pOverworld_Player->Reset();
+
+	// pre-update animations
+	for( cSprite_List::iterator itr = world->m_sprite_manager->objects.begin(); itr != world->m_sprite_manager->objects.end(); ++itr )
+	{
+		cSprite *obj = (*itr);
+
+		if( obj->m_type == TYPE_PARTICLE_EMITTER )
+		{
+			cParticle_Emitter *emitter = static_cast<cParticle_Emitter *>(obj);
+			emitter->Pre_Update();
+		}
+	}
 
 	return 1;
 }

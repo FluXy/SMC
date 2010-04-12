@@ -148,7 +148,6 @@ void cRokko :: Set_Direction( const ObjectDirection dir )
 	m_name += _(Get_Direction_Name(m_start_direction).c_str());
 
 	Add_Image( pVideo->Get_Surface( "enemy/rokko/r.png" ) );
-
 	if( m_direction == DIR_LEFT )
 	{
 		Set_Rotation( 0.0f, 180.0f, 0.0f, 1 );
@@ -252,7 +251,7 @@ void cRokko :: DownGrade( bool force /* = 0 */ )
 		anim->Set_Quota( 8 );
 		anim->Set_Speed( 4, 1 );
 		anim->Set_Scale( 0.9f );
-		// add animation
+		anim->Emit();
 		pActive_Animation_Manager->Add( anim );
 	}
 }
@@ -273,7 +272,7 @@ void cRokko :: Update_Dying( void )
 
 	// generate smoke
 	m_smoke_counter += pFramerate->m_speed_factor * 4;
-	if( m_smoke_counter >= 2 )
+	if( m_smoke_counter >= 2.0f )
 	{
 		Generate_Smoke( static_cast<int>(m_smoke_counter) );
 		Generate_Sparks( static_cast<int>(m_smoke_counter * 0.5f) );
@@ -474,7 +473,7 @@ void cRokko :: Generate_Smoke( unsigned int amount /* = 10 */ ) const
 	anim->Set_Color( Color( static_cast<Uint8>(155), 150, 130 ) );
 	anim->Set_Fading_Alpha( 1 );
 	
-	// add animation
+	anim->Emit();
 	pActive_Animation_Manager->Add( anim );
 }
 
@@ -492,7 +491,7 @@ void cRokko :: Generate_Sparks( unsigned int amount /* = 5 */ ) const
 	anim->Set_Scale( 0.3f, 0.3f );
 	anim->Set_Fading_Size( 1 );
 	anim->Set_Fading_Alpha( 0 );
-	// add animation
+	anim->Emit();
 	pActive_Animation_Manager->Add( anim );
 }
 

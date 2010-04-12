@@ -40,9 +40,6 @@ void cWorld_Sprite_Manager :: Add( cSprite *sprite )
 		return;
 	}
 
-	// no player range
-	sprite->m_camera_range = 0;
-
 	// add
 	cSprite_Manager::Add( sprite );
 

@@ -542,6 +542,7 @@ void cMoving_Platform :: Update( void )
 			if( m_shake_counter > m_shake_time )
 			{
 				m_platform_state = MOVING_PLATFORM_FALL;
+				// todo : change massivetype so no object can collide with it anymore but this needs a start_massivetype for saving
 			}
 		}
 		else if( m_platform_state == MOVING_PLATFORM_FALL )
@@ -555,7 +556,6 @@ void cMoving_Platform :: Update( void )
 			if( m_can_be_ground && m_vely > 15.0f )
 			{
 				m_can_be_ground = 0;
-				// todo : change massivetype so no object can collide with it anymore but this needs a start_massivetype for saving
 			}
 
 			if( m_pos_x > m_start_pos_x )

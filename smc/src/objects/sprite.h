@@ -349,10 +349,20 @@ public:
 	* if request is NULL automatically creates the request
 	*/
 	virtual void Draw( cSurface_Request *request = NULL );
-	/* only draws the image
-	 * no position nor debug updates
+	/* draws the image only.
+	 * using start/editor data if editor is enabled.
 	*/
 	void Draw_Image( cSurface_Request *request = NULL ) const;
+	/* draws the image only.
+	 * doesn't check if draw is valid and requires a set drawing request
+	 * does not use start/editor data even if editor is enabled.
+	*/
+	void Draw_Image_Normal( cSurface_Request *request = NULL ) const;
+	/* draws the image only.
+	 * doesn't check if draw is valid and requires a set drawing request
+	 * uses start/editor data even if editor is disabled.
+	*/
+	void Draw_Image_Editor( cSurface_Request *request = NULL ) const;
 
 	/* Set the massive type
 	 * should be called after setting the new array
@@ -487,7 +497,9 @@ public:
 	bool m_no_camera;
 	// if true we are active and can be updated and drawn
 	bool m_active;
-	// if spawned it shouldn't be saved
+	/* if spawned
+	 * if set it is not saved in the level/world file
+	 */
 	bool m_spawned;
 	// maximum distance to the camera to get updated
 	unsigned int m_camera_range;
@@ -496,8 +508,10 @@ public:
 
 	// delete the given image when it gets unloaded
 	bool m_delete_image;
-	/* if true this sprite is ready to be replaced with a later created sprite
-	 * and this sprite is not used anywhere anymore
+	// if this can not be auto-deleted because the object is controlled from elsewhere
+	bool m_disallow_managed_delete;
+	/* if true this sprite is not used anywhere anymore
+	 * and is ready to be replaced with a new sprite
 	 * should not be used for objects needed by the editor
 	 * should be used for not active spawned objects
 	*/

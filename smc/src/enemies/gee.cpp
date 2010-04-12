@@ -482,9 +482,10 @@ void cGee :: Stop( void )
 void cGee :: Generate_Particles( unsigned int amount /* = 4 */ ) const
 {
 	cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
+	anim->Set_Image( pVideo->Get_Surface( "animation/particles/cloud.png" ) );
+	anim->Set_Pos_Z( m_pos_z - 0.00001f );
 	anim->Set_Emitter_Rect( m_col_rect.m_x + ( m_col_rect.m_w * 0.3f ), m_col_rect.m_y + ( m_col_rect.m_h * 0.2f ), m_col_rect.m_w * 0.4f, m_col_rect.m_h * 0.3f );
 	anim->Set_Quota( amount );
-	anim->Set_Image( pVideo->Get_Surface( "animation/particles/cloud.png" ) );
 
 	if( !m_dead )
 	{
@@ -523,6 +524,7 @@ void cGee :: Generate_Particles( unsigned int amount /* = 4 */ ) const
 	anim->Set_Time_to_Live( 2.0f );
 	anim->Set_Fading_Alpha( 1 );
 	anim->Set_Blending( BLEND_ADD );
+	anim->Emit();
 	pActive_Animation_Manager->Add( anim );
 }
 

@@ -451,9 +451,9 @@ void cTurtle :: Update( void )
 	if( m_turtle_state == TURTLE_SHELL_STAND || m_turtle_state == TURTLE_SHELL_RUN )
 	{
 		// update rotation
-		if( m_velx != 0 )
+		if( !Is_Float_Equal( m_velx, 0.0f ) )
 		{
-			Add_Rotation_Z( ( m_velx / ( m_image->m_w * 0.015f ) ) * pFramerate->m_speed_factor );
+			Add_Rotation_Z( ( m_velx / ( m_image->m_w * 0.009f ) ) * pFramerate->m_speed_factor );
 		}
 	}
 
@@ -701,8 +701,8 @@ Col_Valid_Type cTurtle :: Validate_Collision( cSprite *obj )
 
 				return COL_VTYPE_NOT_VALID;
 			}
-			case TYPE_BONUSBOX:
-			case TYPE_SPINBOX:
+			case TYPE_BONUS_BOX:
+			case TYPE_SPIN_BOX:
 			case TYPE_TEXT_BOX:
 			{
 				// if shell
@@ -763,7 +763,7 @@ void cTurtle :: Handle_Collision_Player( cObjectCollision *collision )
 		Generate_Hit_Animation( anim );
 		anim->Set_Speed( 4.0f, 0.8f );
 		anim->Set_Scale( 0.6f );
-		// add animation
+		anim->Emit();
 		pActive_Animation_Manager->Add( anim );
 
 		DownGrade();
@@ -852,6 +852,7 @@ void cTurtle :: Handle_Collision_Player( cObjectCollision *collision )
 				}
 			}
 
+			anim->Emit();
 			pActive_Animation_Manager->Add( anim );
 			m_player_counter = speedfactor_fps * 0.13f;
 		}
@@ -919,7 +920,7 @@ void cTurtle :: Handle_Collision_Enemy( cObjectCollision *collision )
 				anim->Set_Direction_Range( 180.0f );
 			}
 			
-			// add animation
+			anim->Emit();
 			pActive_Animation_Manager->Add( anim );
 		}
 	}
@@ -968,7 +969,7 @@ void cTurtle :: Handle_Collision_Massive( cObjectCollision *collision )
 			anim->Set_Time_to_Live( 0.2f, 0.2f );
 			anim->Set_Speed( 1.0f, 1.0f );
 			anim->Set_Scale( 0.5f, 0.4f );
-			// add animation
+			anim->Emit();
 			pActive_Animation_Manager->Add( anim );
 		}
 
@@ -986,7 +987,7 @@ void cTurtle :: Handle_Collision_Massive( cObjectCollision *collision )
 			// active object box collision
 			if( collision->m_array == ARRAY_ACTIVE )
 			{
-				if( col_object->m_type == TYPE_BONUSBOX || col_object->m_type == TYPE_SPINBOX )
+				if( col_object->m_type == TYPE_BONUS_BOX || col_object->m_type == TYPE_SPIN_BOX )
 				{
 					// get basebox
 					cBaseBox *box = static_cast<cBaseBox *>(col_object);

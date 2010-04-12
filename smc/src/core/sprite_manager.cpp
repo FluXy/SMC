@@ -82,8 +82,8 @@ cSprite *cSprite_Manager :: Copy( unsigned int identifier )
 
 void cSprite_Manager :: Set_Pos_Z( cSprite *sprite )
 {
-	// don't set animation z position
-	if( sprite->m_type == TYPE_ANIMATION )
+	// don't set particle effect z position
+	if( sprite->m_type == TYPE_ANIMATION || sprite->m_type == TYPE_PARTICLE_EMITTER )
 	{
 		return;
 	}
@@ -197,12 +197,28 @@ void cSprite_Manager :: Delete_All( bool delayed /* = 0 */ )
 			cSprite *obj = (*itr);
 
 			obj->Destroy();
-			obj->Clear_Collisions();
 		}
 	}
 	// instant
 	else
 	{
+		// remove objects that can not be auto-deleted
+		for( cSprite_List::iterator itr = objects.begin(); itr != objects.end(); )
+		{
+			// get object pointer
+			cSprite *obj = (*itr);
+
+			if( obj->m_disallow_managed_delete )
+			{
+				itr = objects.erase( itr );
+			}
+			// increment
+			else
+			{
+				++itr;
+			}
+		}
+
 		cObject_Manager<cSprite>::Delete_All();
 	}
 

@@ -1206,7 +1206,7 @@ Col_Valid_Type cMovingSprite :: Validate_Collision( cSprite *obj )
 
 Col_Valid_Type cMovingSprite :: Validate_Collision_Ghost( cSprite *obj )
 {
-	if( obj->m_type == TYPE_BONUSBOX || obj->m_type == TYPE_SPINBOX )
+	if( obj->m_type == TYPE_BONUS_BOX || obj->m_type == TYPE_SPIN_BOX )
 	{
 		cBaseBox *box = static_cast<cBaseBox *>(obj);
 

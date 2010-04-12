@@ -28,8 +28,8 @@ enum Camera_movement
 	CAMERA_MOVE_NONE = 0,	// No movement
 	CAMERA_MOVE_FLY = 1,	// Move the camera to the destination position
 	CAMERA_MOVE_BLINK = 2,	// Fade out at the current position and fade back in at the destination position
-	CAMERA_MOVE_ALONG_PATH = 3, // Move the camera along a given path
-	CAMERA_MOVE_ALONG_PATH_BACKWARDS = 4 // Move the camera along a given path backwards
+	CAMERA_MOVE_ALONG_PATH = 3, // Move the camera along a path
+	CAMERA_MOVE_ALONG_PATH_BACKWARDS = 4 // Move the camera along a path backwards
 };
 
 /* *** *** *** *** *** cCamera *** *** *** *** *** *** *** *** *** *** *** *** */

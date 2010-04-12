@@ -708,6 +708,7 @@ void cTurtleBoss :: Generate_Stars( unsigned int amount /* = 1 */, float particl
 	anim->Set_Scale( particle_scale, 0.3f );
 	anim->Set_Color( orange, Color( static_cast<Uint8>(6), 60, 20, 0 ) );
 	anim->Set_Blending( BLEND_ADD );
+	anim->Emit();
 	pActive_Animation_Manager->Add( anim );
 }
 
@@ -912,7 +913,7 @@ void cTurtleBoss :: Handle_Collision_Player( cObjectCollision *collision )
 
 		anim->Set_Speed( 4, 0.8f );
 		anim->Set_Scale( 0.9f );
-		// add animation
+		anim->Emit();
 		pActive_Animation_Manager->Add( anim );
 
 		DownGrade();
@@ -995,6 +996,7 @@ void cTurtleBoss :: Handle_Collision_Player( cObjectCollision *collision )
 				}
 			}
 
+			anim->Emit();
 			pActive_Animation_Manager->Add( anim );
 			m_player_counter = speedfactor_fps * 0.13f;
 		}
@@ -1088,7 +1090,7 @@ void cTurtleBoss :: Handle_Collision_Massive( cObjectCollision *collision )
 			anim->Set_Time_to_Live( 0.3f );
 			anim->Set_Speed( 1.0f, 1.0f );
 			anim->Set_Scale( 0.5f, 0.4f );
-			// add animation
+			anim->Emit();
 			pActive_Animation_Manager->Add( anim );
 		}
 
@@ -1109,7 +1111,7 @@ void cTurtleBoss :: Handle_Collision_Massive( cObjectCollision *collision )
 				// get colliding object
 				cSprite *col_object = m_sprite_manager->Get_Pointer( collision->m_number );
 
-				if( col_object->m_type == TYPE_BONUSBOX || col_object->m_type == TYPE_SPINBOX )
+				if( col_object->m_type == TYPE_BONUS_BOX || col_object->m_type == TYPE_SPIN_BOX )
 				{
 					// get basebox
 					cBaseBox *box = static_cast<cBaseBox *>(col_object);

@@ -23,6 +23,7 @@
 #include "../overworld/overworld.h"
 #include "../core/main.h"
 #include "../audio/audio.h"
+#include "../gui/menu.h"
 
 namespace SMC
 {
@@ -152,10 +153,16 @@ bool cCamera :: Move_to_Position_Gradually( const float pos_x, const float pos_y
 			return 0;
 		}
 
-		if( Game_Mode == MODE_LEVEL )
+		// keep particles on screen
+		for( cSprite_List::iterator itr = m_sprite_manager->objects.begin(); itr != m_sprite_manager->objects.end(); ++itr )
 		{
-			// keep global effect particles on screen
-			pActive_Level->m_global_effect->Update_Particles();
+			cSprite *obj = (*itr);
+
+			if( obj->m_type == TYPE_PARTICLE_EMITTER )
+			{
+				cParticle_Emitter *emitter = static_cast<cParticle_Emitter *>(obj);
+				emitter->Update_Position();
+			}
 		}
 
 		// update audio
@@ -457,8 +464,6 @@ void cCamera :: Update_Position( void ) const
 		pActive_Player->Update_Valid_Draw();
 		// update sprite manager
 		m_sprite_manager->Update_Items_Valid_Draw();
-		// update menu animation
-		//pMenuCore->pMenu_AnimManager->
 	}
 }
 

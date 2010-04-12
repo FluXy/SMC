@@ -529,9 +529,9 @@ void cOverworld :: Draw_Layer_1( void )
 {
 	pVideo->Draw_Rect( NULL, 0.0001f, &m_background_color );
 
-	// Map
+	// sprites
 	m_sprite_manager->Draw_Items();
-	// Animations
+	// animations
 	m_animation_manager->Draw();
 }
 
@@ -571,6 +571,20 @@ void cOverworld :: Update( void )
 		pOverworld_Player->Update();
 		// Animations
 		m_animation_manager->Update();
+	}
+	// if world-editor is enabled
+	else
+	{
+		// only update particle emitters
+		for( cSprite_List::iterator itr = m_sprite_manager->objects.begin(); itr != m_sprite_manager->objects.end(); ++itr )
+		{
+			cSprite *obj = (*itr);
+
+			if( obj->m_type == TYPE_PARTICLE_EMITTER )
+			{
+				obj->Update();
+			}
+		}
 	}
 
 	// hud

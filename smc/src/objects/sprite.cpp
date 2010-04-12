@@ -365,6 +365,7 @@ void cSprite :: Init( void )
 	m_spawned = 0;
 	m_camera_range = 1000;
 	m_can_be_ground = 0;
+	m_disallow_managed_delete = 0;
 
 	// rotation
 	m_rotation_affects_rect = 0;
@@ -1030,37 +1031,8 @@ void cSprite :: Draw( cSurface_Request *request /* = NULL */ )
 		pRenderer->Add( rect_request );
 	}
 
-	// no editor drawing
-	if( !editor_enabled )
-	{
-		// draw debug rect
-		if( game_debug )
-		{
-			if( m_type == TYPE_PLAYER )
-			{
-				// Get Moving Sprite
-				cMovingSprite *moving_sprite = static_cast<cMovingSprite *>(this);
-
-				// if on ground
-				if( moving_sprite->m_ground_object )
-				{
-					// create request
-					cRect_Request *rect_request = new cRect_Request();
-					// draw
-					pVideo->Draw_Rect( &moving_sprite->m_ground_object->m_col_rect, m_pos_z + 0.000009f, &grey, rect_request );
-					rect_request->no_camera = 0;
-					// blending
-					rect_request->blend_sfactor = GL_SRC_COLOR;
-					rect_request->blend_dfactor = GL_DST_ALPHA;
-
-					// add request
-					pRenderer->Add( rect_request );
-				}
-			}
-		}
-	}
 	// show obsolete images in editor
-	else if( m_image && m_image->m_obsolete )
+	if( editor_enabled && m_image && m_image->m_obsolete )
 	{
 		// create request
 		cRect_Request *rect_request = new cRect_Request();
@@ -1096,179 +1068,216 @@ void cSprite :: Draw_Image( cSurface_Request *request /* = NULL */ ) const
 	// editor
 	if( editor_enabled )
 	{
-		// texture id
-		request->texture_id = m_start_image->m_image;
-
-		// size
-		request->w = m_start_image->m_start_w;
-		request->h = m_start_image->m_start_h;
-
-		// rotation
-		request->rotx += m_start_rot_x + m_start_image->m_base_rot_x;
-		request->roty += m_start_rot_y + m_start_image->m_base_rot_y;
-		request->rotz += m_start_rot_z + m_start_image->m_base_rot_z;
-
-		// position x and
-		// scalex
-		if( m_start_scale_x != 1.0f )
-		{
-			// scale to the right and left
-			if( m_scale_right && m_scale_left )
-			{
-				request->scale_x = m_start_scale_x;
-				request->pos_x = m_start_pos_x + ( m_start_image->m_int_x * m_start_scale_x ) - ( ( m_start_image->m_w * 0.5f ) * ( m_start_scale_x - 1.0f ) );
-			}
-			// scale to the right only
-			else if( m_scale_right )
-			{
-				request->scale_x = m_start_scale_x;
-				request->pos_x = m_start_pos_x + ( m_start_image->m_int_x * m_start_scale_x );
-			}
-			// scale to the left only
-			else if( m_scale_left )
-			{
-				request->scale_x = m_start_scale_x;
-				request->pos_x = m_start_pos_x + ( m_start_image->m_int_x * m_start_scale_x ) - ( ( m_start_image->m_w ) * ( m_start_scale_x - 1.0f ) );
-			}
-			// no scaling
-			else
-			{
-				request->pos_x = m_start_pos_x + m_start_image->m_int_x;
-			}
-		}
-		// no scalex
-		else
-		{
-			request->pos_x = m_start_pos_x + m_start_image->m_int_x;
-		}
-		// position y and
-		// scaley
-		if( m_start_scale_y != 1.0f )
-		{
-			// scale down and up
-			if( m_scale_down && m_scale_up )
-			{
-				request->scale_y = m_start_scale_y;
-				request->pos_y = m_start_pos_y + ( m_start_image->m_int_y * m_start_scale_y ) - ( ( m_start_image->m_h * 0.5f ) * ( m_start_scale_y - 1.0f ) );
-			}
-			// scale down only
-			else if( m_scale_down )
-			{
-				request->scale_y = m_start_scale_y;
-				request->pos_y = m_start_pos_y + ( m_start_image->m_int_y * m_start_scale_y );
-			}
-			// scale up only
-			else if( m_scale_up )
-			{
-				request->scale_y = m_start_scale_y;
-				request->pos_y = m_start_pos_y + ( m_start_image->m_int_y * m_start_scale_y ) - ( ( m_start_image->m_h ) * ( m_start_scale_y - 1.0f ) );
-			}
-			// no scaling
-			else
-			{
-				request->pos_y = m_start_pos_y + m_start_image->m_int_y;
-			}
-		}
-		// no scaley
-		else
-		{
-			request->pos_y = m_start_pos_y + m_start_image->m_int_y;
-		}
-	
-		// if editor z position is given
-		if( m_editor_pos_z > 0.0f )
-		{
-			request->pos_z = m_editor_pos_z;
-		}
-		// normal position z
-		else
-		{
-			request->pos_z = m_pos_z;
-		}
+		Draw_Image_Editor( request );
 	}
 	// no editor
 	else
 	{
-		// texture id
-		request->texture_id = m_image->m_image;
+		Draw_Image_Normal( request );
+	}
 
-		// size
-		request->w = m_image->m_start_w;
-		request->h = m_image->m_start_h;
+	if( create_request )
+	{
+		// add request
+		pRenderer->Add( request );
+	}
+}
 
-		// rotation
-		request->rotx += m_rot_x + m_image->m_base_rot_x;
-		request->roty += m_rot_y + m_image->m_base_rot_y;
-		request->rotz += m_rot_z + m_image->m_base_rot_z;
+void cSprite :: Draw_Image_Normal( cSurface_Request *request /* = NULL */ ) const
+{
+	// texture id
+	request->texture_id = m_image->m_image;
 
-		// position x and
-		// scalex
-		if( m_scale_x != 1.0f )
+	// size
+	request->w = m_image->m_start_w;
+	request->h = m_image->m_start_h;
+
+	// rotation
+	request->rotx += m_rot_x + m_image->m_base_rot_x;
+	request->roty += m_rot_y + m_image->m_base_rot_y;
+	request->rotz += m_rot_z + m_image->m_base_rot_z;
+
+	// position x and
+	// scalex
+	if( m_scale_x != 1.0f )
+	{
+		// scale to the right and left
+		if( m_scale_right && m_scale_left )
 		{
-			// scale to the right and left
-			if( m_scale_right && m_scale_left )
-			{
-				request->scale_x = m_scale_x;
-				request->pos_x = m_pos_x + ( m_image->m_int_x * m_scale_x ) - ( ( m_image->m_w * 0.5f ) * ( m_scale_x - 1.0f ) );
-			}
-			// scale to the right only
-			else if( m_scale_right )
-			{
-				request->scale_x = m_scale_x;
-				request->pos_x = m_pos_x + ( m_image->m_int_x * m_scale_x );
-			}
-			// scale to the left only
-			else if( m_scale_left )
-			{
-				request->scale_x = m_scale_x;
-				request->pos_x = m_pos_x + ( m_image->m_int_x * m_scale_x ) - ( ( m_image->m_w ) * ( m_scale_x - 1.0f ) );
-			}
-			// no scaling
-			else
-			{
-				request->pos_x = m_pos_x + m_image->m_int_x;
-			}
+			request->scale_x = m_scale_x;
+			request->pos_x = m_pos_x + ( m_image->m_int_x * m_scale_x ) - ( ( m_image->m_w * 0.5f ) * ( m_scale_x - 1.0f ) );
 		}
-		// no scalex
+		// scale to the right only
+		else if( m_scale_right )
+		{
+			request->scale_x = m_scale_x;
+			request->pos_x = m_pos_x + ( m_image->m_int_x * m_scale_x );
+		}
+		// scale to the left only
+		else if( m_scale_left )
+		{
+			request->scale_x = m_scale_x;
+			request->pos_x = m_pos_x + ( m_image->m_int_x * m_scale_x ) - ( ( m_image->m_w ) * ( m_scale_x - 1.0f ) );
+		}
+		// no scaling
 		else
 		{
 			request->pos_x = m_pos_x + m_image->m_int_x;
 		}
-		// position y and
-		// scaley
-		if( m_scale_y != 1.0f )
+	}
+	// no scalex
+	else
+	{
+		request->pos_x = m_pos_x + m_image->m_int_x;
+	}
+	// position y and
+	// scaley
+	if( m_scale_y != 1.0f )
+	{
+		// scale down and up
+		if( m_scale_down && m_scale_up )
 		{
-			// scale down and up
-			if( m_scale_down && m_scale_up )
-			{
-				request->scale_y = m_scale_y;
-				request->pos_y = m_pos_y + ( m_image->m_int_y * m_scale_y ) - ( ( m_image->m_h * 0.5f ) * ( m_scale_y - 1.0f ) );
-			}
-			// scale down only
-			else if( m_scale_down )
-			{
-				request->scale_y = m_scale_y;
-				request->pos_y = m_pos_y + ( m_image->m_int_y * m_scale_y );
-			}
-			// scale up only
-			else if( m_scale_up )
-			{
-				request->scale_y = m_scale_y;
-				request->pos_y = m_pos_y + ( m_image->m_int_y * m_scale_y ) - ( ( m_image->m_h ) * ( m_scale_y - 1.0f ) );
-			}
-			// no scaling
-			else
-			{
-				request->pos_y = m_pos_y + m_image->m_int_y;
-			}
+			request->scale_y = m_scale_y;
+			request->pos_y = m_pos_y + ( m_image->m_int_y * m_scale_y ) - ( ( m_image->m_h * 0.5f ) * ( m_scale_y - 1.0f ) );
 		}
-		// no scaley
+		// scale down only
+		else if( m_scale_down )
+		{
+			request->scale_y = m_scale_y;
+			request->pos_y = m_pos_y + ( m_image->m_int_y * m_scale_y );
+		}
+		// scale up only
+		else if( m_scale_up )
+		{
+			request->scale_y = m_scale_y;
+			request->pos_y = m_pos_y + ( m_image->m_int_y * m_scale_y ) - ( ( m_image->m_h ) * ( m_scale_y - 1.0f ) );
+		}
+		// no scaling
 		else
 		{
 			request->pos_y = m_pos_y + m_image->m_int_y;
 		}
-	
-		// position z
+	}
+	// no scaley
+	else
+	{
+		request->pos_y = m_pos_y + m_image->m_int_y;
+	}
+
+	// position z
+	request->pos_z = m_pos_z;
+
+	// no camera setting
+	request->no_camera = m_no_camera;
+
+	// color
+	request->color = m_color;
+	// combine color
+	if( m_combine_type )
+	{
+		request->combine_type = m_combine_type;
+		request->combine_col[0] = m_combine_color[0];
+		request->combine_col[1] = m_combine_color[1];
+		request->combine_col[2] = m_combine_color[2];
+	}
+
+	// shadow
+	if( m_shadow_pos )
+	{
+		request->shadow_pos = m_shadow_pos;
+		request->shadow_color = m_shadow_color;
+	}
+}
+
+void cSprite :: Draw_Image_Editor( cSurface_Request *request /* = NULL */ ) const
+{
+	// texture id
+	request->texture_id = m_start_image->m_image;
+
+	// size
+	request->w = m_start_image->m_start_w;
+	request->h = m_start_image->m_start_h;
+
+	// rotation
+	request->rotx += m_start_rot_x + m_start_image->m_base_rot_x;
+	request->roty += m_start_rot_y + m_start_image->m_base_rot_y;
+	request->rotz += m_start_rot_z + m_start_image->m_base_rot_z;
+
+	// position x and
+	// scalex
+	if( m_start_scale_x != 1.0f )
+	{
+		// scale to the right and left
+		if( m_scale_right && m_scale_left )
+		{
+			request->scale_x = m_start_scale_x;
+			request->pos_x = m_start_pos_x + ( m_start_image->m_int_x * m_start_scale_x ) - ( ( m_start_image->m_w * 0.5f ) * ( m_start_scale_x - 1.0f ) );
+		}
+		// scale to the right only
+		else if( m_scale_right )
+		{
+			request->scale_x = m_start_scale_x;
+			request->pos_x = m_start_pos_x + ( m_start_image->m_int_x * m_start_scale_x );
+		}
+		// scale to the left only
+		else if( m_scale_left )
+		{
+			request->scale_x = m_start_scale_x;
+			request->pos_x = m_start_pos_x + ( m_start_image->m_int_x * m_start_scale_x ) - ( ( m_start_image->m_w ) * ( m_start_scale_x - 1.0f ) );
+		}
+		// no scaling
+		else
+		{
+			request->pos_x = m_start_pos_x + m_start_image->m_int_x;
+		}
+	}
+	// no scalex
+	else
+	{
+		request->pos_x = m_start_pos_x + m_start_image->m_int_x;
+	}
+	// position y and
+	// scaley
+	if( m_start_scale_y != 1.0f )
+	{
+		// scale down and up
+		if( m_scale_down && m_scale_up )
+		{
+			request->scale_y = m_start_scale_y;
+			request->pos_y = m_start_pos_y + ( m_start_image->m_int_y * m_start_scale_y ) - ( ( m_start_image->m_h * 0.5f ) * ( m_start_scale_y - 1.0f ) );
+		}
+		// scale down only
+		else if( m_scale_down )
+		{
+			request->scale_y = m_start_scale_y;
+			request->pos_y = m_start_pos_y + ( m_start_image->m_int_y * m_start_scale_y );
+		}
+		// scale up only
+		else if( m_scale_up )
+		{
+			request->scale_y = m_start_scale_y;
+			request->pos_y = m_start_pos_y + ( m_start_image->m_int_y * m_start_scale_y ) - ( ( m_start_image->m_h ) * ( m_start_scale_y - 1.0f ) );
+		}
+		// no scaling
+		else
+		{
+			request->pos_y = m_start_pos_y + m_start_image->m_int_y;
+		}
+	}
+	// no scaley
+	else
+	{
+		request->pos_y = m_start_pos_y + m_start_image->m_int_y;
+	}
+
+	// if editor z position is given
+	if( m_editor_pos_z > 0.0f )
+	{
+		request->pos_z = m_editor_pos_z;
+	}
+	// normal position z
+	else
+	{
 		request->pos_z = m_pos_z;
 	}
 
@@ -1291,12 +1300,6 @@ void cSprite :: Draw_Image( cSurface_Request *request /* = NULL */ ) const
 	{
 		request->shadow_pos = m_shadow_pos;
 		request->shadow_color = m_shadow_color;
-	}
-
-	if( create_request )
-	{
-		// add request
-		pRenderer->Add( request );
 	}
 }
 
@@ -1459,13 +1462,19 @@ void cSprite :: Destroy( void )
 		return;
 	}
 
+	Clear_Collisions();
+
+	// if this can not be auto-deleted
+	if( m_disallow_managed_delete )
+	{
+		return;
+	}
+
 	m_auto_destroy = 1;
 	m_active = 0;
 	m_valid_draw = 0;
 	m_valid_update = 0;
 	Set_Image( NULL, 1 );
-
-	Clear_Collisions();
 }
 
 void cSprite :: Editor_Add( const CEGUI::String &name, const CEGUI::String &tooltip, CEGUI::Window *window_setting, float obj_width, float obj_height /* = 28 */, bool advance_row /* = 1 */ )

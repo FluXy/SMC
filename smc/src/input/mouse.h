@@ -111,7 +111,7 @@ public:
 	void Update_Doubleclick( void );
 
 	// Editor left click
-	void Left_Click( void );
+	void Left_Click_Down( void );
 	// Editor default float left click
 	void Double_Click( bool activate = 1 );
 
@@ -204,6 +204,8 @@ public:
 	cSprite *Copy( const cSprite *copy_object, float px, float py ) const;
 	// Deletes the given Object
 	void Delete( cSprite *sprite );
+	// Set the mouse position to the given object
+	void Set_Object_Position( cSelectedObject *sel_obj );
 
 	// Draws a rect around the m_hovering_object and selected objects
 	void Draw_Object_Rects( void );

@@ -134,7 +134,7 @@ void cBall :: Destroy( void )
 		cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
 		Generate_Particles( anim );
 		anim->Set_Quota( 15 );
-		// add animation
+		anim->Emit();
 		pActive_Animation_Manager->Add( anim );
 	}
 
@@ -259,7 +259,7 @@ void cBall :: Generate_Particles( cParticle_Emitter *anim /* = NULL */ ) const
 	
 	if( create_anim )
 	{
-		// add animation
+		anim->Emit();
 		pActive_Animation_Manager->Add( anim );
 	}
 }
@@ -376,16 +376,22 @@ void cBall :: Handle_Collision_Enemy( cObjectCollision *collision )
 	// destroy enemy
 	else
 	{
+		// animation
+		cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
+		anim->Set_Image( pVideo->Get_Surface( "animation/particles/light.png" ) );
+		anim->Set_Time_to_Live( 0.2f, 0.4f );
+		anim->Set_Fading_Alpha( 1 );
+		anim->Set_Fading_Size( 1 );
+		anim->Set_Speed( 0.5f, 2.2f );
+		anim->Set_Blending( BLEND_DRIVE );
+
 		// enemy rect particle animation
 		for( unsigned int w = 0; w < enemy->m_col_rect.m_w; w += 15 )
 		{
 			for( unsigned int h = 0; h < enemy->m_col_rect.m_h; h += 15 )
 			{
-				// animation
-				cParticle_Emitter *anim = new cParticle_Emitter( m_sprite_manager );
 				anim->Set_Pos( enemy->m_pos_x + w, enemy->m_pos_y + h );
-				anim->Set_Image( pVideo->Get_Surface( "animation/particles/light.png" ) );
-				anim->Set_Time_to_Live( 0.2f, 0.4f );
+
 				Color anim_color, anim_color_rand;
 				if( m_ball_type == FIREBALL_DEFAULT )
 				{
@@ -398,14 +404,11 @@ void cBall :: Handle_Collision_Enemy( cObjectCollision *collision )
 					anim_color_rand = Color( static_cast<Uint8>( rand() % 80 ), rand() % 80, rand() % 10, 0 );
 				}
 				anim->Set_Color( anim_color, anim_color_rand );
-				anim->Set_Fading_Alpha( 1 );
-				anim->Set_Fading_Size( 1 );
-				anim->Set_Speed( 0.5f, 2.2f );
-				anim->Set_Blending( BLEND_DRIVE );
-				// add animation
-				pActive_Animation_Manager->Add( anim );
+				anim->Emit();
 			}
 		}
+		
+		pActive_Animation_Manager->Add( anim );
 
 		// play enemy kill sound
 		pAudio->Play_Sound( enemy->m_kill_sound );
@@ -471,7 +474,7 @@ void cBall :: Handle_Collision_Massive( cObjectCollision *collision )
 			anim->Set_Blending( BLEND_ADD );
 			anim->Set_Speed( 0.5f, 0.4f );
 			anim->Set_Scale( 0.3f, 0.4f );
-			// add animation
+			anim->Emit();
 			pActive_Animation_Manager->Add( anim );
 		}
 	}

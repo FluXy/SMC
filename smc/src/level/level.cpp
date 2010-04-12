@@ -72,7 +72,6 @@ cLevel :: cLevel( void )
 
 	m_sprite_manager = new cSprite_Manager();
 	m_background_manager = new cBackground_Manager();
-	m_global_effect = new cGlobal_effect( m_sprite_manager );
 	m_animation_manager = new cAnimation_Manager();
 
 	// add default gradient layer
@@ -88,7 +87,6 @@ cLevel :: ~cLevel( void )
 
 	// delete
 	delete m_background_manager;
-	delete m_global_effect;
 	delete m_animation_manager;
 	delete m_sprite_manager;
 }
@@ -252,9 +250,6 @@ void cLevel :: Unload( bool delayed /* = 0 */ )
 	m_author.clear();
 	m_version.clear();
 
-	// clear global effect
-	m_global_effect->Clear();
-
 	// no version
 	m_engine_version = -1;
 
@@ -329,9 +324,6 @@ void cLevel :: Save( void )
 	{
 		(*itr)->Save_To_Stream( file );
 	}
-
-	// global effect
-	m_global_effect->Save_To_Stream( file );
 
 	// begin player
 	file << "\t<player>" << std::endl;
@@ -408,8 +400,17 @@ void cLevel :: Init( void )
 	// player reset
 	pLevel_Player->Reset();
 
-	// init global effect
-	m_global_effect->Init_Anim();
+	// pre-update animations
+	for( cSprite_List::iterator itr = m_sprite_manager->objects.begin(); itr != m_sprite_manager->objects.end(); ++itr )
+	{
+		cSprite *obj = (*itr);
+
+		if( obj->m_type == TYPE_PARTICLE_EMITTER )
+		{
+			cParticle_Emitter *emitter = static_cast<cParticle_Emitter *>(obj);
+			emitter->Pre_Update();
+		}
+	}
 }
 
 void cLevel :: Set_Sprite_Manager( void )
@@ -479,7 +480,7 @@ void cLevel :: Enter( const GameMode old_mode /* = MODE_NOTHING */ )
 	// Update Hud Text and position
 	pHud_Manager->Update_Text();
 
-	// reset speedfactor
+	// reset speed factor
 	pFramerate->Reset();
 }
 
@@ -538,7 +539,7 @@ void cLevel :: Update( void )
 		Load( m_next_level_filename );
 	}
 
-	// if leveleditor is not active
+	// if level-editor is not active
 	if( !editor_level_enabled )
 	{
 		// backgrounds
@@ -551,8 +552,20 @@ void cLevel :: Update( void )
 		m_sprite_manager->Update_Items();
 		// animations
 		m_animation_manager->Update();
-		// global effect
-		m_global_effect->Update();
+	}
+	// if level-editor enabled
+	else
+	{
+		// only update particle emitters
+		for( cSprite_List::iterator itr = m_sprite_manager->objects.begin(); itr != m_sprite_manager->objects.end(); ++itr )
+		{
+			cSprite *obj = (*itr);
+
+			if( obj->m_type == TYPE_PARTICLE_EMITTER )
+			{
+				obj->Update();
+			}
+		}
 	}
 }
 
@@ -595,12 +608,6 @@ void cLevel :: Draw_Layer_2( LevelDrawType type /* = LVL_DRAW */ )
 	if( type == LVL_DRAW_BG )
 	{
 		return;
-	}
-
-	// global effect
-	if( !editor_level_enabled )
-	{
-		m_global_effect->Draw();
 	}
 
 	// ghost
@@ -675,20 +682,6 @@ bool cLevel :: Key_Down( const SDLKey key )
 	else if( key == SDLK_F4 )
 	{
 		Draw_Effect_Out( EFFECT_OUT_FIXED_COLORBOX );
-		//pLevel_Player->Get_Item( TYPE_MUSHROOM_DEFAULT );
-
-		/*if( m_global_effect->type != GL_EFF_FALLING )
-		{
-			m_global_effect->Set_image( "animation/particles/rain.png" );
-			m_global_effect->Set_Type( GL_EFF_FALLING );
-			m_global_effect->Set_Lifetime_mod( 4 );
-			m_global_effect->Set_Scale( 0.5f, 0.5f );
-			m_global_effect->Set_Creation_Speed( 2 );
-			m_global_effect->Set_Speed( 13, 5 );
-			m_global_effect->Set_Direction( 90, 0 );
-			m_global_effect->Set_ConstRotationZ( 0, 0 );
-			m_global_effect->Init_Anim();
-		}*/
 	}
 	// Toggle leveleditor
 	else if( key == SDLK_F8 )
@@ -1082,7 +1075,7 @@ void cLevel :: elementEnd( const CEGUI::String &element )
 	{
 		if( element == "information" )
 		{
-			// support 1.7 and lower which used float
+			// support V.1.7 and lower which used float
 			float engine_version_float = m_xml_attributes.getValueAsFloat( "engine_version" );
 
 			// if float engine version
@@ -1131,19 +1124,6 @@ void cLevel :: elementEnd( const CEGUI::String &element )
 			{
 				m_background_manager->Add( new cBackground( m_xml_attributes, m_sprite_manager ) );
 			}
-		}
-		else if( element == "global_effect" )
-		{
-			// if V.1.9 and lower : change fire_1 animation to particles
-			if( m_engine_version < 37 )
-			{
-				Relocate_Image( m_xml_attributes, "animation/fire_1/1.png", "animation/particles/fire_1.png", "image" );
-				Relocate_Image( m_xml_attributes, "animation/fire_1/2.png", "animation/particles/fire_2.png", "image" );
-				Relocate_Image( m_xml_attributes, "animation/fire_1/3.png", "animation/particles/fire_3.png", "image" );
-				Relocate_Image( m_xml_attributes, "animation/fire_1/4.png", "animation/particles/fire_4.png", "image" );
-			}
-
-			m_global_effect->Create_From_Stream( m_xml_attributes );
 		}
 		else if( element == "player" )
 		{
@@ -1205,32 +1185,50 @@ void cLevel :: elementEnd( const CEGUI::String &element )
 
 cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager )
 {
-	// element could change
+	// element content could change
 	CEGUI::String element = xml_element;
 
 	if( element == "sprite" )
 	{
-		// always : fix sprite with undefined massive-type
-		if( attributes.exists( "type" ) && attributes.getValueAsString( "type" ) == "undefined" )
+		// if V.1.4 and lower : change some image paths
+		if( engine_version < 25 )
 		{
-			// change to passive
-			attributes.add( "type", "passive" );
+			// change stone8 to metal stone 2 violet
+			Relocate_Image( attributes, "game/box/stone8.png", "blocks/metal/stone_2_violet.png" );
+			// move jungle_1 trees into a directory
+			Relocate_Image( attributes, "ground/jungle_1/tree_type_1.png", "ground/jungle_1/tree/1.png" );
+			Relocate_Image( attributes, "ground/jungle_1/tree_type_1_front.png", "ground/jungle_1/tree/1_front.png" );
+			Relocate_Image( attributes, "ground/jungle_1/tree_type_2.png", "ground/jungle_1/tree/2.png" );
+			// move yoshi_1 extra to jungle_2 hedge
+			Relocate_Image( attributes, "ground/yoshi_1/extra_1_blue.png", "ground/jungle_2/hedge/1_blue.png" );
+			Relocate_Image( attributes, "ground/yoshi_1/extra_1_green.png", "ground/jungle_2/hedge/1_green.png" );
+			Relocate_Image( attributes, "ground/yoshi_1/extra_1_red.png", "ground/jungle_2/hedge/1_red.png" );
+			Relocate_Image( attributes, "ground/yoshi_1/extra_1_yellow.png", "ground/jungle_2/hedge/1_yellow.png" );
+			// move yoshi_1 rope to jungle_2
+			Relocate_Image( attributes, "ground/yoshi_1/rope_1_leftright.png", "ground/jungle_2/rope_1_hor.png" );
 		}
-		// if V.1.9 and lower : change fire_1 animation to particles
-		if( engine_version < 37 )
+		// if V.1.5 and lower : change pipe connection image paths
+		if( engine_version < 28 )
 		{
-			Relocate_Image( attributes, "animation/fire_1/1.png", "animation/particles/fire_1.png" );
-			Relocate_Image( attributes, "animation/fire_1/2.png", "animation/particles/fire_2.png" );
-			Relocate_Image( attributes, "animation/fire_1/3.png", "animation/particles/fire_3.png" );
-			Relocate_Image( attributes, "animation/fire_1/4.png", "animation/particles/fire_4.png" );
+			Relocate_Image( attributes, "blocks/pipe/connection_left_down.png", "blocks/pipe/connection/plastic_1/orange/right_up.png" );
+			Relocate_Image( attributes, "blocks/pipe/connection_left_up.png", "blocks/pipe/connection/plastic_1/orange/right_down.png" );
+			Relocate_Image( attributes, "blocks/pipe/connection_right_down.png", "blocks/pipe/connection/plastic_1/orange/left_up.png" );
+			Relocate_Image( attributes, "blocks/pipe/connection_right_up.png", "blocks/pipe/connection/plastic_1/orange/left_down.png" );
+			Relocate_Image( attributes, "blocks/pipe/metal_connector.png", "blocks/pipe/connection/metal_1/grey/middle.png" );
 		}
-		// if V.1.9 and lower : move y coordinate bottom to 0
-		if( engine_version < 35 )
+		// if V.1.7 and lower : change yoshi_1 hill_up to jungle_1 slider image paths
+		if( engine_version < 31 )
 		{
-			if( attributes.exists( "posy" ) )
-			{
-				attributes.add( "posy", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "posy" ) - 600.0f ) );
-			}
+			Relocate_Image( attributes, "ground/yoshi_1/hill_up_1.png", "ground/jungle_1/slider/2_green_left.png" );
+			Relocate_Image( attributes, "ground/yoshi_1/hill_up_2.png", "ground/jungle_1/slider/2_blue_left.png" );
+			Relocate_Image( attributes, "ground/yoshi_1/hill_up_3.png", "ground/jungle_1/slider/2_brown_left.png" );
+		}
+		// if V.1.7 and lower : change slider grey_1 to green_1 brown slider image paths
+		if( engine_version < 32 )
+		{
+			Relocate_Image( attributes, "slider/grey_1/slider_left.png", "ground/green_1/slider/1/brown/left.png" );
+			Relocate_Image( attributes, "slider/grey_1/slider_middle.png", "ground/green_1/slider/1/brown/middle.png" );
+			Relocate_Image( attributes, "slider/grey_1/slider_right.png", "ground/green_1/slider/1/brown/right.png" );
 		}
 		// if V.1.7 and lower : change green_1 ground to green_3 ground image paths
 		if( engine_version < 34 )
@@ -1252,46 +1250,27 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 			//Relocate_Image( attributes, "ground/green_1/ground/hill_right.png", "ground/green_3/ground/" );
 			//Relocate_Image( attributes, "ground/green_1/ground/hill_left.png", "ground/green_3/ground/" );
 		}
-		// if V.1.7 and lower : change slider grey_1 to green_1 brown slider image paths
-		if( engine_version < 32 )
+		// if V.1.9 and lower : move y coordinate bottom to 0
+		if( engine_version < 35 )
 		{
-			Relocate_Image( attributes, "slider/grey_1/slider_left.png", "ground/green_1/slider/1/brown/left.png" );
-			Relocate_Image( attributes, "slider/grey_1/slider_middle.png", "ground/green_1/slider/1/brown/middle.png" );
-			Relocate_Image( attributes, "slider/grey_1/slider_right.png", "ground/green_1/slider/1/brown/right.png" );
+			if( attributes.exists( "posy" ) )
+			{
+				attributes.add( "posy", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "posy" ) - 600.0f ) );
+			}
 		}
-		// if V.1.7 and lower : change yoshi_1 hill_up to jungle_1 slider image paths
-		if( engine_version < 31 )
+		// if V.1.9 and lower : change fire_1 animation to particles
+		if( engine_version < 37 )
 		{
-			Relocate_Image( attributes, "ground/yoshi_1/hill_up_1.png", "ground/jungle_1/slider/2_green_left.png" );
-			Relocate_Image( attributes, "ground/yoshi_1/hill_up_2.png", "ground/jungle_1/slider/2_blue_left.png" );
-			Relocate_Image( attributes, "ground/yoshi_1/hill_up_3.png", "ground/jungle_1/slider/2_brown_left.png" );
+			Relocate_Image( attributes, "animation/fire_1/1.png", "animation/particles/fire_1.png" );
+			Relocate_Image( attributes, "animation/fire_1/2.png", "animation/particles/fire_2.png" );
+			Relocate_Image( attributes, "animation/fire_1/3.png", "animation/particles/fire_3.png" );
+			Relocate_Image( attributes, "animation/fire_1/4.png", "animation/particles/fire_4.png" );
 		}
-		// if V.1.5 and lower : change pipe connection image paths
-		if( engine_version < 28 )
+		// always : fix sprite with undefined massive-type
+		if( attributes.exists( "type" ) && attributes.getValueAsString( "type" ) == "undefined" )
 		{
-			Relocate_Image( attributes, "blocks/pipe/connection_left_down.png", "blocks/pipe/connection/plastic_1/orange/right_up.png" );
-			Relocate_Image( attributes, "blocks/pipe/connection_left_up.png", "blocks/pipe/connection/plastic_1/orange/right_down.png" );
-			Relocate_Image( attributes, "blocks/pipe/connection_right_down.png", "blocks/pipe/connection/plastic_1/orange/left_up.png" );
-			Relocate_Image( attributes, "blocks/pipe/connection_right_up.png", "blocks/pipe/connection/plastic_1/orange/left_down.png" );
-			Relocate_Image( attributes, "blocks/pipe/metal_connector.png", "blocks/pipe/connection/metal_1/grey/middle.png" );
-		}
-
-		// if V.1.4 and lower : change some image paths
-		if( engine_version < 25 )
-		{
-			// change stone8 to metal stone 2 violet
-			Relocate_Image( attributes, "game/box/stone8.png", "blocks/metal/stone_2_violet.png" );
-			// move jungle_1 trees into a directory
-			Relocate_Image( attributes, "ground/jungle_1/tree_type_1.png", "ground/jungle_1/tree/1.png" );
-			Relocate_Image( attributes, "ground/jungle_1/tree_type_1_front.png", "ground/jungle_1/tree/1_front.png" );
-			Relocate_Image( attributes, "ground/jungle_1/tree_type_2.png", "ground/jungle_1/tree/2.png" );
-			// move yoshi_1 extra to jungle_2 hedge
-			Relocate_Image( attributes, "ground/yoshi_1/extra_1_blue.png", "ground/jungle_2/hedge/1_blue.png" );
-			Relocate_Image( attributes, "ground/yoshi_1/extra_1_green.png", "ground/jungle_2/hedge/1_green.png" );
-			Relocate_Image( attributes, "ground/yoshi_1/extra_1_red.png", "ground/jungle_2/hedge/1_red.png" );
-			Relocate_Image( attributes, "ground/yoshi_1/extra_1_yellow.png", "ground/jungle_2/hedge/1_yellow.png" );
-			// move yoshi_1 rope to jungle_2
-			Relocate_Image( attributes, "ground/yoshi_1/rope_1_leftright.png", "ground/jungle_2/rope_1_hor.png" );
+			// change to passive
+			attributes.add( "type", "passive" );
 		}
 
 		cSprite *sprite = new cSprite( attributes, sprite_manager );
@@ -1503,7 +1482,7 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 		{
 			return new cBonusBox( attributes, sprite_manager );
 		}
-		// gold is somewhere pre 0.99.5
+		// gold is somewhere pre V.0.99.5
 		else if( str_type == "gold" )
 		{
 			// update old values
@@ -1527,7 +1506,7 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 		{
 			return new cText_Box( attributes, sprite_manager );
 		}
-		// pre 0.99.4
+		// pre V.0.99.4
 		else if ( str_type == "empty" )
 		{
 			// update old values
@@ -1536,7 +1515,7 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 
 			return new cBonusBox( attributes, sprite_manager );
 		}
-		// pre 0.99.4
+		// pre V.0.99.4
 		else if ( str_type == "invisible" )
 		{
 			// update old values
@@ -1551,7 +1530,7 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 			printf( "Warning : Unknown Level Box type : %s\n", str_type.c_str() );
 		}
 	}
-	// powerup is pre 0.99.5
+	// powerup is pre V.0.99.5
 	else if( element == "item" || element == "powerup" )
 	{
 		// if V.1.9 and lower : move y coordinate bottom to 0
@@ -1592,6 +1571,14 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 	}
 	else if( element == "moving_platform" )
 	{
+		// if V.1.7 and lower : change slider grey_1 to green_1 brown slider image paths
+		if( engine_version < 32 )
+		{
+			Relocate_Image( attributes, "slider/grey_1/slider_left.png", "ground/green_1/slider/1/brown/left.png", "image_top_left" );
+			Relocate_Image( attributes, "slider/grey_1/slider_middle.png", "ground/green_1/slider/1/brown/middle.png", "image_top_middle" );
+			Relocate_Image( attributes, "slider/grey_1/slider_right.png", "ground/green_1/slider/1/brown/right.png", "image_top_right" );
+		}
+
 		// if V.1.9 and lower : move y coordinate bottom to 0
 		if( engine_version < 35 )
 		{
@@ -1599,13 +1586,6 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 			{
 				attributes.add( "posy", CEGUI::PropertyHelper::floatToString(  attributes.getValueAsFloat( "posy" ) - 600.0f ) );
 			}
-		}
-		// if V.1.7 and lower : change slider grey_1 to green_1 brown slider image paths
-		if( engine_version < 32 )
-		{
-			Relocate_Image( attributes, "slider/grey_1/slider_left.png", "ground/green_1/slider/1/brown/left.png", "image_top_left" );
-			Relocate_Image( attributes, "slider/grey_1/slider_middle.png", "ground/green_1/slider/1/brown/middle.png", "image_top_middle" );
-			Relocate_Image( attributes, "slider/grey_1/slider_right.png", "ground/green_1/slider/1/brown/right.png", "image_top_right" );
 		}
 
 		cMoving_Platform *moving_platform = new cMoving_Platform( attributes, sprite_manager );
@@ -1625,19 +1605,10 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 
 		return moving_platform;
 	}
-	// pre 1.5
+	// falling platform is pre V.1.5
 	else if( element == "falling_platform" )
 	{
-		// if V.1.9 and lower : move y coordinate bottom to 0
-		if( engine_version < 35 )
-		{
-			if( attributes.exists( "posy" ) )
-			{
-				attributes.add( "posy", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "posy" ) - 600.0f ) );
-			}
-		}
-
-		// no moving
+		// it's not moving
 		attributes.add( "speed", "0" );
 		// renamed time_fall to touch_time and change to the new value
 		if( attributes.exists( "time_fall" ) )
@@ -1660,6 +1631,15 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 			Relocate_Image( attributes, "slider/grey_1/slider_right.png", "ground/green_1/slider/1/brown/right.png", "image_top_right" );
 		}
 
+		// if V.1.9 and lower : move y coordinate bottom to 0
+		if( engine_version < 35 )
+		{
+			if( attributes.exists( "posy" ) )
+			{
+				attributes.add( "posy", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "posy" ) - 600.0f ) );
+			}
+		}
+
 		cMoving_Platform *moving_platform = new cMoving_Platform( attributes, sprite_manager );
 
 		// if V.1.7 and lower : change new slider middle count because start and end image is now half the width
@@ -1679,15 +1659,6 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 	}
 	else if( element == "enemy" )
 	{
-		// if V.1.9 and lower : move y coordinate bottom to 0
-		if( engine_version < 35 )
-		{
-			if( attributes.exists( "posy" ) )
-			{
-				attributes.add( "posy", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "posy" ) - 600.0f ) );
-			}
-		}
-
 		CEGUI::String str_type = attributes.getValueAsString( "type" );
 
 		// if V.1.5 and lower
@@ -1713,6 +1684,7 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 				attributes.add( "type", "krush" );
 			}
 		}
+
 		// if V.1.7 and lower
 		if( engine_version < 29 )
 		{
@@ -1736,6 +1708,15 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 						img_dir.replace( pos, 8, "flyon" );
 					}
 				}
+			}
+		}
+
+		// if V.1.9 and lower : move y coordinate bottom to 0
+		if( engine_version < 35 )
+		{
+			if( attributes.exists( "posy" ) )
+			{
+				attributes.add( "posy", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "posy" ) - 600.0f ) );
 			}
 		}
 
@@ -1827,15 +1808,6 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 	{
 		// Note : If you relocate images don't forget the global effect
 
-		// if V.1.9 and lower : change fire_1 animation to particles
-		if( engine_version < 37 )
-		{
-			Relocate_Image( attributes, "animation/fire_1/1.png", "animation/particles/fire_1.png", "file" );
-			Relocate_Image( attributes, "animation/fire_1/2.png", "animation/particles/fire_2.png", "file" );
-			Relocate_Image( attributes, "animation/fire_1/3.png", "animation/particles/fire_3.png", "file" );
-			Relocate_Image( attributes, "animation/fire_1/4.png", "animation/particles/fire_4.png", "file" );
-		}
-
 		// if V.1.9 and lower : move y coordinate bottom to 0
 		if( engine_version < 35 )
 		{
@@ -1845,11 +1817,28 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 			}
 		}
 
+		// if V.1.9 and lower : change fire_1 animation to particles
+		if( engine_version < 37 )
+		{
+			Relocate_Image( attributes, "animation/fire_1/1.png", "animation/particles/fire_1.png", "file" );
+			Relocate_Image( attributes, "animation/fire_1/2.png", "animation/particles/fire_2.png", "file" );
+			Relocate_Image( attributes, "animation/fire_1/3.png", "animation/particles/fire_3.png", "file" );
+			Relocate_Image( attributes, "animation/fire_1/4.png", "animation/particles/fire_4.png", "file" );
+		}
+
+		// if V.1.9 and lower : change file to image
+		if( engine_version < 38 )
+		{
+			if( attributes.exists( "file" ) )
+			{
+				attributes.add( "image", attributes.getValueAsString( "file" ) );
+				attributes.remove( "file" );
+			}
+		}
+
 		cParticle_Emitter *particle_emitter = new cParticle_Emitter( attributes, sprite_manager );
 		// set to not spawned
 		particle_emitter->m_spawned = 0;
-		// init animation
-		particle_emitter->Init_Anim();
 
 		return particle_emitter;
 	}
@@ -1865,6 +1854,81 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 		}
 
 		return new cPath( attributes, sprite_manager );
+	}
+	// if V.1.9 and lower : convert global effect to an advanced particle emitter
+	else if( element == "global_effect" )
+	{
+		// if V.0.99.4 and lower : change lieftime mod to time to live
+		if( engine_version < 21 )
+		{
+			if( !attributes.exists( "time_to_live" ) )
+			{
+				attributes.add( "time_to_live", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "lifetime_mod", 20 ) * 0.3f ) );
+				attributes.remove( "lifetime_mod" );
+			}
+		}
+
+		// if V.0.99.7 and lower : change creation speed to emitter iteration interval
+		if( engine_version < 22 )
+		{
+			if( !attributes.exists( "emitter_iteration_interval" ) )
+			{
+				attributes.add( "emitter_iteration_interval", CEGUI::PropertyHelper::floatToString( ( 1.0f / attributes.getValueAsFloat( "creation_speed", 0.3f ) ) * 0.032f ) );
+				attributes.remove( "creation_speed" );
+			}
+		}
+
+		// if V.1.9 and lower : change fire_1 animation to particles
+		if( engine_version < 37 )
+		{
+			Relocate_Image( attributes, "animation/fire_1/1.png", "animation/particles/fire_1.png", "image" );
+			Relocate_Image( attributes, "animation/fire_1/2.png", "animation/particles/fire_2.png", "image" );
+			Relocate_Image( attributes, "animation/fire_1/3.png", "animation/particles/fire_3.png", "image" );
+			Relocate_Image( attributes, "animation/fire_1/4.png", "animation/particles/fire_4.png", "image" );
+		}
+
+		// change disabled type to quota 0
+		if( attributes.exists( "type" ) )
+		{
+			// if disabled
+			if( attributes.getValueAsInteger( "type" ) == 0 )
+			{
+				attributes.add( "quota", "0" );
+				attributes.remove( "type" );
+			}
+		}
+
+		// rename attributes
+		attributes.add( "pos_x", CEGUI::PropertyHelper::intToString( attributes.getValueAsInteger( "rect_x", 0 ) ) );
+		attributes.add( "pos_y", CEGUI::PropertyHelper::intToString( attributes.getValueAsInteger( "rect_y", 0 ) - 600.0f ) );
+		attributes.add( "size_x", CEGUI::PropertyHelper::intToString( attributes.getValueAsInteger( "rect_w", game_res_w ) ) );
+		attributes.add( "size_y", CEGUI::PropertyHelper::intToString( attributes.getValueAsInteger( "rect_h", 0 ) ) );
+		attributes.add( "emitter_time_to_live", CEGUI::PropertyHelper::floatToString( -1.0f ) );
+		attributes.add( "pos_z", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "z", 0.12f ) ) );
+		attributes.add( "pos_z_rand", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "z_rand", 0.0f ) ) );
+		if( !attributes.exists( "time_to_live" ) )
+		{
+			attributes.add( "time_to_live", CEGUI::PropertyHelper::floatToString( 7.0f ) );
+		}
+		attributes.add( "emitter_interval", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "emitter_iteration_interval", 0.3f ) ) );
+		attributes.add( "size_scale", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "scale", 0.2f ) ) );
+		attributes.add( "size_scale_rand", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "scale_rand", 0.2f ) ) );
+		attributes.add( "vel", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "speed", 2.0f ) ) );
+		attributes.add( "vel_rand", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "speed_rand", 8.0f ) ) );
+		attributes.add( "angle_start", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "dir_range_start", 0.0f ) ) );
+		attributes.add( "angle_range", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "dir_range_size", 90.0f ) ) );
+		attributes.add( "const_rot_z", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "const_rotz", -5.0f ) ) );
+		attributes.add( "const_rot_z_rand", CEGUI::PropertyHelper::floatToString( attributes.getValueAsFloat( "const_rotz_rand", 10.0f ) ) );
+
+
+		cParticle_Emitter *emitter = new cParticle_Emitter( attributes, sprite_manager );
+		emitter->m_spawned = 0;
+
+		// clip to the camera
+		emitter->Set_Clip_Rect( GL_rect( 0.0f, 0.0f, static_cast<float>(game_res_w), static_cast<float>(game_res_h) + ( attributes.getValueAsInteger( "rect_y", 0 ) * -1 ) ) );
+		emitter->Set_Based_On_Camera_Pos( 1 );
+
+		return emitter;
 	}
 
 	return NULL;

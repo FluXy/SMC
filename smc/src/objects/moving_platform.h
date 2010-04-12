@@ -144,29 +144,18 @@ public:
 	virtual void Editor_Activate( void );
 	// editor state update
 	virtual void Editor_State_Update( void );
-	// editor move type option selected event
-	bool Editor_Move_Type_Select( const CEGUI::EventArgs &event);
-	// editor path identifier text changed event
+	// editor events
+	bool Editor_Move_Type_Select( const CEGUI::EventArgs &event );
 	bool Editor_Path_Identifier_Text_Changed( const CEGUI::EventArgs &event );
-	// editor direction option selected event
 	bool Editor_Direction_Select( const CEGUI::EventArgs &event );
-	// editor max distance text changed event
 	bool Editor_Max_Distance_Text_Changed( const CEGUI::EventArgs &event );
-	// editor speed text changed event
 	bool Editor_Speed_Text_Changed( const CEGUI::EventArgs &event );
-	// editor horizontal middle image count text changed event
 	bool Editor_Hor_Middle_Count_Text_Changed( const CEGUI::EventArgs &event );
-	// editor image top left text changed event
 	bool Editor_Image_Top_Left_Text_Changed( const CEGUI::EventArgs &event );
-	// editor image top middle text changed event
 	bool Editor_Image_Top_Middle_Text_Changed( const CEGUI::EventArgs &event );
-	// editor image top right text changed event
 	bool Editor_Image_Top_Right_Text_Changed( const CEGUI::EventArgs &event );
-	// editor touch time text changed event
 	bool Editor_Touch_Time_Text_Changed( const CEGUI::EventArgs &event );
-	// editor shaking time text changed event
 	bool Editor_Shake_Time_Text_Changed( const CEGUI::EventArgs &event );
-	// editor touch moving time text changed event
 	bool Editor_Touch_Move_Time_Text_Changed( const CEGUI::EventArgs &event );
 
 	// platform moving type

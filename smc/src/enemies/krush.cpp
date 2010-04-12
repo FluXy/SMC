@@ -165,7 +165,7 @@ void cKrush :: DownGrade( bool force /* = 0 */ )
 			Generate_Hit_Animation( anim );
 			anim->Set_Speed( 3.5f, 0.6f );
 			anim->Set_Fading_Alpha( 1 );
-			// add animation
+			anim->Emit();
 			pActive_Animation_Manager->Add( anim );
 		}
 		else if( m_state == STA_RUN )
@@ -178,7 +178,7 @@ void cKrush :: DownGrade( bool force /* = 0 */ )
 			Generate_Hit_Animation( anim );
 			anim->Set_Speed( 4.5f, 1.6f );
 			anim->Set_Scale( 0.6f );
-			// add animation
+			anim->Emit();
 			pActive_Animation_Manager->Add( anim );
 		}
 	}

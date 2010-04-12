@@ -215,7 +215,7 @@ void cEato :: DownGrade( bool force /* = 0 */ )
 
 		anim->Set_Scale( 0.8f );
 		anim->Set_Direction_Range( 0.0f, 360.0f );
-		// add animation
+		anim->Emit();
 		pActive_Animation_Manager->Add( anim );
 	}
 	else
