@@ -339,7 +339,7 @@ void cBonusBox :: Activate( void )
 		cjStar *star = new cjStar( m_sprite_manager );
 		star->Set_Pos( m_start_pos_x - ( ( m_item_image->m_w - m_rect.m_w ) / 2 ), m_start_pos_y, 1 );
 		star->Set_On_Top( this );
-		star->m_spawned = 1;
+		star->Set_Spawned( 1 );
 		// add to global objects
 		m_sprite_manager->Add( star );
 	}
@@ -370,7 +370,7 @@ void cBonusBox :: Activate( void )
 		// set posz behind box
 		box_item->m_pos_z = m_pos_z - 0.000001f;
 		// set spawned
-		box_item->m_spawned = 1;
+		box_item->Set_Spawned( 1 );
 
 		// add to item list
 		m_active_items.push_back( box_item );

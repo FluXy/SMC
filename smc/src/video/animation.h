@@ -213,6 +213,10 @@ public:
 	virtual void Set_Image( cGL_Surface *img );
 	// Set the image with the filename
 	virtual void Set_Image_Filename( const std::string &str_filename );
+	/* set if spawned
+	 * if set it is not saved in the level/world file
+	*/
+	virtual void Set_Spawned( bool enable = 0 );
 	// Set if the position is based on the camera position
 	void Set_Based_On_Camera_Pos( bool enable );
 	// Set the Emitter rect

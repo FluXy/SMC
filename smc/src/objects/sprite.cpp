@@ -407,7 +407,7 @@ cSprite *cSprite :: Copy( void ) const
 	basic_sprite->Set_Ignore_Camera( m_no_camera );
 	basic_sprite->Set_Shadow_Pos( m_shadow_pos );
 	basic_sprite->Set_Shadow_Color( m_shadow_color );
-	basic_sprite->m_spawned = m_spawned;
+	basic_sprite->Set_Spawned( m_spawned );
 	return basic_sprite;
 }
 

@@ -326,7 +326,7 @@ cJGoldpiece :: cJGoldpiece( cSprite_Manager *sprite_manager )
 : cGoldpiece( sprite_manager )
 {
 	m_type = TYPE_JUMPING_GOLDPIECE;
-	m_spawned = 1;
+	Set_Spawned( 1 );
 
 	cJGoldpiece::Set_Gold_Color( COL_YELLOW );
 
@@ -370,7 +370,7 @@ cFGoldpiece :: cFGoldpiece( cSprite_Manager *sprite_manager, float x, float y, O
 : cGoldpiece( sprite_manager )
 {
 	m_type = TYPE_FALLING_GOLDPIECE;
-	m_spawned = 1;
+	Set_Spawned( 1 );
 	m_camera_range = 2000;
 	m_gravity_max = 25.0f;
 	m_can_be_on_ground = 1;

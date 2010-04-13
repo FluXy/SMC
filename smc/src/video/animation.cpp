@@ -36,7 +36,7 @@ cAnimation :: cAnimation( cSprite_Manager *sprite_manager )
 	m_sprite_array = ARRAY_ANIM;
 	m_type = TYPE_ACTIVE_SPRITE;
 	m_massive_type = MASS_PASSIVE;
-	m_spawned = 1;
+	Set_Spawned( 1 );
 	m_can_be_on_ground = 0;
 
 	m_pos_z = 0.07000f;
@@ -721,7 +721,7 @@ cParticle_Emitter *cParticle_Emitter :: Copy( void ) const
 	particle_animation->Set_Color( m_color, m_color_rand );
 	particle_animation->Set_Horizontal_Gravity( m_gravity_x, m_gravity_x_rand );
 	particle_animation->Set_Vertical_Gravity( m_gravity_y, m_gravity_y_rand );
-	particle_animation->m_spawned = m_spawned;
+	particle_animation->Set_Spawned( m_spawned );
 	particle_animation->Set_Clip_Rect( m_clip_rect );
 	particle_animation->Set_Clip_Mode( m_clip_mode );
 	return particle_animation;
@@ -1173,7 +1173,7 @@ bool cParticle_Emitter :: Is_Update_Valid( void )
 	}
 
 	// if not in camera range
-	if( !Is_In_Range() )
+	if( ( !m_emitter_based_on_camera_pos || editor_enabled ) && !Is_In_Range() )
 	{
 		return 0;
 	}
@@ -1234,6 +1234,25 @@ void cParticle_Emitter :: Set_Image_Filename( const std::string &str_filename )
 
 	// set new image
 	Set_Image( pVideo->Get_Surface( m_image_filename, 0 ) );
+}
+
+void cParticle_Emitter :: Set_Spawned( bool enable /* = 0 */ )
+{
+	cAnimation::Set_Spawned( enable );
+
+	if( !m_spawned )
+	{
+		// invalid width
+		if( m_rect.m_w < 5.0f )
+		{
+			m_rect.m_w = 5.0f;
+		}
+		// invalid height
+		if( m_rect.m_h < 5.0f )
+		{
+			m_rect.m_h = 5.0f;
+		}
+	}
 }
 
 void cParticle_Emitter :: Set_Based_On_Camera_Pos( bool enable )

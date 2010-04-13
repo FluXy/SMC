@@ -1838,7 +1838,7 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 
 		cParticle_Emitter *particle_emitter = new cParticle_Emitter( attributes, sprite_manager );
 		// set to not spawned
-		particle_emitter->m_spawned = 0;
+		particle_emitter->Set_Spawned( 0 );
 
 		return particle_emitter;
 	}
@@ -1922,7 +1922,7 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 
 
 		cParticle_Emitter *emitter = new cParticle_Emitter( attributes, sprite_manager );
-		emitter->m_spawned = 0;
+		emitter->Set_Spawned( 0 );
 
 		// clip to the camera
 		emitter->Set_Clip_Rect( GL_rect( 0.0f, 0.0f, static_cast<float>(game_res_w), static_cast<float>(game_res_h) + ( attributes.getValueAsInteger( "rect_y", 0 ) * -1 ) ) );

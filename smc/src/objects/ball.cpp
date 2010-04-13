@@ -38,7 +38,7 @@ cBall :: cBall( cSprite_Manager *sprite_manager, float x, float y, const cSprite
 	m_pos_z = 0.095f;
 	m_gravity_max = 20.0f;
 
-	m_spawned = 1;
+	Set_Spawned( 1 );
 	m_camera_range = 2000;
 
 	m_massive_type = MASS_MASSIVE;

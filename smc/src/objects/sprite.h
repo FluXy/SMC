@@ -149,6 +149,13 @@ public:
 	 * default : disabled
 	*/
 	void Set_Ignore_Camera( bool enable = 0 );
+	/* set if spawned
+	 * if set it is not saved in the level/world file
+	*/
+	virtual void Set_Spawned( bool enable = 0 )
+	{
+		m_spawned = enable;
+	};
 
 	// Sets the Position
 	void Set_Pos( float x, float y, bool new_startpos = 0 );
@@ -497,9 +504,7 @@ public:
 	bool m_no_camera;
 	// if true we are active and can be updated and drawn
 	bool m_active;
-	/* if spawned
-	 * if set it is not saved in the level/world file
-	 */
+	// if spawned
 	bool m_spawned;
 	// maximum distance to the camera to get updated
 	unsigned int m_camera_range;

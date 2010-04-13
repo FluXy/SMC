@@ -362,7 +362,7 @@ animation_end:
 		sprite->Set_Image( game_over );
 		sprite->Set_Pos( ( game_res_w * 0.5f ) - ( game_over->m_w * 0.5f ), ( game_res_h * 0.5f ) - ( game_over->m_h * 0.5f ) );
 		sprite->m_pos_z = 0.8f;
-		sprite->m_spawned = 1;
+		sprite->Set_Spawned( 1 );
 		sprite->Set_Ignore_Camera( 1 );
 		m_sprite_manager->Add( sprite );
 
