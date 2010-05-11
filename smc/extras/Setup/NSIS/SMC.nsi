@@ -193,7 +193,7 @@ Function Custom_Page_Leave
 		Goto not_connected
 	
     connected:
-		ExecShell "open" "${PRODUCT_WEB_PAGE}/?page=shop"
+		ExecShell "open" "${PRODUCT_WEB_PAGE}/?page=donate"
 			
   	not_connected:
 	
@@ -324,13 +324,6 @@ Section "Uninstall"
 	DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
 	DeleteRegValue HKLM "${PRODUCT_DIR_REGKEY}" "version"
 
-	; old stuff
-	Delete "$INSTDIR\config.xml"
-	Delete "$INSTDIR\savegames\*.save"
-	Delete "$INSTDIR\screenshots\*.bmp"
-	Delete "$INSTDIR\SConstruct"
-	Delete "$INSTDIR\install-sh"
-
 	; Remove main directoy files
 	Delete "$INSTDIR\Secret Maryo Chronicles.exe"
 	Delete "$INSTDIR\configure"
@@ -364,8 +357,6 @@ Section "Uninstall"
 	; Remove directories if empty
 	RMDir "$INSTDIR\data\music"
 	RMDir "$INSTDIR\data"
-	RMDir "$INSTDIR\savegames"
-	RMDir "$INSTDIR\screenshots"
 
 	; Remove uninstaller
 	Delete $INSTDIR\uninstall.exe
