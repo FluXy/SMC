@@ -19,6 +19,7 @@
 // SDL
 #include "SDL.h"
 
+
 namespace SMC
 {
 
@@ -105,7 +106,7 @@ void cFramerate :: Init( const float tfps )
 
 void cFramerate :: Update( void )
 {
-	Uint32 current_ticks = SDL_GetTicks();
+	const Uint32 current_ticks = SDL_GetTicks();
 
 	// if speed factor is forced
 	if( !Is_Float_Equal( m_force_speed_factor, 0.0f ) )

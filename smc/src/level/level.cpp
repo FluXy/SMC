@@ -1900,7 +1900,7 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 
 		// rename attributes
 		attributes.add( "pos_x", CEGUI::PropertyHelper::intToString( attributes.getValueAsInteger( "rect_x", 0 ) ) );
-		attributes.add( "pos_y", CEGUI::PropertyHelper::intToString( attributes.getValueAsInteger( "rect_y", 0 ) - 600.0f ) );
+		attributes.add( "pos_y", CEGUI::PropertyHelper::intToString( attributes.getValueAsInteger( "rect_y", 0 ) - 600 ) );
 		attributes.add( "size_x", CEGUI::PropertyHelper::intToString( attributes.getValueAsInteger( "rect_w", game_res_w ) ) );
 		attributes.add( "size_y", CEGUI::PropertyHelper::intToString( attributes.getValueAsInteger( "rect_h", 0 ) ) );
 		attributes.add( "emitter_time_to_live", CEGUI::PropertyHelper::floatToString( -1.0f ) );
