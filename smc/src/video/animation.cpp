@@ -462,12 +462,12 @@ void cParticle :: Draw( cSurface_Request *request /* = NULL */ )
 
 	Draw_Image_Normal( request );
 
-	// todo
-	/*if( m_based_on_emitter_pos )
+	// based on emitter position
+	if( m_parent->m_particle_based_on_emitter_pos > 0.0f )
 	{
-		request->pos_x += m_parent->m_pos_x;
-		request->pos_y += m_parent->m_pos_y;
-	}*/
+		request->pos_x += (m_parent->m_pos_x * m_parent->m_particle_based_on_emitter_pos);
+		request->pos_y += (m_parent->m_pos_y * m_parent->m_particle_based_on_emitter_pos);
+	}
 	
 	// blending
 	if( m_parent->m_blending == BLEND_ADD )
@@ -534,8 +534,10 @@ void cParticle_Emitter :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Image_Filename( attributes.getValueAsString( "image" ).c_str() );
 	// position z
 	Set_Pos_Z( attributes.getValueAsFloat( "pos_z", m_pos_z ), attributes.getValueAsFloat( "pos_z_rand", m_pos_z_rand ) );
-	// based on camera pos
+	// emitter based on camera pos
 	Set_Based_On_Camera_Pos( attributes.getValueAsBool( "emitter_based_on_camera_pos", m_emitter_based_on_camera_pos ) );
+	// particle based on emitter pos
+	Set_Particle_Based_On_Emitter_Pos( attributes.getValueAsFloat( "particle_based_on_emitter_pos", m_particle_based_on_emitter_pos ) );
 	// emitter rect
 	Set_Emitter_Rect( static_cast<float>(attributes.getValueAsInteger( "pos_x", static_cast<int>(m_pos_x) )), static_cast<float>(attributes.getValueAsInteger( "pos_y", static_cast<int>(m_pos_y) )), static_cast<float>(attributes.getValueAsInteger( "size_x", static_cast<int>(m_start_rect.m_w) )), static_cast<float>(attributes.getValueAsInteger( "size_y", static_cast<int>(m_start_rect.m_h) )) );
 	// emitter time to live
@@ -580,8 +582,10 @@ void cParticle_Emitter :: Save_To_Stream( ofstream &file )
 	// position z
 	file << "\t\t<Property name=\"pos_z\" value=\"" << m_pos_z << "\" />" << std::endl;
 	file << "\t\t<Property name=\"pos_z_rand\" value=\"" << m_pos_z_rand << "\" />" << std::endl;
-	// based on camera pos
+	// emitter based on camera pos
 	file << "\t\t<Property name=\"emitter_based_on_camera_pos\" value=\"" << m_emitter_based_on_camera_pos << "\" />" << std::endl;
+	// particle based on emitter pos
+	file << "\t\t<Property name=\"particle_based_on_emitter_pos\" value=\"" << m_particle_based_on_emitter_pos << "\" />" << std::endl;
 	// emitter rect
 	file << "\t\t<Property name=\"pos_x\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
 	file << "\t\t<Property name=\"pos_y\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
@@ -644,6 +648,7 @@ void cParticle_Emitter :: Init( void )
 	m_name = "Particle Emitter";
 
 	m_emitter_based_on_camera_pos = 0;
+	m_particle_based_on_emitter_pos = 0.0f;
 	m_rect.m_w = 0.0f;
 	m_rect.m_h = 0.0f;
 	m_col_rect.m_w = m_rect.m_w;
@@ -702,6 +707,7 @@ cParticle_Emitter *cParticle_Emitter :: Copy( void ) const
 {
 	cParticle_Emitter *particle_animation = new cParticle_Emitter( m_sprite_manager );
 	particle_animation->Set_Based_On_Camera_Pos( m_emitter_based_on_camera_pos );
+	particle_animation->Set_Particle_Based_On_Emitter_Pos( m_particle_based_on_emitter_pos );
 	particle_animation->Set_Pos( m_start_pos_x, m_start_pos_y, 1 );
 	particle_animation->Set_Pos_Z( m_pos_z, m_pos_z_rand );
 	particle_animation->Set_Image_Filename( m_image_filename.c_str() );
@@ -986,15 +992,22 @@ void cParticle_Emitter :: Update_Position( void )
 	{
 		GL_rect clip_rect_final;
 
-		if( m_emitter_based_on_camera_pos && !editor_enabled )
+		clip_rect_final.m_x = m_start_pos_x + m_clip_rect.m_x;
+		clip_rect_final.m_y = m_start_pos_y + m_clip_rect.m_y;
+
+		if( !editor_enabled )
 		{
-			clip_rect_final.m_x = m_start_pos_x + m_clip_rect.m_x + pActive_Camera->m_x;
-			clip_rect_final.m_y = m_start_pos_y + m_clip_rect.m_y + ( pActive_Camera->m_y + game_res_h );
-		}
-		else
-		{
-			clip_rect_final.m_x = m_start_pos_x + m_clip_rect.m_x;
-			clip_rect_final.m_y = m_start_pos_y + m_clip_rect.m_y;
+			if( m_emitter_based_on_camera_pos )
+			{
+				clip_rect_final.m_x += pActive_Camera->m_x;
+				clip_rect_final.m_y += pActive_Camera->m_y + game_res_h;
+			}
+			
+			if( m_particle_based_on_emitter_pos > 0.0f )
+			{
+				clip_rect_final.m_x -= m_pos_x * m_particle_based_on_emitter_pos;
+				clip_rect_final.m_y -= m_pos_y * m_particle_based_on_emitter_pos;
+			}
 		}
 		
 		clip_rect_final.m_w = m_clip_rect.m_w;
@@ -1260,6 +1273,11 @@ void cParticle_Emitter :: Set_Based_On_Camera_Pos( bool enable )
 	m_emitter_based_on_camera_pos = enable;
 }
 
+void cParticle_Emitter :: Set_Particle_Based_On_Emitter_Pos( float val )
+{
+	m_particle_based_on_emitter_pos = val;
+}
+
 void cParticle_Emitter :: Set_Emitter_Rect( float x, float y, float w /* = 0 */, float h /* = 0 */ )
 {
 	// hack: don't set x/y to 0 or the next Set_Pos call will overwrite the start position
@@ -1479,12 +1497,19 @@ void cParticle_Emitter :: Editor_Activate( void )
 	editbox->setText( m_image_filename.c_str() );
 	editbox->subscribeEvent( CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber( &cParticle_Emitter::Editor_Filename_Text_Changed, this ) );
 
-	// position based on camera pos
+	// emitter position based on camera pos
 	CEGUI::Checkbox *checkbox = static_cast<CEGUI::Checkbox *>(wmgr.createWindow( "TaharezLook/Checkbox", "emitter_based_on_camera_pos" ));
 	Editor_Add( UTF8_("Based on camera pos."), UTF8_("The emitter position is based on the camera position"), checkbox, 50 );
 
 	checkbox->setSelected( m_emitter_based_on_camera_pos );
 	checkbox->subscribeEvent( CEGUI::Checkbox::EventCheckStateChanged, CEGUI::Event::Subscriber( &cParticle_Emitter::Editor_Emitter_Based_On_Camera_Pos_Changed, this ) );
+
+	// particle position based on emitter pos
+	editbox = static_cast<CEGUI::Editbox *>(wmgr.createWindow( "TaharezLook/Editbox", "emitter_particle_based_on_emitter_pos" ));
+	Editor_Add( UTF8_("Particles Based on Emitter pos."), UTF8_("The particle position is based on the emitter position"), editbox, 150 );
+
+	editbox->setText( float_to_string( m_particle_based_on_emitter_pos ) );
+	editbox->subscribeEvent( CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber( &cParticle_Emitter::Editor_Particle_Based_On_Emitter_Pos_Text_Changed, this ) );
 
 	// emitter width
 	editbox = static_cast<CEGUI::Editbox *>(wmgr.createWindow( "TaharezLook/Editbox", "emitter_width" ));
@@ -1770,6 +1795,17 @@ bool cParticle_Emitter :: Editor_Emitter_Based_On_Camera_Pos_Changed( const CEGU
 	bool enabled = static_cast<CEGUI::Checkbox *>( windowEventArgs.window )->isSelected();
 
 	Set_Based_On_Camera_Pos( enabled );
+	Pre_Update();
+
+	return 1;
+}
+
+bool cParticle_Emitter :: Editor_Particle_Based_On_Emitter_Pos_Text_Changed( const CEGUI::EventArgs &event )
+{
+	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
+	std::string str_text = static_cast<CEGUI::Editbox *>( windowEventArgs.window )->getText().c_str();
+
+	Set_Particle_Based_On_Emitter_Pos( string_to_float( str_text ) );
 	Pre_Update();
 
 	return 1;

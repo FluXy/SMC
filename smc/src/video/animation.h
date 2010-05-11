@@ -219,6 +219,8 @@ public:
 	virtual void Set_Spawned( bool enable = 0 );
 	// Set if the position is based on the camera position
 	void Set_Based_On_Camera_Pos( bool enable );
+	// Set if particles position is based on the emitter position
+	void Set_Particle_Based_On_Emitter_Pos( float val );
 	// Set the Emitter rect
 	void Set_Emitter_Rect( float x, float y, float w = 0.0f, float h = 0.0f );
 	void Set_Emitter_Rect( const GL_rect &rect );
@@ -272,6 +274,7 @@ public:
 	bool Editor_Pos_Z_Rand_Text_Changed( const CEGUI::EventArgs &event );
 	bool Editor_Filename_Text_Changed( const CEGUI::EventArgs &event );
 	bool Editor_Emitter_Based_On_Camera_Pos_Changed( const CEGUI::EventArgs &event );
+	bool Editor_Particle_Based_On_Emitter_Pos_Text_Changed( const CEGUI::EventArgs &event );
 	bool Editor_Emitter_Width_Text_Changed( const CEGUI::EventArgs &event );
 	bool Editor_Emitter_Height_Text_Changed( const CEGUI::EventArgs &event );
 	bool Editor_Emitter_Time_To_Live_Text_Changed( const CEGUI::EventArgs &event );
@@ -313,6 +316,8 @@ public:
 	std::string m_image_filename;
 	// if emitter position is based on the camera position
 	bool m_emitter_based_on_camera_pos;
+	// if particles position is based on the emitter position
+	float m_particle_based_on_emitter_pos;
 	// emitter time to live
 	float m_emitter_time_to_live;
 	// emitter iteration interval
