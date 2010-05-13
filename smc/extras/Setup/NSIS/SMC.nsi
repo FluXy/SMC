@@ -220,7 +220,7 @@ Section $(SMC_CORE_SECTION_TITLE) Sec_SMC
 	SectionIn 1 RO
 
 	; Set output path to the installation directory.
-	SetOutPath $INSTDIR
+	SetOutPath "$INSTDIR"
 
 	; Install VC++ 9 SP1 runtime
 	File "..\vcredist_2008_SP1_x86.exe"
@@ -258,7 +258,7 @@ SectionEnd
 Section $(SMC_SOURCE_CODE_SECTION_TITLE) Sec_Source
 
 	; Set output path to the installation directory.
-	SetOutPath $INSTDIR
+	SetOutPath "$INSTDIR"
 
 	; Installation Directories
 	File /r "..\..\..\makefiles"
