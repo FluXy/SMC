@@ -505,6 +505,12 @@ void cMouseCursor :: Left_Click_Down( void )
 	}
 	else
 	{
+		if( !Is_Selected_Object( m_hovering_object->m_obj, 1 ) )
+		{
+			Clear_Selected_Objects();
+			Add_Selected_Object( m_hovering_object->m_obj, 1 );
+		}
+
 		// select same object types
 		if( pKeyboard->Is_Ctrl_Down() && pKeyboard->Is_Shift_Down() )
 		{
