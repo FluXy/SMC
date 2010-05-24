@@ -868,12 +868,17 @@ bool cEditor :: Key_Down( SDLKey key )
 	// if shift got pressed remove mouse object for possible mouse selection
 	else if( pKeyboard->Is_Shift_Down() && pMouseCursor->m_hovering_object->m_obj )
 	{
-		pMouseCursor->Clear_Mouse_Object();
+		pMouseCursor->Clear_Hovered_Object();
 	}
 	// Delete selected objects
 	else if( key == SDLK_DELETE )
 	{
 		pMouseCursor->Delete_Selected_Objects();
+	}
+	// Snap to objects mode
+	else if( key == SDLK_o )
+	{
+		pMouseCursor->Toggle_Snap_Mode();
 	}
 	else
 	{
@@ -1346,7 +1351,7 @@ void cEditor :: Activate_Item( cEditor_Item_Object *entry )
 	pMouseCursor->m_left = 1;
 	pMouseCursor->m_hovering_object->m_mouse_offset_y = static_cast<int>( new_sprite->m_col_rect.m_h / 2 );
 	pMouseCursor->m_hovering_object->m_mouse_offset_x = static_cast<int>( new_sprite->m_col_rect.m_w / 2 );
-	pMouseCursor->Set_Mouse_Object( new_sprite );
+	pMouseCursor->Set_Hovered_Object( new_sprite );
 }
 
 cSprite *cEditor :: Get_Object( const CEGUI::String &element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager )
@@ -1682,6 +1687,7 @@ void cEditor :: Draw_Editor_Help( void )
 		Add_Help_Line( "M", "Cycle selected object(s) through massive types" );
 		Add_Help_Line( "Massive types (color):" );
 		Add_Help_Line( "Massive(red) ->   Halfmassive(orange) ->   Climbable(lila) ->   Passive(green) ->   Front Passive(green)", "" , 0, 80 );
+		Add_Help_Line( "O", "Enable snap to object mode" );
 		Add_Help_Line( "Ctrl + N", "Create a new Level" );
 		Add_Help_Line( "Ctrl + L", "Load a Level" );
 		Add_Help_Line( "Ctrl + W", "Load an Overworld" );

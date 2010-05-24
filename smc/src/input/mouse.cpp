@@ -82,6 +82,10 @@ cMouseCursor :: cMouseCursor( cSprite_Manager *sprite_manager )
 	m_hovering_object = new cSelectedObject();
 	m_active_object = NULL;
 
+	m_snap_to_object_mode = 0;
+	m_snap_pos_available = 0;
+	m_snap_pos = GL_point();
+
 	m_fastcopy_mode = 0;
 	m_mover_mode = 0;
 	m_last_clicked_object = NULL;
@@ -105,7 +109,7 @@ void cMouseCursor :: Reset( bool clear_copy_buffer /* = 1 */ )
 		Clear_Copy_Objects();
 	}
 	Clear_Selected_Objects();
-	Clear_Mouse_Object();
+	Clear_Hovered_Object();
 	Clear_Active_Object();
 
 	// change to default cursor
@@ -372,7 +376,7 @@ cObjectCollision *cMouseCursor :: Get_First_Mouse_Collision( const GL_rect &mous
 	{
 		cSprite *obj = (*itr);
 
-		// don't check spawned or destroyed objects
+		// ignore spawned or destroyed objects
 		if( obj->m_spawned || obj->m_auto_destroy )
 		{
 			continue;
@@ -448,8 +452,9 @@ void cMouseCursor :: Update_Position( void )
 			Set_Pos( m_x + pActive_Camera->m_x, m_y + pActive_Camera->m_y, 1 );
 		}
 
-		Update_Mouse_Object();
+		Update_Hovered_Object();
 		Update_Selected_Objects();
+		Update_Snap_Pos();
 	}
 	else
 	{
@@ -523,6 +528,8 @@ void cMouseCursor :: Left_Click_Down( void )
 				pWorld_Editor->Select_Same_Object_Types( m_hovering_object->m_obj );
 			}
 		}
+
+		Update_Snap_Pos();
 	}
 
 	if( m_click_counter > 0.0f )
@@ -559,7 +566,7 @@ void cMouseCursor :: Double_Click( bool activate /* = 1 */ )
 	m_click_counter = 0.0f;
 }
 
-void cMouseCursor :: Set_Mouse_Object( cSprite *sprite )
+void cMouseCursor :: Set_Hovered_Object( cSprite *sprite )
 {
 	// return if mouse object is the same or in mouse selection mode
 	if( m_hovering_object->m_obj == sprite || ( sprite && m_selection_mode ) )
@@ -585,7 +592,7 @@ void cMouseCursor :: Set_Mouse_Object( cSprite *sprite )
 	Update_Selected_Object_Offset( m_hovering_object );
 }
 
-void cMouseCursor :: Update_Mouse_Object( void )
+void cMouseCursor :: Update_Hovered_Object( void )
 {
 	if( !editor_enabled || !m_hovering_object->m_obj || ( m_mover_mode && ( Game_Mode == MODE_LEVEL || Game_Mode == MODE_OVERWORLD ) ) )
 	{
@@ -892,6 +899,24 @@ void cMouseCursor :: Update_Selected_Objects( void )
 	}
 }
 
+void cMouseCursor :: Update_Selected_Object_Offset( cSelectedObject *obj )
+{
+	if( !obj )
+	{
+		return;
+	}
+
+	if( !obj->m_obj )
+	{
+		obj->m_mouse_offset_x = 0;
+		obj->m_mouse_offset_y = 0;
+		return;
+	}
+
+	obj->m_mouse_offset_x = static_cast<int>(m_pos_x) - static_cast<int>(obj->m_obj->m_start_pos_x);
+	obj->m_mouse_offset_y = static_cast<int>(m_pos_y) - static_cast<int>(obj->m_obj->m_start_pos_y);
+}
+
 bool cMouseCursor :: Is_Selected_Object( const cSprite *sprite, bool only_user /* = 0 */ )
 {
 	if( !sprite )
@@ -927,6 +952,190 @@ void cMouseCursor :: Delete_Selected_Objects( void )
 	}
 
 	Clear_Selected_Objects();
+}
+
+bool cMouseCursor :: Get_Snap_Pos( GL_point &new_pos, int snap, cSelectedObject *src_obj )
+{
+	const GL_rect src_rect = GL_rect( m_pos_x - src_obj->m_mouse_offset_x, m_pos_y - src_obj->m_mouse_offset_y, src_obj->m_obj->m_start_rect.m_w, src_obj->m_obj->m_start_rect.m_h );
+	const GL_rect full_snap_rect = GL_rect( src_obj->m_obj->m_start_rect.m_x - snap, src_obj->m_obj->m_start_rect.m_y - snap, src_obj->m_obj->m_start_rect.m_w + snap * 2, src_obj->m_obj->m_start_rect.m_h + snap * 2 );
+
+	float distance_left = snap + 1;
+	float distance_right = snap + 1;
+	float distance_top = snap + 1;
+	float distance_bottom = snap + 1;
+	float distance_best = snap + 1;
+
+	cSprite *snap_obj = NULL;
+
+	// check objects for overlap
+	for( cSprite_List::iterator itr = m_sprite_manager->objects.begin(); itr != m_sprite_manager->objects.end(); ++itr )
+	{
+		cSprite *obj = (*itr);
+
+		// don't check selected objects
+		if( Is_Selected_Object( obj, 0 ) )
+		{
+			continue;
+		}
+
+		// ignore spawned or destroyed objects
+		if( obj->m_spawned || obj->m_auto_destroy )
+		{
+			continue;
+		}
+
+		if( full_snap_rect.Intersects( obj->m_start_rect ) )
+		{
+			const float obj_distance_left = fabs( src_rect.m_x - (obj->m_start_rect.m_x + obj->m_start_rect.m_w) );
+			const float obj_distance_right = fabs( (src_rect.m_x + src_rect.m_w) - obj->m_start_rect.m_x );
+			const float obj_distance_top = fabs( src_rect.m_y - (obj->m_start_rect.m_y + obj->m_start_rect.m_h) );
+			const float obj_distance_bottom = fabs( (src_rect.m_y + src_rect.m_h) - obj->m_start_rect.m_y );
+			float obj_distance_best;
+
+			if( obj_distance_left < obj_distance_right )
+			{
+				obj_distance_best = obj_distance_left;
+			}
+			else
+			{
+				obj_distance_best = obj_distance_right;
+			}
+
+			if( obj_distance_top < obj_distance_best )
+			{
+				obj_distance_best = obj_distance_top;
+			}
+
+			if( obj_distance_bottom < obj_distance_best )
+			{
+				obj_distance_best = obj_distance_bottom;
+			}
+
+			// found a better snap object
+			if( obj_distance_best < distance_best )
+			{
+				snap_obj = obj;
+				distance_left = obj_distance_left;
+				distance_right = obj_distance_right;
+				distance_top = obj_distance_top;
+				distance_bottom = obj_distance_bottom;
+				distance_best = obj_distance_best;
+			}
+		}
+	}
+
+	// if no object for snapping found
+	if( !snap_obj )
+	{
+		return 0;
+	}
+
+	const GL_rect snap_obj_rect = snap_obj->m_start_rect;
+
+	// snap to colliding object
+	// vertical
+	if( (distance_top < distance_left && distance_top < distance_right) || (distance_bottom < distance_left && distance_bottom < distance_right) )
+	{
+		// out of snap range
+		if( distance_top > snap && distance_bottom > snap )
+		{
+			new_pos.m_y = src_rect.m_y;
+		}
+		// snap bottom to top edge
+		else if( distance_top > distance_bottom )
+		{
+			new_pos.m_y = snap_obj_rect.m_y - src_rect.m_h;
+		}
+		// snap top to bottom edge
+		else
+		{
+			new_pos.m_y = snap_obj_rect.m_y + snap_obj_rect.m_h;
+		}
+
+		const float distance_left_to_left = fabs( src_rect.m_x - snap_obj_rect.m_x );
+		const float distance_right_to_right = fabs( (src_rect.m_x + src_rect.m_w) - (snap_obj_rect.m_x + snap_obj_rect.m_w) );
+
+		// out of snap range
+		if( distance_left_to_left > snap && distance_right_to_right > snap )
+		{
+			new_pos.m_x = src_rect.m_x;
+		}
+		// snap left to left edge
+		else if( distance_left_to_left < distance_right_to_right )
+		{
+			new_pos.m_x = snap_obj_rect.m_x;
+		}
+		// snap right to right edge
+		else
+		{
+			new_pos.m_x = snap_obj_rect.m_x + snap_obj_rect.m_w - src_rect.m_w;
+		}
+	}
+	// horizontal
+	else
+	{
+		// out of snap range
+		if( distance_left > snap && distance_right > snap )
+		{
+			new_pos.m_x = src_rect.m_x;
+		}
+		// snap right to left edge
+		else if( distance_left > distance_right )
+		{
+			new_pos.m_x = snap_obj_rect.m_x - src_rect.m_w;
+		}
+		// snap left to right edge
+		else
+		{
+			new_pos.m_x = snap_obj_rect.m_x + snap_obj_rect.m_w;
+		}
+
+		const float distance_top_to_top = fabs( src_rect.m_y - snap_obj_rect.m_y );
+		const float distance_bottom_to_bottom = fabs( (src_rect.m_y + src_rect.m_h) - (snap_obj_rect.m_y - snap_obj_rect.m_h) );
+
+		// out of snap range
+		if( distance_top_to_top > snap && distance_bottom_to_bottom > snap )
+		{
+			new_pos.m_y = src_rect.m_y;
+		}
+		// snap top to top edge
+		else if( distance_top_to_top < distance_bottom_to_bottom )
+		{
+			new_pos.m_y = snap_obj_rect.m_y;
+		}
+		// snap bottom to bottom edge
+		else
+		{
+			new_pos.m_y = snap_obj_rect.m_y + snap_obj_rect.m_h - src_rect.m_h;
+		}
+	}
+
+	new_pos.m_x += src_obj->m_mouse_offset_x;
+	new_pos.m_y += src_obj->m_mouse_offset_y;
+
+	return 1;
+}
+
+void cMouseCursor :: Update_Snap_Pos( void )
+{
+	if( m_snap_to_object_mode && m_left && m_hovering_object->m_obj )
+	{
+		m_snap_pos_available = Get_Snap_Pos( m_snap_pos, 10, m_hovering_object );
+	}
+}
+
+void cMouseCursor :: Toggle_Snap_Mode( void )
+{
+	m_snap_to_object_mode = !m_snap_to_object_mode;
+
+	if( m_snap_to_object_mode )
+	{
+		pHud_Debug->Set_Text( _("Snap to object mode enabled") );
+	}
+	else
+	{
+		pHud_Debug->Set_Text( _("Snap to object mode disabled") );
+	}
 }
 
 void cMouseCursor :: Set_Active_Object( cSprite *sprite )
@@ -1033,8 +1242,16 @@ void cMouseCursor :: Delete( cSprite *sprite )
 
 void cMouseCursor :: Set_Object_Position( cSelectedObject *sel_obj )
 {
-	// set new position
-	sel_obj->m_obj->Set_Pos( static_cast<float>( static_cast<int>(m_pos_x) - sel_obj->m_mouse_offset_x ), static_cast<float>( static_cast<int>(m_pos_y) - sel_obj->m_mouse_offset_y ), 1 );
+	// if in snap mode and snap available
+	if( m_snap_to_object_mode && m_snap_pos_available )
+	{
+		sel_obj->m_obj->Set_Pos( m_snap_pos.m_x - sel_obj->m_mouse_offset_x, m_snap_pos.m_y - sel_obj->m_mouse_offset_y, 1 );
+	}
+	else
+	{
+		// set new position
+		sel_obj->m_obj->Set_Pos( static_cast<float>( static_cast<int>(m_pos_x) - sel_obj->m_mouse_offset_x ), static_cast<float>( static_cast<int>(m_pos_y) - sel_obj->m_mouse_offset_y ), 1 );
+	}
 
 	// update object settings position
 	if( m_active_object && m_active_object == sel_obj->m_obj )
@@ -1137,7 +1354,7 @@ void cMouseCursor :: Draw_Object_Rects( void )
 
 void cMouseCursor :: Start_Selection( void )
 {
-	Clear_Mouse_Object();
+	Clear_Hovered_Object();
 	m_selection_mode = 1;
 	m_selection_rect.m_x = m_x + pActive_Camera->m_x;
 	m_selection_rect.m_y = m_y + pActive_Camera->m_y;
@@ -1319,7 +1536,7 @@ void cMouseCursor :: Editor_Update( void )
 		{
 			if( m_hovering_object->m_obj )
 			{
-				Clear_Mouse_Object();
+				Clear_Hovered_Object();
 			}
 		}
 		else
@@ -1351,7 +1568,7 @@ void cMouseCursor :: Editor_Update( void )
 
 		if( ( !m_left || !m_hovering_object->m_obj ) && !( pKeyboard->Is_Shift_Down() && !pKeyboard->Is_Ctrl_Down() ) )
 		{
-			Set_Mouse_Object( col->m_obj );
+			Set_Hovered_Object( col->m_obj );
 		}
 	}
 

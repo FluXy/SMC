@@ -115,16 +115,16 @@ public:
 	// Editor default float left click
 	void Double_Click( bool activate = 1 );
 
-	// ## Mouse Object
-	// Set new mouse object
-	void Set_Mouse_Object( cSprite *sprite );
-	// update the mouse object position
-	void Update_Mouse_Object( void );
+	// ## Hovered Object
+	// Set new hovered object
+	void Set_Hovered_Object( cSprite *sprite );
+	// update the hovered object position
+	void Update_Hovered_Object( void );
 
-	// clear mouse object
-	inline void Clear_Mouse_Object( void )
+	// clear hovered object
+	inline void Clear_Hovered_Object( void )
 	{
-		Set_Mouse_Object( NULL );
+		Set_Hovered_Object( NULL );
 	}
 
 	// ## Copy Objects
@@ -162,23 +162,8 @@ public:
 	// updates the selected objects positions
 	void Update_Selected_Objects( void );
 	// updates the selected object offset to the mouse position
-	inline void Update_Selected_Object_Offset( cSelectedObject *obj )
-	{
-		if( !obj )
-		{
-			return;
-		}
+	void Update_Selected_Object_Offset( cSelectedObject *obj );
 
-		if( !obj->m_obj )
-		{
-			obj->m_mouse_offset_x = 0;
-			obj->m_mouse_offset_y = 0;
-			return;
-		}
-
-		obj->m_mouse_offset_x = static_cast<int>(m_pos_x) - static_cast<int>(obj->m_obj->m_start_pos_x);
-		obj->m_mouse_offset_y = static_cast<int>(m_pos_y) - static_cast<int>(obj->m_obj->m_start_pos_y);
-	}
 	/* returns true if the given object is a selected_object
 	 * if only_user is given only check user objects
 	*/
@@ -190,6 +175,16 @@ public:
 	{
 		return m_selected_objects.size();
 	}
+
+	// ## Snap Object
+	/* set new_pos of the nearest object in the snap range using the given object as the source
+	 * returns 0 if no object found
+	*/
+	bool Get_Snap_Pos( GL_point &new_pos, int snap, cSelectedObject *src_obj );
+	// update the snap position
+	void Update_Snap_Pos( void );
+	// Toggle Snap mode
+	void Toggle_Snap_Mode( void );
 
 	// ## Active Object
 	// Set new active object
@@ -223,20 +218,27 @@ public:
 	void Mover_Update( Sint16 move_x, Sint16 move_y );
 	// Updates the editor Mouse
 	void Editor_Update( void );
-	
+
 	// current internal mouse position
 	int m_x;
 	int m_y;
-	
-	// selection mode
+
+	// if object selection mode is active
 	bool m_selection_mode;
-	// Selection rect
+	// selection rect
 	GL_rect m_selection_rect;
 
-	// if activated the mouse cursor movement moves the screen	
+	// if activated the mouse cursor movement moves the screen
 	bool m_mover_mode;
 	// fast copy mode
 	bool m_fastcopy_mode;
+
+	// if activated the selected object(s) snap to the nearest object
+	bool m_snap_to_object_mode;
+	// if a snap position was found
+	bool m_snap_pos_available;
+	// position that is currently being snapped to
+	GL_point m_snap_pos;
 
 	/* selected objects
 	 * the mouse object is also always a selected object

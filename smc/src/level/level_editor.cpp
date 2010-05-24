@@ -214,7 +214,7 @@ bool cEditor_Level :: Key_Down( SDLKey key )
 	else if( key == SDLK_m && pMouseCursor->m_hovering_object->m_obj )
 	{
 		Switch_Object_State( pMouseCursor->m_hovering_object->m_obj );
-		pMouseCursor->Clear_Mouse_Object();
+		pMouseCursor->Clear_Hovered_Object();
 	}
 	else
 	{
