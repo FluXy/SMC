@@ -1091,7 +1091,7 @@ bool cMouseCursor :: Get_Snap_Pos( GL_point &new_pos, int snap, cSelectedObject 
 		}
 
 		const float distance_top_to_top = fabs( src_rect.m_y - snap_obj_rect.m_y );
-		const float distance_bottom_to_bottom = fabs( (src_rect.m_y + src_rect.m_h) - (snap_obj_rect.m_y - snap_obj_rect.m_h) );
+		const float distance_bottom_to_bottom = fabs( (src_rect.m_y + src_rect.m_h) - (snap_obj_rect.m_y + snap_obj_rect.m_h) );
 
 		// out of snap range
 		if( distance_top_to_top > snap && distance_bottom_to_bottom > snap )
