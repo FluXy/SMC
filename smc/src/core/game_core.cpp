@@ -911,6 +911,153 @@ GroundType Get_Ground_Type_Id( const std::string &str_groundtype )
 	return GROUND_NORMAL;
 }
 
+std::string Get_Level_Land_Type_Name( const LevelLandType land_type )
+{
+	switch( land_type )
+	{
+		case LLT_UNDEFINED:
+		{
+			return N_("undefined");
+		}
+		case LLT_GREEN:
+		{
+			return N_("green");
+		}
+		case LLT_JUNGLE:
+		{
+			return N_("jungle");
+		}
+		case LLT_ICE:
+		{
+			return N_("ice");
+		}
+		case LLT_SNOW:
+		{
+			return N_("snow");
+		}
+		case LLT_WATER:
+		{
+			return N_("water");
+		}
+		case LLT_CANDY:
+		{
+			return N_("candy");
+		}
+		case LLT_DESERT:
+		{
+			return N_("desert");
+		}
+		case LLT_SAND:
+		{
+			return N_("sand");
+		}
+		case LLT_CASTLE:
+		{
+			return N_("castle");
+		}
+		case LLT_UNDERGROUND:
+		{
+			return N_("underground");
+		}
+		case LLT_CRYSTAL:
+		{
+			return N_("crystal");
+		}
+		case LLT_GHOST:
+		{
+			return N_("ghost");
+		}
+		case LLT_MUSHROOM:
+		{
+			return N_("mushroom");
+		}
+		case LLT_SKY:
+		{
+			return N_("sky");
+		}
+		case LLT_PLASTIC:
+		{
+			return N_("plastic");
+		}
+		default:
+		{
+			break;
+		}
+	}
+
+	return "";
+}
+
+LevelLandType Get_Level_Land_Type_Id( const std::string &str_type )
+{
+	if( str_type.compare( "undefined" ) == 0 )
+	{
+		return LLT_UNDEFINED;
+	}
+	else if( str_type.compare( "green" ) == 0 )
+	{
+		return LLT_GREEN;
+	}
+	else if( str_type.compare( "jungle" ) == 0 )
+	{
+		return LLT_JUNGLE;
+	}
+	else if( str_type.compare( "ice" ) == 0 )
+	{
+		return LLT_ICE;
+	}
+	else if( str_type.compare( "snow" ) == 0 )
+	{
+		return LLT_SNOW;
+	}
+	else if( str_type.compare( "water" ) == 0 )
+	{
+		return LLT_WATER;
+	}
+	else if( str_type.compare( "candy" ) == 0 )
+	{
+		return LLT_CANDY;
+	}
+	else if( str_type.compare( "desert" ) == 0 )
+	{
+		return LLT_DESERT;
+	}
+	else if( str_type.compare( "sand" ) == 0 )
+	{
+		return LLT_SAND;
+	}
+	else if( str_type.compare( "castle" ) == 0 )
+	{
+		return LLT_CASTLE;
+	}
+	else if( str_type.compare( "underground" ) == 0 )
+	{
+		return LLT_UNDERGROUND;
+	}
+	else if( str_type.compare( "crystal" ) == 0 )
+	{
+		return LLT_CRYSTAL;
+	}
+	else if( str_type.compare( "ghost" ) == 0 )
+	{
+		return LLT_GHOST;
+	}
+	else if( str_type.compare( "mushroom" ) == 0 )
+	{
+		return LLT_MUSHROOM;
+	}
+	else if( str_type.compare( "sky" ) == 0 )
+	{
+		return LLT_SKY;
+	}
+	else if( str_type.compare( "plastic" ) == 0 )
+	{
+		return LLT_PLASTIC;
+	}
+
+	return LLT_UNDEFINED;
+}
+
 std::string Get_Color_Name( const DefaultColor color )
 {
 	switch( color )

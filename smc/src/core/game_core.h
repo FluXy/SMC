@@ -117,6 +117,11 @@ std::string Get_Ground_Type_Name( const GroundType gtype );
 // Return the ground type identifier
 GroundType Get_Ground_Type_Id( const std::string &str_groundtype );
 
+// Return the level land type name
+std::string Get_Level_Land_Type_Name( const LevelLandType land_type );
+// Return the level land type identifier
+LevelLandType Get_Level_Land_Type_Id( const std::string &str_type );
+
 // Return the Color Name
 std::string Get_Color_Name( const DefaultColor color );
 // Return the Color identifier

@@ -309,6 +309,12 @@ void cLevel :: Save( void )
 		// music
 		std::string music_file = Get_Musicfile( 1 );
 		file << "\t\t<Property name=\"lvl_music\" value=\"" << string_to_xml_string( music_file ) << "\" />" << std::endl;
+		// description
+		file << "\t\t<Property name=\"lvl_description\" value=\"" << string_to_xml_string( m_description ) << "\" />" << std::endl;
+		// difficulty
+		file << "\t\t<Property name=\"lvl_difficulty\" value=\"" << static_cast<int>(m_difficulty) << "\" />" << std::endl;
+		// land type
+		file << "\t\t<Property name=\"lvl_land_type\" value=\"" << Get_Level_Land_Type_Name( m_land_type ) << "\" />" << std::endl;
 		// camera limits
 		file << "\t\t<Property name=\"cam_limit_x\" value=\"" << static_cast<int>(m_camera_limits.m_x) << "\" />" << std::endl;
 		file << "\t\t<Property name=\"cam_limit_y\" value=\"" << static_cast<int>(m_camera_limits.m_y) << "\" />" << std::endl;
@@ -374,6 +380,10 @@ void cLevel :: Reset_Settings( void )
 
 	// set default music
 	Set_Musicfile( DATA_DIR "/" GAME_MUSIC_DIR "/" LEVEL_DEFAULT_MUSIC );
+
+	m_description.clear();
+	m_difficulty = 0;
+	m_land_type = LLT_UNDEFINED;
 
 	// player
 	m_player_start_pos_x = cLevel_Player::m_default_pos_x;
@@ -1018,6 +1028,27 @@ void cLevel :: Set_Version( const std::string &level_version )
 	m_version = level_version;
 }
 
+void cLevel :: Set_Description( const std::string &level_description )
+{
+	m_description = level_description;
+}
+
+void cLevel :: Set_Difficulty( const Uint8 level_difficulty )
+{
+	m_difficulty = level_difficulty;
+
+	// if invalid
+	if( m_difficulty > 100 )
+	{
+		m_difficulty = 0;
+	}
+}
+
+void cLevel :: Set_Land_Type( const LevelLandType level_land_type )
+{
+	m_land_type = level_land_type;
+}
+
 cLevel_Entry *cLevel :: Get_Entry( const std::string &name )
 {
 	if( name.empty() )
@@ -1099,12 +1130,18 @@ void cLevel :: elementEnd( const CEGUI::String &element )
 				}
 			}
 
-			// Author
-			m_author = m_xml_attributes.getValueAsString( "lvl_author" ).c_str();
-			// Version
-			m_version = m_xml_attributes.getValueAsString( "lvl_version" ).c_str();
-			// Music
-			Set_Musicfile( m_xml_attributes.getValueAsString( "lvl_music" ).c_str() );
+			// author
+			Set_Author( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_author" ).c_str() ) );
+			// version
+			Set_Version( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_version" ).c_str() ) );
+			// music
+			Set_Musicfile( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_music" ).c_str() ) );
+			// description
+			Set_Description( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_description" ).c_str() ) );
+			// difficulty
+			Set_Difficulty( m_xml_attributes.getValueAsInteger( "lvl_difficulty" ) );
+			// land type
+			Set_Land_Type( Get_Level_Land_Type_Id( m_xml_attributes.getValueAsString( "lvl_land_type", "undefined" ).c_str() ) );
 			// Camera Limits
 			m_camera_limits = GL_rect( static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_x" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_y" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_w" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_h" )) );
 			// fixed camera horizontal velocity

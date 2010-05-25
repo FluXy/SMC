@@ -88,6 +88,21 @@ void cLevel_Settings :: Init( void )
 	// version
 	CEGUI::Editbox *editbox_version = static_cast<CEGUI::Editbox *>(wmgr.getWindow( "editbox_version" ));
 	editbox_version->setText( m_level->m_version.c_str() );
+	// difficulty
+	CEGUI::Spinner *spinner_difficulty = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_difficulty" ));
+	spinner_difficulty->setCurrentValue( m_level->m_difficulty );
+	// land type
+	CEGUI::Combobox *combo_land_type = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "combo_land_type" ));
+	// add all types
+	for( unsigned int i = 0; i < LLT_LAST; i++ )
+	{
+		combo_land_type->addItem( new CEGUI::ListboxTextItem( Get_Level_Land_Type_Name( static_cast<LevelLandType>(i) ), i ) );
+	}
+	combo_land_type->setText( Get_Level_Land_Type_Name( m_level->m_land_type ).c_str() );
+	// description
+	CEGUI::MultiLineEditbox *multieditbox_description = static_cast<CEGUI::MultiLineEditbox *>(wmgr.getWindow( "multieditbox_description" ));
+	multieditbox_description->setText( reinterpret_cast<const CEGUI::utf8*>(m_level->m_description.c_str()) );
+
 	// camera limits
 	CEGUI::Spinner *spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_camera_limit_w" ));
 	spinner->setCurrentValue( m_level->m_camera_limits.m_w );
@@ -215,10 +230,17 @@ void cLevel_Settings :: Leave( void )
 	}
 	// musicfile
 	m_level->Set_Musicfile( wmgr.getWindow( "editbox_music_filename" )->getText().c_str() );
-	// Author
+	// author
 	m_level->Set_Author( wmgr.getWindow( "editbox_author" )->getText().c_str() );
-	// Version
+	// version
 	m_level->Set_Version( wmgr.getWindow( "editbox_version" )->getText().c_str() );
+	// difficulty
+	m_level->Set_Difficulty( static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_difficulty" ))->getCurrentValue() );
+	// land type
+	m_level->Set_Land_Type( Get_Level_Land_Type_Id( static_cast<CEGUI::Combobox *>(wmgr.getWindow( "combo_land_type" ))->getText().c_str() ) );
+	// description
+	m_level->Set_Description( static_cast<CEGUI::MultiLineEditbox *>(wmgr.getWindow( "multieditbox_description" ))->getText().c_str() );
+
 	// Camera Limits
 	pLevel_Manager->m_camera->Set_Limit_W( (static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_camera_limit_w" )))->getCurrentValue() );
 	pLevel_Manager->m_camera->Set_Limit_H( (static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_camera_limit_h" )))->getCurrentValue() );

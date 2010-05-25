@@ -8,6 +8,7 @@
         <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Window Type="TaharezLook/StaticText" Name="text_level_filename" >
             <Property Name="Text" Value="Name" />
+            <Property Name="Tooltip" Value="If the filename is changed the level is renamed and saved." />
             <Property Name="FrameEnabled" Value="False" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
             <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.01,0},{0.1,0},{0.06,0}}" />
@@ -15,118 +16,158 @@
         </Window>
         <Window Type="TaharezLook/StaticText" Name="text_music_filename" >
             <Property Name="Text" Value="Music" />
+            <Property Name="Tooltip" Value="Music filename" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.5,0},{0.01,0},{0.61,0},{0.06,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_author" >
+            <Property Name="Text" Value="Author" />
+            <Property Name="Tooltip" Value="Level Author name(s)." />
             <Property Name="FrameEnabled" Value="False" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
             <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.07,0},{0.1,0},{0.12,0}}" />
             <Property Name="BackgroundEnabled" Value="False" />
         </Window>
-        <Window Type="TaharezLook/StaticText" Name="text_author" >
-            <Property Name="Text" Value="Author" />
+        <Window Type="TaharezLook/StaticText" Name="text_version" >
+            <Property Name="Text" Value="Version" />
+            <Property Name="Tooltip" Value="Level version." />
             <Property Name="FrameEnabled" Value="False" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
             <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.13,0},{0.1,0},{0.18,0}}" />
             <Property Name="BackgroundEnabled" Value="False" />
         </Window>
-        <Window Type="TaharezLook/StaticText" Name="text_version" >
-            <Property Name="Text" Value="Version" />
-            <Property Name="FrameEnabled" Value="False" />
-            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.19,0},{0.1,0},{0.24,0}}" />
-            <Property Name="BackgroundEnabled" Value="False" />
-        </Window>
         <Window Type="TaharezLook/StaticText" Name="text_camera_limit_w" >
             <Property Name="Text" Value="Limit Width" />
+            <Property Name="Tooltip" Value="Camera Limit width" />
             <Property Name="FrameEnabled" Value="False" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.41,0},{0.16,0},{0.46,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.51,0},{0.16,0},{0.56,0}}" />
             <Property Name="BackgroundEnabled" Value="False" />
         </Window>
         <Window Type="TaharezLook/StaticText" Name="text_last_saved" >
             <Property Name="Text" Value="Last save time" />
+            <Property Name="Tooltip" Value="Last time this level was saved." />
             <Property Name="FrameEnabled" Value="False" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.91,0},{0.176727,0},{0.96,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.94,0},{0.17,0},{0.99,0}}" />
             <Property Name="BackgroundEnabled" Value="False" />
         </Window>
         <Window Type="TaharezLook/Editbox" Name="editbox_level_filename" >
-            <Property Name="Tooltip" Value="Level filename. If changed the level will be resaved." />
             <Property Name="MaxTextLength" Value="1073741823" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
             <Property Name="UnifiedAreaRect" Value="{{0.1,0},{0.01,0},{0.35,0},{0.06,0}}" />
         </Window>
         <Window Type="TaharezLook/Editbox" Name="editbox_music_filename" >
-            <Property Name="Tooltip" Value="Music filename." />
             <Property Name="MaxTextLength" Value="1073741823" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.61,0},{0.01,0},{0.98,0},{0.06,0}}" />
+        </Window>
+        <Window Type="TaharezLook/Editbox" Name="editbox_author" >
+            <Property Name="MaxTextLength" Value="30" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
             <Property Name="UnifiedAreaRect" Value="{{0.1,0},{0.07,0},{0.46,0},{0.12,0}}" />
         </Window>
-        <Window Type="TaharezLook/Editbox" Name="editbox_author" >
-            <Property Name="Tooltip" Value="Level Author name(s)." />
-            <Property Name="MaxTextLength" Value="30" />
-            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.1,0},{0.13,0},{0.46,0},{0.18,0}}" />
-        </Window>
         <Window Type="TaharezLook/Editbox" Name="editbox_version" >
-            <Property Name="Tooltip" Value="Level version." />
             <Property Name="MaxTextLength" Value="20" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.1,0},{0.19,0},{0.35,0},{0.24,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.1,0},{0.13,0},{0.35,0},{0.18,0}}" />
         </Window>
         <Window Type="TaharezLook/Editbox" Name="editbox_save_time" >
-            <Property Name="Tooltip" Value="Last time this level was saved." />
             <Property Name="ReadOnly" Value="True" />
             <Property Name="MaxTextLength" Value="60" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.18,0},{0.91,0},{0.6,0},{0.96,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.18,0},{0.94,0},{0.6,0},{0.99,0}}" />
         </Window>
         <Window Type="TaharezLook/Spinner" Name="spinner_camera_limit_w" >
-            <Property Name="Tooltip" Value="Camera Limit width" />
             <Property Name="StepSize" Value="1" />
             <Property Name="CurrentValue" Value="0" />
             <Property Name="MaximumValue" Value="32767" />
             <Property Name="MinimumValue" Value="0" />
             <Property Name="TextInputMode" Value="FloatingPoint" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.16,0},{0.41,0},{0.3,0},{0.46,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.16,0},{0.51,0},{0.3,0},{0.56,0}}" />
         </Window>
         <Window Type="TaharezLook/Spinner" Name="spinner_camera_limit_h" >
-            <Property Name="Tooltip" Value="Camera Limit height" />
             <Property Name="StepSize" Value="1" />
             <Property Name="CurrentValue" Value="0" />
             <Property Name="MaximumValue" Value="0" />
             <Property Name="MinimumValue" Value="-32767" />
             <Property Name="TextInputMode" Value="FloatingPoint" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.44,0},{0.41,0},{0.58,0},{0.46,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.4,0},{0.51,0},{0.54,0},{0.56,0}}" />
         </Window>
         <Window Type="TaharezLook/Spinner" Name="spinner_camera_hor_vel" >
-            <Property Name="Tooltip" Value="Camera Horizontal Velocity" />
             <Property Name="StepSize" Value="0.5" />
             <Property Name="CurrentValue" Value="0" />
             <Property Name="MaximumValue" Value="100" />
             <Property Name="MinimumValue" Value="-100" />
             <Property Name="TextInputMode" Value="FloatingPoint" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.16,0},{0.47,0},{0.3,0},{0.52,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.16,0},{0.57,0},{0.3,0},{0.62,0}}" />
         </Window>
         <Window Type="TaharezLook/StaticText" Name="text_camera_fixed_hor_vel" >
             <Property Name="Text" Value="Fixed Velocity" />
+            <Property Name="Tooltip" Value="Camera Horizontal Velocity" />
             <Property Name="FrameEnabled" Value="False" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.47,0},{0.16,0},{0.52,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.57,0},{0.16,0},{0.62,0}}" />
             <Property Name="BackgroundEnabled" Value="False" />
         </Window>
         <Window Type="TaharezLook/StaticText" Name="text_camera" >
             <Property Name="Text" Value="Camera" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.35,0},{0.12,0},{0.4,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.45,0},{0.12,0},{0.5,0}}" />
         </Window>
         <Window Type="TaharezLook/StaticText" Name="text_camera_limit_h" >
             <Property Name="Text" Value="Height" />
+            <Property Name="Tooltip" Value="Camera Limit height" />
             <Property Name="FrameEnabled" Value="False" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.31,0},{0.41,0},{0.4375,0},{0.46,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.31,0},{0.51,0},{0.39,0},{0.56,0}}" />
             <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_description" >
+            <Property Name="Text" Value="Description" />
+            <Property Name="HorzFormatting" Value="HorzCentred" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.42,0},{0.19,0},{0.56,0},{0.24,0}}" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_difficulty" >
+            <Property Name="Text" Value="Difficulty" />
+            <Property Name="Tooltip" Value="Difficulty of this level" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.5,0},{0.07,0},{0.61,0},{0.12,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/Spinner" Name="spinner_difficulty" >
+            <Property Name="StepSize" Value="1" />
+            <Property Name="CurrentValue" Value="0" />
+            <Property Name="MaximumValue" Value="100" />
+            <Property Name="MinimumValue" Value="0" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.61,0},{0.07,0},{0.7,0},{0.12,0}}" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_land_type" >
+            <Property Name="Text" Value="Land Type" />
+            <Property Name="Tooltip" Value="The main type of the used land sprites" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.5,0},{0.13,0},{0.61,0},{0.18,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="TaharezLook/Combobox" Name="combo_land_type" >
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.61,0},{0.13,0},{0.86,0},{0.38,0}}" />
+            <Property Name="MaxEditTextLength" Value="1073741823" />
+        </Window>
+        <Window Type="TaharezLook/MultiLineEditbox" Name="multieditbox_description" >
+            <Property Name="Text" ></Property>
+            <Property Name="MaxTextLength" Value="300" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.22,0},{0.25,0},{0.78,0},{0.4,0}}" />
         </Window>
     </Window>
 </GUILayout>

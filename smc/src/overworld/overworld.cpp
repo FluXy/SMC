@@ -149,7 +149,7 @@ void cOverworld_description :: elementEnd( const CEGUI::String &element )
 
 void cOverworld_description :: handle_world( const CEGUI::XMLAttributes &attributes )
 {
-	m_name = attributes.getValueAsString( "name", m_name.c_str() ).c_str();
+	m_name = xml_string_to_string( attributes.getValueAsString( "name", m_name.c_str() ).c_str() );
 	m_visible = attributes.getValueAsBool( "visible", 1 );
 }
 
@@ -1078,7 +1078,7 @@ void cOverworld :: elementEnd( const CEGUI::String &element )
 			// Version
 			//version = m_xml_attributes.getValueAsString( "version" ).c_str();
 			// Music
-			m_musicfile = m_xml_attributes.getValueAsString( "music" ).c_str();
+			m_musicfile = xml_string_to_string( m_xml_attributes.getValueAsString( "music" ).c_str() );
 			// Camera Limits
 			//pOverworld_Manager->camera->Set_Limits( GL_rect( static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_x" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_y" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_w" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_h" )) ) );
 		}

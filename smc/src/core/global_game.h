@@ -133,6 +133,29 @@ enum LevelDrawType
 	LVL_DRAW_BG		= 2		// only draws the background gradient and image
 };
 
+/* *** *** *** *** *** Level land type *** *** *** *** *** *** *** *** *** *** *** *** */
+
+enum LevelLandType
+{
+	LLT_UNDEFINED = 0,
+	LLT_GREEN = 1,
+	LLT_JUNGLE = 2,
+	LLT_ICE = 3,
+	LLT_SNOW = 4,
+	LLT_WATER = 5,
+	LLT_CANDY = 6,
+	LLT_DESERT = 7,
+	LLT_SAND = 8,
+	LLT_CASTLE = 9,
+	LLT_UNDERGROUND = 10,
+	LLT_CRYSTAL = 11,
+	LLT_GHOST = 12,
+	LLT_MUSHROOM = 13,
+	LLT_SKY = 14,
+	LLT_PLASTIC = 15,
+	LLT_LAST = 16
+};
+
 /* *** *** *** *** *** *** *** Paths *** *** *** *** *** *** *** *** *** *** */
 
 #ifdef __APPLE__
@@ -179,7 +202,7 @@ enum LevelDrawType
 static const int speedfactor_fps = 32;
 
 /* *** level engine version *** */
-static const int level_engine_version = 38;
+static const int level_engine_version = 39;
 /* *** world engine version *** */
 static const int world_engine_version = 3;
 

@@ -116,10 +116,16 @@ public:
 	 * delete_old : if set delete the old level name
 	*/
 	void Set_Levelfile( std::string filename, bool delete_old = 1 );
-	// Set the Level Author
+	// Set the level author
 	void Set_Author( const std::string &name );
-	// Set the Level Version
+	// Set the level version
 	void Set_Version( const std::string &level_version );
+	// Set the level description
+	void Set_Description( const std::string &level_description );
+	// Set the level difficulty ( 0 = undefined, 1 = dead easy and 100 = ultimate challenge )
+	void Set_Difficulty( const Uint8 level_difficulty );
+	// Set the level land type
+	void Set_Land_Type( const LevelLandType level_land_type );
 
 	// Get entry with the given name
 	cLevel_Entry *Get_Entry( const std::string &name );
@@ -148,14 +154,20 @@ public:
 	int m_engine_version;
 	// last save time
 	time_t m_last_saved;
-	// level author
+	// author
 	std::string m_author;
-	// level version
+	// version
 	std::string m_version;
 	// music filename
 	std::string m_musicfile;
 	// valid music to play
 	bool m_valid_music;
+	// description
+	std::string m_description;
+	// difficulty ( 0 = undefined, 1 = dead easy and 100 = ultimate challenge )
+	Uint8 m_difficulty;
+	// land type
+	LevelLandType m_land_type;
 
 	// player
 	float m_player_start_pos_x;
