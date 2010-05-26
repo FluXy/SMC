@@ -75,6 +75,10 @@ public:
 	// Clears the background Layer fields
 	void Clear_Layer_Field( void );
 
+	// cegui events
+	bool Spinner_Difficulty_Changed( const CEGUI::EventArgs &event );
+	bool Slider_Difficulty_Changed( const CEGUI::EventArgs &event );
+
 	// true if menu is active
 	bool m_active;
 
@@ -85,6 +89,9 @@ public:
 	// GUI
 	CEGUI::Window *m_gui_window;
 	CEGUI::TabControl *m_tabcontrol;
+	CEGUI::Spinner *m_spinner_difficulty;
+	CEGUI::Slider *m_slider_difficulty;
+	CEGUI::Window *m_text_difficulty_name;
 
 	// background image preview
 	cHudSprite *m_background_preview;

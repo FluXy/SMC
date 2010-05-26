@@ -127,6 +127,9 @@ std::string Get_Color_Name( const DefaultColor color );
 // Return the Color identifier
 DefaultColor Get_Color_Id( const std::string &str_color );
 
+// Return the Difficulty name
+std::string Get_Difficulty_Name( Uint8 difficulty );
+
 /* Preload the common images into the image manager
  * draw_gui : if set use the loading screen gui for drawing
  */

@@ -148,7 +148,7 @@
             <Property Name="MaximumValue" Value="100" />
             <Property Name="MinimumValue" Value="0" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.61,0},{0.07,0},{0.7,0},{0.12,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.61,0},{0.07,0},{0.68,0},{0.12,0}}" />
         </Window>
         <Window Type="TaharezLook/StaticText" Name="text_land_type" >
             <Property Name="Text" Value="Land Type" />
@@ -168,6 +168,19 @@
             <Property Name="MaxTextLength" Value="300" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
             <Property Name="UnifiedAreaRect" Value="{{0.22,0},{0.25,0},{0.78,0},{0.4,0}}" />
+        </Window>
+        <Window Type="TaharezLook/Slider" Name="slider_difficulty" >
+            <Property Name="CurrentValue" Value="0" />
+            <Property Name="MaximumValue" Value="100" />
+            <Property Name="ClickStepSize" Value="5" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.69,0},{0.07,0},{0.84,0},{0.12,0}}" />
+        </Window>
+        <Window Type="TaharezLook/StaticText" Name="text_difficulty_name" >
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.84,0},{0.07,0},{0.98,0},{0.12,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
         </Window>
     </Window>
 </GUILayout>

@@ -89,8 +89,17 @@ void cLevel_Settings :: Init( void )
 	CEGUI::Editbox *editbox_version = static_cast<CEGUI::Editbox *>(wmgr.getWindow( "editbox_version" ));
 	editbox_version->setText( m_level->m_version.c_str() );
 	// difficulty
-	CEGUI::Spinner *spinner_difficulty = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_difficulty" ));
-	spinner_difficulty->setCurrentValue( m_level->m_difficulty );
+	m_spinner_difficulty = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_difficulty" ));
+	m_spinner_difficulty->setCurrentValue( static_cast<float>(m_level->m_difficulty) );
+	m_spinner_difficulty->subscribeEvent( CEGUI::Spinner::EventValueChanged, CEGUI::Event::Subscriber( &cLevel_Settings::Spinner_Difficulty_Changed, this ) );
+
+	m_slider_difficulty = static_cast<CEGUI::Slider *>(CEGUI::WindowManager::getSingleton().getWindow( "slider_difficulty" ));
+	m_slider_difficulty->setCurrentValue( static_cast<float>(m_level->m_difficulty) );
+	m_slider_difficulty->subscribeEvent( CEGUI::Slider::EventValueChanged, CEGUI::Event::Subscriber( &cLevel_Settings::Slider_Difficulty_Changed, this ) );
+
+	m_text_difficulty_name = CEGUI::WindowManager::getSingleton().getWindow( "text_difficulty_name" );
+	m_text_difficulty_name->setText( Get_Difficulty_Name( m_level->m_difficulty ) );
+
 	// land type
 	CEGUI::Combobox *combo_land_type = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "combo_land_type" ));
 	// add all types
@@ -633,6 +642,29 @@ void cLevel_Settings :: Clear_Layer_Field( void )
 	wmgr.getWindow( "spinner_bg_image_const_vel_x" )->setText( "" );
 	wmgr.getWindow( "spinner_bg_image_const_vel_y" )->setText( "" );
 	Set_Background_Image_Preview( "" );
+}
+
+bool cLevel_Settings :: Spinner_Difficulty_Changed( const CEGUI::EventArgs &event )
+{
+	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
+	CEGUI::Spinner *spinner = static_cast<CEGUI::Spinner *>( windowEventArgs.window );
+	float val = spinner->getCurrentValue();
+
+	m_slider_difficulty->setCurrentValue( val );
+	m_text_difficulty_name->setText( Get_Difficulty_Name( val ) );
+
+	return 1;
+}
+
+bool cLevel_Settings :: Slider_Difficulty_Changed( const CEGUI::EventArgs &event )
+{
+	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
+	float val = static_cast<CEGUI::Slider *>( windowEventArgs.window )->getCurrentValue();
+
+	m_spinner_difficulty->setCurrentValue( val );
+	m_text_difficulty_name->setText( Get_Difficulty_Name( val ) );
+
+	return 1;
 }
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */

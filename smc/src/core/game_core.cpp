@@ -1153,6 +1153,56 @@ DefaultColor Get_Color_Id( const std::string &str_color )
 	return COL_DEFAULT;
 }
 
+std::string Get_Difficulty_Name( Uint8 difficulty )
+{
+	if( difficulty == 0 )
+	{
+		return "Undefined";
+	}
+	else if( difficulty < 10 )
+	{
+		return "Easy-Peasy";
+	}
+	else if( difficulty < 20 )
+	{
+		return "Very Easy";
+	}
+	else if( difficulty < 30 )
+	{
+		return "Easy";
+	}
+	else if( difficulty < 40 )
+	{
+		return "Easy-Medium";
+	}
+	else if( difficulty < 50 )
+	{
+		return "Medium";
+	}
+	else if( difficulty < 60 )
+	{
+		return "Medium-Hard";
+	}
+	else if( difficulty < 70 )
+	{
+		return "Hard";
+	}
+	else if( difficulty < 80 )
+	{
+		return "Very Hard";
+	}
+	else if( difficulty < 90 )
+	{
+		return "Extreme";
+	}
+	else if( difficulty < 95 )
+	{
+		return "Nightmare";
+	}
+
+	return "Ultimate";
+}
+
 void Preload_Images( bool draw_gui /* = 0 */ )
 {
 	// progress bar
