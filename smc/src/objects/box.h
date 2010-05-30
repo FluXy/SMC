@@ -121,10 +121,9 @@ public:
 	float m_move_counter;
 	// if object is moving back to the original position
 	bool m_move_back;
-	/* times the box object can be activated
-	 * if set to -1 it is infinite
+	/* number of times this box object can be activated
 	 * the box is visible if useable_count != start_useable_count
-	 * for infinite this only once sets it to -2
+	 * if set to -1 it is infinite (and is set to -2 if activated)
 	*/
 	int m_start_useable_count;
 	int m_useable_count;

@@ -177,11 +177,15 @@ void cBaseBox :: Set_Animation_Type( const std::string &new_anim_type )
 	{
 		// disabled image
 		Add_Image( pVideo->Get_Surface( "game/box/brown1_1.png" ) );
-		// default
+		// animation images
 		Add_Image( pVideo->Get_Surface( "game/box/yellow/power_1.png" ) );
+		Add_Image( pVideo->Get_Surface( "game/box/yellow/power_2.png" ) );
+		Add_Image( pVideo->Get_Surface( "game/box/yellow/power_3.png" ) );
+		Add_Image( pVideo->Get_Surface( "game/box/yellow/power_4.png" ) );
 
-		Set_Animation( 0 );
-		Set_Animation_Image_Range( 1, 1 );
+		Set_Animation( 1 );
+		Set_Animation_Image_Range( 1, 4 );
+		Set_Time_All( 80, 1 );
 	}
 	else if( m_anim_type.compare( "Spin" ) == 0 )
 	{
