@@ -70,7 +70,7 @@ public:
 	ball_effect m_ball_type;
 
 	// glim animation modifier
-	bool m_glim_mod;
+	float m_glim_mod;
 	// glim animation counter
 	float m_glim_counter;
 	// fire particle counter

@@ -43,7 +43,7 @@ cBall :: cBall( cSprite_Manager *sprite_manager, float x, float y, const cSprite
 
 	m_massive_type = MASS_MASSIVE;
 
-	m_glim_mod = 1;
+	m_glim_mod = 0.1f;
 	m_glim_counter = 0.0f;
 	m_fire_counter = 0.0f;
 
@@ -52,12 +52,9 @@ cBall :: cBall( cSprite_Manager *sprite_manager, float x, float y, const cSprite
 	if( btype == FIREBALL_DEFAULT || btype == FIREBALL_EXPLOSION )
 	{
 		Add_Image( pVideo->Get_Surface( "animation/fireball/1.png" ) );
-		Add_Image( pVideo->Get_Surface( "animation/fireball/2.png" ) );
-		Add_Image( pVideo->Get_Surface( "animation/fireball/3.png" ) );
+
 		Set_Image_Num( 0, 1 );
-		Set_Animation( 1 );
-		Set_Animation_Image_Range( 0, 2 );
-		Set_Time_All( 120, 1 );
+		Set_Animation( 0 );
 
 		m_ball_type = FIREBALL_DEFAULT;
 	}
@@ -173,24 +170,33 @@ void cBall :: Update( void )
 	}
 
 	// glim animation
-	if( m_glim_mod )
-	{
-		m_glim_counter += pFramerate->m_speed_factor * 0.1f;
+	m_glim_counter += pFramerate->m_speed_factor * m_glim_mod;
 
+	// glim animation
+	if( m_glim_mod > 0.0f )
+	{
+		if( m_glim_mod < 0.05f )
+		{
+			m_glim_mod += pFramerate->m_speed_factor * 0.1f;
+		}
+		
 		if( m_glim_counter > 1.0f )
 		{
 			m_glim_counter = 1.0f;
-			m_glim_mod = 0;
+			m_glim_mod = -0.01f;
 		}
 	}
 	else
 	{
-		m_glim_counter -= pFramerate->m_speed_factor * 0.1f;
+		if( m_glim_mod > -0.05f )
+		{
+			m_glim_mod -= pFramerate->m_speed_factor * 0.1f;
+		}
 
 		if( m_glim_counter < 0.0f )
 		{
 			m_glim_counter = 0.0f;
-			m_glim_mod = 1;
+			m_glim_mod = 0.01f;
 		}
 	}
 
@@ -218,7 +224,7 @@ void cBall :: Draw( cSurface_Request *request /* = NULL */ )
 
 	if( m_ball_type == FIREBALL_DEFAULT )
 	{
-		Set_Color_Combine( m_glim_counter, m_glim_counter / 1.2f, m_glim_counter / 2, GL_ADD );
+		Set_Color_Combine( m_glim_counter, m_glim_counter / 1.6f, m_glim_counter / 3, GL_ADD );
 	}
 	else if( m_ball_type == ICEBALL_DEFAULT )
 	{
@@ -243,8 +249,23 @@ void cBall :: Generate_Particles( cParticle_Emitter *anim /* = NULL */ ) const
 	anim->Set_Pos_Z( m_pos_z + 0.0001f );
 	if( m_ball_type == FIREBALL_DEFAULT )
 	{
-		anim->Set_Image( pVideo->Get_Surface( "animation/particles/fire_2.png" ) );
+		unsigned int rand_image = rand() % 3;
+
+		if( rand_image == 0 )
+		{
+			anim->Set_Image( pVideo->Get_Surface( "animation/particles/fire_1.png" ) );
+		}
+		else if( rand_image == 1 )
+		{
+			anim->Set_Image( pVideo->Get_Surface( "animation/particles/fire_2.png" ) );
+		}
+		else
+		{
+			anim->Set_Image( pVideo->Get_Surface( "animation/particles/fire_4.png" ) );
+		}
+
 		anim->Set_Time_to_Live( 0.2f );
+		anim->Set_Color( Color( static_cast<Uint8>(150 + (m_glim_counter * 100)), 50, 50 ), Color( static_cast<Uint8>(0), 200, 200, 0 ) );
 	}
 	// ice
 	else
@@ -253,6 +274,7 @@ void cBall :: Generate_Particles( cParticle_Emitter *anim /* = NULL */ ) const
 		anim->Set_Time_to_Live( 0.5f );
 		anim->Set_Color( Color( static_cast<Uint8>(90), 90, 255 ) );
 	}
+
 	anim->Set_Blending( BLEND_ADD );
 	anim->Set_Speed( 0.35f, 0.3f );
 	anim->Set_Scale( 0.4f, 0.2f );
