@@ -159,12 +159,18 @@ public:
 enum Effect_Fadeout
 {
 	EFFECT_OUT_RANDOM,
-	EFFECT_OUT_BLACK, // fade out the screen to black
-	EFFECT_OUT_HORIZONTAL_VERTICAL, // black color gradient rectangles moving to the middle from left/right or up/down
-	EFFECT_OUT_BIG_ITEM, // a big item eats the whole screen
-	EFFECT_OUT_RANDOM_COLOR_BOOST, // boosts a random color in a cool fadeout
-	EFFECT_OUT_BLACK_TILED_RECTS, // big black rotating rectangles pop up randomly on a tiled grid
-	EFFECT_OUT_FIXED_COLORBOX, // small fast random alpha color boxes fades out the screen
+	// fade out the screen to black
+	EFFECT_OUT_BLACK,
+	// black color gradient rectangles moving to the middle from left/right or up/down
+	EFFECT_OUT_HORIZONTAL_VERTICAL,
+	// an item slowly moves into the screen
+	EFFECT_OUT_BIG_ITEM,
+	// changes the screen to a random color while fading out
+	EFFECT_OUT_RANDOM_COLOR_BOOST,
+	// big black rotating rectangles pop up somewhat randomly on a tiled grid
+	EFFECT_OUT_BLACK_TILED_RECTS,
+	// small fast random alpha color boxes fades out the screen
+	EFFECT_OUT_FIXED_COLORBOX,
 	EFFECT_OUT_AMOUNT
 };
 

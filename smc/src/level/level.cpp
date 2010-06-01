@@ -668,7 +668,7 @@ bool cLevel :: Key_Down( const SDLKey key )
 	{
 		pLevel_Player->Set_Type( MARYO_CAPE, 0 );
 	}
-	// debug key F3
+	// special key F3
 	else if( key == SDLK_F3 && !editor_level_enabled )
 	{
 		//pLevel_Player->GotoNextLevel();
@@ -688,10 +688,11 @@ bool cLevel :: Key_Down( const SDLKey key )
 		anim->Set_Const_Rotation_Z( -5, 10 );
 		m_animation_manager->Add( anim );
 	}
-	// debug key F4
+	// special key F4
 	else if( key == SDLK_F4 )
 	{
 		Draw_Effect_Out( EFFECT_OUT_FIXED_COLORBOX );
+		Draw_Effect_In();
 	}
 	// Toggle leveleditor
 	else if( key == SDLK_F8 )
