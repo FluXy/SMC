@@ -338,8 +338,8 @@ bool cMenuCore :: Handle_Event( SDL_Event *ev )
 
 bool cMenuCore :: Key_Down( SDLKey key )
 {
-	// Down
-	if( key == SDLK_DOWN )
+	// Down (todo: detect event for joystick better)
+	if( key == SDLK_DOWN || key == pPreferences->m_key_down )
 	{
 		if( m_handler->Get_Size() <= static_cast<unsigned int>( m_handler->m_active + 1 ) )
 		{
@@ -350,8 +350,8 @@ bool cMenuCore :: Key_Down( SDLKey key )
 			m_handler->Set_Active( m_handler->m_active + 1 );
 		}
 	}
-	// Up
-	else if( key == SDLK_UP )
+	// Up (todo: detect event for joystick better)
+	else if( key == SDLK_UP || key == pPreferences->m_key_up )
 	{
 		if( m_handler->m_active <= 0 )
 		{

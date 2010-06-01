@@ -658,6 +658,33 @@ bool cMenu_Start :: TabControl_Keydown( const CEGUI::EventArgs &e )
 	if( ke.scancode == CEGUI::Key::Return || ke.scancode == CEGUI::Key::NumpadEnter )
 	{
 		Load_Selected();
+		return 1;
+	}
+	// Left (todo: only for joystick when CEGUI supports these events)
+	else if( ke.scancode == pKeyboard->SDLKey_to_CEGUIKey( pPreferences->m_key_left ) )
+	{
+		// Get Tab Control
+		CEGUI::TabControl *tabcontrol = static_cast<CEGUI::TabControl *>(CEGUI::WindowManager::getSingleton().getWindow( "tabcontrol_main" ));
+
+		// if not first tab
+		if( tabcontrol->getSelectedTabIndex() != 0 )
+		{
+			tabcontrol->setSelectedTabAtIndex( tabcontrol->getSelectedTabIndex() - 1 );
+		}
+
+		return 1;
+	}
+	// Right (todo: only for joystick when CEGUI supports these events)
+	else if( ke.scancode == pKeyboard->SDLKey_to_CEGUIKey( pPreferences->m_key_right ) )
+	{
+		// Get Tab Control
+		CEGUI::TabControl *tabcontrol = static_cast<CEGUI::TabControl *>(CEGUI::WindowManager::getSingleton().getWindow( "tabcontrol_main" ));
+
+		// if not last tab
+		if( tabcontrol->getSelectedTabIndex() + 1 != tabcontrol->getTabCount() )
+		{
+			tabcontrol->setSelectedTabAtIndex( tabcontrol->getSelectedTabIndex() + 1 );
+		}
 
 		return 1;
 	}
@@ -691,9 +718,10 @@ bool cMenu_Start :: Listbox_Keydown( const CEGUI::EventArgs &e )
 	// Get the Listbox
 	CEGUI::Listbox *listbox = static_cast<CEGUI::Listbox *>(ke.window);
 
-	// Down/Up
+	// Down/Up (todo: detect event for joystick properly when CEGUI supports these events)
 	if( ke.scancode == CEGUI::Key::ArrowDown || ke.scancode == CEGUI::Key::ArrowUp || ke.scancode == CEGUI::Key::PageDown || ke.scancode == CEGUI::Key::PageUp ||
-			 ke.scancode == CEGUI::Key::Home || ke.scancode == CEGUI::Key::End )
+		ke.scancode == CEGUI::Key::Home || ke.scancode == CEGUI::Key::End ||
+		ke.scancode == pKeyboard->SDLKey_to_CEGUIKey(pPreferences->m_key_up) || ke.scancode == pKeyboard->SDLKey_to_CEGUIKey(pPreferences->m_key_down) )
 	{
 		int new_selected = 0;
 		int last_selected = 0;
@@ -707,13 +735,13 @@ bool cMenu_Start :: Listbox_Keydown( const CEGUI::EventArgs &e )
 			last_selected = listbox->getItemIndex( last_selected_item );
 		}
 
-		// down
-		if( ke.scancode == CEGUI::Key::ArrowDown )
+		// down (todo: detect event for joystick properly when CEGUI supports these events)
+		if( ke.scancode == CEGUI::Key::ArrowDown || ke.scancode == pKeyboard->SDLKey_to_CEGUIKey(pPreferences->m_key_down) )
 		{
 			new_selected = last_selected + 1;
 		}
-		// up
-		else if( ke.scancode == CEGUI::Key::ArrowUp )
+		// up (todo: detect event for joystick properly when CEGUI supports these events)
+		else if( ke.scancode == CEGUI::Key::ArrowUp || ke.scancode == pKeyboard->SDLKey_to_CEGUIKey(pPreferences->m_key_up) )
 		{
 			new_selected = last_selected - 1;
 		}
