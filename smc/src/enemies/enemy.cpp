@@ -19,6 +19,7 @@
 #include "../user/savegame.h"
 #include "../core/game_core.h"
 #include "../level/level_player.h"
+#include "../level/level_manager.h"
 
 namespace SMC
 {
@@ -332,7 +333,10 @@ void cEnemy :: Handle_out_of_Level( ObjectDirection dir )
 		Set_Pos_X( pActive_Camera->m_limit_rect.m_x + pActive_Camera->m_limit_rect.m_w - m_col_pos.m_x - m_col_rect.m_w - 0.01f );
 	}
 
-	Turn_Around( dir );
+	if( dir == DIR_LEFT || dir == DIR_RIGHT )
+	{
+		Turn_Around( dir );
+	}
 }
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
