@@ -157,6 +157,10 @@ public:
 	bool Remove_Selected_Object( const cSprite *sprite, bool no_user = 0 );
 	// Returns all selected objects
 	cSprite_List Get_Selected_Objects( void );
+	/* Gets the area enclosing all selected objects
+	 * if no objects are selected the rect is empty
+	*/
+	GL_rect Get_Selected_Objects_Rect( void );
 	// clear selected object list
 	void Clear_Selected_Objects( void );
 	// updates the selected objects positions

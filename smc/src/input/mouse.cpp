@@ -853,6 +853,50 @@ cSprite_List cMouseCursor :: Get_Selected_Objects( void )
 	return spritelist;
 }
 
+GL_rect cMouseCursor :: Get_Selected_Objects_Rect( void )
+{
+	if( m_selected_objects.empty() )
+	{
+		return GL_rect();
+	}
+
+	// set dimension of first object
+	GL_rect sel_rect = m_selected_objects[0]->m_obj->m_start_rect;
+
+	for( SelectedObjectList::iterator itr = m_selected_objects.begin(); itr != m_selected_objects.end(); ++itr )
+	{
+		cSelectedObject *obj = (*itr);
+
+		// shortcut to the rect
+		const GL_rect obj_rect = obj->m_obj->m_start_rect;
+
+		// update left-most position and width
+		if( sel_rect.m_x > obj_rect.m_x )
+		{
+			sel_rect.m_w = (sel_rect.m_x + sel_rect.m_w) - obj_rect.m_x;
+			sel_rect.m_x = obj_rect.m_x;
+		}
+		// update width
+		if( sel_rect.m_x + sel_rect.m_w < obj_rect.m_x + obj_rect.m_w )
+		{
+			sel_rect.m_w = (obj_rect.m_x + obj_rect.m_w) - sel_rect.m_x;
+		}
+		// update top-most position and height
+		if( sel_rect.m_y > obj_rect.m_y )
+		{
+			sel_rect.m_h = (sel_rect.m_y + sel_rect.m_h) - obj_rect.m_y;
+			sel_rect.m_y = obj_rect.m_y;
+		}
+		// update height
+		if( sel_rect.m_y + sel_rect.m_h < obj_rect.m_y + obj_rect.m_h )
+		{
+			sel_rect.m_h = (obj_rect.m_y + obj_rect.m_h) - sel_rect.m_y;
+		}
+	}
+
+	return sel_rect;
+}
+
 void cMouseCursor :: Clear_Selected_Objects( void )
 {
 	for( SelectedObjectList::iterator itr = m_selected_objects.begin(); itr != m_selected_objects.end(); ++itr )
@@ -956,15 +1000,39 @@ void cMouseCursor :: Delete_Selected_Objects( void )
 
 bool cMouseCursor :: Get_Snap_Pos( GL_point &new_pos, int snap, cSelectedObject *src_obj )
 {
-	const GL_rect src_rect = GL_rect( m_pos_x - src_obj->m_mouse_offset_x, m_pos_y - src_obj->m_mouse_offset_y, src_obj->m_obj->m_start_rect.m_w, src_obj->m_obj->m_start_rect.m_h );
-	const GL_rect full_snap_rect = GL_rect( src_obj->m_obj->m_start_rect.m_x - snap, src_obj->m_obj->m_start_rect.m_y - snap, src_obj->m_obj->m_start_rect.m_w + snap * 2, src_obj->m_obj->m_start_rect.m_h + snap * 2 );
+	GL_rect src_rect;
+	GL_rect full_snap_rect;
+	GL_point multiselect_offset;
+
+	// set bounding box for multiple objects
+	if( m_selected_objects.size() > 1 )
+	{
+		src_rect = Get_Selected_Objects_Rect();
+		full_snap_rect = GL_rect( src_rect.m_x - snap, src_rect.m_y - snap, src_rect.m_w + snap * 2, src_rect.m_h + snap * 2 );
+
+		// offset between selected object and bounding box
+		multiselect_offset.m_x = src_obj->m_obj->m_start_rect.m_x - src_rect.m_x;
+		multiselect_offset.m_y = src_obj->m_obj->m_start_rect.m_y - src_rect.m_y;
+
+		// update the top-left co-ord of the new bounding box using the mouse position
+		src_rect.m_x = (m_pos_x - src_obj->m_mouse_offset_x) - multiselect_offset.m_x;
+		src_rect.m_y = (m_pos_y - src_obj->m_mouse_offset_y) - multiselect_offset.m_y;
+	}
+	else
+	{
+		src_rect = GL_rect( m_pos_x - src_obj->m_mouse_offset_x, m_pos_y - src_obj->m_mouse_offset_y, src_obj->m_obj->m_start_rect.m_w, src_obj->m_obj->m_start_rect.m_h );
+		full_snap_rect = GL_rect( src_obj->m_obj->m_start_rect.m_x - snap, src_obj->m_obj->m_start_rect.m_y - snap, src_obj->m_obj->m_start_rect.m_w + snap * 2, src_obj->m_obj->m_start_rect.m_h + snap * 2 );
+	}
 
 	float distance_left = snap + 1;
 	float distance_right = snap + 1;
 	float distance_top = snap + 1;
 	float distance_bottom = snap + 1;
 	float distance_best = snap + 1;
+	float distance_best_edge = snap + 1;
 
+	// counter for number of snapable objects
+	int num_snap_obj = 0;
 	cSprite *snap_obj = NULL;
 
 	// check objects for overlap
@@ -980,6 +1048,12 @@ bool cMouseCursor :: Get_Snap_Pos( GL_point &new_pos, int snap, cSelectedObject 
 
 		// ignore spawned or destroyed objects
 		if( obj->m_spawned || obj->m_auto_destroy )
+		{
+			continue;
+		}
+
+		// ignore enemies
+		if( obj->m_sprite_array == ARRAY_ENEMY )
 		{
 			continue;
 		}
@@ -1012,8 +1086,47 @@ bool cMouseCursor :: Get_Snap_Pos( GL_point &new_pos, int snap, cSelectedObject 
 			}
 
 			// found a better snap object
-			if( obj_distance_best < distance_best )
+			if( obj_distance_best <= distance_best )
 			{
+				// -- second round of testing --
+				// update count of snapable objects
+				num_snap_obj++;
+
+				const float obj_distance_left_to_left = fabs( src_rect.m_x - obj->m_start_rect.m_x );
+				const float obj_distance_right_to_right = fabs( (src_rect.m_x + src_rect.m_w) - (obj->m_start_rect.m_x + obj->m_start_rect.m_w) );
+				const float obj_distance_top_to_top = fabs( src_rect.m_y - obj->m_start_rect.m_y );
+				const float obj_distance_bottom_to_bottom = fabs( (src_rect.m_y + src_rect.m_h) - (obj->m_start_rect.m_y + obj->m_start_rect.m_h) );
+				float obj_distance_best_edge;
+
+				// look for closest edge
+				if( obj_distance_left_to_left < obj_distance_right_to_right )
+				{
+					obj_distance_best_edge = obj_distance_left_to_left;
+				}
+				else
+				{
+					obj_distance_best_edge = obj_distance_right_to_right;
+				}
+				if( obj_distance_top_to_top < distance_best_edge )
+				{
+					obj_distance_best_edge = obj_distance_top_to_top;
+				}
+				if( obj_distance_bottom_to_bottom < obj_distance_best_edge )
+				{
+					obj_distance_best_edge = obj_distance_bottom_to_bottom;
+				}
+
+				// found a better edge
+				if( obj_distance_best_edge < distance_best_edge )
+				{
+					distance_best_edge = obj_distance_best_edge;
+				}
+				// if not the better edge and more than one snapable object available
+				else if( num_snap_obj > 1 )
+				{
+					continue;
+				}
+
 				snap_obj = obj;
 				distance_left = obj_distance_left;
 				distance_right = obj_distance_right;
@@ -1058,7 +1171,20 @@ bool cMouseCursor :: Get_Snap_Pos( GL_point &new_pos, int snap, cSelectedObject 
 		// out of snap range
 		if( distance_left_to_left > snap && distance_right_to_right > snap )
 		{
-			new_pos.m_x = src_rect.m_x;
+			if( distance_left > snap && distance_right > snap )
+			{
+				new_pos.m_x = src_rect.m_x;
+			}
+			// snap left corner to right corner
+			else if( distance_left < distance_right )
+			{
+				new_pos.m_x = snap_obj_rect.m_x + snap_obj_rect.m_w;
+			}
+			// snap right corner to left corner
+			else
+			{
+				new_pos.m_x = snap_obj_rect.m_x - src_rect.m_w;
+			}
 		}
 		// snap left to left edge
 		else if( distance_left_to_left < distance_right_to_right )
@@ -1096,7 +1222,20 @@ bool cMouseCursor :: Get_Snap_Pos( GL_point &new_pos, int snap, cSelectedObject 
 		// out of snap range
 		if( distance_top_to_top > snap && distance_bottom_to_bottom > snap )
 		{
-			new_pos.m_y = src_rect.m_y;
+			if( distance_top > snap && distance_bottom > snap )
+			{
+				new_pos.m_y = src_rect.m_y;
+			}
+			// snap top corner to bottom corner
+			else if( distance_top < distance_bottom )
+			{
+				new_pos.m_y = snap_obj_rect.m_y + snap_obj_rect.m_h;
+			}
+			// snap bottom corner to top corner
+			else
+			{
+				new_pos.m_y = snap_obj_rect.m_y - src_rect.m_h;
+			}
 		}
 		// snap top to top edge
 		else if( distance_top_to_top < distance_bottom_to_bottom )
@@ -1110,8 +1249,8 @@ bool cMouseCursor :: Get_Snap_Pos( GL_point &new_pos, int snap, cSelectedObject 
 		}
 	}
 
-	new_pos.m_x += src_obj->m_mouse_offset_x;
-	new_pos.m_y += src_obj->m_mouse_offset_y;
+	new_pos.m_x += src_obj->m_mouse_offset_x + multiselect_offset.m_x;
+	new_pos.m_y += src_obj->m_mouse_offset_y + multiselect_offset.m_y;
 
 	return 1;
 }
@@ -1349,6 +1488,21 @@ void cMouseCursor :: Draw_Object_Rects( void )
 			// add request
 			pRenderer->Add( rect_request );
 		}
+	}
+
+	// draw bounding box if multiple objects snapped at once
+	if( m_left && m_snap_to_object_mode && m_selected_objects.size() > 1 )
+	{
+		// create request
+		cRect_Request *rect_request = new cRect_Request();
+		GL_rect sel_rect = Get_Selected_Objects_Rect();
+		pVideo->Draw_Rect( sel_rect.m_x - pActive_Camera->m_x, sel_rect.m_y - pActive_Camera->m_y, sel_rect.m_w, sel_rect.m_h, 0.51f, &lightgrey, rect_request );
+
+		// not filled
+		rect_request->filled = 0;
+
+		// add request
+		pRenderer->Add( rect_request );
 	}
 }
 
