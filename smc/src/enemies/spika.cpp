@@ -182,12 +182,12 @@ void cSpika :: Update_Dying( void )
 	// a little bit upwards first
 	if( m_counter < 0.3f )
 	{
-		Move( 0.0f, -5.0f );
+		cSprite::Move( 0.0f, -5.0f );
 	}
 	// if not below the ground : fall
 	else if( m_col_rect.m_y < pActive_Camera->m_limit_rect.m_y )
 	{
-		Move( 0.0f, 20.0f );
+		cSprite::Move( 0.0f, 20.0f );
 		Add_Scale( -pFramerate->m_speed_factor * 0.01f );
 	}
 	// if below disable

@@ -154,9 +154,8 @@ void cMovingSprite :: Move( float move_x, float move_y, bool real /* = 0 */ )
 {
 	cSprite::Move( move_x, move_y, real );
 
-	// check/handle if moved out of level rect
-	Check_Out_Of_Level_Hor( move_x, 1 );
-	Check_Out_Of_Level_Ver( move_y, 1 );
+	// handle if moved out of level rect
+	Check_And_Handle_Out_Of_Level( move_x, move_y );
 }
 
 cObjectCollisionType *cMovingSprite :: Col_Move_in_Steps( float move_x, float move_y, float step_size_x, float step_size_y, float final_pos_x, float final_pos_y, cSprite_List sprite_list, bool stop_on_internal /* = 0 */ )
@@ -493,8 +492,7 @@ void cMovingSprite :: Col_Move( float move_x, float move_y, bool real /* = 0 */,
 	}
 
 	// check/handle if moved out of level rect
-	Check_Out_Of_Level_Hor( move_x, 1 );
-	Check_Out_Of_Level_Ver( move_y, 1 );
+	Check_And_Handle_Out_Of_Level( move_x, move_y );
 }
 
 void cMovingSprite :: Add_Velocity( const float x, const float y, const bool real /* = 0 */ )
@@ -798,52 +796,61 @@ cObjectCollisionType *cMovingSprite :: Collision_Check( const GL_rect &new_rect,
 	return col_list;
 }
 
-bool cMovingSprite :: Check_Out_Of_Level_Hor( const float move_x, const bool handle /* = 0 */ )
+void cMovingSprite :: Check_And_Handle_Out_Of_Level( const float move_x, const float move_y )
 {
-	// left
+	if( Is_Out_Of_Level_Left( move_x ) )
+	{
+		Handle_out_of_Level( DIR_LEFT );
+	}
+	else if( Is_Out_Of_Level_Right( move_x ) )
+	{
+		Handle_out_of_Level( DIR_RIGHT );
+	}
+
+	if( Is_Out_Of_Level_Top( move_y ) )
+	{
+		Handle_out_of_Level( DIR_TOP );
+	}
+	else if( Is_Out_Of_Level_Bottom( move_y ) )
+	{
+		Handle_out_of_Level( DIR_BOTTOM );
+	}
+}
+
+bool cMovingSprite :: Is_Out_Of_Level_Left( const float move_x ) const
+{
 	if( m_col_rect.m_x < pActive_Camera->m_limit_rect.m_x && m_col_rect.m_x - ( move_x - 0.00001f ) >= pActive_Camera->m_limit_rect.m_x  )
 	{
-		if( handle )
-		{
-			Handle_out_of_Level( DIR_LEFT );
-		}
-
-		return 1;
-	}
-	// right
-	else if( m_col_rect.m_x + m_col_rect.m_w > pActive_Camera->m_limit_rect.m_x + pActive_Camera->m_limit_rect.m_w && m_col_rect.m_x + m_col_rect.m_w - ( move_x + 0.00001f ) <= pActive_Camera->m_limit_rect.m_x + pActive_Camera->m_limit_rect.m_w )
-	{
-		if( handle )
-		{
-			Handle_out_of_Level( DIR_RIGHT );
-		}
-
 		return 1;
 	}
 
 	return 0;
 }
 
-bool cMovingSprite :: Check_Out_Of_Level_Ver( const float move_y, const bool handle /* = 0 */ )
+bool cMovingSprite :: Is_Out_Of_Level_Right( const float move_x ) const
 {
-	// top
-	if( m_col_rect.m_y < pActive_Camera->m_limit_rect.m_y + pActive_Camera->m_limit_rect.m_h && m_col_rect.m_y - ( move_y - 0.00001f ) >= pActive_Camera->m_limit_rect.m_h + pActive_Camera->m_limit_rect.m_y )
+	if( m_col_rect.m_x + m_col_rect.m_w > pActive_Camera->m_limit_rect.m_x + pActive_Camera->m_limit_rect.m_w && m_col_rect.m_x + m_col_rect.m_w - ( move_x + 0.00001f ) <= pActive_Camera->m_limit_rect.m_x + pActive_Camera->m_limit_rect.m_w )
 	{
-		if( handle )
-		{
-			Handle_out_of_Level( DIR_TOP );
-		}
-
 		return 1;
 	}
-	// bottom
-	else if( m_col_rect.m_y + m_col_rect.m_h > pActive_Camera->m_limit_rect.m_y && m_col_rect.m_y + m_col_rect.m_h - ( move_y + 0.00001f ) <= pActive_Camera->m_limit_rect.m_y )
-	{
-		if( handle )
-		{
-			Handle_out_of_Level( DIR_BOTTOM );
-		}
 
+	return 0;
+}
+
+bool cMovingSprite :: Is_Out_Of_Level_Top( const float move_y ) const
+{
+	if( m_col_rect.m_y < pActive_Camera->m_limit_rect.m_y + pActive_Camera->m_limit_rect.m_h && m_col_rect.m_y - ( move_y - 0.00001f ) >= pActive_Camera->m_limit_rect.m_h + pActive_Camera->m_limit_rect.m_y )
+	{
+		return 1;
+	}
+
+	return 0;
+}
+
+bool cMovingSprite :: Is_Out_Of_Level_Bottom( const float move_y ) const
+{
+	if( m_col_rect.m_y + m_col_rect.m_h > pActive_Camera->m_limit_rect.m_y && m_col_rect.m_y + m_col_rect.m_h - ( move_y + 0.00001f ) <= pActive_Camera->m_limit_rect.m_y )
+	{
 		return 1;
 	}
 

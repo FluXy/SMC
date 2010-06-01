@@ -4467,7 +4467,7 @@ void cLevel_Player :: Handle_out_of_Level( ObjectDirection dir )
 	{
 		/*if( pActive_Level->limit_top_blocks )
 		{
-			Set_PosY( pLevel_Manager->m_camera->m_limit_rect.y + pLevel_Manager->m_camera->m_limit_rect.h + 0.01f );
+			Set_Pos_Y( pLevel_Manager->m_camera->m_limit_rect.m_y + pLevel_Manager->m_camera->m_limit_rect.m_h + 0.01f );
 			m_vely = 0.0f;
 		}*/
 	}
@@ -4481,7 +4481,7 @@ void cLevel_Player :: Handle_out_of_Level( ObjectDirection dir )
 		{
 			/*if( pActive_Level->limit_bottom_blocks )
 			{
-				Set_PosY( pLevel_Manager->m_camera->m_limit_rect.y + game_res_h - col_pos.x - col_rect.w + 0.01f );
+				Set_Pos_Y( pLevel_Manager->m_camera->m_limit_rect.m_y + game_res_h - m_col_pos.m_x - m_ccol_rect.m_w + 0.01f );
 				m_vely = 0.0f;
 			}
 			// falling below ground

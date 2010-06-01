@@ -60,7 +60,6 @@ void cThromp :: Init( void  )
 	m_pos_z = 0.093f;
 	m_camera_range = 1000;
 	m_can_be_on_ground = 0;
-
 	m_fire_resistant = 1;
 
 	m_state = STA_STAY;
@@ -241,11 +240,11 @@ void cThromp :: Activate( void )
 	Set_Image_Num( 1 );
 }
 
-void cThromp :: Move_Back( void )
+bool cThromp :: Move_Back( void )
 {
 	if( m_state == STA_STAY || m_move_back )
 	{
-		return;
+		return 0;
 	}
 
 	m_velx = -m_dest_velx * 0.01f;
@@ -255,6 +254,8 @@ void cThromp :: Move_Back( void )
 
 	// default image
 	Set_Image_Num( 0 );
+
+	return 1;
 }
 
 void cThromp :: DownGrade( bool force /* = 0 */ )
@@ -404,7 +405,7 @@ void cThromp :: Update( void )
 		}
 
 		// reached final position move back
-		if( !m_move_back && dist_to_final_pos < 0 )
+		if( !m_move_back && dist_to_final_pos < 0.0f )
 		{
 			Move_Back();
 		}
@@ -696,11 +697,10 @@ void cThromp :: Handle_Collision_Player( cObjectCollision *collision )
 	{
 		pLevel_Player->DownGrade_Player();
 
-		if( !m_move_back )
+		if( Move_Back() )
 		{
 			pAudio->Play_Sound( "enemy/thromp/hit.ogg" );
 			Generate_Smoke();
-			Move_Back();
 		}
 	}
 	else
@@ -759,15 +759,20 @@ void cThromp :: Handle_Collision_Massive( cObjectCollision *collision )
 		return;
 	}
 
-	// if not active or already moving back
-	if( m_state != STA_FLY || m_move_back )
+	if( Move_Back() )
 	{
-		return;
+		pAudio->Play_Sound( "enemy/thromp/hit.ogg" );
+		Generate_Smoke();
 	}
-	
-	pAudio->Play_Sound( "enemy/thromp/hit.ogg" );
-	Generate_Smoke();
-	Move_Back();
+}
+
+void cThromp :: Handle_out_of_Level( ObjectDirection dir )
+{
+	if( Move_Back() )
+	{
+		pAudio->Play_Sound( "enemy/thromp/hit.ogg" );
+		Generate_Smoke();
+	}
 }
 
 void cThromp :: Editor_Activate( void )

@@ -205,11 +205,13 @@ public:
 	*/
 	cObjectCollisionType *Collision_Check( const GL_rect &new_rect, const ColCheckType check_type = COLLIDE_COMPLETE, cSprite_List *objects = NULL );
 
-	/* Check if the given movement goes out of the level rect
-	 * handle : if set handle out of level if valid
-	*/
-	bool Check_Out_Of_Level_Hor( const float move_x, const bool handle = 0 );
-	bool Check_Out_Of_Level_Ver( const float move_y, const bool handle = 0 );
+	// Check if the given movement goes out of the level rect and handle possible out of level events
+	void Check_And_Handle_Out_Of_Level( const float move_x, const float move_y );
+	// Check if the given movement goes out of the level rect
+	bool Is_Out_Of_Level_Left( const float move_x ) const;
+	bool Is_Out_Of_Level_Right( const float move_x ) const;
+	bool Is_Out_Of_Level_Top( const float move_y ) const;
+	bool Is_Out_Of_Level_Bottom( const float move_x ) const;
 	// Set the ground object
 	virtual bool Set_On_Ground( cSprite *obj, bool set_on_top = 1 );
 	// Check if the Object is onground and sets the state to onground

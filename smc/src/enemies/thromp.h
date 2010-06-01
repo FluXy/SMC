@@ -61,7 +61,7 @@ public:
 	// Move to destination direction
 	void Activate( void );
 	// Move back to the original position
-	void Move_Back( void );
+	bool Move_Back( void );
 
 	/* downgrade state ( if already the weakest state it dies )
 	 * force : usually dies or a complete downgrade
@@ -104,6 +104,8 @@ public:
 	virtual void Handle_Collision_Enemy( cObjectCollision *collision );
 	// collision with massive
 	virtual void Handle_Collision_Massive( cObjectCollision *collision );
+	// handle moved out of Level event
+	virtual void Handle_out_of_Level( ObjectDirection dir );
 
 	// editor activation
 	virtual void Editor_Activate( void );
