@@ -1737,13 +1737,13 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 				if( attributes.exists( "image_dir" ) )
 				{
 					std::string img_dir = attributes.getValueAsString( "image_dir" ).c_str();
-
 					std::string::size_type pos = img_dir.find( "jpiranha" );
 
 					// change if found
 					if( pos != std::string::npos )
 					{
 						img_dir.replace( pos, 8, "flyon" );
+						attributes.add( "image_dir", img_dir );
 					}
 				}
 			}
