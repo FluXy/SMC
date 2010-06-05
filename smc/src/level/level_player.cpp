@@ -3894,11 +3894,9 @@ Col_Valid_Type cLevel_Player :: Validate_Collision( cSprite *obj )
 				// internal as it could be frozen
 				return COL_VTYPE_INTERNAL;
 			}
-			// walk on spika and rokko
-			case TYPE_SPIKA:
 			case TYPE_ROKKO:
 			{
-				// block if on top
+				// block if on top (for walking on it)
 				if( m_vely >= 0.0f && Is_On_Top( obj ) )
 				{
 					return COL_VTYPE_BLOCKING;
@@ -3911,9 +3909,10 @@ Col_Valid_Type cLevel_Player :: Validate_Collision( cSprite *obj )
 
 				return COL_VTYPE_NOT_VALID;
 			}
+			case TYPE_SPIKA:
 			case TYPE_EATO:
 			{
-				// block if on top
+				// block if on top (for walking on it)
 				if( m_vely >= 0.0f && Is_On_Top( obj ) )
 				{
 					return COL_VTYPE_BLOCKING;
@@ -3922,6 +3921,11 @@ Col_Valid_Type cLevel_Player :: Validate_Collision( cSprite *obj )
 				if( m_invincible_star > 0.0f )
 				{
 					return COL_VTYPE_INTERNAL;
+				}
+
+				if( m_invincible > 0.0f )
+				{
+					return COL_VTYPE_NOT_VALID;
 				}
 
 				return COL_VTYPE_BLOCKING;
@@ -4162,6 +4166,12 @@ void cLevel_Player :: Handle_Collision_Enemy( cObjectCollision *collision )
 			// force complete downgrade
 			enemy->DownGrade( 1 );
 			Add_Kill_Multiplier();
+
+			// check if enemy is still the ground object
+			if( enemy == m_ground_object )
+			{
+				Check_on_Ground();
+			}
 			return;
 		}
 		// no hit
