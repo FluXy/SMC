@@ -382,34 +382,13 @@ std::string cBackground :: Get_Type_Name( const BackgroundType type )
 {
 	switch( type )
 	{
-		case BG_NONE:
-		{
-			return "Disabled";
-		}
-		case BG_IMG_TOP:
-		{
-			return "Top";
-		}
-		case BG_IMG_BOTTOM:
-		{
-			return "Bottom";
-		}
-		case BG_IMG_ALL:
-		{
-			return "All";
-		}
-		case BG_GR_VER:
-		{
-			return "Gradient Vertical";
-		}
-		case BG_GR_HOR:
-		{
-			return "Gradient Horizontal";
-		}
-		default:
-		{
-			break;
-		}
+		case BG_NONE:		return "Disabled";
+		case BG_IMG_TOP:	return "Top";
+		case BG_IMG_BOTTOM:	return "Bottom";
+		case BG_IMG_ALL:	return "All";
+		case BG_GR_VER:		return "Gradient Vertical";
+		case BG_GR_HOR:		return "Gradient Horizontal";
+		default:			break;
 	}
 
 	return "Unknown";

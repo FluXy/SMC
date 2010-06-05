@@ -494,34 +494,13 @@ ObjectDirection Get_Opposite_Direction( const ObjectDirection direction )
 {
 	switch( direction )
 	{
-		case DIR_UP:
-		{
-			return DIR_DOWN;
-		}
-		case DIR_DOWN:
-		{
-			return DIR_UP;
-		}
-		case DIR_LEFT:
-		{
-			return DIR_RIGHT;
-		}
-		case DIR_RIGHT:
-		{
-			return DIR_LEFT;
-		}
-		case DIR_HORIZONTAL:
-		{
-			return DIR_VERTICAL;
-		}
-		case DIR_VERTICAL:
-		{
-			return DIR_HORIZONTAL;
-		}
-		default:
-		{
-			break;
-		}
+		case DIR_UP:			return DIR_DOWN;
+		case DIR_DOWN:			return DIR_UP;
+		case DIR_LEFT:			return DIR_RIGHT;
+		case DIR_RIGHT:			return DIR_LEFT;
+		case DIR_HORIZONTAL:	return DIR_VERTICAL;
+		case DIR_VERTICAL:		return DIR_HORIZONTAL;
+		default:				break;
 	}
 
 	return DIR_UNDEFINED;
@@ -531,82 +510,25 @@ std::string Get_Direction_Name( const ObjectDirection dir )
 {
 	switch( dir )
 	{
-		case DIR_UNDEFINED:
-		{
-			return N_("undefined");
-		}
-		case DIR_LEFT:
-		{
-			return N_("left");
-		}
-		case DIR_RIGHT:
-		{
-			return N_("right");
-		}
-		case DIR_UP:
-		{
-			return N_("up");
-		}
-		case DIR_DOWN:
-		{
-			return N_("down");
-		}
-		case DIR_TOP_LEFT:
-		{
-			return N_("top_left");
-		}
-		case DIR_TOP_RIGHT:
-		{
-			return N_("top_right");
-		}
-		case DIR_BOTTOM_LEFT:
-		{
-			return N_("bottom_left");
-		}
-		case DIR_BOTTOM_RIGHT:
-		{
-			return N_("bottom_right");
-		}
-		case DIR_LEFT_TOP:
-		{
-			return N_("left_top");
-		}
-		case DIR_LEFT_BOTTOM:
-		{
-			return N_("left_bottom");
-		}
-		case DIR_RIGHT_TOP:
-		{
-			return N_("right_top");
-		}
-		case DIR_RIGHT_BOTTOM:
-		{
-			return N_("right_bottom");
-		}
-		case DIR_HORIZONTAL:
-		{
-			return N_("horizontal");
-		}
-		case DIR_VERTICAL:
-		{
-			return N_("vertical");
-		}
-		case DIR_ALL:
-		{
-			return N_("all");
-		}
-		case DIR_FIRST:
-		{
-			return N_("first");
-		}
-		case DIR_LAST:
-		{
-			return N_("last");
-		}
-		default:
-		{
-			break;
-		}
+		case DIR_UNDEFINED:		return N_("undefined");
+		case DIR_LEFT:			return N_("left");
+		case DIR_RIGHT:			return N_("right");
+		case DIR_UP:			return N_("up");
+		case DIR_DOWN:			return N_("down");
+		case DIR_TOP_LEFT:		return N_("top_left");
+		case DIR_TOP_RIGHT:		return N_("top_right");
+		case DIR_BOTTOM_LEFT:	return N_("bottom_left");
+		case DIR_BOTTOM_RIGHT:	return N_("bottom_right");
+		case DIR_LEFT_TOP:		return N_("left_top");
+		case DIR_LEFT_BOTTOM:	return N_("left_bottom");
+		case DIR_RIGHT_TOP:		return N_("right_top");
+		case DIR_RIGHT_BOTTOM:	return N_("right_bottom");
+		case DIR_HORIZONTAL:	return N_("horizontal");
+		case DIR_VERTICAL:		return N_("vertical");
+		case DIR_ALL:			return N_("all");
+		case DIR_FIRST:			return N_("first");
+		case DIR_LAST:			return N_("last");
+		default:				break;
 	}
 
 	return "";
@@ -690,7 +612,6 @@ ObjectDirection Get_Direction_Id( const std::string &str_direction )
 	return DIR_UNDEFINED;
 }
 
-
 SpriteType Get_Sprite_Type_Id( const std::string &str_type )
 {
 	if( str_type.compare( "massive" ) == 0 )
@@ -768,26 +689,11 @@ std::string Get_Massive_Type_Name( const MassiveType mtype )
 {
 	switch( mtype )
 	{
-		case MASS_PASSIVE:
-		{
-			return "passive";
-		}
-		case MASS_MASSIVE:
-		{
-			return "massive";
-		}
-		case MASS_HALFMASSIVE:
-		{
-			return "halfmassive";
-		}
-		case MASS_CLIMBABLE:
-		{
-			return "climbable";
-		}
-		default:
-		{
-			break;
-		}
+		case MASS_PASSIVE:		return "passive";
+		case MASS_MASSIVE:		return "massive";
+		case MASS_HALFMASSIVE:	return "halfmassive";
+		case MASS_CLIMBABLE:	return "climbable";
+		default:				break;
 	}
 
 	return "";
@@ -819,26 +725,11 @@ Color Get_Massive_Type_Color( MassiveType mtype )
 {
 	switch( mtype )
 	{
-		case MASS_MASSIVE:
-		{
-			return lightred;
-		}
-		case MASS_HALFMASSIVE:
-		{
-			return orange;
-		}
-		case MASS_PASSIVE:
-		{
-			return lightgreen;
-		}
-		case MASS_CLIMBABLE:
-		{
-			return lila;
-		}
-		default:
-		{
-			break;
-		}
+		case MASS_MASSIVE:		return lightred;
+		case MASS_HALFMASSIVE:	return orange;
+		case MASS_PASSIVE:		return lightgreen;
+		case MASS_CLIMBABLE:	return lila;
+		default:				break;
 	}
 
 	return white;
@@ -848,34 +739,13 @@ std::string Get_Ground_Type_Name( const GroundType gtype )
 {
 	switch( gtype )
 	{
-		case GROUND_NORMAL:
-		{
-			return "normal";
-		}
-		case GROUND_EARTH:
-		{
-			return "earth";
-		}
-		case GROUND_ICE:
-		{
-			return "ice";
-		}
-		case GROUND_SAND:
-		{
-			return "sand";
-		}
-		case GROUND_STONE:
-		{
-			return "stone";
-		}
-		case GROUND_PLASTIC:
-		{
-			return "plastic";
-		}
-		default:
-		{
-			break;
-		}
+		case GROUND_NORMAL:		return "normal";
+		case GROUND_EARTH:		return "earth";
+		case GROUND_ICE:		return "ice";
+		case GROUND_SAND:		return "sand";
+		case GROUND_STONE:		return "stone";
+		case GROUND_PLASTIC:	return "plastic";
+		default:				break;
 	}
 
 	return "";
@@ -915,74 +785,23 @@ std::string Get_Level_Land_Type_Name( const LevelLandType land_type )
 {
 	switch( land_type )
 	{
-		case LLT_UNDEFINED:
-		{
-			return N_("undefined");
-		}
-		case LLT_GREEN:
-		{
-			return N_("green");
-		}
-		case LLT_JUNGLE:
-		{
-			return N_("jungle");
-		}
-		case LLT_ICE:
-		{
-			return N_("ice");
-		}
-		case LLT_SNOW:
-		{
-			return N_("snow");
-		}
-		case LLT_WATER:
-		{
-			return N_("water");
-		}
-		case LLT_CANDY:
-		{
-			return N_("candy");
-		}
-		case LLT_DESERT:
-		{
-			return N_("desert");
-		}
-		case LLT_SAND:
-		{
-			return N_("sand");
-		}
-		case LLT_CASTLE:
-		{
-			return N_("castle");
-		}
-		case LLT_UNDERGROUND:
-		{
-			return N_("underground");
-		}
-		case LLT_CRYSTAL:
-		{
-			return N_("crystal");
-		}
-		case LLT_GHOST:
-		{
-			return N_("ghost");
-		}
-		case LLT_MUSHROOM:
-		{
-			return N_("mushroom");
-		}
-		case LLT_SKY:
-		{
-			return N_("sky");
-		}
-		case LLT_PLASTIC:
-		{
-			return N_("plastic");
-		}
-		default:
-		{
-			break;
-		}
+		case LLT_UNDEFINED:		return N_("undefined");
+		case LLT_GREEN:			return N_("green");
+		case LLT_JUNGLE:		return N_("jungle");
+		case LLT_ICE:			return N_("ice");
+		case LLT_SNOW:			return N_("snow");
+		case LLT_WATER:			return N_("water");
+		case LLT_CANDY:			return N_("candy");
+		case LLT_DESERT:		return N_("desert");
+		case LLT_SAND:			return N_("sand");
+		case LLT_CASTLE:		return N_("castle");
+		case LLT_UNDERGROUND:	return N_("underground");
+		case LLT_CRYSTAL:		return N_("crystal");
+		case LLT_GHOST:			return N_("ghost");
+		case LLT_MUSHROOM:		return N_("mushroom");
+		case LLT_SKY:			return N_("sky");
+		case LLT_PLASTIC:		return N_("plastic");
+		default:				break;
 	}
 
 	return "";
@@ -1062,50 +881,17 @@ std::string Get_Color_Name( const DefaultColor color )
 {
 	switch( color )
 	{
-		case COL_DEFAULT:
-		{
-			return N_("default");
-		}
-		case COL_WHITE:
-		{
-			return N_("white");
-		}
-		case COL_BLACK:
-		{
-			return N_("black");
-		}
-		case COL_RED:
-		{
-			return N_("red");
-		}
-		case COL_ORANGE:
-		{
-			return N_("orange");
-		}
-		case COL_YELLOW:
-		{
-			return N_("yellow");
-		}
-		case COL_GREEN:
-		{
-			return N_("green");
-		}
-		case COL_BLUE:
-		{
-			return N_("blue");
-		}
-		case COL_BROWN:
-		{
-			return N_("brown");
-		}
-		case COL_GREY:
-		{
-			return N_("grey");
-		}
-		default:
-		{
-			break;
-		}
+		case COL_DEFAULT:	return N_("default");
+		case COL_WHITE:		return N_("white");
+		case COL_BLACK:		return N_("black");
+		case COL_RED:		return N_("red");
+		case COL_ORANGE:	return N_("orange");
+		case COL_YELLOW:	return N_("yellow");
+		case COL_GREEN:		return N_("green");
+		case COL_BLUE:		return N_("blue");
+		case COL_BROWN:		return N_("brown");
+		case COL_GREY:		return N_("grey");
+		default:			break;
 	}
 
 	return "";
