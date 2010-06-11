@@ -380,7 +380,7 @@ void cKrush :: Handle_Collision_Player( cObjectCollision *collision )
 
 	if( collision->m_direction == DIR_TOP && pLevel_Player->m_state != STA_FLY )
 	{
-		pHud_Points->Add_Points( m_kill_points, pLevel_Player->m_pos_x, pLevel_Player->m_pos_y, "", static_cast<Uint8>(255), 1 );
+		pHud_Points->Add_Points( m_kill_points, m_pos_x, m_pos_y - 5.0f, "", static_cast<Uint8>(255), 1 );
 		pAudio->Play_Sound( m_kill_sound );
 
 		// big walking

@@ -452,7 +452,7 @@ void cBaseBox :: Col_Enemy( cSprite *obj )
 	{
 		cEnemy *enemy = static_cast<cEnemy *>(obj);
 		pAudio->Play_Sound( enemy->m_kill_sound );
-		pHud_Points->Add_Points( enemy->m_kill_points, enemy->m_pos_x + enemy->m_image->m_w / 3, enemy->m_pos_y - 5.0f, "", static_cast<Uint8>(255), 1 );
+		pHud_Points->Add_Points( enemy->m_kill_points, enemy->m_pos_x, enemy->m_pos_y - 5.0f, "", static_cast<Uint8>(255), 1 );
 		pLevel_Player->Add_Kill_Multiplier();
 		enemy->DownGrade( 1 );
 	}

@@ -566,7 +566,7 @@ void cRokko :: Handle_Collision_Player( cObjectCollision *collision )
 
 		if( collision->m_direction == DIR_TOP && pLevel_Player->m_state != STA_FLY )
 		{
-			pHud_Points->Add_Points( m_kill_points, pLevel_Player->m_pos_x + pLevel_Player->m_image->m_w / 3, pLevel_Player->m_pos_y - 5, "", static_cast<Uint8>(255), 1 );
+			pHud_Points->Add_Points( m_kill_points, m_pos_x + m_rect.m_w / 3, m_pos_y - 10.0f, "", static_cast<Uint8>(255), 1 );
 			pAudio->Play_Sound( m_kill_sound );
 			pLevel_Player->Action_Jump( 1 );
 
@@ -582,7 +582,7 @@ void cRokko :: Handle_Collision_Player( cObjectCollision *collision )
 	{
 		if( ( collision->m_direction == DIR_LEFT || collision->m_direction == DIR_LEFT ) && pLevel_Player->m_state == STA_FLY )
 		{
-			pHud_Points->Add_Points( m_kill_points, pLevel_Player->m_pos_x + pLevel_Player->m_image->m_w / 3, pLevel_Player->m_pos_y - 5, "", static_cast<Uint8>(255), 1 );
+			pHud_Points->Add_Points( m_kill_points, m_pos_x, m_pos_y - 5.0f, "", static_cast<Uint8>(255), 1 );
 			pAudio->Play_Sound( m_kill_sound );
 
 			pLevel_Player->Add_Kill_Multiplier();

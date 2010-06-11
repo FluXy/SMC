@@ -443,7 +443,7 @@ void cSpika :: Handle_Collision_Enemy( cObjectCollision *collision )
 		}
 
 		pAudio->Play_Sound( enemy->m_kill_sound );
-		pHud_Points->Add_Points( enemy->m_kill_points, m_pos_x + m_image->m_w / 3, m_pos_y - 5, "", static_cast<Uint8>(255), 1 );
+		pHud_Points->Add_Points( enemy->m_kill_points, enemy->m_pos_x, enemy->m_pos_y - 5.0f, "", static_cast<Uint8>(255), 1 );
 		enemy->DownGrade( 1 );
 	}
 }

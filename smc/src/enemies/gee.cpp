@@ -630,7 +630,7 @@ void cGee :: Handle_Collision_Player( cObjectCollision *collision )
 		DownGrade();
 		pLevel_Player->Action_Jump( 1 );
 
-		pHud_Points->Add_Points( m_kill_points, pLevel_Player->m_pos_x, pLevel_Player->m_pos_y, "", static_cast<Uint8>(255), 1 );
+		pHud_Points->Add_Points( m_kill_points, m_pos_x, m_pos_y - 5.0f, "", static_cast<Uint8>(255), 1 );
 		pLevel_Player->Add_Kill_Multiplier();
 	}
 	else if( !pLevel_Player->m_invincible )

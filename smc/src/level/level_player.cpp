@@ -4162,7 +4162,7 @@ void cLevel_Player :: Handle_Collision_Enemy( cObjectCollision *collision )
 		if( hit_enemy )
 		{
 			pAudio->Play_Sound( "item/star_kill.ogg" );
-			pHud_Points->Add_Points( static_cast<unsigned int>( enemy->m_kill_points * 1.2f ), m_pos_x, m_pos_y, "", yellow, 1 );
+			pHud_Points->Add_Points( static_cast<unsigned int>( enemy->m_kill_points * 1.2f ), enemy->m_pos_x, enemy->m_pos_y - 5.0f, "", yellow, 1 );
 			// force complete downgrade
 			enemy->DownGrade( 1 );
 			Add_Kill_Multiplier();
@@ -4221,7 +4221,7 @@ void cLevel_Player :: Handle_Collision_Enemy( cObjectCollision *collision )
 		pAudio->Play_Sound( "item/ice_kill.wav" );
 
 		// get points
-		pHud_Points->Add_Points( enemy->m_kill_points, enemy->m_pos_x, enemy->m_pos_y, "", static_cast<Uint8>(255), 1 );
+		pHud_Points->Add_Points( enemy->m_kill_points, enemy->m_pos_x, enemy->m_pos_y - 10.0f, "", static_cast<Uint8>(255), 1 );
 		
 		// kill enemy
 		enemy->DownGrade( 1 );

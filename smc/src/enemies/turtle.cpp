@@ -744,17 +744,17 @@ void cTurtle :: Handle_Collision_Player( cObjectCollision *collision )
 	{
 		if( m_turtle_state == TURTLE_WALK )
 		{
-			pHud_Points->Add_Points( 25, pLevel_Player->m_pos_x, pLevel_Player->m_pos_y );
+			pHud_Points->Add_Points( 25, m_pos_x, m_pos_y - 5.0f );
 			pAudio->Play_Sound( "enemy/turtle/hit.ogg" );
 		}
 		else if( m_turtle_state == TURTLE_SHELL_STAND )
 		{
-			pHud_Points->Add_Points( 10, pLevel_Player->m_pos_x, pLevel_Player->m_pos_y );
+			pHud_Points->Add_Points( 10, m_pos_x, m_pos_y - 5.0f );
 			pAudio->Play_Sound( "enemy/turtle/shell/hit.ogg" );
 		}
 		else if( m_turtle_state == TURTLE_SHELL_RUN )
 		{
-			pHud_Points->Add_Points( 5, pLevel_Player->m_pos_x, pLevel_Player->m_pos_y );
+			pHud_Points->Add_Points( 5, m_pos_x, m_pos_y - 5.0f );
 			pAudio->Play_Sound( "enemy/turtle/shell/hit.ogg" );
 		}
 
