@@ -27,6 +27,7 @@
 #include "../core/i18n.h"
 #include "../enemies/turtle.h"
 #include "../enemies/bosses/turtle_boss.h"
+#include "../gui/hud.h"
 // CEGUI
 #include "CEGUIXMLAttributes.h"
 
@@ -449,8 +450,11 @@ void cBaseBox :: Col_Enemy( cSprite *obj )
 	// only valid enemies
 	if( obj->m_type == TYPE_FURBALL || obj->m_type == TYPE_TURTLE || obj->m_type == TYPE_KRUSH )
 	{
-		pAudio->Play_Sound( "death_box.wav" );
-		static_cast<cMovingSprite *>(obj)->DownGrade( 1 );
+		cEnemy *enemy = static_cast<cEnemy *>(obj);
+		pAudio->Play_Sound( enemy->m_kill_sound );
+		pHud_Points->Add_Points( enemy->m_kill_points, enemy->m_pos_x + enemy->m_image->m_w / 3, enemy->m_pos_y - 5.0f, "", static_cast<Uint8>(255), 1 );
+		pLevel_Player->Add_Kill_Multiplier();
+		enemy->DownGrade( 1 );
 	}
 }
 

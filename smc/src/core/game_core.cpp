@@ -1192,7 +1192,6 @@ void Preload_Sounds( bool draw_gui /* = 0 */ )
 
 	// box
 	sound_files.push_back( "item/empty_box.wav" );
-	sound_files.push_back( "death_box.wav" );
 
 	// enemies
 	// eato
