@@ -568,15 +568,28 @@ void cBaseBox :: Generate_Activation_Particles( void )
 		}
 		anim->Set_Quota( static_cast<int>(m_particle_counter_active) );
 		anim->Set_Emitter_Rect( m_pos_x + 4.0f, m_pos_y + 8.0f, m_rect.m_w - 8.0f, 1.0f );
-		anim->Set_Emitter_Time_to_Live( 0.5f );
+		if( box_type == TYPE_UNDEFINED )
+		{
+			anim->Set_Emitter_Time_to_Live( 0.2f );
+			anim->Set_Scale( 0.2f, 0.05f );
+		}
+		else
+		{
+			anim->Set_Emitter_Time_to_Live( 0.5f );
+			anim->Set_Scale( 0.3f, 0.1f );
+		}
 		anim->Set_Pos_Z( m_pos_z - 0.000001f );
 		anim->Set_Direction_Range( 260, 20 );
-		anim->Set_Scale( 0.3f, 0.1f );
 
 		Color color;
 		Color color_rand;
 
-		if( box_type == TYPE_MUSHROOM_DEFAULT )
+		if( box_type == TYPE_UNDEFINED )
+		{
+			color = Color( static_cast<Uint8>(128), 128, 128, 128 );
+			color_rand = Color( static_cast<Uint8>(0), 0, 0, 128 );
+		}
+		else if( box_type == TYPE_MUSHROOM_DEFAULT )
 		{
 			color = Color( static_cast<Uint8>(180), 140, 120 );
 			color_rand = Color( static_cast<Uint8>(70), 30, 30, 0 );
