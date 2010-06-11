@@ -1228,7 +1228,6 @@ void Preload_Sounds( bool draw_gui /* = 0 */ )
 	// default
 	sound_files.push_back( "sprout_1.ogg" );
 	sound_files.push_back( "stomp_1.ogg" );
-	sound_files.push_back( "stomp_2.ogg" );
 	sound_files.push_back( "stomp_4.ogg" );
 
 	// savegame
