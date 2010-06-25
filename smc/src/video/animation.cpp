@@ -345,7 +345,7 @@ void cAnimation_Fireball :: Update( void )
 		obj->Move( obj->m_velx, obj->m_vely );
 	}
 
-	if( m_time_to_live > 12 || m_time_to_live < 0 )
+	if( m_time_to_live > 12.0f || m_time_to_live < 0.0f )
 	{
 		Set_Active( 0 );
 	}
@@ -1340,12 +1340,7 @@ void cParticle_Emitter :: Set_Emitter_Iteration_Interval( float time )
 
 void cParticle_Emitter :: Set_Quota( unsigned int size )
 {
-	if( size > 1000 )
-	{
-		size = 1000;
-	}
-
-	m_emitter_quota = size;
+	m_emitter_quota = Clamp<unsigned int>( size, 1, 1000 );
 }
 
 void cParticle_Emitter :: Set_Speed( float vel_base, float vel_random /* = 2 */ )

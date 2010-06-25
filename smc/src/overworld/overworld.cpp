@@ -1007,14 +1007,14 @@ bool cOverworld :: Goto_Next_Level( void )
 		anim->Set_Image( pVideo->Get_Surface( "animation/particles/light.png" ) );
 		anim->Set_Pos_Z( 0.081f );
 		anim->Set_Time_to_Live( 1.3f );
-		anim->Set_Speed( 1, 1 );
-		anim->Set_Scale( 0.5f, 0.4f );
+		anim->Set_Speed( 1.0f, 0.5f );
+		anim->Set_Scale( 0.5f, 0.2f );
 		anim->Set_Const_Rotation_Z( -6, 12 );
 
 		// World Waypoint
 		if( next_waypoint->m_waypoint_type == WAYPOINT_WORLD_LINK )
 		{
-			anim->Set_Color( lightgreen, Color( static_cast<Uint8>(60), 0, 60, 0 ) );
+			anim->Set_Color( whitealpha128, Color( static_cast<Uint8>(0), 0, 0, 128 ) );
 		}
 		else
 		{

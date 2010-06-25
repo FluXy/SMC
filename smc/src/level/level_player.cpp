@@ -2505,10 +2505,10 @@ void cLevel_Player :: Draw( cSurface_Request *request /* = NULL */ )
 	}
 
 	// invincible
-	if( m_invincible > 0 )
+	if( m_invincible > 0.0f )
 	{
 		// star invincible
-		if( m_invincible_star > 0 )
+		if( m_invincible_star > 0.0f )
 		{
 			Set_Color_Combine( m_invincible_mod / 130, m_invincible_mod / 130, m_invincible_mod / 180, GL_ADD );
 		}
@@ -2519,7 +2519,7 @@ void cLevel_Player :: Draw( cSurface_Request *request /* = NULL */ )
 		}
 	}
 	// ghost
-	if( m_ghost_time > 0 )
+	if( m_ghost_time > 0.0f )
 	{
 		// ghost shadows
 		m_color.alpha = 32 + static_cast<int>(m_ghost_time_mod);
@@ -2546,7 +2546,7 @@ void cLevel_Player :: Draw( cSurface_Request *request /* = NULL */ )
 
 	cMovingSprite::Draw( request );
 
-	if( m_invincible > 0 || m_ghost_time > 0 )
+	if( m_invincible > 0.0f || m_ghost_time > 0.0f )
 	{
 		Set_Color( white );
 	}
@@ -3246,7 +3246,7 @@ void cLevel_Player :: Get_Item( SpriteType item_type, bool force /* = 0 */, cMov
 
 float cLevel_Player :: Get_Vel_Modifier( void ) const
 {
-	float vel_mod = 1;
+	float vel_mod = 1.0f;
 
 	// if running key is pressed or always run
 	if( pPreferences->m_always_run || pKeyboard->m_keys[pPreferences->m_key_action] || pJoystick->Button( pPreferences->m_joy_button_action ) )
@@ -3254,7 +3254,7 @@ float cLevel_Player :: Get_Vel_Modifier( void ) const
 		vel_mod = 1.5f;
 	}
 
-	if( m_invincible_star > 0 )
+	if( m_invincible_star > 0.0f )
 	{
 		vel_mod *= 1.2f;
 	}
@@ -3275,7 +3275,7 @@ void cLevel_Player :: Action_Jump( bool enemy_jump /* = 0 */ )
 		if( m_ducked_counter > power_jump_delta )
 		{
 			m_force_jump = 1;
-			m_next_jump_power += 2;
+			m_next_jump_power += 2.0f;
 			m_next_jump_accel += 0.2f;
 		}
 		// stop ducking after setting power jump
@@ -3287,7 +3287,7 @@ void cLevel_Player :: Action_Jump( bool enemy_jump /* = 0 */ )
 	{
 		m_force_jump = 1;
 		m_next_jump_sound = 0;
-		m_next_jump_power += 1;
+		m_next_jump_power += 1.0f;
 		m_next_jump_accel += 0.1f;
 	}
 
@@ -3651,7 +3651,7 @@ bool cLevel_Player :: Ball_Add( ball_effect effect_type /* = FIREBALL_DEFAULT */
 	if( effect_type == FIREBALL_DEFAULT || effect_type == ICEBALL_DEFAULT )
 	{
 		// if time not passed between last shot
-		if( ( effect_type == FIREBALL_DEFAULT || effect_type == ICEBALL_DEFAULT ) && m_shoot_counter > 0 )
+		if( ( effect_type == FIREBALL_DEFAULT || effect_type == ICEBALL_DEFAULT ) && m_shoot_counter > 0.0f )
 		{
 			return 0;
 		}
