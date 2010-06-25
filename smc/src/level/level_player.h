@@ -294,7 +294,7 @@ public:
 	// throw animation counter
 	float m_throwing_counter;
 	// if maryo is ducked
-	Uint32 m_ducked;
+	Uint32 m_ducked_counter;
 	// ducked animation counter
 	float m_ducked_animation_counter;
 	// if parachute falling

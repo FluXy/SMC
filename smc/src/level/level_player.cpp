@@ -62,7 +62,7 @@ cLevel_Player :: cLevel_Player( cSprite_Manager *sprite_manager )
 	m_pos_z = 0.0999f;
 	m_gravity_max = 25.0f;
 	m_images.reserve( 20 );
-	m_ducked = 0;
+	m_ducked_counter = 0;
 	m_ducked_animation_counter = 0.0f;
 	m_parachute = 0;
 	m_throwing_counter = 0.0f;
@@ -650,7 +650,7 @@ void cLevel_Player :: Generate_Feet_Clouds( cParticle_Emitter *anim /* = NULL */
 
 void cLevel_Player :: Update_Walking( void )
 {
-	if( m_ducked || !m_ground_object || ( m_state != STA_STAY && m_state != STA_WALK && m_state != STA_RUN ) )
+	if( m_ducked_counter || !m_ground_object || ( m_state != STA_STAY && m_state != STA_WALK && m_state != STA_RUN ) )
 	{
 		return;
 	}
@@ -719,7 +719,7 @@ void cLevel_Player :: Update_Walking( void )
 
 void cLevel_Player :: Update_Running( void )
 {
-	if( m_ducked || !m_ground_object || m_state != STA_RUN )
+	if( m_ducked_counter || !m_ground_object || m_state != STA_RUN )
 	{
 		return;
 	}
@@ -779,7 +779,7 @@ void cLevel_Player :: Update_Running( void )
 void cLevel_Player :: Update_Staying( void )
 {
 	// only if player is onground
-	if( !m_ground_object || m_ducked || m_state == STA_JUMP || m_state == STA_CLIMB )
+	if( !m_ground_object || m_ducked_counter || m_state == STA_JUMP || m_state == STA_CLIMB )
 	{
 		return;
 	}
@@ -900,7 +900,7 @@ void cLevel_Player :: Update_Flying( void )
 	else
 	{
 		// move left
-		if( ( pKeyboard->m_keys[pPreferences->m_key_left] || pJoystick->m_left ) && !m_ducked )
+		if( ( pKeyboard->m_keys[pPreferences->m_key_left] || pJoystick->m_left ) && !m_ducked_counter )
 		{
 			if( !m_parachute )
 			{
@@ -923,7 +923,7 @@ void cLevel_Player :: Update_Flying( void )
 			}
 		}
 		// move right
-		else if( ( pKeyboard->m_keys[pPreferences->m_key_right] || pJoystick->m_right ) && !m_ducked )
+		else if( ( pKeyboard->m_keys[pPreferences->m_key_right] || pJoystick->m_right ) && !m_ducked_counter )
 		{
 			if( !m_parachute )
 			{
@@ -1040,7 +1040,6 @@ void cLevel_Player :: Update_Falling( void )
 		}
 	}
 
-
 	if( m_state != STA_JUMP && m_state != STA_FALL )
 	{
 		Set_Moving_State( STA_FALL );
@@ -1050,7 +1049,7 @@ void cLevel_Player :: Update_Falling( void )
 void cLevel_Player :: Start_Ducking( void )
 { 
 	// only if massive ground
-	if( ( m_state != STA_STAY && m_state != STA_WALK && m_state != STA_RUN ) || m_state == STA_CLIMB || !m_ground_object || m_ground_object->m_massive_type == MASS_HALFMASSIVE || m_ducked )
+	if( ( m_state != STA_STAY && m_state != STA_WALK && m_state != STA_RUN ) || m_state == STA_CLIMB || !m_ground_object || m_ground_object->m_massive_type == MASS_HALFMASSIVE || m_ducked_counter )
 	{
 		return;
 	}
@@ -1062,14 +1061,13 @@ void cLevel_Player :: Start_Ducking( void )
 	cSprite::Move( 0.0f, m_image->m_col_h - m_images[MARYO_IMG_DUCK].m_image->m_col_h, 1 );
 	Set_Image_Num( MARYO_IMG_DUCK + m_direction );
 
-	// fixme : should not be based on the current time
-	m_ducked = SDL_GetTicks();
+	m_ducked_counter = 1;
 	Set_Moving_State( STA_STAY );
 }
 
 void cLevel_Player :: Stop_Ducking( void )
 {
-	if( !m_ducked )
+	if( !m_ducked_counter )
 	{
 		return;
 	}
@@ -1083,7 +1081,7 @@ void cLevel_Player :: Stop_Ducking( void )
 	if( col_list->size() )
 	{
 		// set ducked time again to stop possible power jump while in air
-		m_ducked = SDL_GetTicks();
+		m_ducked_counter = 1;
 		delete col_list;
 		return;
 	}
@@ -1094,14 +1092,14 @@ void cLevel_Player :: Stop_Ducking( void )
 	cSprite::Move( 0.0f, move_y, 1 );
 	Set_Image_Num( MARYO_IMG_STAND + m_direction );
 
-	m_ducked = 0;
+	m_ducked_counter = 0;
 	m_ducked_animation_counter = 0.0f;
 	Set_Moving_State( STA_STAY );
 }
 
 void cLevel_Player :: Update_Ducking( void )
 {
-	if( !m_ducked )
+	if( !m_ducked_counter )
 	{
 		return;
 	}
@@ -1113,7 +1111,9 @@ void cLevel_Player :: Update_Ducking( void )
 		return;
 	}
 
-	if( SDL_GetTicks() - m_ducked > power_jump_delta )
+	m_ducked_counter += pFramerate->m_elapsed_ticks;
+
+	if( m_ducked_counter > power_jump_delta )
 	{
 		// particle animation
 		m_ducked_animation_counter += pFramerate->m_speed_factor * 2;
@@ -1152,7 +1152,7 @@ void cLevel_Player :: Update_Ducking( void )
 void cLevel_Player :: Start_Climbing( void )
 {
 	// invalid state
-	if( m_ducked || m_state == STA_CLIMB || m_jump_power > 5.0f )
+	if( m_ducked_counter || m_state == STA_CLIMB || m_jump_power > 5.0f )
 	{
 		return;
 	}
@@ -1354,7 +1354,7 @@ void cLevel_Player :: Start_Jump( float deaccel /* = 0.08f */ )
 	m_velx = m_velx * 0.9f;
 
 	// jump with velx if ducking but only into the opposite start duck direction to get out of a hole
-	if( m_ducked )
+	if( m_ducked_counter )
 	{
 		if( m_direction == DIR_RIGHT && m_duck_direction != m_direction )
 		{
@@ -1412,7 +1412,7 @@ void cLevel_Player :: Update_Jump( void )
 	}
 	
 	// left right physics
-	if( ( pKeyboard->m_keys[pPreferences->m_key_left] || pJoystick->m_left ) && !m_ducked )
+	if( ( pKeyboard->m_keys[pPreferences->m_key_left] || pJoystick->m_left ) && !m_ducked_counter )
 	{
 		const float max_vel = -10.0f * Get_Vel_Modifier();
 
@@ -1422,7 +1422,7 @@ void cLevel_Player :: Update_Jump( void )
 		}
 		
 	}	
-	else if( ( pKeyboard->m_keys[pPreferences->m_key_right] || pJoystick->m_right ) && !m_ducked )
+	else if( ( pKeyboard->m_keys[pPreferences->m_key_right] || pJoystick->m_right ) && !m_ducked_counter )
 	{
 		const float max_vel = 10.0f * Get_Vel_Modifier();
 
@@ -1494,7 +1494,7 @@ void cLevel_Player :: Update_Item( void )
 	}
 
 	// invalid state
-	if( m_state == STA_FLY || m_ducked || m_state == STA_CLIMB )
+	if( m_state == STA_FLY || m_ducked_counter || m_state == STA_CLIMB )
 	{
 		return;
 	}
@@ -2102,7 +2102,7 @@ void cLevel_Player :: Reset( bool full /* = 1 */ )
 	Set_Active( 1 );
 	Reset_Position();
 	Set_Direction( m_start_direction );
-	m_ducked = 0;
+	m_ducked_counter = 0;
 	Set_Moving_State( STA_FALL );
 	Set_Image_Num( Get_Image() + m_direction );
 	m_jump_power = 0.0f;
@@ -2154,7 +2154,7 @@ void cLevel_Player :: Update( void )
 	}
 
 	// check if got stuck
-	if( !m_ducked )
+	if( !m_ducked_counter )
 	{
 		Update_Anti_Stuck();
 	}
@@ -2653,7 +2653,7 @@ void cLevel_Player :: Draw_Animation( Maryo_type new_mtype )
 unsigned int cLevel_Player :: Get_Image( void ) const
 {
 	// throwing
-	if( m_throwing_counter && ( m_maryo_type == MARYO_FIRE || m_maryo_type == MARYO_ICE ) && !m_ducked && ( m_state == STA_FALL || m_state == STA_STAY || m_state == STA_WALK || m_state == STA_RUN || m_state == STA_JUMP ) )
+	if( m_throwing_counter && ( m_maryo_type == MARYO_FIRE || m_maryo_type == MARYO_ICE ) && !m_ducked_counter && ( m_state == STA_FALL || m_state == STA_STAY || m_state == STA_WALK || m_state == STA_RUN || m_state == STA_JUMP ) )
 	{
 		int imgnum = 0;
 
@@ -2666,7 +2666,7 @@ unsigned int cLevel_Player :: Get_Image( void ) const
 	}
 
 	// ducked
-	if( m_ducked && ( m_state == STA_STAY || m_state == STA_WALK || m_state == STA_RUN || m_state == STA_JUMP || m_state == STA_FALL ) )
+	if( m_ducked_counter && ( m_state == STA_STAY || m_state == STA_WALK || m_state == STA_RUN || m_state == STA_JUMP || m_state == STA_FALL ) )
 	{
 		return MARYO_IMG_DUCK;
 	}
@@ -3269,10 +3269,10 @@ float cLevel_Player :: Get_Vel_Modifier( void ) const
 
 void cLevel_Player :: Action_Jump( bool enemy_jump /* = 0 */ )
 {
-	if( m_ducked )
+	if( m_ducked_counter )
 	{
 		// power jump
-		if( SDL_GetTicks() - m_ducked > power_jump_delta )
+		if( m_ducked_counter > power_jump_delta )
 		{
 			m_force_jump = 1;
 			m_next_jump_power += 2;
@@ -3637,7 +3637,7 @@ void cLevel_Player :: Action_Stop_Shoot( void )
 
 bool cLevel_Player :: Ball_Add( ball_effect effect_type /* = FIREBALL_DEFAULT */, float ball_start_angle /* = -1 */, unsigned int amount /* = 0 */ ) const
 {
-	if( ( m_maryo_type != MARYO_FIRE && m_maryo_type_temp_power != MARYO_FIRE && m_maryo_type != MARYO_ICE && m_maryo_type_temp_power != MARYO_ICE ) || m_ducked )
+	if( ( m_maryo_type != MARYO_FIRE && m_maryo_type_temp_power != MARYO_FIRE && m_maryo_type != MARYO_ICE && m_maryo_type_temp_power != MARYO_ICE ) || m_ducked_counter )
 	{
 		return 0;
 	}

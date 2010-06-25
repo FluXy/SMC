@@ -710,7 +710,7 @@ void cSprite :: Set_Active( bool enabled )
 	Update_Valid_Update();
 }
 
-void cSprite :: Set_Color_Combine( float red, float green, float blue, GLint com_type )
+void cSprite :: Set_Color_Combine( const float red, const float green, const float blue, const GLint com_type )
 {
 	m_combine_type = com_type;
 	m_combine_color[0] = Clamp( red, 0.000001f, 1.0f );

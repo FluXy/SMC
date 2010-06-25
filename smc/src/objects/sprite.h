@@ -206,7 +206,7 @@ public:
 	 * 1.0 is the maximum and the given color has maximum value
 	 * 0.0 is the minimum and the given color has minimum value
 	*/
-	void Set_Color_Combine( float red, float green, float blue, GLint com_type );
+	void Set_Color_Combine( const float red, const float green, const float blue, const GLint com_type );
 
 	/* Set if rotation affects the collision rect
 	 * only supports 90° steps currently
