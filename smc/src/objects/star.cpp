@@ -251,23 +251,11 @@ void cjStar :: Handle_Collision_Massive( cObjectCollision *collision )
 		if( m_ground_object )
 		{
 			// clamp x to the ground object position
-			float x = m_rect.m_x + ( m_rect.m_w / 2 );
-
-			// left
-			if( x < m_ground_object->m_col_rect.m_x )
-			{
-				x = m_ground_object->m_col_rect.m_x;
-			}
-			// right
-			else if( x > m_ground_object->m_col_rect.m_x + m_ground_object->m_col_rect.m_w )
-			{
-				x = m_ground_object->m_col_rect.m_x +  + m_ground_object->m_col_rect.m_w;
-			}
-
-			Generate_Particles( x, m_ground_object->m_col_rect.m_y, 0, 5 );
+			const float clamped_x = Clamp( m_rect.m_x + ( m_rect.m_w / 2 ), m_ground_object->m_col_rect.m_x, m_ground_object->m_col_rect.m_x + m_ground_object->m_col_rect.m_w );
+			Generate_Particles( clamped_x, m_ground_object->m_col_rect.m_y, 0, 5 );
 		}
 
-		m_vely = -25;
+		m_vely = -25.0f;
 	}
 }
 

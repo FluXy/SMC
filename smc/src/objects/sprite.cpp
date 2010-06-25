@@ -713,37 +713,9 @@ void cSprite :: Set_Active( bool enabled )
 void cSprite :: Set_Color_Combine( float red, float green, float blue, GLint com_type )
 {
 	m_combine_type = com_type;
-	m_combine_color[0] = red;
-	m_combine_color[1] = green;
-	m_combine_color[2] = blue;
-
-	// red limits
-	if( m_combine_color[0] > 1.0f )
-	{
-		m_combine_color[0] = 1.0f;
-	}
-	else if( m_combine_color[0] <= 0.0f )
-	{
-		m_combine_color[0] = 0.000001f;
-	}
-	// green limits
-	if( m_combine_color[1] > 1.0f )
-	{
-		m_combine_color[1] = 1.0f;
-	}
-	else if( m_combine_color[1] <= 0.0f )
-	{
-		m_combine_color[1] = 0.000001f;
-	}
-	// blue limits
-	if( m_combine_color[2] > 1.0f )
-	{
-		m_combine_color[2] = 1.0f;
-	}
-	else if( m_combine_color[2] <= 0.0f )
-	{
-		m_combine_color[2] = 0.000001f;
-	}
+	m_combine_color[0] = Clamp( red, 0.000001f, 1.0f );
+	m_combine_color[1] = Clamp( green, 0.000001f, 1.0f );
+	m_combine_color[2] = Clamp( blue, 0.000001f, 1.0f );
 }
 
 void cSprite :: Update_Rect_Rotation_Z( void )
@@ -837,7 +809,7 @@ void cSprite :: Set_Rotation_Z( float rot, bool new_start_rot /* = 0 */ )
 void cSprite :: Set_Scale_X( const float scale, const bool new_startscale /* = 0 */ )
 {
 	// invalid value
-	if( scale == 0.0f )
+	if( Is_Float_Equal( scale, 0.0f ) )
 	{
 		return;
 	}
@@ -867,7 +839,7 @@ void cSprite :: Set_Scale_X( const float scale, const bool new_startscale /* = 0
 void cSprite :: Set_Scale_Y( const float scale, const bool new_startscale /* = 0 */ )
 {
 	// invalid value
-	if( scale == 0.0f )
+	if( Is_Float_Equal( scale, 0.0f ) )
 	{
 		return;
 	}

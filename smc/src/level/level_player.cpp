@@ -892,19 +892,8 @@ void cLevel_Player :: Update_Flying( void )
 			Auto_Slow_Down( 0.0f, 0.4f );
 		}
 
-		// set flying rotation
-		float fly_rot = m_vely * 2.5f;
-
-		// limit angle
-		if( fly_rot > 70.0f )
-		{
-			fly_rot = 70.0f;
-		}
-		else if( fly_rot < -70.0f )
-		{
-			fly_rot = -70.0f;
-		}
-
+		// set limited flying rotation
+		const float fly_rot = Clamp( m_vely * 2.5f, -70.0f, 70.0f );
 		Set_Rotation_Z( fly_rot );
 	}
 	// falling

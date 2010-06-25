@@ -389,7 +389,7 @@ void cVideo :: Init_Video( bool reload_textures_from_file /* = 0 */, bool use_pr
 		}
 	}
 
-	// SDL handles the screen surface memory management
+	// Note: As of SDL 1.2.10, if width and height are both 0, SDL_SetVideoMode will use the desktop resolution.
 	screen = SDL_SetVideoMode( screen_w, screen_h, screen_bpp, flags );
 
 	if( !screen )
@@ -401,7 +401,7 @@ void cVideo :: Init_Video( bool reload_textures_from_file /* = 0 */, bool use_pr
 	// check if fullscreen got set
 	if( use_preferences && pPreferences->m_video_fullscreen )
 	{
-		int is_fullscreen = ( ( screen->flags & SDL_FULLSCREEN ) == SDL_FULLSCREEN );
+		bool is_fullscreen = ( ( screen->flags & SDL_FULLSCREEN ) == SDL_FULLSCREEN );
 
 		if( !is_fullscreen )
 		{

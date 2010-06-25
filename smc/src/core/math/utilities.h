@@ -26,6 +26,20 @@ namespace SMC
 
 /* *** *** *** *** *** *** *** *** Math utility functions *** *** *** *** *** *** *** *** *** */
 
+template<class T> inline T Clamp( const T &v, const T &min, const T &max )
+{
+	if( v > max )
+	{
+		return max;
+	}
+	else if( v < min )
+	{
+		return min;
+	}
+
+	return v;
+}
+
 // return a random floating point value between the given values
 inline float Get_Random_Float( float min, float max )
 {
