@@ -26,16 +26,6 @@
 		// disable possible loss of data
 		#pragma warning ( disable : 4267 )
 	#endif
-
-	// disable Visual Studio 8 warnings
-	#if _MSC_VER >= 1400
-		#ifndef _CRT_SECURE_NO_DEPRECATE
-			#define _CRT_SECURE_NO_DEPRECATE
-		#endif
-		#ifndef _CRT_NON_CONFORMING_SWPRINTFS
-			#define _CRT_NON_CONFORMING_SWPRINTFS
-		#endif
-	#endif
 #endif
 
 // debug printf macro
