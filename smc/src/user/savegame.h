@@ -26,13 +26,11 @@ namespace SMC
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-#define SAVEGAME_VERSION 9
+#define SAVEGAME_VERSION 10
 #define SAVEGAME_VERSION_UNSUPPORTED 5
 
 /* *** *** *** *** *** *** *** cSave_Overworld_Waypoint *** *** *** *** *** *** *** *** *** *** */
-/* Overworld Waypoint save data
- *
-*/
+// Overworld Waypoint save data
 class cSave_Overworld_Waypoint
 {
 public:
@@ -47,9 +45,7 @@ typedef vector<cSave_Overworld_Waypoint *> Save_Overworld_WaypointList;
 
 
 /* *** *** *** *** *** *** *** cSave_Overworld *** *** *** *** *** *** *** *** *** *** */
-/* Overworld save data
- *
-*/
+// Overworld save data
 class cSave_Overworld
 {
 public:
@@ -65,8 +61,7 @@ public:
 typedef vector<cSave_Overworld *> Save_OverworldList;
 
 /* *** *** *** *** *** *** *** cSave_Level_Object_Property *** *** *** *** *** *** *** *** *** *** */
-/* Level object string property
-*/
+// Level object string property
 class cSave_Level_Object_Property
 {
 public:
@@ -79,9 +74,7 @@ public:
 typedef vector<cSave_Level_Object_Property> Save_Level_Object_ProprtyList;
 
 /* *** *** *** *** *** *** *** cSave_Level_Object *** *** *** *** *** *** *** *** *** *** */
-/* Level object save data
- *
-*/
+// Level object save data
 class cSave_Level_Object
 {
 public:
@@ -102,10 +95,26 @@ public:
 
 typedef vector<cSave_Level_Object *> Save_Level_ObjectList;
 
+/* *** *** *** *** *** *** *** cSave_Level *** *** *** *** *** *** *** *** *** *** */
+// Level save data
+class cSave_Level
+{
+public:
+	cSave_Level( void );
+	~cSave_Level( void );
+
+	std::string m_name;
+	// player position is only set if level is the active one
+	float m_level_pos_x;
+	float m_level_pos_y;
+
+	// objects data
+	Save_Level_ObjectList m_level_objects;
+};
+
+typedef vector<cSave_Level *> Save_LevelList;
+
 /* *** *** *** *** *** *** *** cSave *** *** *** *** *** *** *** *** *** *** */
-/* Save data
- *
-*/
 class cSave
 {
 public:
@@ -115,7 +124,6 @@ public:
 	// Initialize data to empty values
 	void Init( void );
 
-	// ## Save Information
 	// description
 	std::string m_description;
 	// savegame version
@@ -123,7 +131,6 @@ public:
 	// time ( seconds since 1970 )
 	time_t m_save_time;
 
-	// ## Player Information
 	// lives
 	unsigned int m_lives;
 	// points
@@ -132,23 +139,14 @@ public:
 	unsigned int m_goldpieces;
 	// player type
 	unsigned int m_player_type;
-	// player state
+	// player moving state
 	unsigned int m_player_state;
 	// item in the itembox
 	unsigned int m_itembox_item;
 
-	// ## Level Information
-	/* level name
-	 * this is only saved if player is in a level
-	*/
-	std::string m_level_name;
-	// level position
-	float m_level_pos_x;
-	float m_level_pos_y;
-	// objects data
-	Save_Level_ObjectList m_level_objects;
+	// level data
+	Save_LevelList m_levels;
 
-	// ## Overworld Information
 	/* active overworld
 	 * if not set game mode is custom level
 	*/
@@ -168,10 +166,10 @@ public:
 	cSavegame( void );
 	virtual ~cSavegame( void );
 
-	/* Load a Save
-	 * Returns 0 if failed 
-	 * 1 if ingame save
-	 * 2 if Overworld save
+	/* Load a save
+	 * Returns 0 if failed
+	 * 1 if level save
+	 * 2 if overworld save
 	*/
 	int Load_Game( unsigned int save_slot );
 	// Save the game with the given description

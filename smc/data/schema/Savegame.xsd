@@ -7,7 +7,7 @@
 		<xsd:choice minOccurs="0" maxOccurs="unbounded">
 			<xsd:element name="Information" type="PropertyType" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="Player" type="PropertyType" minOccurs="0" maxOccurs="1"/>
-			<xsd:element name="Level" type="LevelType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="Level" type="LevelType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="Overworld_Data" type="PropertyType" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="Overworld" type="OverworldType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:choice>
