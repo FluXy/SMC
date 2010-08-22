@@ -2302,6 +2302,7 @@ void Loading_Screen_Draw( void )
 	// limit fps or vsync will slow down the loading
 	if( !Is_Frame_Time( 60 ) )
 	{
+		pRenderer->Fake_Render();
 		return;
 	}
 

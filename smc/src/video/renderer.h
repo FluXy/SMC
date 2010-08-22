@@ -216,9 +216,16 @@ public:
 	*/
 	void Add( cRenderRequest *obj );
 
-	/* clear: if set clear the finished data after rendering
+	/* Render current data
+	 * clear: if set clear the finished data after rendering
 	*/
 	void Render( bool clear = 1 );
+
+	/* Reduce the render count
+	 * amount : render count decrease amount
+	 * clear: if set clear the finished data after rendering
+	*/
+	void Fake_Render( unsigned int amount = 1, bool clear = 1 );
 
 	/* clear the render data
 	 * if force is given all objects will be removed

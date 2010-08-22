@@ -712,17 +712,28 @@ void cRenderQueue :: Render( bool clear /* = 1 */ )
 	// reset last texture
 	last_bind_texture = 0;
 
-	// draw
 	for( RenderList::iterator itr = renderdata.begin(); itr != renderdata.end(); ++itr )
 	{
-		// get object pointer
 		cRenderRequest *obj = (*itr);
 
 		obj->Draw();
 		obj->render_count--;
 	}
 
-	// clear
+	if( clear )
+	{
+		Clear( 0 );
+	}
+}
+
+void cRenderQueue :: Fake_Render( unsigned int amount /* = 1 */, bool clear /* = 1 */ )
+{
+	for( RenderList::iterator itr = renderdata.begin(); itr != renderdata.end(); ++itr )
+	{
+		cRenderRequest *obj = (*itr);
+		obj->render_count -= amount;
+	}
+
 	if( clear )
 	{
 		Clear( 0 );
@@ -733,7 +744,6 @@ void cRenderQueue :: Clear( bool force /* = 1 */ )
 {
 	for( RenderList::iterator itr = renderdata.begin(); itr != renderdata.end(); )
 	{
-		// get object pointer
 		cRenderRequest *obj = (*itr);
 
 		// if forced or finished rendering
