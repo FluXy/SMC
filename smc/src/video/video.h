@@ -338,18 +338,18 @@ public:
 	public:
 		cSoftware_Image( void )
 		{
-			sdl_surface = NULL;
-			settings = NULL;
+			m_sdl_surface = NULL;
+			m_settings = NULL;
 		};
 
-		SDL_Surface *sdl_surface;
-		cImage_settings_data *settings;
+		SDL_Surface *m_sdl_surface;
+		cImage_settings_data *m_settings;
 	};
 
-	/* Load and return the software image
+	/* Load and return the software image with the settings data
+	 * The returned sdl image should be deleted if not used anymore but not the settings data which is managed
 	 * load_settings : enable file settings if set to 1
 	 * print_errors : print errors if image couldn't be created or loaded
-	 * The returned data in the software image should be deleted if not used anymore
 	*/
 	cSoftware_Image Load_Image( std::string filename, bool load_settings = 1, bool print_errors = 1 ) const;
 

@@ -693,7 +693,7 @@ void cVideo :: Init_Image_Cache( bool recreate /* = 0 */, bool draw_gui /* = 0 *
 				{
 					// caching failed
 					Loading_Screen_Draw_Text( _("Caching Images failed : Could not remove old images") );
-					SDL_Delay( 1000 );
+					SDL_Delay( 2000 );
 				}
 			}
 		}
@@ -768,8 +768,8 @@ void cVideo :: Init_Image_Cache( bool recreate /* = 0 */, bool draw_gui /* = 0 *
 
 		// load software image
 		cSoftware_Image software_image = Load_Image( filename );
-		SDL_Surface *sdl_surface = software_image.sdl_surface;
-		cImage_settings_data *settings = software_image.settings;
+		SDL_Surface *sdl_surface = software_image.m_sdl_surface;
+		cImage_settings_data *settings = software_image.m_settings;
 
 		// failed to load image
 		if( !sdl_surface )
@@ -777,14 +777,20 @@ void cVideo :: Init_Image_Cache( bool recreate /* = 0 */, bool draw_gui /* = 0 *
 			continue;
 		}
 
-		/* if no image settings
-		 * additionally don't cache images without the width and height set
+		/* don't cache if no image settings or images without the width and height set
 		 * as there is currently no support to get the old and real image size
 		 * and thus the scaled down (cached) image size is used which is wrong
 		*/
 		if( !settings || !settings->m_width || !settings->m_height )
 		{
-			debug_print( "Info : %s has no image settings image size set and will not get cached\n", cache_filename.c_str() );
+			if( settings )
+			{
+				debug_print( "Info : %s has no image settings image size set and will not get cached\n", cache_filename.c_str() );
+			}
+			else
+			{
+				debug_print( "Info : %s has no image settings and will not get cached\n", cache_filename.c_str() );
+			}
 			SDL_FreeSurface( sdl_surface );
 			continue;
 		}
@@ -801,7 +807,7 @@ void cVideo :: Init_Image_Cache( bool recreate /* = 0 */, bool draw_gui /* = 0 *
 		// apply maximum texture size
 		Apply_Max_Texture_Size( new_width, new_height );
 
-		// does not need to be sampled down
+		// does not need to be downsampled
 		if( new_width >= sdl_surface->w && new_height >= sdl_surface->h )
 		{
 			SDL_FreeSurface( sdl_surface );
@@ -815,12 +821,12 @@ void cVideo :: Init_Image_Cache( bool recreate /* = 0 */, bool draw_gui /* = 0 *
 		// create downsampled image
 		unsigned int image_bpp = sdl_surface->format->BytesPerPixel;
 		unsigned char *image_downsampled = new unsigned char[new_width * new_height * image_bpp];
-		bool sampled = Downscale_Image( static_cast<unsigned char*>(sdl_surface->pixels), sdl_surface->w, sdl_surface->h, image_bpp, image_downsampled, reduce_block_x, reduce_block_y );
-
-		SDL_FreeSurface( sdl_surface );
+		bool downsampled = Downscale_Image( static_cast<unsigned char*>(sdl_surface->pixels), sdl_surface->w, sdl_surface->h, image_bpp, image_downsampled, reduce_block_x, reduce_block_y );
 		
+		SDL_FreeSurface( sdl_surface );
+
 		// if image is available
-		if( sampled )
+		if( downsampled )
 		{
 			// save as png
 			if( settings_file )
@@ -840,19 +846,20 @@ void cVideo :: Init_Image_Cache( bool recreate /* = 0 */, bool draw_gui /* = 0 *
 		// draw
 		if( draw_gui )
 		{
-			// update filename
-			cGL_Surface *surface_filename = pFont->Render_Text( pFont->m_font_small, filename, white );
-
 			// update progress
 			progress_bar->setProgress( static_cast<float>(loaded_files) / static_cast<float>(file_count) );
+
+#ifdef _DEBUG
+			// update filename
+			cGL_Surface *surface_filename = pFont->Render_Text( pFont->m_font_small, filename, white );
 			// draw filename
-
 			surface_filename->Blit( game_res_w * 0.2f, game_res_h * 0.8f, 0.1f );
-
+#endif
 			Loading_Screen_Draw();
-			
+#ifdef _DEBUG
 			// delete
 			delete surface_filename;
+#endif
 		}
 	}
 
@@ -1090,8 +1097,8 @@ cVideo::cSoftware_Image cVideo :: Load_Image( std::string filename, bool load_se
 		return software_image;
 	}
 
-	software_image.sdl_surface = sdl_surface;
-	software_image.settings = settings;
+	software_image.m_sdl_surface = sdl_surface;
+	software_image.m_settings = settings;
 	return software_image;
 }
 
@@ -1105,8 +1112,8 @@ cGL_Surface *cVideo :: Load_GL_Surface( std::string filename, bool use_settings 
 
 	// load software image
 	cSoftware_Image software_image = Load_Image( filename, use_settings, print_errors );
-	SDL_Surface *sdl_surface = software_image.sdl_surface;
-	cImage_settings_data *settings = software_image.settings;
+	SDL_Surface *sdl_surface = software_image.m_sdl_surface;
+	cImage_settings_data *settings = software_image.m_settings;
 
 	// final surface
 	cGL_Surface *image = NULL;
