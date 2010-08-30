@@ -672,6 +672,12 @@ void cTimeDisplay :: Reset( void )
 	m_milliseconds = 0;
 }
 
+void cTimeDisplay :: Set_Time( Uint32 milliseconds )
+{
+	m_milliseconds = milliseconds;
+	Update();
+}
+
 /* *** *** *** *** *** *** *** cItemBox *** *** *** *** *** *** *** *** *** *** */
 
 cItemBox :: cItemBox( cSprite_Manager *sprite_manager )

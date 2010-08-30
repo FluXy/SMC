@@ -170,6 +170,9 @@ void cSave :: Init( void )
 	m_player_state = 0;
 	m_itembox_item = 0;
 
+	// level
+	m_level_time = 0;
+
 	// overworld
 	m_overworld_current_waypoint = 0;
 }
@@ -308,6 +311,8 @@ int cSavegame :: Load_Game( unsigned int save_slot )
 					save_level->m_level_pos_y -= 1200.0f;
 				}
 
+				// time
+				pHud_Time->Set_Time( savegame->m_level_time );
 				// position
 				pLevel_Player->Set_Pos( save_level->m_level_pos_x, save_level->m_level_pos_y );
 
@@ -372,6 +377,8 @@ bool cSavegame :: Save_Game( unsigned int save_slot, std::string description )
 	// if in a level
 	if( pActive_Level->Is_Loaded() )
 	{
+		savegame->m_level_time = pHud_Time->m_milliseconds;
+
 		for( vector<cLevel *>::iterator itr = pLevel_Manager->objects.begin(); itr != pLevel_Manager->objects.end(); ++itr )
 		{
 			cLevel *level = (*itr);
@@ -533,10 +540,10 @@ int cSavegame :: Save( unsigned int save_slot, cSave *savegame )
 		ifs.close();
 	}
 
-	// empty overworld active
+	// no overworld active
 	if( savegame->m_overworld_active.empty() )
 	{
-		printf( "Warning : Savegame %s saving : Empty Overworld Active\n", savegame->m_description.c_str() );
+		printf( "Warning : Savegame::Save %s : No Overworld is active\n", savegame->m_description.c_str() );
 	}
 
 	ofstream file( filename.c_str(), ios::out );
@@ -558,7 +565,7 @@ int cSavegame :: Save( unsigned int save_slot, cSave *savegame )
 		file << "\t\t<Property Name=\"description\" Value=\"" << savegame->m_description << "\" />" << std::endl;
 		// Version
 		file << "\t\t<Property Name=\"version\" Value=\"" << savegame->m_version << "\" />" << std::endl;
-		// Time
+		// save time
 		file << "\t\t<Property Name=\"save_time\" Value=\"" << savegame->m_save_time << "\" />" << std::endl;
 	// end Information
 	file << "\t</Information>" << std::endl;
@@ -577,6 +584,11 @@ int cSavegame :: Save( unsigned int save_slot, cSave *savegame )
 		file << "\t\t<Property Name=\"state\" Value=\"" << savegame->m_player_state << "\" />" << std::endl;
 		// Itembox item
 		file << "\t\t<Property Name=\"itembox_item\" Value=\"" << savegame->m_itembox_item << "\" />" << std::endl;
+		// level time
+		if( !savegame->m_levels.empty() )
+		{
+			file << "\t\t<Property Name=\"level_time\" Value=\"" << savegame->m_level_time << "\" />" << std::endl;
+		}
 	// end Player
 	file << "\t</Player>" << std::endl;
 
@@ -874,6 +886,7 @@ void cSavegame :: Handle_Player( const CEGUI::XMLAttributes &attributes )
 	m_save_temp->m_player_type = m_xml_attributes.getValueAsInteger( "type" );
 	m_save_temp->m_player_state = m_xml_attributes.getValueAsInteger( "state" );
 	m_save_temp->m_itembox_item = m_xml_attributes.getValueAsInteger( "itembox_item" );
+	m_save_temp->m_level_time = m_xml_attributes.getValueAsInteger( "level_time" );
 }
 
 void cSavegame :: Handle_Overworld_Data( const CEGUI::XMLAttributes &attributes )

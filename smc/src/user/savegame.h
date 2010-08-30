@@ -26,7 +26,7 @@ namespace SMC
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-#define SAVEGAME_VERSION 10
+#define SAVEGAME_VERSION 11
 #define SAVEGAME_VERSION_UNSUPPORTED 5
 
 /* *** *** *** *** *** *** *** cSave_Overworld_Waypoint *** *** *** *** *** *** *** *** *** *** */
@@ -146,6 +146,8 @@ public:
 
 	// level data
 	Save_LevelList m_levels;
+	// level time
+	Uint32 m_level_time;
 
 	/* active overworld
 	 * if not set game mode is custom level

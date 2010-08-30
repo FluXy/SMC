@@ -172,6 +172,9 @@ public:
 	// draw
 	virtual void Draw( cSurface_Request *request = NULL );
 
+	// Set time
+	void Set_Time( Uint32 milliseconds );
+
 	// reset
 	void Reset( void );
 
