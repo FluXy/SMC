@@ -53,8 +53,11 @@ public:
 	std::string m_name;
 	// is visible on selection
 	bool m_visible;
-	// from user directory
-	bool m_user;
+	/* 0 if only in game directory
+	 * 1 if only in user directory
+	 * 2 if in both
+	*/
+	int m_user;
 
 	// world comment
 	std::string m_comment;

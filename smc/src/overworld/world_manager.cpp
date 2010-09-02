@@ -116,13 +116,16 @@ void cOverworld_Manager :: Load_Dir( const std::string &dir, bool user_dir /* = 
 			// only directories with an existing description
 			if( fs::is_directory( *dir_itr ) && File_Exists( dir + "/" + current_dir + "/description.xml" ) )
 			{
+				cOverworld *overworld = Get_from_Path( current_dir );
+
 				// already available
-				if( Get_from_Path( current_dir ) )
+				if( overworld )
 				{
+					overworld->m_description->m_user = 2;
 					continue;
 				}
 
-				cOverworld *overworld = new cOverworld();
+				overworld = new cOverworld();
 
 				// set path
 				overworld->m_description->m_path = current_dir;

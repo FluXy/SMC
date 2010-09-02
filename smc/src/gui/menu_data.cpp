@@ -377,15 +377,21 @@ void cMenu_Start :: Init_GUI( void )
 #endif
 		
 		CEGUI::ListboxTextItem *item = new CEGUI::ListboxTextItem( reinterpret_cast<const CEGUI::utf8*>(world->m_name.c_str()) );
-		// game world
-		if( !world->m_user )
+		// is in game dir
+		if( world->m_user == 0 )
 		{
 			item->setTextColours( CEGUI::colour( 1, 0.8f, 0.6f ) );
 		}
-		// user world
-		else
+		// is in user dir
+		else if( world->m_user == 1 )
 		{
 			item->setTextColours( CEGUI::colour( 0.8f, 1, 0.6f ) );
+		}
+		// is in both
+		else if( world->m_user == 2 )
+		{
+			// mix colors
+			item->setTextColours( CEGUI::colour( 0.8f, 1, 0.6f ), CEGUI::colour( 0.8f, 1, 0.6f ), CEGUI::colour( 1, 0.8f, 0.6f ), CEGUI::colour( 1, 0.8f, 0.6f ) );
 		}
 
 		item->setSelectionColours( CEGUI::colour( 0.33f, 0.33f, 0.33f ) );
