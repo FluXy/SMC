@@ -68,6 +68,245 @@ cSprite *pActive_Player = NULL;
 
 /* *** *** *** *** *** *** *** Functions *** *** *** *** *** *** *** *** *** *** */
 
+void string_replace_all( std::string &str, const std::string &search, const std::string &format )
+{
+	size_t pos = 0;
+
+	while( (pos = str.find(search, pos)) != std::string::npos )
+	{
+		str.replace( pos, search.length(), format );
+		pos += format.length();
+	}
+}
+
+std::string string_trim_from_end( std::string str, const char search )
+{
+	// find last position from end which is not the given character
+	size_t pos = str.find_last_not_of( search );
+
+	// if all match or empty
+	if( pos == std::string::npos )
+	{
+		return std::string();
+	}
+	else
+	{
+		return str.substr( 0, pos + 1 );
+	}
+}
+
+std::string int_to_string( const int number )
+{
+	std::ostringstream os;
+	os << number;
+	return os.str();
+}
+
+std::string int64_to_string( const Uint64 number )
+{
+	std::ostringstream os;
+	os << number;
+	return os.str();
+}
+
+std::string long_to_string( const long number )
+{
+	std::ostringstream os;
+	os << number;
+	return os.str();
+}
+
+// from stringencoders for float_to_string
+/**
+ * Powers of 10
+ * 10^0 to 10^9
+ */
+static const double pow_of_10[] = {1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000};
+
+// from stringencoders for float_to_string
+static void strreverse(char* begin, char* end)
+{
+	char aux;
+	while (end > begin)
+		aux = *end, *end-- = *begin, *begin++ = aux;
+}
+
+// from stringencoders with modifications ( Copyright (C) 2007 Nick Galbreath ) - BSD License
+std::string float_to_string( const float number, int prec /* = 6 */ )
+{
+	double value = number;
+	/* if input is larger than thres_max, revert to native */
+	const double thres_max = static_cast<double>(0x7FFFFFFF);
+
+	double diff = 0.0;
+	char str[64];
+	char* wstr = str;
+
+	if (prec < 0)
+	{
+		prec = 0;
+	}
+	else if (prec > 6)
+	{
+		/* precision of >= 7 for float can lead to overflow errors */
+		prec = 6;
+	}
+
+	/* we'll work in positive values and deal with the
+	   negative sign issue later */
+	int neg = 0;
+	if (value < 0)
+	{
+		neg = 1;
+		value = -value;
+	}
+
+	int whole = static_cast<int>(value);
+	double tmp = (value - whole) * pow_of_10[prec];
+	uint32_t frac = static_cast<uint32_t>(tmp);
+	diff = tmp - frac;
+
+	if(diff > 0.5)
+	{
+		++frac;
+		/* handle rollover, e.g.  case 0.99 with prec 1 is 1.0  */
+		if(frac >= pow_of_10[prec])
+		{
+			frac = 0;
+			++whole;
+		}
+	}
+	else if( diff == 0.5 && ((frac == 0) || (frac & 1)) )
+	{
+		/* if halfway, round up if odd, OR
+		   if last digit is 0.  That last part is strange */
+		++frac;
+	}
+
+	/* for very large numbers switch back to native */
+	/*
+		normal printf behavior is to print EVERY whole number digit
+		which can be 100s of characters overflowing your buffers == bad
+	*/
+	if( value > thres_max )
+	{
+		std::ostringstream temp;
+		temp.setf( std::ios_base::fixed );
+		temp << number;
+
+		return temp.str();
+	}
+
+	if( prec == 0 )
+	{
+		diff = value - whole;
+		if(diff > 0.5)
+		{
+			/* greater than 0.5, round up, e.g. 1.6 -> 2 */
+			++whole;
+		}
+		else if(diff == 0.5 && (whole & 1))
+		{
+			/* exactly 0.5 and ODD, then round up */
+			/* 1.5 -> 2, but 2.5 -> 2 */
+			++whole;
+		}
+	}
+	else
+	{
+		int count = prec;
+		// now do fractional part, as an unsigned number
+		do
+		{
+			--count;
+			*wstr++ = 48 + (frac % 10);
+		}
+		while(frac /= 10);
+		// add extra 0s
+		while(count-- > 0) *wstr++ = '0';
+		// add decimal
+		*wstr++ = '.';
+	}
+
+	// do whole part
+	// Take care of sign
+	// Conversion. Number is reversed.
+	do *wstr++ = 48 + (whole % 10); while (whole /= 10);
+	if(neg)
+	{
+		*wstr++ = '-';
+	}
+
+	*wstr='\0';
+	strreverse(str, wstr-1);
+
+	return str;
+}
+
+// string conversion helper
+template <class T> bool from_string( T &t, const std::string &s, std::ios_base &(*f)(std::ios_base&) )
+{
+	std::istringstream iss( s );
+	return !(iss >> f >> t).fail();
+}
+
+int string_to_int( const std::string &str )
+{
+	int num = 0;
+	// use helper
+	from_string<int>( num, str, std::dec );
+	return num;
+}
+
+Uint64 string_to_int64( const std::string &str )
+{
+	Uint64 num = 0;
+	// use helper
+	from_string<Uint64>( num, str, std::dec );
+	return num;
+}
+
+long string_to_long( const std::string &str )
+{
+	long num = 0;
+	// use helper
+	from_string<long>( num, str, std::dec );
+	return num;
+}
+
+float string_to_float( const std::string &str )
+{
+	float num = 0.0f;
+	// use helper
+	from_string<float>( num, str, std::dec );
+	return num;
+}
+
+double string_to_double( const std::string &str )
+{
+	double num = 0.0;
+	// use helper
+	from_string<double>( num, str, std::dec );
+	return num;
+}
+
+std::string xml_string_to_string( std::string str )
+{
+	while( 1 )
+	{
+		std::string::size_type pos = str.find( "<br/>" );
+
+		if( pos == std::string::npos )
+		{
+			break;
+		}
+
+		str.replace( pos, 5, "\n" );
+	}
+
+	return str;
+}
+
 void Handle_Game_Events( void )
 {
 	// if game action is set
@@ -1261,6 +1500,14 @@ void Preload_Sounds( bool draw_gui /* = 0 */ )
 	}
 }
 
+void Write_Property( CEGUI::XMLSerializer &stream, const CEGUI::String &name, const CEGUI::String &val )
+{
+	stream.openTag( "property" )
+		.attribute( "name", name )
+		.attribute( "value", val )
+		.closeTag();
+}
+
 void Relocate_Image( CEGUI::XMLAttributes &xml_attributes, const std::string &filename_old, const std::string &filename_new, const CEGUI::String &attribute_name /* = "image" */ )
 {
 	if( xml_attributes.getValueAsString( attribute_name ).compare( filename_old ) == 0 || xml_attributes.getValueAsString( attribute_name ).compare( DATA_DIR "/" GAME_PIXMAPS_DIR "/" + filename_old ) == 0 )
@@ -1268,266 +1515,6 @@ void Relocate_Image( CEGUI::XMLAttributes &xml_attributes, const std::string &fi
 		xml_attributes.remove( attribute_name );
 		xml_attributes.add( attribute_name, filename_new );
 	}
-}
-
-void string_replace_all( std::string &str, const std::string &search, const std::string &format )
-{
-	size_t pos = 0;
-
-	while( (pos = str.find(search, pos)) != std::string::npos )
-	{
-		str.replace( pos, search.length(), format );
-		pos += format.length();
-	}
-}
-
-std::string string_trim_from_end( std::string str, const char search )
-{
-	// find last position from end which is not the given character
-	size_t pos = str.find_last_not_of( search );
-
-	// if all match or empty
-	if( pos == std::string::npos )
-	{
-		return std::string();
-	}
-	else
-	{
-		return str.substr( 0, pos + 1 );
-	}
-}
-
-std::string int_to_string( const int number )
-{
-	std::ostringstream temp;
-	temp << number;
-
-	return temp.str();
-}
-
-// from stringencoders for float_to_string
-/**
- * Powers of 10
- * 10^0 to 10^9
- */
-static const double pow_of_10[] = {1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000};
-
-// from stringencoders for float_to_string
-static void strreverse(char* begin, char* end)
-{
-	char aux;
-	while (end > begin)
-		aux = *end, *end-- = *begin, *begin++ = aux;
-}
-
-// from stringencoders with modifications ( Copyright (C) 2007 Nick Galbreath ) - BSD License
-std::string float_to_string( const float number, int prec /* = 6 */ )
-{
-	double value = number;
-	/* if input is larger than thres_max, revert to native */
-	const double thres_max = static_cast<double>(0x7FFFFFFF);
-
-	double diff = 0.0;
-	char str[64];
-	char* wstr = str;
-
-	if (prec < 0)
-	{
-		prec = 0;
-	}
-	else if (prec > 6)
-	{
-		/* precision of >= 7 for float can lead to overflow errors */
-		prec = 6;
-	}
-
-	/* we'll work in positive values and deal with the
-	   negative sign issue later */
-	int neg = 0;
-	if (value < 0)
-	{
-		neg = 1;
-		value = -value;
-	}
-
-	int whole = static_cast<int>(value);
-	double tmp = (value - whole) * pow_of_10[prec];
-	uint32_t frac = static_cast<uint32_t>(tmp);
-	diff = tmp - frac;
-
-	if(diff > 0.5)
-	{
-		++frac;
-		/* handle rollover, e.g.  case 0.99 with prec 1 is 1.0  */
-		if(frac >= pow_of_10[prec])
-		{
-			frac = 0;
-			++whole;
-		}
-	}
-	else if( diff == 0.5 && ((frac == 0) || (frac & 1)) )
-	{
-		/* if halfway, round up if odd, OR
-		   if last digit is 0.  That last part is strange */
-		++frac;
-	}
-
-	/* for very large numbers switch back to native */
-	/*
-		normal printf behavior is to print EVERY whole number digit
-		which can be 100s of characters overflowing your buffers == bad
-	*/
-	if( value > thres_max )
-	{
-		std::ostringstream temp;
-		temp.setf( std::ios_base::fixed );
-		temp << number;
-
-		return temp.str();
-	}
-
-	if( prec == 0 )
-	{
-		diff = value - whole;
-		if(diff > 0.5)
-		{
-			/* greater than 0.5, round up, e.g. 1.6 -> 2 */
-			++whole;
-		}
-		else if(diff == 0.5 && (whole & 1))
-		{
-			/* exactly 0.5 and ODD, then round up */
-			/* 1.5 -> 2, but 2.5 -> 2 */
-			++whole;
-		}
-	}
-	else
-	{
-		int count = prec;
-		// now do fractional part, as an unsigned number
-		do
-		{
-			--count;
-			*wstr++ = 48 + (frac % 10);
-		}
-		while(frac /= 10);
-		// add extra 0s
-		while(count-- > 0) *wstr++ = '0';
-		// add decimal
-		*wstr++ = '.';
-	}
-
-	// do whole part
-	// Take care of sign
-	// Conversion. Number is reversed.
-	do *wstr++ = 48 + (whole % 10); while (whole /= 10);
-	if(neg)
-	{
-		*wstr++ = '-';
-	}
-
-	*wstr='\0';
-	strreverse(str, wstr-1);
-
-	return str;
-}
-
-// string conversion helper
-template <class T> bool from_string( T &t, const std::string &s, std::ios_base &(*f)(std::ios_base&) )
-{
-	std::istringstream iss( s );
-	return !(iss >> f >> t).fail();
-}
-
-int string_to_int( const std::string &str )
-{
-	int num = 0;
-	// use helper
-	from_string<int>( num, str, std::dec );
-	return num;
-}
-
-long string_to_long( const std::string &str )
-{
-	long num = 0;
-	// use helper
-	from_string<long>( num, str, std::dec );
-	return num;
-}
-
-float string_to_float( const std::string &str )
-{
-	float num = 0.0f;
-	// use helper
-	from_string<float>( num, str, std::dec );
-	return num;
-}
-
-double string_to_double( const std::string &str )
-{
-	double num = 0.0;
-	// use helper
-	from_string<double>( num, str, std::dec );
-	return num;
-}
-
-std::string string_to_xml_string( const std::string &str )
-{
-	std::string res;
-	res.reserve( str.size() * 2 );
-
-	const std::string::const_iterator iterEnd = str.end();
-	for( std::string::const_iterator iter = str.begin(); iter != iterEnd ; ++iter )
-	{
-		switch( *iter )
-		{
-			case '<':
-				res += "&lt;";
-				break;
-
-			case '>':
-				res += "&gt;";
-				break;
-
-			case '&':
-				res += "&amp;";
-				break;
-
-			case '\'':
-				res += "&apos;";
-				break;
-
-			case '"':
-				res += "&quot;";
-				break;
-
-			case '\n':
-				res += "&lt;br/&gt;";
-				break;
-
-			default:
-				res += *iter;
-		}
-	}
-
-	return res;
-}
-
-std::string xml_string_to_string( std::string str )
-{
-	while( 1 )
-	{
-		std::string::size_type pos = str.find( "<br/>" );
-
-		if( pos == std::string::npos )
-		{
-			break;
-		}
-
-		str.replace( pos, 5, "\n" );
-	}
-
-	return str;
 }
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */

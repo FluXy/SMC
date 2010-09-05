@@ -69,13 +69,13 @@ private:
 	// handle world description
 	void handle_world( const CEGUI::XMLAttributes& attributes );
 
-	// XML element Property list
+	// XML element property list
 	CEGUI::XMLAttributes m_xml_attributes;
 };
 
 /* *** *** *** *** *** *** *** *** cOverworld *** *** *** *** *** *** *** *** *** */
 
-// pre declare
+// forward declare
 class cAnimation_Manager;
 
 typedef vector<cWaypoint *> WaypointList;
@@ -215,7 +215,7 @@ private:
 	// XML element end
 	virtual void elementEnd( const CEGUI::String &element );
  
-	// XML element Property list
+	// XML element property list
 	CEGUI::XMLAttributes m_xml_attributes;
 };
 
@@ -224,7 +224,7 @@ private:
  * sprite_manager : needed if the engine version is below the current version and data conversion creates multiple objects
  * overworld : the parent overworld
 */
-cSprite *Get_World_Object( const CEGUI::String &element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager, cOverworld *overworld );
+cSprite *Create_World_Object_From_XML( const CEGUI::String &element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager, cOverworld *overworld );
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 

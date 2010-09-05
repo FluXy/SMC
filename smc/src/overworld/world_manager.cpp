@@ -252,37 +252,40 @@ int cOverworld_Manager :: Get_Array_Num( const std::string &path ) const
 	return -1;
 }
 
-// XML element start
 void cOverworld_Manager :: elementStart( const CEGUI::String &element, const CEGUI::XMLAttributes &attributes )
 {
-	// Property of an Element
-	if( element == "Property" )
+	if( element == "property" )
+	{
+		m_xml_attributes.add( attributes.getValueAsString( "name" ), attributes.getValueAsString( "value" ) );
+	}
+	else if( element == "Property" )
 	{
 		m_xml_attributes.add( attributes.getValueAsString( "Name" ), attributes.getValueAsString( "Value" ) );
 	}
 }
 
-// XML element end
 void cOverworld_Manager :: elementEnd( const CEGUI::String &element )
 {
-	if( element != "Property" )
+	if( element == "property" || element == "Property" )
 	{
-		if( element == "World" )
-		{
-			handle_world( m_xml_attributes );
-		}
-		else if( element == "Worlds" )
-		{
-			// ignore
-		}
-		else if( element.length() )
-		{
-			printf( "Warning : Overworld Description Unknown element : %s\n", element.c_str() );
-		}
-
-		// clear
-		m_xml_attributes = CEGUI::XMLAttributes();
+		return;
 	}
+
+	if( element == "World" )
+	{
+		handle_world( m_xml_attributes );
+	}
+	else if( element == "Worlds" )
+	{
+		// ignore
+	}
+	else if( element.length() )
+	{
+		printf( "Warning : Overworld Description Unknown element : %s\n", element.c_str() );
+	}
+
+	// clear
+	m_xml_attributes = CEGUI::XMLAttributes();
 }
 
 void cOverworld_Manager :: handle_world( const CEGUI::XMLAttributes &attributes )

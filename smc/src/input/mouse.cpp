@@ -1712,13 +1712,13 @@ void cMouseCursor :: Editor_Update( void )
 		return;
 	}
 
-	// mouse object type string
-	std::string type_name;
+	// mouse object object name to display
+	std::string display_name;
 
 	// set object data
 	if( col->m_obj )
 	{
-		type_name = col->m_obj->m_name;
+		display_name = col->m_obj->m_name;
 
 		if( ( !m_left || !m_hovering_object->m_obj ) && !( pKeyboard->Is_Shift_Down() && !pKeyboard->Is_Ctrl_Down() ) )
 		{
@@ -1731,11 +1731,11 @@ void cMouseCursor :: Editor_Update( void )
 	{
 		if( col->m_obj->m_massive_type == MASS_HALFMASSIVE )
 		{
-			type_name.insert( 0, _("Halfmassive - ") );
+			display_name.insert( 0, _("Halfmassive - ") );
 		}
 		else
 		{
-			type_name.insert( 0, _("Massive - ") );
+			display_name.insert( 0, _("Massive - ") );
 		}
 	}
 	else if( col->m_array == ARRAY_PASSIVE )
@@ -1746,22 +1746,22 @@ void cMouseCursor :: Editor_Update( void )
 		}
 		else if( col->m_obj->m_type == TYPE_FRONT_PASSIVE )
 		{
-			type_name.insert( 0, _("Front Passive - ") );
+			display_name.insert( 0, _("Front Passive - ") );
 		}
 		else
 		{
-			type_name.insert( 0, _("Passive - ") );
+			display_name.insert( 0, _("Passive - ") );
 		}
 	}
 	else if( col->m_array == ARRAY_ACTIVE )
 	{
 		if( col->m_obj->m_type == TYPE_HALFMASSIVE )
 		{
-			type_name.insert( 0, _("Halfmassive - ") );
+			display_name.insert( 0, _("Halfmassive - ") );
 		}
 		else if( col->m_obj->m_type == TYPE_CLIMBABLE )
 		{
-			type_name.insert( 0, _("Climbable - ") );
+			display_name.insert( 0, _("Climbable - ") );
 		}
 	}
 
@@ -1830,7 +1830,7 @@ void cMouseCursor :: Editor_Update( void )
 
 	if( pHud_Debug->m_counter <= 0.0f )
 	{
-		pHud_Debug->Set_Text( type_name, 1 );
+		pHud_Debug->Set_Text( display_name, 1 );
 	}
 
 	delete col;

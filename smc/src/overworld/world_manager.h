@@ -87,7 +87,7 @@ private:
 	// handles a world
 	void handle_world( const CEGUI::XMLAttributes &attributes );
 
-	// XML element Property list
+	// XML element property list
 	CEGUI::XMLAttributes m_xml_attributes;
 };
 

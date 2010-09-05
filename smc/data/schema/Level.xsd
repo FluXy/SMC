@@ -1,10 +1,11 @@
 <?xml version="1.0" ?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
-	<xsd:element name="level" type="LevelType" />
+	<xsd:element name="level" type="LevelType"/>
 	
 	<xsd:complexType name="LevelType">
 		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<!-- Must be in synch with the Savegame.xsd Level_Spawned_ObjectsType -->
 			<xsd:element name="information" type="PropertyType" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="settings" type="PropertyType" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="background" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
@@ -14,7 +15,6 @@
 			<xsd:element name="sound" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="particle_emitter" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="path" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
-			
 			<xsd:element name="sprite" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="powerup" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="item" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
@@ -25,13 +25,16 @@
 			<xsd:element name="box" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="moving_platform" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="falling_platform" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="ball" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:choice>
 	</xsd:complexType>
 
 	<xsd:complexType name="PropertyType">
-		<xsd:sequence>
-			<xsd:element name="Property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded" />
-		</xsd:sequence>
+		<xsd:choice>
+			<xsd:element name="Property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- small case is used since engine version 40 -->
+			<xsd:element name="property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:choice>
 	</xsd:complexType>
 
 	<xsd:complexType name="PropertyBaseType">

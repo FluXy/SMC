@@ -490,7 +490,7 @@ void cMenu_Start :: Get_Levels( std::string dir, CEGUI::colour color )
 	// get directory length for erasing
 	int dir_length = dir.length() + 1;
 	// get all files
-	vector<std::string> lvl_files = Get_Directory_Files( dir, "", 0, 0 );
+	vector<std::string> lvl_files = Get_Directory_Files( dir, "smclvl", 0, 0 );
 
 	// list all available levels
 	for( vector<std::string>::iterator itr = lvl_files.begin(); itr != lvl_files.end(); ++itr )
@@ -508,17 +508,7 @@ void cMenu_Start :: Get_Levels( std::string dir, CEGUI::colour color )
 
 		// create listbox item
 		CEGUI::ListboxTextItem *item = new CEGUI::ListboxTextItem( reinterpret_cast<const CEGUI::utf8*>(lvl_name.c_str()) );
-
-		// if smclvl
-		if( lvl_name.rfind( ".txt" ) == std::string::npos )
-		{
-			item->setTextColours( color );
-		}
-		// grey out old txt levels
-		else
-		{
-			item->setTextColours( CEGUI::colour( 0.6f, 0.6f, 0.6f ) );
-		}
+		item->setTextColours( color );
 
 		// check if item with the same name already exists
 		CEGUI::ListboxTextItem *item_old = static_cast<CEGUI::ListboxTextItem *>(listbox_levels->findItemWithText( lvl_name, NULL ));

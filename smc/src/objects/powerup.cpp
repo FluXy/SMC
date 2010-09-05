@@ -30,7 +30,7 @@ namespace SMC
 /* *** *** *** *** *** *** cPowerUp *** *** *** *** *** *** *** *** *** *** *** */
 
 cPowerUp :: cPowerUp( cSprite_Manager *sprite_manager )
-: cAnimated_Sprite( sprite_manager )
+: cAnimated_Sprite( sprite_manager, "item" )
 {
 	m_sprite_array = ARRAY_ACTIVE;
 	m_massive_type = MASS_PASSIVE;
@@ -48,19 +48,45 @@ cPowerUp :: ~cPowerUp( void )
 
 void cPowerUp :: Load_From_Savegame( cSave_Level_Object *save_object )
 {
+	// new position x
+	if( save_object->exists( "new_posx" ) )
+	{
+		Set_Pos_X( string_to_float( save_object->Get_Value( "new_posx" ) ) );
+	}
+
+	// new position y
+	if( save_object->exists( "new_posy" ) )
+	{
+		Set_Pos_Y( string_to_float( save_object->Get_Value( "new_posy" ) ) );
+	}
+
+	// direction
+	if( save_object->exists( "direction" ) )
+	{
+		m_direction = static_cast<ObjectDirection>(string_to_int( save_object->Get_Value( "direction" ) ));
+	}
+
+	// velocity x
+	if( save_object->exists( "velx" ) )
+	{
+		m_velx = string_to_float( save_object->Get_Value( "velx" ) );
+	}
+
+	// velocity y
+	if( save_object->exists( "vely" ) )
+	{
+		m_vely = string_to_float( save_object->Get_Value( "vely" ) );
+	}
+
 	// active
-	bool save_visible = string_to_int( save_object->Get_Value( "active" ) ) > 0;
-	Set_Active( save_visible );
+	if( save_object->exists( "active" ) )
+	{
+		Set_Active( string_to_int( save_object->Get_Value( "active" ) ) > 0 );
+	}
 }
 
 cSave_Level_Object *cPowerUp :: Save_To_Savegame( void )
 {
-	// only save if needed
-	if( m_active )
-	{
-		return NULL;
-	}
-
 	cSave_Level_Object *save_object = new cSave_Level_Object();
 
 	// default values
@@ -68,8 +94,25 @@ cSave_Level_Object *cPowerUp :: Save_To_Savegame( void )
 	save_object->m_properties.push_back( cSave_Level_Object_Property( "posx", int_to_string( static_cast<int>(m_start_pos_x) ) ) );
 	save_object->m_properties.push_back( cSave_Level_Object_Property( "posy", int_to_string( static_cast<int>(m_start_pos_y) ) ) );
 
-	// visible
-	save_object->m_properties.push_back( cSave_Level_Object_Property( "active", int_to_string( m_active ) ) );
+	// new position ( only save if needed )
+	if( !Is_Float_Equal( m_start_pos_x, m_pos_x ) || !Is_Float_Equal( m_start_pos_y, m_pos_y ) )
+	{
+		save_object->m_properties.push_back( cSave_Level_Object_Property( "new_posx", int_to_string( static_cast<int>(m_pos_x) ) ) );
+		save_object->m_properties.push_back( cSave_Level_Object_Property( "new_posy", int_to_string( static_cast<int>(m_pos_y) ) ) );
+	}
+
+	// direction
+	save_object->m_properties.push_back( cSave_Level_Object_Property( "direction", int_to_string( m_direction ) ) );
+
+	// velocity
+	save_object->m_properties.push_back( cSave_Level_Object_Property( "velx", float_to_string( m_velx ) ) );
+	save_object->m_properties.push_back( cSave_Level_Object_Property( "vely", float_to_string( m_vely ) ) );
+
+	// active
+	if( !m_active )
+	{
+		save_object->m_properties.push_back( cSave_Level_Object_Property( "active", int_to_string( m_active ) ) );
+	}
 
 	return save_object;
 }
@@ -211,21 +254,21 @@ void cMushroom :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Type( static_cast<SpriteType>(attributes.getValueAsInteger( "mushroom_type", TYPE_MUSHROOM_DEFAULT )) );
 }
 
-void cMushroom :: Save_To_Stream( ofstream &file )
+void cMushroom :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin item
-	file << "\t<item>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// type
-	file << "\t\t<Property name=\"type\" value=\"mushroom\" />" << std::endl;
+	Write_Property( stream, "type", "mushroom" );
 	// mushroom type
-	file << "\t\t<Property name=\"mushroom_type\" value=\"" << m_type << "\" />" << std::endl;
+	Write_Property( stream, "mushroom_type", m_type );
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 
-	// end item
-	file << "\t</item>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cMushroom :: Set_Type( SpriteType new_type )
@@ -527,19 +570,19 @@ void cFirePlant :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );
 }
 
-void cFirePlant :: Save_To_Stream( ofstream &file )
+void cFirePlant :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin item
-	file << "\t<item>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// type
-	file << "\t\t<Property name=\"type\" value=\"fireplant\" />" << std::endl;
+	Write_Property( stream, "type", "fireplant" );
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 
-	// end item
-	file << "\t</item>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cFirePlant :: Activate( void )
@@ -686,19 +729,19 @@ void cMoon :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )) );
 }
 
-void cMoon :: Save_To_Stream( ofstream &file )
+void cMoon :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin item
-	file << "\t<item>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// type
-	file << "\t\t<Property name=\"type\" value=\"moon\" />" << std::endl;
+	Write_Property( stream, "type", "moon" );
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 
-	// end item
-	file << "\t</item>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cMoon :: Activate( void )

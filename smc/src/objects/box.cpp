@@ -37,7 +37,7 @@ namespace SMC
 /* *** *** *** *** *** *** *** *** cBaseBox *** *** *** *** *** *** *** *** *** */
 
 cBaseBox :: cBaseBox( cSprite_Manager *sprite_manager )
-: cAnimated_Sprite( sprite_manager )
+: cAnimated_Sprite( sprite_manager, "box" )
 {
 	m_type = TYPE_ACTIVE_SPRITE;
 	m_sprite_array = ARRAY_ACTIVE;
@@ -81,32 +81,32 @@ void cBaseBox :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Useable_Count( attributes.getValueAsInteger( "useable_count", m_start_useable_count ), 1 );
 }
 
-void cBaseBox :: Save_To_Stream( ofstream &file )
+void cBaseBox :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 	// type
 	if( box_type == TYPE_SPIN_BOX )
 	{
-		file << "\t\t<Property name=\"type\" value=\"spin\" />" << std::endl;
+		Write_Property( stream, "type", "spin" );
 	}
 	else if( box_type == TYPE_TEXT_BOX )
 	{
-		file << "\t\t<Property name=\"type\" value=\"text\" />" << std::endl;
+		Write_Property( stream, "type", "text" );
 	}
 	else
 	{
-		file << "\t\t<Property name=\"type\" value=\"bonus\" />" << std::endl;
+		Write_Property( stream, "type", "bonus" );
 		// animation type
-		file << "\t\t<Property name=\"animation\" value=\"" << m_anim_type << "\" />" << std::endl;
+		Write_Property( stream, "animation", m_anim_type );
 		// best possible item
-		file << "\t\t<Property name=\"item\" value=\"" << box_type << "\" />" << std::endl;
+		Write_Property( stream, "item", box_type );
 	}
 	// invisible
-	file << "\t\t<Property name=\"invisible\" value=\"" << m_box_invisible << "\" />" << std::endl;
+	Write_Property( stream, "invisible", m_box_invisible );
 	// useable count
-	file << "\t\t<Property name=\"useable_count\" value=\"" << m_start_useable_count << "\" />" << std::endl;
+	Write_Property( stream, "useable_count", m_start_useable_count );
 }
 
 void cBaseBox :: Load_From_Savegame( cSave_Level_Object *save_object )

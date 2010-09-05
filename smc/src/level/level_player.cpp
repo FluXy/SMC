@@ -3570,6 +3570,7 @@ void cLevel_Player :: Action_Shoot( void )
 	// if added ball
 	if( Ball_Add( ball_type, -1, ball_amount ) )
 	{
+		m_shoot_counter = speedfactor_fps;
 		m_throwing_counter = speedfactor_fps * 0.3f;
 	}
 }
@@ -3690,7 +3691,10 @@ bool cLevel_Player :: Ball_Add( ball_effect effect_type /* = FIREBALL_DEFAULT */
 		for( unsigned int i = 0; i < amount; i++ )
 		{
 			// add ball
-			cBall *ball = new cBall( m_sprite_manager, ball_posx, m_rect.m_y + (m_rect.m_h * 0.7f) - 20, this, effect_type );
+			cBall *ball = new cBall( m_sprite_manager );
+			ball->Set_Pos( ball_posx, m_rect.m_y + (m_rect.m_h * 0.7f) - 20, 1 );
+			ball->Set_Origin( m_sprite_array, m_type );
+			ball->Set_Ball_Type( effect_type );
 			m_sprite_manager->Add( ball );
 
 			// set speed
@@ -3731,7 +3735,10 @@ bool cLevel_Player :: Ball_Add( ball_effect effect_type /* = FIREBALL_DEFAULT */
 			ball_angle += 180.0f / amount;
 
 			// add ball
-			cBall *ball = new cBall( m_sprite_manager, m_pos_x + m_col_rect.m_w / 2, m_pos_y + m_col_rect.m_h / 2, this, effect_type );
+			cBall *ball = new cBall( m_sprite_manager );
+			ball->Set_Pos( m_pos_x + m_col_rect.m_w / 2, m_pos_y + m_col_rect.m_h / 2, 1 );
+			ball->Set_Origin( m_sprite_array, m_type );
+			ball->Set_Ball_Type( effect_type );
 			ball->Set_Velocity_From_Angle( ball_angle, 15 );
 			if( ball->m_velx > 0.0f )
 			{

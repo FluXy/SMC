@@ -63,8 +63,9 @@ public:
 	cSprite *Get_Last( const SpriteType type ) const;
 	/* Return the matching object from the given startposition
 	 * type : if not set to zero only returns the object with the given type
+	 * check_pos : also check the normal position
 	*/
-	cSprite *Get_from_Position( int start_pos_x, int start_pos_y, const SpriteType type = TYPE_UNDEFINED ) const;
+	cSprite *Get_from_Position( int start_pos_x, int start_pos_y, const SpriteType type = TYPE_UNDEFINED, bool check_pos = 0 ) const;
 
 	/* Get a sorted Objects Array
 	 * editor_sort : if set sorts from editor z pos

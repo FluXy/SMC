@@ -133,6 +133,20 @@ public:
 	// Return true if a level is loaded
 	bool Is_Loaded( void ) const;
 
+	static bool Is_Level_Object_Element( const CEGUI::String &element )
+	{
+		if( element == "information" || element == "settings" || element == "background" || element == "music" ||
+			element == "global_effect" || element == "player" || element == "sound" || element == "particle_emitter" ||
+			element == "path" || element == "sprite" || element == "powerup" || element == "item" || element == "enemy" ||
+			element == "levelexit" || element == "level_entry" || element == "enemystopper" || element == "box" ||
+			element == "moving_platform" || element == "falling_platform" || element == "ball" )
+		{
+			return 1;
+		}
+
+		return 0;
+	};
+
 	// level filename
 	std::string m_level_filename;
 	// if a new level should be loaded this is the next level filename
@@ -191,7 +205,7 @@ private:
  * engine_version : engine version of the data and if it's below the current version it converts it
  * sprite_manager : needed if the engine version is below the current version and data conversion creates multiple objects
 */
-cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager );
+cSprite *Create_Level_Object_From_XML( const CEGUI::String &xml_element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager );
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 

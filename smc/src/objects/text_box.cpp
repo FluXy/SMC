@@ -84,18 +84,18 @@ void cText_Box :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Text( xml_string_to_string( attributes.getValueAsString( "text" ).c_str() ) );
 }
 
-void cText_Box :: Save_To_Stream( ofstream &file )
+void cText_Box :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin box
-	file << "\t<box>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
-	cBaseBox::Save_To_Stream( file );
+	cBaseBox::Save_To_XML( stream );
 
 	// text
-	file << "\t\t<Property name=\"text\" value=\"" << string_to_xml_string( m_text ) << "\" />" << std::endl;
+	Write_Property( stream, "text", m_text );
 
-	// end box
-	file << "\t</box>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cText_Box :: Activate( void )

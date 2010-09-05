@@ -53,7 +53,7 @@ public:
 	// create from stream
 	void Create_From_Stream( CEGUI::XMLAttributes &attributes );
 	// save to stream
-	void Save_To_Stream( ofstream &file );
+	void Save_To_XML( CEGUI::XMLSerializer &stream );
 
 	// Set the parent sprite manager
 	void Set_Sprite_Manager( cSprite_Manager *sprite_manager );

@@ -27,7 +27,7 @@ namespace SMC
 /* *** *** *** *** *** *** cEnemy *** *** *** *** *** *** *** *** *** *** *** */
 
 cEnemy :: cEnemy( cSprite_Manager *sprite_manager )
-: cAnimated_Sprite( sprite_manager )
+: cAnimated_Sprite( sprite_manager, "enemy" )
 {
 	m_sprite_array = ARRAY_ENEMY;
 	m_type = TYPE_ENEMY;
@@ -57,12 +57,6 @@ cEnemy :: ~cEnemy( void )
 
 void cEnemy :: Load_From_Savegame( cSave_Level_Object *save_object )
 {
-	// direction
-	if( save_object->exists( "direction" ) )
-	{
-		m_direction = static_cast<ObjectDirection>(string_to_int( save_object->Get_Value( "direction" ) ));
-	}
-
 	// state
 	if( save_object->exists( "state" ) )
 	{
@@ -79,6 +73,12 @@ void cEnemy :: Load_From_Savegame( cSave_Level_Object *save_object )
 	if( save_object->exists( "new_posy" ) )
 	{
 		Set_Pos_Y( string_to_float( save_object->Get_Value( "new_posy" ) ) );
+	}
+
+	// direction
+	if( save_object->exists( "direction" ) )
+	{
+		m_direction = static_cast<ObjectDirection>(string_to_int( save_object->Get_Value( "direction" ) ));
 	}
 
 	// velocity x
@@ -115,18 +115,20 @@ cSave_Level_Object *cEnemy :: Save_To_Savegame( void )
 	save_object->m_properties.push_back( cSave_Level_Object_Property( "posx", int_to_string( static_cast<int>(m_start_pos_x) ) ) );
 	save_object->m_properties.push_back( cSave_Level_Object_Property( "posy", int_to_string( static_cast<int>(m_start_pos_y) ) ) );
 
-	// direction
-	save_object->m_properties.push_back( cSave_Level_Object_Property( "direction", int_to_string( m_direction ) ) );
+
 
 	// state
 	save_object->m_properties.push_back( cSave_Level_Object_Property( "state", int_to_string( m_state ) ) );
 
 	// new position ( only save if needed )
-	if( m_start_pos_x != m_pos_x || m_start_pos_y != m_pos_y )
+	if( !Is_Float_Equal( m_start_pos_x, m_pos_x ) || !Is_Float_Equal( m_start_pos_y, m_pos_y ) )
 	{
 		save_object->m_properties.push_back( cSave_Level_Object_Property( "new_posx", int_to_string( static_cast<int>(m_pos_x) ) ) );
 		save_object->m_properties.push_back( cSave_Level_Object_Property( "new_posy", int_to_string( static_cast<int>(m_pos_y) ) ) );
 	}
+
+	// direction
+	save_object->m_properties.push_back( cSave_Level_Object_Property( "direction", int_to_string( m_direction ) ) );
 
 	// velocity
 	save_object->m_properties.push_back( cSave_Level_Object_Property( "velx", float_to_string( m_velx ) ) );

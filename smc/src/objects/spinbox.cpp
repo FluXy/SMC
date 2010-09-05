@@ -75,15 +75,15 @@ void cSpinBox :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	cBaseBox::Create_From_Stream( attributes );
 }
 
-void cSpinBox :: Save_To_Stream( ofstream &file )
+void cSpinBox :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin box
-	file << "\t<box>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
-	cBaseBox::Save_To_Stream( file );
+	cBaseBox::Save_To_XML( stream );
 
-	// end box
-	file << "\t</box>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cSpinBox :: Activate( void )

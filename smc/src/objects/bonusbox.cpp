@@ -98,23 +98,23 @@ void cBonusBox :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	}
 }
 
-void cBonusBox :: Save_To_Stream( ofstream &file )
+void cBonusBox :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin box
-	file << "\t<box>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
-	cBaseBox::Save_To_Stream( file );
+	cBaseBox::Save_To_XML( stream );
 
 	// force best possible item
-	file << "\t\t<Property name=\"force_best_item\" value=\"" << m_force_best_item << "\" />" << std::endl;
+	Write_Property( stream, "force_best_item", m_force_best_item );
 	// gold color
 	if( box_type == TYPE_GOLDPIECE )
 	{
-		file << "\t\t<Property name=\"gold_color\" value=\"" << Get_Color_Name( m_gold_color ) << "\" />" << std::endl;
+		Write_Property( stream, "gold_color", Get_Color_Name( m_gold_color ) );
 	}
 
-	// end box
-	file << "\t</box>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cBonusBox :: Set_Useable_Count( int count, bool new_startcount /* = 0 */ )

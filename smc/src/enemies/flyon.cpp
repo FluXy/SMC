@@ -100,27 +100,27 @@ void cFlyon :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Speed( attributes.getValueAsFloat( "speed", m_speed ) );
 }
 
-void cFlyon :: Save_To_Stream( ofstream &file )
+void cFlyon :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin enemy
-	file << "\t<enemy>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// name
-	file << "\t\t<Property name=\"type\" value=\"flyon\" />" << std::endl;
+	Write_Property( stream, "type", "flyon" );
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 	// direction
-	file << "\t\t<Property name=\"direction\" value=\"" << Get_Direction_Name( m_start_direction ) << "\" />" << std::endl;
+	Write_Property( stream, "direction", Get_Direction_Name( m_start_direction ) );
 	// image directory
-	file << "\t\t<Property name=\"image_dir\" value=\"" << m_img_dir << "\" />" << std::endl;
+	Write_Property( stream, "image_dir", m_img_dir );
 	// max distance
-	file << "\t\t<Property name=\"max_distance\" value=\"" << static_cast<int>(m_max_distance) << "\" />" << std::endl;
+	Write_Property( stream, "max_distance", static_cast<int>(m_max_distance) );
 	// speed
-	file << "\t\t<Property name=\"speed\" value=\"" << m_speed << "\" />" << std::endl;
+	Write_Property( stream, "speed", m_speed );
 
-	// end enemy
-	file << "\t</enemy>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cFlyon :: Load_From_Savegame( cSave_Level_Object *save_object )

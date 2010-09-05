@@ -33,13 +33,13 @@ namespace SMC
 /* *** *** *** *** *** *** *** cMoving_Platform *** *** *** *** *** *** *** *** *** *** */
 
 cMoving_Platform :: cMoving_Platform( cSprite_Manager *sprite_manager )
-: cAnimated_Sprite( sprite_manager ), m_path_state( sprite_manager )
+: cAnimated_Sprite( sprite_manager, "moving_platform" ), m_path_state( sprite_manager )
 {
 	cMoving_Platform::Init();
 }
 
 cMoving_Platform :: cMoving_Platform( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manager )
-: cAnimated_Sprite( sprite_manager ), m_path_state( sprite_manager )
+: cAnimated_Sprite( sprite_manager, "moving_platform" ), m_path_state( sprite_manager )
 {
 	cMoving_Platform::Init();
 	cMoving_Platform::Create_From_Stream( attributes );
@@ -159,54 +159,54 @@ void cMoving_Platform :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Image_Top_Right( pVideo->Get_Surface( attributes.getValueAsString( "image_top_right", m_images[2].m_image->Get_Filename() ).c_str() ) );
 }
 
-void cMoving_Platform :: Save_To_Stream( ofstream &file )
+void cMoving_Platform :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin moving platform
-	file << "\t<moving_platform>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 	// move type
-	file << "\t\t<Property name=\"move_type\" value=\"" << m_move_type << "\" />" << std::endl;
+	Write_Property( stream, "move_type", m_move_type );
 	// massive type
-	file << "\t\t<Property name=\"massive_type\" value=\"" << Get_Massive_Type_Name( m_massive_type ) << "\" />" << std::endl;
+	Write_Property( stream, "massive_type", Get_Massive_Type_Name( m_massive_type ) );
 
 	// path identifier
 	if( m_move_type == MOVING_PLATFORM_TYPE_PATH || m_move_type == MOVING_PLATFORM_TYPE_PATH_BACKWARDS )
 	{
 		if( !m_path_state.m_path_identifier.empty() )
 		{
-			file << "\t\t<Property name=\"path_identifier\" value=\"" << string_to_xml_string( m_path_state.m_path_identifier ) << "\" />" << std::endl;
+			Write_Property( stream, "path_identifier", m_path_state.m_path_identifier );
 		}
 	}
 	// if move type is line or circle
 	if( m_move_type == MOVING_PLATFORM_TYPE_LINE || m_move_type == MOVING_PLATFORM_TYPE_CIRCLE )
 	{
 		// direction
-		file << "\t\t<Property name=\"direction\" value=\"" << Get_Direction_Name( m_start_direction ) << "\" />" << std::endl;
+		Write_Property( stream, "direction", Get_Direction_Name( m_start_direction ) );
 		// max distance
-		file << "\t\t<Property name=\"max_distance\" value=\"" << m_max_distance << "\" />" << std::endl;
+		Write_Property( stream, "max_distance", m_max_distance );
 	}
 	// speed
-	file << "\t\t<Property name=\"speed\" value=\"" << m_speed << "\" />" << std::endl;
+	Write_Property( stream, "speed", m_speed );
 	// touch time
-	file << "\t\t<Property name=\"touch_time\" value=\"" << m_touch_time << "\" />" << std::endl;
+	Write_Property( stream, "touch_time", m_touch_time );
 	// shake time
-	file << "\t\t<Property name=\"shake_time\" value=\"" << m_shake_time << "\" />" << std::endl;
+	Write_Property( stream, "shake_time", m_shake_time );
 	// touch move time
-	file << "\t\t<Property name=\"touch_move_time\" value=\"" << m_touch_move_time << "\" />" << std::endl;
+	Write_Property( stream, "touch_move_time", m_touch_move_time );
 	// middle image count
-	file << "\t\t<Property name=\"middle_img_count\" value=\"" << m_middle_count << "\" />" << std::endl;
+	Write_Property( stream, "middle_img_count", m_middle_count );
 	// image top left
-	file << "\t\t<Property name=\"image_top_left\" value=\"" << m_images[0].m_image->Get_Filename( 1 ) << "\" />" << std::endl;
+	Write_Property( stream, "image_top_left", m_images[0].m_image->Get_Filename( 1 ) );
 	// image top middle
-	file << "\t\t<Property name=\"image_top_middle\" value=\"" << m_images[1].m_image->Get_Filename( 1 ) << "\" />" << std::endl;
+	Write_Property( stream, "image_top_middle", m_images[1].m_image->Get_Filename( 1 ) );
 	// image top right
-	file << "\t\t<Property name=\"image_top_right\" value=\"" << m_images[2].m_image->Get_Filename( 1 ) << "\" />" << std::endl;
+	Write_Property( stream, "image_top_right", m_images[2].m_image->Get_Filename( 1 ) );
 
-	// end moving_platform
-	file << "\t</moving_platform>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cMoving_Platform :: Set_Sprite_Manager( cSprite_Manager *sprite_manager )

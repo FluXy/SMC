@@ -44,7 +44,7 @@ public:
 	// create from stream
 	virtual void Create_From_Stream( CEGUI::XMLAttributes &attributes );
 	// save to stream
-	virtual void Save_To_Stream( ofstream &file );
+	virtual void Save_To_XML( CEGUI::XMLSerializer &stream );
 
 	// sets the count this object can be activated
 	virtual void Set_Useable_Count( int count, bool new_startcount = 0 );

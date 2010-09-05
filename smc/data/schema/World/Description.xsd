@@ -2,21 +2,29 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
 	<xsd:element name="Description" type="DescriptionType" />
+	<xsd:element name="description" type="DescriptionType" />
 	
 	<xsd:complexType name="DescriptionType">
-		<xsd:sequence>
-			<xsd:element name="World" type="PropertyType" maxOccurs="unbounded"/>
-		</xsd:sequence>
+		<xsd:choice>
+			<xsd:element name="World" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- small case is used since V.2.0 -->
+			<xsd:element name="world" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:choice>
 	</xsd:complexType>
 
 	<xsd:complexType name="PropertyType">
-		<xsd:sequence>
-			<xsd:element name="Property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded" />
-		</xsd:sequence>
+		<xsd:choice>
+			<xsd:element name="Property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- small case is used since V.2.0 -->
+			<xsd:element name="property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:choice>
 	</xsd:complexType>
 
 	<xsd:complexType name="PropertyBaseType">
-		<xsd:attribute name="Name" type="xsd:string" use="required"/>
-		<xsd:attribute name="Value" type="xsd:string" use="required"/>
+		<xsd:attribute name="Name" type="xsd:string"/>
+		<xsd:attribute name="Value" type="xsd:string"/>
+		<!-- small case is used since V.2.0 -->
+		<xsd:attribute name="name" type="xsd:string"/>
+		<xsd:attribute name="value" type="xsd:string"/>
 	</xsd:complexType>
 </xsd:schema>

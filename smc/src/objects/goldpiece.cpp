@@ -30,13 +30,13 @@ namespace SMC
 /* *** *** *** *** *** *** cGoldpiece *** *** *** *** *** *** *** *** *** *** *** */
 
 cGoldpiece :: cGoldpiece( cSprite_Manager *sprite_manager )
-: cAnimated_Sprite( sprite_manager )
+: cAnimated_Sprite( sprite_manager, "item" )
 {
 	cGoldpiece::Init();
 }
 
 cGoldpiece :: cGoldpiece( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manager )
-: cAnimated_Sprite( sprite_manager )
+: cAnimated_Sprite( sprite_manager, "item" )
 {
 	cGoldpiece::Init();
 	cGoldpiece::Create_From_Stream( attributes );
@@ -74,25 +74,37 @@ void cGoldpiece :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Gold_Color( Get_Color_Id( attributes.getValueAsString( "color", Get_Color_Name( m_color_type ) ).c_str() ) );
 }
 
-void cGoldpiece :: Save_To_Stream( ofstream &file )
+void cGoldpiece :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin item
-	file << "\t<item>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// type
-	file << "\t\t<Property name=\"type\" value=\"goldpiece\" />" << std::endl;
+	Write_Property( stream, "type", "goldpiece" );
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 	// color
-	file << "\t\t<Property name=\"color\" value=\"" << Get_Color_Name( m_color_type ) << "\" />" << std::endl;
+	Write_Property( stream, "color", Get_Color_Name( m_color_type ) );
 
-	// end item
-	file << "\t</item>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cGoldpiece :: Load_From_Savegame( cSave_Level_Object *save_object )
 {
+	// new position x
+	if( save_object->exists( "new_posx" ) )
+	{
+		Set_Pos_X( string_to_float( save_object->Get_Value( "new_posx" ) ) );
+	}
+
+	// new position y
+	if( save_object->exists( "new_posy" ) )
+	{
+		Set_Pos_Y( string_to_float( save_object->Get_Value( "new_posy" ) ) );
+	}
+
 	// active
 	if( save_object->exists( "active" ) )
 	{
@@ -102,12 +114,6 @@ void cGoldpiece :: Load_From_Savegame( cSave_Level_Object *save_object )
 
 cSave_Level_Object *cGoldpiece :: Save_To_Savegame( void )
 {
-	// only save if needed
-	if( m_active )
-	{
-		return NULL;
-	}
-
 	cSave_Level_Object *save_object = new cSave_Level_Object();
 
 	// default values
@@ -115,8 +121,18 @@ cSave_Level_Object *cGoldpiece :: Save_To_Savegame( void )
 	save_object->m_properties.push_back( cSave_Level_Object_Property( "posx", int_to_string( static_cast<int>(m_start_pos_x) ) ) );
 	save_object->m_properties.push_back( cSave_Level_Object_Property( "posy", int_to_string( static_cast<int>(m_start_pos_y) ) ) );
 
+	// new position ( only save if needed )
+	if( !Is_Float_Equal( m_start_pos_x, m_pos_x ) || !Is_Float_Equal( m_start_pos_y, m_pos_y ) )
+	{
+		save_object->m_properties.push_back( cSave_Level_Object_Property( "new_posx", int_to_string( static_cast<int>(m_pos_x) ) ) );
+		save_object->m_properties.push_back( cSave_Level_Object_Property( "new_posy", int_to_string( static_cast<int>(m_pos_y) ) ) );
+	}
+
 	// active
-	save_object->m_properties.push_back( cSave_Level_Object_Property( "active", int_to_string( m_active ) ) );
+	if( !m_active )
+	{
+		save_object->m_properties.push_back( cSave_Level_Object_Property( "active", int_to_string( m_active ) ) );
+	}
 
 	return save_object;
 }

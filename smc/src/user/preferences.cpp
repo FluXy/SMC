@@ -168,7 +168,7 @@ void cPreferences :: Save( void )
 {
 	Update();
 
-	ofstream file( m_config_filename.c_str(), ios::out );
+	ofstream file( m_config_filename.c_str(), ios::out | ios::trunc );
 
 	if( !file.is_open() )
 	{
@@ -176,72 +176,72 @@ void cPreferences :: Save( void )
 		return;
 	}
 
-	// xml info
-	file << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
-	// begin preferences
-	file << "<Preferences>" << std::endl;
+	CEGUI::XMLSerializer stream( file );
+
+	// begin
+	stream.openTag( "config" );
 	// Game
-	file << "\t<Item Name=\"game_version\" Value=\"" << smc_version << "\" />" << std::endl;
-	file << "\t<Item Name=\"game_language\" Value=\"" << m_language << "\" />" << std::endl;
-	file << "\t<Item Name=\"game_always_run\" Value=\"" << m_always_run << "\" />" << std::endl;
-	file << "\t<Item Name=\"game_menu_level\" Value=\"" << string_to_xml_string( m_menu_level ) << "\" />" << std::endl;
-	file << "\t<Item Name=\"game_user_data_dir\" Value=\"" << string_to_xml_string( m_force_user_data_dir ) << "\" />" << std::endl;
-	file << "\t<Item Name=\"game_camera_hor_speed\" Value=\"" << m_camera_hor_speed << "\" />" << std::endl;
-	file << "\t<Item Name=\"game_camera_ver_speed\" Value=\"" << m_camera_ver_speed << "\" />" << std::endl;
+	Write_Property( stream, "game_version", smc_version );
+	Write_Property( stream, "game_language", m_language );
+	Write_Property( stream, "game_always_run", m_always_run );
+	Write_Property( stream, "game_menu_level", m_menu_level );
+	Write_Property( stream, "game_user_data_dir", m_force_user_data_dir );
+	Write_Property( stream, "game_camera_hor_speed", m_camera_hor_speed );
+	Write_Property( stream, "game_camera_ver_speed", m_camera_ver_speed );
 	// Video
-	file << "\t<Item Name=\"video_fullscreen\" Value=\"" << m_video_fullscreen << "\" />" << std::endl;
-	file << "\t<Item Name=\"video_screen_w\" Value=\"" << m_video_screen_w << "\" />" << std::endl;
-	file << "\t<Item Name=\"video_screen_h\" Value=\"" << m_video_screen_h << "\" />" << std::endl;
-	file << "\t<Item Name=\"video_screen_bpp\" Value=\"" << static_cast<int>(m_video_screen_bpp) << "\" />" << std::endl;
-	file << "\t<Item Name=\"video_vsync\" Value=\"" << m_video_vsync << "\" />" << std::endl;
-	file << "\t<Item Name=\"video_geometry_quality\" Value=\"" << pVideo->m_geometry_quality << "\" />" << std::endl;
-	file << "\t<Item Name=\"video_texture_quality\" Value=\"" << pVideo->m_texture_quality << "\" />" << std::endl;
+	Write_Property( stream, "video_fullscreen", m_video_fullscreen );
+	Write_Property( stream, "video_screen_w", m_video_screen_w );
+	Write_Property( stream, "video_screen_h", m_video_screen_h );
+	Write_Property( stream, "video_screen_bpp", static_cast<int>(m_video_screen_bpp) );
+	Write_Property( stream, "video_vsync", m_video_vsync );
+	Write_Property( stream, "video_geometry_quality", pVideo->m_geometry_quality );
+	Write_Property( stream, "video_texture_quality", pVideo->m_texture_quality );
 	// Audio
-	file << "\t<Item Name=\"audio_music\" Value=\"" << m_audio_music << "\" />" << std::endl;
-	file << "\t<Item Name=\"audio_sound\" Value=\"" << m_audio_sound << "\" />" << std::endl;
-	file << "\t<Item Name=\"audio_sound_volume\" Value=\"" << static_cast<int>(pAudio->m_sound_volume) << "\" />" << std::endl;
-	file << "\t<Item Name=\"audio_music_volume\" Value=\"" << static_cast<int>(pAudio->m_music_volume) << "\" />" << std::endl;
-	file << "\t<Item Name=\"audio_hz\" Value=\"" << m_audio_hz << "\" />" << std::endl;
+	Write_Property( stream, "audio_music", m_audio_music );
+	Write_Property( stream, "audio_sound", m_audio_sound );
+	Write_Property( stream, "audio_sound_volume", static_cast<int>(pAudio->m_sound_volume) );
+	Write_Property( stream, "audio_music_volume", static_cast<int>(pAudio->m_music_volume) );
+	Write_Property( stream, "audio_hz", m_audio_hz );
 	// Keyboard
-	file << "\t<Item Name=\"keyboard_key_up\" Value=\"" << m_key_up << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_down\" Value=\"" << m_key_down << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_left\" Value=\"" << m_key_left << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_right\" Value=\"" << m_key_right << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_jump\" Value=\"" << m_key_jump << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_shoot\" Value=\"" << m_key_shoot << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_item\" Value=\"" << m_key_item << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_action\" Value=\"" << m_key_action << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_scroll_speed\" Value=\"" << m_scroll_speed << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_screenshot\" Value=\"" << m_key_screenshot << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_editor_fast_copy_up\" Value=\"" << m_key_editor_fast_copy_up << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_editor_fast_copy_down\" Value=\"" << m_key_editor_fast_copy_down << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_editor_fast_copy_left\" Value=\"" << m_key_editor_fast_copy_left << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_editor_fast_copy_right\" Value=\"" << m_key_editor_fast_copy_right << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_editor_pixel_move_up\" Value=\"" << m_key_editor_pixel_move_up << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_editor_pixel_move_down\" Value=\"" << m_key_editor_pixel_move_down << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_editor_pixel_move_left\" Value=\"" << m_key_editor_pixel_move_left << "\" />" << std::endl;
-	file << "\t<Item Name=\"keyboard_key_editor_pixel_move_right\" Value=\"" << m_key_editor_pixel_move_right << "\" />" << std::endl;
+	Write_Property( stream, "keyboard_key_up", m_key_up );
+	Write_Property( stream, "keyboard_key_down", m_key_down );
+	Write_Property( stream, "keyboard_key_left", m_key_left );
+	Write_Property( stream, "keyboard_key_right", m_key_right );
+	Write_Property( stream, "keyboard_key_jump", m_key_jump );
+	Write_Property( stream, "keyboard_key_shoot", m_key_shoot );
+	Write_Property( stream, "keyboard_key_item", m_key_item );
+	Write_Property( stream, "keyboard_key_action", m_key_action );
+	Write_Property( stream, "keyboard_scroll_speed", m_scroll_speed );
+	Write_Property( stream, "keyboard_key_screenshot", m_key_screenshot );
+	Write_Property( stream, "keyboard_key_editor_fast_copy_up", m_key_editor_fast_copy_up );
+	Write_Property( stream, "keyboard_key_editor_fast_copy_down", m_key_editor_fast_copy_down );
+	Write_Property( stream, "keyboard_key_editor_fast_copy_left", m_key_editor_fast_copy_left );
+	Write_Property( stream, "keyboard_key_editor_fast_copy_right", m_key_editor_fast_copy_right );
+	Write_Property( stream, "keyboard_key_editor_pixel_move_up", m_key_editor_pixel_move_up );
+	Write_Property( stream, "keyboard_key_editor_pixel_move_down", m_key_editor_pixel_move_down );
+	Write_Property( stream, "keyboard_key_editor_pixel_move_left", m_key_editor_pixel_move_left );
+	Write_Property( stream, "keyboard_key_editor_pixel_move_right", m_key_editor_pixel_move_right );
 	// Joystick/Gamepad
-	file << "\t<Item Name=\"joy_enabled\" Value=\"" << m_joy_enabled << "\" />" << std::endl;
-	file << "\t<Item Name=\"joy_name\" Value=\"" << string_to_xml_string( m_joy_name ) << "\" />" << std::endl;
-	file << "\t<Item Name=\"joy_analog_jump\" Value=\"" << m_joy_analog_jump << "\" />" << std::endl;
-	file << "\t<Item Name=\"joy_axis_hor\" Value=\"" << m_joy_axis_hor << "\" />" << std::endl;
-	file << "\t<Item Name=\"joy_axis_ver\" Value=\"" << m_joy_axis_ver << "\" />" << std::endl;
-	file << "\t<Item Name=\"joy_axis_threshold\" Value=\"" << m_joy_axis_threshold << "\" />" << std::endl;
-	file << "\t<Item Name=\"joy_button_jump\" Value=\"" << static_cast<int>(m_joy_button_jump) << "\" />" << std::endl;
-	file << "\t<Item Name=\"joy_button_item\" Value=\"" << static_cast<int>(m_joy_button_item) << "\" />" << std::endl;
-	file << "\t<Item Name=\"joy_button_shoot\" Value=\"" << static_cast<int>(m_joy_button_shoot) << "\" />" << std::endl;
-	file << "\t<Item Name=\"joy_button_action\" Value=\"" << static_cast<int>(m_joy_button_action) << "\" />" << std::endl;
-	file << "\t<Item Name=\"joy_button_exit\" Value=\"" << static_cast<int>(m_joy_button_exit) << "\" />" << std::endl;
+	Write_Property( stream, "joy_enabled", m_joy_enabled );
+	Write_Property( stream, "joy_name", m_joy_name );
+	Write_Property( stream, "joy_analog_jump", m_joy_analog_jump );
+	Write_Property( stream, "joy_axis_hor", m_joy_axis_hor );
+	Write_Property( stream, "joy_axis_ver", m_joy_axis_ver );
+	Write_Property( stream, "joy_axis_threshold", m_joy_axis_threshold );
+	Write_Property( stream, "joy_button_jump", static_cast<int>(m_joy_button_jump) );
+	Write_Property( stream, "joy_button_item", static_cast<int>(m_joy_button_item) );
+	Write_Property( stream, "joy_button_shoot", static_cast<int>(m_joy_button_shoot) );
+	Write_Property( stream, "joy_button_action", static_cast<int>(m_joy_button_action) );
+	Write_Property( stream, "joy_button_exit", static_cast<int>(m_joy_button_exit) );
 	// Special
-	file << "\t<Item Name=\"level_background_images\" Value=\"" << m_level_background_images << "\" />" << std::endl;
-	file << "\t<Item Name=\"image_cache_enabled\" Value=\"" << m_image_cache_enabled << "\" />" << std::endl;
+	Write_Property( stream, "level_background_images", m_level_background_images );
+	Write_Property( stream, "image_cache_enabled", m_image_cache_enabled );
 	// Editor
-	file << "\t<Item Name=\"editor_mouse_auto_hide\" Value=\"" << m_editor_mouse_auto_hide << "\" />" << std::endl;
-	file << "\t<Item Name=\"editor_show_item_images\" Value=\"" << m_editor_show_item_images << "\" />" << std::endl;
-	file << "\t<Item Name=\"editor_item_image_size\" Value=\"" << m_editor_item_image_size << "\" />" << std::endl;
-	// end preferences
-	file << "</Preferences>" << std::endl;
+	Write_Property( stream, "editor_mouse_auto_hide", m_editor_mouse_auto_hide );
+	Write_Property( stream, "editor_show_item_images", m_editor_show_item_images );
+	Write_Property( stream, "editor_item_image_size", m_editor_item_image_size );
+	// end config
+	stream.closeTag();
 
 	file.close();
 }
@@ -432,45 +432,54 @@ void cPreferences :: Apply_Audio( bool sound, bool music )
 	pAudio->Init();
 }
 
-// XML element start
 void cPreferences :: elementStart( const CEGUI::String &element, const CEGUI::XMLAttributes &attributes )
 {
-	if( element == "Item" )
+	if( element == "property" || element == "Item" )
 	{
 		handle_item( attributes );
 	}
 }
 
-// XML element end
 void cPreferences :: elementEnd( const CEGUI::String &element )
 {
 	
 }
 
-void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
+void cPreferences :: handle_item( CEGUI::XMLAttributes attributes )
 {
-	std::string name = attributes.getValueAsString( "Name" ).c_str();
+	std::string name;
+
+	if( attributes.exists( "name" ) )
+	{
+		name = attributes.getValueAsString( "name" ).c_str();
+	}
+	// V.1.9 and lower
+	else
+	{
+		name = attributes.getValueAsString( "Name" ).c_str();
+		attributes.add( "value", attributes.getValueAsString( "Value" ) );
+	}
 
 	// Game
 	if( name.compare( "game_version" ) == 0 )
 	{
-		m_game_version = attributes.getValueAsFloat( "Value" );
+		m_game_version = attributes.getValueAsFloat( "value" );
 	}
 	else if( name.compare( "game_language" ) == 0 )
 	{
-		m_language = attributes.getValueAsString( "Value" ).c_str();
+		m_language = attributes.getValueAsString( "value" ).c_str();
 	}
 	else if( name.compare( "game_always_run" ) == 0 || name.compare( "always_run" ) == 0 )
 	{
-		m_always_run = attributes.getValueAsBool( "Value" );
+		m_always_run = attributes.getValueAsBool( "value" );
 	}
 	else if( name.compare( "game_menu_level" ) == 0 )
 	{
-		m_menu_level = attributes.getValueAsString( "Value" ).c_str();
+		m_menu_level = attributes.getValueAsString( "value" ).c_str();
 	}
 	else if( name.compare( "game_user_data_dir" ) == 0 || name.compare( "user_data_dir" ) == 0 )
 	{
-		m_force_user_data_dir = attributes.getValueAsString( "Value" ).c_str();
+		m_force_user_data_dir = attributes.getValueAsString( "value" ).c_str();
 
 		// if user data dir is set
 		if( !m_force_user_data_dir.empty() ) 
@@ -486,16 +495,16 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "game_camera_hor_speed" ) == 0 || name.compare( "camera_hor_speed" ) == 0 )
 	{
-		m_camera_hor_speed = attributes.getValueAsFloat( "Value" );
+		m_camera_hor_speed = attributes.getValueAsFloat( "value" );
 	}
 	else if( name.compare( "game_camera_ver_speed" ) == 0 || name.compare( "camera_ver_speed" ) == 0 )
 	{
-		m_camera_ver_speed = attributes.getValueAsFloat( "Value" );
+		m_camera_ver_speed = attributes.getValueAsFloat( "value" );
 	}
 	// Video
 	else if( name.compare( "video_screen_h" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val < 200 )
 		{
@@ -510,7 +519,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "video_screen_w" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val < 200 )
 		{
@@ -525,7 +534,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "video_screen_bpp" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val < 8 )
 		{
@@ -540,32 +549,32 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "video_vsync" ) == 0 )
 	{
-		m_video_vsync = attributes.getValueAsBool( "Value" );
+		m_video_vsync = attributes.getValueAsBool( "value" );
 	}
 	else if( name.compare( "video_fullscreen" ) == 0 )
 	{
-		m_video_fullscreen = attributes.getValueAsBool( "Value" );
+		m_video_fullscreen = attributes.getValueAsBool( "value" );
 	}
 	else if( name.compare( "video_geometry_detail" ) == 0 || name.compare( "video_geometry_quality" ) == 0 )
 	{
-		pVideo->m_geometry_quality = attributes.getValueAsFloat( "Value" );
+		pVideo->m_geometry_quality = attributes.getValueAsFloat( "value" );
 	}
 	else if( name.compare( "video_texture_detail" ) == 0 || name.compare( "video_texture_quality" ) == 0 )
 	{
-		pVideo->m_texture_quality = attributes.getValueAsFloat( "Value" );
+		pVideo->m_texture_quality = attributes.getValueAsFloat( "value" );
 	}
 	// Audio
 	else if( name.compare( "audio_music" ) == 0 )
 	{
-		m_audio_music = attributes.getValueAsBool( "Value" );
+		m_audio_music = attributes.getValueAsBool( "value" );
 	}
 	else if( name.compare( "audio_sound" ) == 0 )
 	{
-		m_audio_sound = attributes.getValueAsBool( "Value" );
+		m_audio_sound = attributes.getValueAsBool( "value" );
 	}
 	if( name.compare( "audio_music_volume" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= MIX_MAX_VOLUME )
 		{
@@ -574,7 +583,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "audio_sound_volume" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= MIX_MAX_VOLUME )
 		{
@@ -583,7 +592,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "audio_hz" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= 96000 )
 		{
@@ -593,7 +602,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	// Keyboard
 	else if( name.compare( "keyboard_key_up" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -602,7 +611,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "keyboard_key_down" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -611,7 +620,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "keyboard_key_left" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -620,7 +629,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "keyboard_key_right" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -629,7 +638,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "keyboard_key_jump" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -638,7 +647,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "keyboard_key_shoot" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -647,7 +656,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "keyboard_key_item" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -656,7 +665,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "keyboard_key_action" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -665,11 +674,11 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "keyboard_scroll_speed" ) == 0 )
 	{
-		m_scroll_speed = attributes.getValueAsFloat( "Value" );
+		m_scroll_speed = attributes.getValueAsFloat( "value" );
 	}
 	else if( name.compare( "keyboard_key_screenshot" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -678,7 +687,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "keyboard_key_editor_fast_copy_up" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -687,7 +696,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "keyboard_key_editor_fast_copy_down" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -696,7 +705,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "keyboard_key_editor_fast_copy_left" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -705,7 +714,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "keyboard_key_editor_fast_copy_right" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -714,7 +723,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 		else if( name.compare( "keyboard_key_editor_pixel_move_up" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -723,7 +732,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "keyboard_key_editor_pixel_move_down" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -732,7 +741,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "keyboard_key_editor_pixel_move_left" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -741,7 +750,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "keyboard_key_editor_pixel_move_right" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= SDLK_LAST )
 		{
@@ -751,19 +760,19 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	// Joypad
 	else if( name.compare( "joy_enabled" ) == 0 )
 	{
-		m_joy_enabled = attributes.getValueAsBool( "Value" );
+		m_joy_enabled = attributes.getValueAsBool( "value" );
 	}
 	else if( name.compare( "joy_name" ) == 0 )
 	{
-		m_joy_name = attributes.getValueAsString( "Value" ).c_str();
+		m_joy_name = attributes.getValueAsString( "value" ).c_str();
 	}
 	else if( name.compare( "joy_analog_jump" ) == 0 )
 	{
-		m_joy_analog_jump = attributes.getValueAsBool( "Value" );
+		m_joy_analog_jump = attributes.getValueAsBool( "value" );
 	}
 	else if( name.compare( "joy_axis_hor" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= 256 )
 		{
@@ -772,7 +781,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "joy_axis_ver" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= 256 )
 		{
@@ -781,7 +790,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "joy_axis_threshold" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= 32767 )
 		{
@@ -790,7 +799,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "joy_button_jump" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= 256 )
 		{
@@ -799,7 +808,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "joy_button_item" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= 256 )
 		{
@@ -808,7 +817,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "joy_button_shoot" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= 256 )
 		{
@@ -817,7 +826,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "joy_button_action" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= 256 )
 		{
@@ -826,7 +835,7 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	}
 	else if( name.compare( "joy_button_exit" ) == 0 )
 	{
-		int val = attributes.getValueAsInteger( "Value" );
+		int val = attributes.getValueAsInteger( "value" );
 
 		if( val >= 0 && val <= 256 )
 		{
@@ -836,24 +845,24 @@ void cPreferences :: handle_item( const CEGUI::XMLAttributes& attributes )
 	// Special
 	else if( name.compare( "level_background_images" ) == 0 )
 	{
-		m_level_background_images = attributes.getValueAsBool( "Value" );
+		m_level_background_images = attributes.getValueAsBool( "value" );
 	}
 	else if( name.compare( "image_cache_enabled" ) == 0 )
 	{
-		m_image_cache_enabled = attributes.getValueAsBool( "Value" );
+		m_image_cache_enabled = attributes.getValueAsBool( "value" );
 	}
 	// Editor
 	else if( name.compare( "editor_mouse_auto_hide" ) == 0 )
 	{
-		m_editor_mouse_auto_hide = attributes.getValueAsBool( "Value" );
+		m_editor_mouse_auto_hide = attributes.getValueAsBool( "value" );
 	}
 	else if( name.compare( "editor_show_item_images" ) == 0 )
 	{
-		m_editor_show_item_images = attributes.getValueAsBool( "Value" );
+		m_editor_show_item_images = attributes.getValueAsBool( "value" );
 	}
 	else if( name.compare( "editor_item_image_size" ) == 0 )
 	{
-		m_editor_item_image_size = attributes.getValueAsInteger( "Value" );
+		m_editor_item_image_size = attributes.getValueAsInteger( "value" );
 	}
 }
 

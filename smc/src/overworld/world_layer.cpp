@@ -348,32 +348,33 @@ bool cLayer :: Save( const std::string &filename )
 		return 0;
 	}
 
-	// xml info
-	file << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
+	CEGUI::XMLSerializer stream( file );
+
 	// begin layer
-	file << "<layer>" << std::endl;
+	stream.openTag( "layer" );
 
 	// lines
 	for( LayerLineList::iterator itr = objects.begin(); itr != objects.end(); ++itr )
 	{
 		cLayer_Line_Point_Start *line = (*itr);
 
-		// begin line
-		file << "\t<line>" << std::endl;
+		// begin
+		stream.openTag( "line" );
 			// start
-			file << "\t\t<Property name=\"X1\" value=\"" << static_cast<int>(line->Get_Line_Pos_X()) << "\" />" << std::endl;
-			file << "\t\t<Property name=\"Y1\" value=\"" << static_cast<int>(line->Get_Line_Pos_Y()) << "\" />" << std::endl;
+			Write_Property( stream, "X1", static_cast<int>(line->Get_Line_Pos_X()) );
+			Write_Property( stream, "Y1", static_cast<int>(line->Get_Line_Pos_Y()) );
 			// end
-			file << "\t\t<Property name=\"X2\" value=\"" << static_cast<int>(line->m_linked_point->Get_Line_Pos_X()) << "\" />" << std::endl;
-			file << "\t\t<Property name=\"Y2\" value=\"" << static_cast<int>(line->m_linked_point->Get_Line_Pos_Y()) << "\" />" << std::endl;
+			Write_Property( stream, "X2", static_cast<int>(line->m_linked_point->Get_Line_Pos_X()) );
+			Write_Property( stream, "Y2", static_cast<int>(line->m_linked_point->Get_Line_Pos_Y()) );
 			// origin
-			file << "\t\t<Property name=\"origin\" value=\"" << line->m_origin << "\" />" << std::endl;
+			Write_Property( stream, "origin", line->m_origin );
 		// end line
-		file << "\t</line>" << std::endl;
+		stream.closeTag();
 	}
 
 	// end layer
-	file << "</layer>" << std::endl;
+	stream.closeTag();
+
 	file.close();
 
 	return 1;
@@ -539,51 +540,50 @@ cLine_collision cLayer :: Get_Nearest_Line( cLayer_Line_Point_Start *map_layer_l
 	return cLine_collision();
 }
 
-// XML element start
 void cLayer :: elementStart( const CEGUI::String &element, const CEGUI::XMLAttributes &attributes )
 {
-	// Property of an Element
-	if( element == "Property" )
+	if( element == "property" || element == "Property" )
 	{
 		m_xml_attributes.add( attributes.getValueAsString( "name" ), attributes.getValueAsString( "value" ) );
 	}
 }
 
-// XML element end
 void cLayer :: elementEnd( const CEGUI::String &element )
 {
-	if( element != "Property" )
+	if( element == "property" || element == "Property" )
 	{
-		if( element == "line" )
-		{
-			// if V.1.9 and lower : move y coordinate bottom to 0
-			if( m_overworld->m_engine_version < 2 )
-			{
-				if( m_xml_attributes.exists( "Y1" ) )
-				{
-					m_xml_attributes.add( "Y1", CEGUI::PropertyHelper::floatToString( m_xml_attributes.getValueAsFloat( "Y1" ) - 600.0f ) );
-				}
-				if( m_xml_attributes.exists( "Y2" ) )
-				{
-					m_xml_attributes.add( "Y2", CEGUI::PropertyHelper::floatToString( m_xml_attributes.getValueAsFloat( "Y2" ) - 600.0f ) );
-				}
-			}
-
-			// add layer line
-			Add( new cLayer_Line_Point_Start( m_xml_attributes, m_overworld->m_sprite_manager, m_overworld ) );
-		}
-		else if( element == "layer" )
-		{
-			// ignore
-		}
-		else if( element.length() )
-		{
-			printf( "Warning : Overworld Layer Unknown element : %s\n", element.c_str() );
-		}
-
-		// clear
-		m_xml_attributes = CEGUI::XMLAttributes();
+		return;
 	}
+
+	if( element == "line" )
+	{
+		// if V.1.9 and lower : move y coordinate bottom to 0
+		if( m_overworld->m_engine_version < 2 )
+		{
+			if( m_xml_attributes.exists( "Y1" ) )
+			{
+				m_xml_attributes.add( "Y1", CEGUI::PropertyHelper::floatToString( m_xml_attributes.getValueAsFloat( "Y1" ) - 600.0f ) );
+			}
+			if( m_xml_attributes.exists( "Y2" ) )
+			{
+				m_xml_attributes.add( "Y2", CEGUI::PropertyHelper::floatToString( m_xml_attributes.getValueAsFloat( "Y2" ) - 600.0f ) );
+			}
+		}
+
+		// add layer line
+		Add( new cLayer_Line_Point_Start( m_xml_attributes, m_overworld->m_sprite_manager, m_overworld ) );
+	}
+	else if( element == "layer" )
+	{
+		// ignore
+	}
+	else if( element.length() )
+	{
+		printf( "Warning : Overworld Layer unknown element : %s\n", element.c_str() );
+	}
+
+	// clear
+	m_xml_attributes = CEGUI::XMLAttributes();
 }
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */

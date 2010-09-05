@@ -102,31 +102,31 @@ void cGee :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Color( static_cast<DefaultColor>(Get_Color_Id( attributes.getValueAsString( "color", Get_Color_Name( m_color_type ) ).c_str() )) );
 }
 
-void cGee :: Save_To_Stream( ofstream &file )
+void cGee :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin enemy
-	file << "\t<enemy>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// name
-	file << "\t\t<Property name=\"type\" value=\"gee\" />" << std::endl;
+	Write_Property( stream, "type", "gee" );
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 	// direction
-	file << "\t\t<Property name=\"direction\" value=\"" << Get_Direction_Name( m_start_direction ) << "\" />" << std::endl;
+	Write_Property( stream, "direction", Get_Direction_Name( m_start_direction ) );
 	// max distance
-	file << "\t\t<Property name=\"max_distance\" value=\"" << static_cast<int>(m_max_distance) << "\" />" << std::endl;
+	Write_Property( stream, "max_distance", static_cast<int>(m_max_distance) );
 	// always fly
-	file << "\t\t<Property name=\"always_fly\" value=\"" << m_always_fly << "\" />" << std::endl;
+	Write_Property( stream, "always_fly", m_always_fly );
 	// wait time
-	file << "\t\t<Property name=\"wait_time\" value=\"" << m_wait_time << "\" />" << std::endl;
+	Write_Property( stream, "wait_time", m_wait_time );
 	// fly distance
-	file << "\t\t<Property name=\"fly_distance\" value=\"" << static_cast<int>(m_fly_distance) << "\" />" << std::endl;
+	Write_Property( stream, "fly_distance", static_cast<int>(m_fly_distance) );
 	// color
-	file << "\t\t<Property name=\"color\" value=\"" << Get_Color_Name( m_color_type ) << "\" />" << std::endl;
+	Write_Property( stream, "color", Get_Color_Name( m_color_type ) );
 
-	// end enemy
-	file << "\t</enemy>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cGee :: Load_From_Savegame( cSave_Level_Object *save_object )

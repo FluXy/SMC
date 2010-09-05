@@ -34,13 +34,13 @@ namespace SMC
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
 cLevel_Entry :: cLevel_Entry( cSprite_Manager *sprite_manager )
-: cAnimated_Sprite( sprite_manager )
+: cAnimated_Sprite( sprite_manager, "level_entry" )
 {
 	cLevel_Entry::Init();
 }
 
 cLevel_Entry :: cLevel_Entry( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manager )
-: cAnimated_Sprite( sprite_manager )
+: cAnimated_Sprite( sprite_manager, "level_entry" )
 {
 	cLevel_Entry::Init();
 	cLevel_Entry::Create_From_Stream( attributes );
@@ -102,29 +102,29 @@ void cLevel_Entry :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Direction( Get_Direction_Id( attributes.getValueAsString( "direction", Get_Direction_Name( m_start_direction ) ).c_str() ) );
 }
 
-void cLevel_Entry :: Save_To_Stream( ofstream &file )
+void cLevel_Entry :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin level_entry
-	file << "\t<level_entry>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 	// type
-	file << "\t\t<Property name=\"type\" value=\"" << m_entry_type << "\" />" << std::endl;
+	Write_Property( stream, "type", m_entry_type );
 	if( m_entry_type == LEVEL_ENTRY_WARP )
 	{
 		// direction
-		file << "\t\t<Property name=\"direction\" value=\"" << Get_Direction_Name( m_start_direction ) << "\" />" << std::endl;
+		Write_Property( stream, "direction", Get_Direction_Name( m_start_direction ) );
 	}
 	// name
 	if( !m_entry_name.empty() )
 	{
-		file << "\t\t<Property name=\"name\" value=\"" << string_to_xml_string( m_entry_name ) << "\" />" << std::endl;
+		Write_Property( stream, "name", m_entry_name );
 	}
 
-	// end level_entry
-	file << "\t</level_entry>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cLevel_Entry :: Set_Direction( const ObjectDirection dir )

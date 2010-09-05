@@ -280,66 +280,66 @@ void cLevel :: Save( void )
 
 	if( !file )
 	{
-		pHud_Debug->Set_Text( _("Couldn't save level ") + m_level_filename );
+		printf( "Error : Couldn't open level file for saving. Is the file read-only ?" );
+		pHud_Debug->Set_Text( _("Couldn't save level ") + m_level_filename, speedfactor_fps * 5.0f );
 		return;
 	}
 
-	// xml info
-	file << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
-	// begin level
-	file << "<level>" << std::endl;
+	CEGUI::XMLSerializer stream( file );
 
-	// begin info
-	file << "\t<information>" << std::endl;
+	// begin
+	stream.openTag( "level" );
+
+	// begin
+	stream.openTag( "information" );
 		// game version
-		file << "\t\t<Property name=\"game_version\" value=\"" << smc_version << "\" />" << std::endl;
+		Write_Property( stream, "game_version", smc_version );
 		// engine version
-		file << "\t\t<Property name=\"engine_version\" value=\"" << level_engine_version << "\" />" << std::endl;
+		Write_Property( stream, "engine_version", level_engine_version );
 		// time ( seconds since 1970 )
-		file << "\t\t<Property name=\"save_time\" value=\"" << time( NULL ) << "\" />" << std::endl;
-	// end info
-	file << "\t</information>" << std::endl;
+		Write_Property( stream, "save_time", static_cast<Uint64>( time( NULL ) ) );
+	// end information
+	stream.closeTag();
 
-	// begin settings
-	file << "\t<settings>" << std::endl;
+	// begin
+	stream.openTag( "settings" );
 		// level author
-		file << "\t\t<Property name=\"lvl_author\" value=\"" << string_to_xml_string( m_author ) << "\" />" << std::endl;
+		Write_Property( stream, "lvl_author", m_author );
 		// level version
-		file << "\t\t<Property name=\"lvl_version\" value=\"" << string_to_xml_string( m_version ) << "\" />" << std::endl;
+		Write_Property( stream, "lvl_version", m_version );
 		// music
-		std::string music_file = Get_Musicfile( 1 );
-		file << "\t\t<Property name=\"lvl_music\" value=\"" << string_to_xml_string( music_file ) << "\" />" << std::endl;
+		Write_Property( stream, "lvl_music", Get_Musicfile( 1 ) );
 		// description
-		file << "\t\t<Property name=\"lvl_description\" value=\"" << string_to_xml_string( m_description ) << "\" />" << std::endl;
+		Write_Property( stream, "lvl_description", m_description );
 		// difficulty
-		file << "\t\t<Property name=\"lvl_difficulty\" value=\"" << static_cast<int>(m_difficulty) << "\" />" << std::endl;
+		Write_Property( stream, "lvl_difficulty", static_cast<int>(m_difficulty) );
 		// land type
-		file << "\t\t<Property name=\"lvl_land_type\" value=\"" << Get_Level_Land_Type_Name( m_land_type ) << "\" />" << std::endl;
+		Write_Property( stream, "lvl_land_type", Get_Level_Land_Type_Name( m_land_type ) );
 		// camera limits
-		file << "\t\t<Property name=\"cam_limit_x\" value=\"" << static_cast<int>(m_camera_limits.m_x) << "\" />" << std::endl;
-		file << "\t\t<Property name=\"cam_limit_y\" value=\"" << static_cast<int>(m_camera_limits.m_y) << "\" />" << std::endl;
-		file << "\t\t<Property name=\"cam_limit_w\" value=\"" << static_cast<int>(m_camera_limits.m_w) << "\" />" << std::endl;
-		file << "\t\t<Property name=\"cam_limit_h\" value=\"" << static_cast<int>(m_camera_limits.m_h) << "\" />" << std::endl;
+		Write_Property( stream, "cam_limit_x", static_cast<int>(m_camera_limits.m_x) );
+		Write_Property( stream, "cam_limit_y", static_cast<int>(m_camera_limits.m_y) );
+		Write_Property( stream, "cam_limit_w", static_cast<int>(m_camera_limits.m_w) );
+		Write_Property( stream, "cam_limit_h", static_cast<int>(m_camera_limits.m_h) );
 		// fixed camera horizontal velocity
-		file << "\t\t<Property name=\"cam_fixed_hor_vel\" value=\"" << m_fixed_camera_hor_vel << "\" />" << std::endl;
+		Write_Property( stream, "cam_fixed_hor_vel", m_fixed_camera_hor_vel );
 	// end settings
-	file << "\t</settings>" << std::endl;
+	stream.closeTag();
 
 	// backgrounds
 	for( vector<cBackground *>::iterator itr = m_background_manager->objects.begin(); itr != m_background_manager->objects.end(); ++itr )
 	{
-		(*itr)->Save_To_Stream( file );
+		(*itr)->Save_To_XML( stream );
 	}
 
-	// begin player
-	file << "\t<player>" << std::endl;
+	// begin
+	stream.openTag( "player" );
 		// position
-		file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(pLevel_Player->m_start_pos_x) << "\" />" << std::endl;
-		file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(pLevel_Player->m_start_pos_y) << "\" />" << std::endl;
+		Write_Property( stream, "posx", static_cast<int>(pLevel_Player->m_start_pos_x) );
+		Write_Property( stream, "posy", static_cast<int>(pLevel_Player->m_start_pos_y) );
 		// direction
-		file << "\t\t<Property name=\"direction\" value=\"" << Get_Direction_Name( pLevel_Player->m_start_direction ) << "\" />" << std::endl;
+		Write_Property( stream, "direction", Get_Direction_Name( pLevel_Player->m_start_direction ) );
 	// end player
-	file << "\t</player>" << std::endl;
+	stream.closeTag();
 
 	// objects
 	for( cSprite_List::iterator itr = m_sprite_manager->objects.begin(); itr != m_sprite_manager->objects.end(); ++itr )
@@ -353,13 +353,13 @@ void cLevel :: Save( void )
 		}
 
 		// save to file stream
-		obj->Save_To_Stream( file );
+		obj->Save_To_XML( stream );
 	}
 
 	// end level
-	file << "</level>" << std::endl;
-	file.close();
+	stream.closeTag();
 
+	file.close();
 	pHud_Debug->Set_Text( _("Level ") + Trim_Filename( m_level_filename, 0, 0 ) + _(" saved") );
 }
 
@@ -1090,138 +1090,129 @@ bool cLevel :: Is_Loaded( void ) const
 	return 0;
 }
 
-// XML element start
 void cLevel :: elementStart( const CEGUI::String &element, const CEGUI::XMLAttributes &attributes )
 {
-	// Property/Item/Tag of an Element
-	if( element == "Property" )
+	if( element == "property" || element == "Property" )
 	{
 		m_xml_attributes.add( attributes.getValueAsString( "name" ), attributes.getValueAsString( "value" ) );
 	}
 }
 
-// XML element end
 void cLevel :: elementEnd( const CEGUI::String &element )
 {
-	if( element != "Property" )
+	if( element == "property" || element == "Property" )
 	{
-		if( element == "information" )
+		return;
+	}
+
+	if( element == "information" )
+	{
+		// support V.1.7 and lower which used float
+		float engine_version_float = m_xml_attributes.getValueAsFloat( "engine_version" );
+
+		// if float engine version
+		if( engine_version_float < 3 )
 		{
-			// support V.1.7 and lower which used float
-			float engine_version_float = m_xml_attributes.getValueAsFloat( "engine_version" );
-
-			// if float engine version
-			if( engine_version_float < 3 )
-			{
-				// change to new format
-				engine_version_float *= 10;
-			}
-
-			m_engine_version = static_cast<int>(engine_version_float);
-			m_last_saved = m_xml_attributes.getValueAsInteger( "save_time" );
+			// change to new format
+			engine_version_float *= 10;
 		}
-		else if( element == "settings" )
-		{
-			// if V.1.9 and lower : move y coordinate bottom to 0
-			if( m_engine_version < 35 )
-			{
-				if( m_xml_attributes.exists( "cam_limit_h" ) )
-				{
-					m_xml_attributes.add( "cam_limit_h", CEGUI::PropertyHelper::floatToString( m_xml_attributes.getValueAsFloat( "cam_limit_h" ) - 600.0f ) );
-				}
-			}
 
-			// author
-			Set_Author( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_author" ).c_str() ) );
-			// version
-			Set_Version( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_version" ).c_str() ) );
-			// music
-			Set_Musicfile( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_music" ).c_str() ) );
-			// description
-			Set_Description( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_description" ).c_str() ) );
-			// difficulty
-			Set_Difficulty( m_xml_attributes.getValueAsInteger( "lvl_difficulty" ) );
-			// land type
-			Set_Land_Type( Get_Level_Land_Type_Id( m_xml_attributes.getValueAsString( "lvl_land_type", "undefined" ).c_str() ) );
-			// Camera Limits
-			m_camera_limits = GL_rect( static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_x" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_y" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_w" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_h" )) );
-			// fixed camera horizontal velocity
-			m_fixed_camera_hor_vel = m_xml_attributes.getValueAsFloat( "cam_fixed_hor_vel" );
-		}
-		else if( element == "background" )
+		m_engine_version = static_cast<int>(engine_version_float);
+		m_last_saved = string_to_int64( m_xml_attributes.getValueAsString( "save_time" ).c_str() );
+	}
+	else if( element == "settings" )
+	{
+		// if V.1.9 and lower : move y coordinate bottom to 0
+		if( m_engine_version < 35 )
 		{
-			BackgroundType bg_type = static_cast<BackgroundType>(m_xml_attributes.getValueAsInteger( "type" ));
-
-			// use gradient background
-			if( bg_type == BG_GR_HOR || bg_type == BG_GR_VER )
+			if( m_xml_attributes.exists( "cam_limit_h" ) )
 			{
-				m_background_manager->Get_Pointer(0)->Create_From_Stream( m_xml_attributes );
-			}
-			// default background
-			else
-			{
-				m_background_manager->Add( new cBackground( m_xml_attributes, m_sprite_manager ) );
+				m_xml_attributes.add( "cam_limit_h", CEGUI::PropertyHelper::floatToString( m_xml_attributes.getValueAsFloat( "cam_limit_h" ) - 600.0f ) );
 			}
 		}
-		else if( element == "player" )
+
+		Set_Author( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_author" ).c_str() ) );
+		Set_Version( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_version" ).c_str() ) );
+		Set_Musicfile( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_music" ).c_str() ) );
+		Set_Description( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_description" ).c_str() ) );
+		Set_Difficulty( m_xml_attributes.getValueAsInteger( "lvl_difficulty" ) );
+		Set_Land_Type( Get_Level_Land_Type_Id( m_xml_attributes.getValueAsString( "lvl_land_type", "undefined" ).c_str() ) );
+		m_camera_limits = GL_rect( static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_x" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_y" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_w" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_h" )) );
+		m_fixed_camera_hor_vel = m_xml_attributes.getValueAsFloat( "cam_fixed_hor_vel" );
+	}
+	else if( element == "background" )
+	{
+		BackgroundType bg_type = static_cast<BackgroundType>(m_xml_attributes.getValueAsInteger( "type" ));
+
+		// use gradient background
+		if( bg_type == BG_GR_HOR || bg_type == BG_GR_VER )
 		{
-			// position
-			m_player_start_pos_x = static_cast<float>(m_xml_attributes.getValueAsInteger( "posx", static_cast<int>(cLevel_Player::m_default_pos_x) ));
-			m_player_start_pos_y = static_cast<float>(m_xml_attributes.getValueAsInteger( "posy", static_cast<int>(cLevel_Player::m_default_pos_y) ));
-
-			// if V.1.9 and lower : move y coordinate bottom to 0
-			if( m_engine_version < 35 )
-			{
-				m_player_start_pos_y = m_player_start_pos_y - 600.0f;
-			}
-
-			// check level engine version
-			// 10 and lower
-			if( m_engine_version <= 10 )
-			{
-				m_player_start_pos_y += 58.0f;
-			}
-			// 20 and lower
-			else if( m_engine_version <= 20 )
-			{
-				m_player_start_pos_y -= 48.0f;
-			}
-
-			// direction
-			m_player_start_direction = Get_Direction_Id( m_xml_attributes.getValueAsString( "direction" ).c_str() );
-
-			// if invalid set default
-			if( m_player_start_direction != DIR_LEFT && m_player_start_direction != DIR_RIGHT )
-			{
-				m_player_start_direction = DIR_RIGHT;
-			}
+			m_background_manager->Get_Pointer(0)->Create_From_Stream( m_xml_attributes );
 		}
+		// default background
 		else
 		{
-			// get Level object
-			cSprite *object = Get_Level_Object( element, m_xml_attributes, m_engine_version, m_sprite_manager );
-			
-			// valid
-			if( object )
-			{
-				m_sprite_manager->Add( object );
-			}
-			else if( element == "level" )
-			{
-				// ignore
-			}
-			else if( element.length() )
-			{
-				printf( "Warning : Level Unknown element : %s\n", element.c_str() );
-			}
+			m_background_manager->Add( new cBackground( m_xml_attributes, m_sprite_manager ) );
+		}
+	}
+	else if( element == "player" )
+	{
+		// position
+		m_player_start_pos_x = static_cast<float>(m_xml_attributes.getValueAsInteger( "posx", static_cast<int>(cLevel_Player::m_default_pos_x) ));
+		m_player_start_pos_y = static_cast<float>(m_xml_attributes.getValueAsInteger( "posy", static_cast<int>(cLevel_Player::m_default_pos_y) ));
+
+		// if V.1.9 and lower : move y coordinate bottom to 0
+		if( m_engine_version < 35 )
+		{
+			m_player_start_pos_y = m_player_start_pos_y - 600.0f;
 		}
 
-		// clear
-		m_xml_attributes = CEGUI::XMLAttributes();
+		// check level engine version
+		// 10 and lower
+		if( m_engine_version <= 10 )
+		{
+			m_player_start_pos_y += 58.0f;
+		}
+		// 20 and lower
+		else if( m_engine_version <= 20 )
+		{
+			m_player_start_pos_y -= 48.0f;
+		}
+
+		// direction
+		m_player_start_direction = Get_Direction_Id( m_xml_attributes.getValueAsString( "direction" ).c_str() );
+
+		// if invalid set default
+		if( m_player_start_direction != DIR_LEFT && m_player_start_direction != DIR_RIGHT )
+		{
+			m_player_start_direction = DIR_RIGHT;
+		}
 	}
+	else if( Is_Level_Object_Element( element ) )
+	{
+		// create sprite
+		cSprite *object = Create_Level_Object_From_XML( element, m_xml_attributes, m_engine_version, m_sprite_manager );
+		
+		// valid
+		if( object )
+		{
+			m_sprite_manager->Add( object );
+		}
+	}
+	else if( element == "level" )
+	{
+		// ignore
+	}
+	else if( element.length() )
+	{
+		printf( "Warning : Level Unknown element : %s\n", element.c_str() );
+	}
+
+	// clear
+	m_xml_attributes = CEGUI::XMLAttributes();
 }
 
-cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager )
+cSprite *Create_Level_Object_From_XML( const CEGUI::String &xml_element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager )
 {
 	// element content could change
 	CEGUI::String element = xml_element;
@@ -1708,7 +1699,7 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 				// change type
 				str_type = "furball";
 				attributes.add( "type", "furball" );
-				// fix color : red was used in pre 1.0 but later was blue
+				// fix color : red was used in pre 1.0 but later became blue
 				if( attributes.exists( "color" ) && attributes.getValueAsString( "color" ) == "red" )
 				{
 					attributes.add( "color", "blue" );
@@ -1968,6 +1959,11 @@ cSprite *Get_Level_Object( const CEGUI::String &xml_element, CEGUI::XMLAttribute
 
 		return emitter;
 	}
+	else if( element == "ball" )
+	{
+		return new cBall( attributes, sprite_manager );
+	}
+	// keep in synch with cLevel::Is_Level_Object_Element()
 
 	return NULL;
 }

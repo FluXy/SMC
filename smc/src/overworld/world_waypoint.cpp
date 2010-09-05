@@ -31,13 +31,13 @@ namespace SMC
 /* *** *** *** *** *** *** *** *** cWaypoint *** *** *** *** *** *** *** *** *** */
 
 cWaypoint :: cWaypoint( cSprite_Manager *sprite_manager )
-: cSprite( sprite_manager )
+: cSprite( sprite_manager, "waypoint" )
 {
 	cWaypoint::Init();
 }
 
 cWaypoint :: cWaypoint( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manager )
-: cSprite( sprite_manager )
+: cSprite( sprite_manager, "waypoint" )
 {
 	cWaypoint::Init();
 	cWaypoint::Create_From_Stream( attributes );
@@ -123,14 +123,14 @@ void cWaypoint :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Access( attributes.getValueAsBool( "access", 1 ), 1 );
 }
 
-void cWaypoint :: Save_To_Stream( ofstream &file )
+void cWaypoint :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin waypoint
-	file << "\t<waypoint>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// position
-	file << "\t\t<Property name=\"x\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"y\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "x", static_cast<int>(m_start_pos_x) );
+	Write_Property( stream, "y", static_cast<int>(m_start_pos_y) );
 	// image
 	/*if( start_image )
 	{
@@ -142,21 +142,21 @@ void cWaypoint :: Save_To_Stream( ofstream &file )
 			img_filename.erase( 0, strlen( PIXMAPS_DIR ) + 1 );
 		}
 
-		file << "\t\t<Property name=\"image\" value=\"" << img_filename << "\" />" << std::endl;
+		Write_Property( stream, "image", img_filename );
 	}*/
 	// type
-	file << "\t\t<Property name=\"type\" value=\"" << static_cast<int>(m_waypoint_type) << "\" />" << std::endl;
+	Write_Property( stream, "type", static_cast<int>(m_waypoint_type) );
 	// destination
-	file << "\t\t<Property name=\"destination\" value=\"" << m_destination << "\" />" << std::endl;
+	Write_Property( stream, "destination", m_destination );
 	// direction backward
-	file << "\t\t<Property name=\"direction_backward\" value=\"" << Get_Direction_Name( m_direction_backward ) << "\" />" << std::endl;
+	Write_Property( stream, "direction_backward", Get_Direction_Name( m_direction_backward ) );
 	// direction forward
-	file << "\t\t<Property name=\"direction_forward\" value=\"" << Get_Direction_Name( m_direction_forward ) << "\" />" << std::endl;
+	Write_Property( stream, "direction_forward", Get_Direction_Name( m_direction_forward ) );
 	// access
-	file << "\t\t<Property name=\"access\" value=\"" << m_access_default << "\" />" << std::endl;
+	Write_Property( stream, "access", m_access_default );
 
-	// end waypoint
-	file << "\t</waypoint>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cWaypoint :: Update( void )

@@ -71,6 +71,58 @@ extern cSprite *pActive_Player;
 
 /* *** *** *** *** *** *** *** Functions *** *** *** *** *** *** *** *** *** *** */
 
+/* Replace all occurrences of the search with the format string
+ * todo : use boost::algorithm::replace_all ?
+*/
+void string_replace_all( std::string &str, const std::string &search, const std::string &format );
+
+/* Remove all occurrences of the search in the string
+ * todo : use boost::algorithm::erase_all ?
+*/
+inline void string_erase_all( std::string &str, const char search )
+{
+	str.erase( std::remove(str.begin(), str.end(), search), str.end() );
+};
+
+/* Trim the string from the beginning with the given character
+ * todo : use boost::algorithm::trim_left ?
+*/
+inline void string_trim_from_begin( std::string &str, const char search )
+{
+	str.erase( str.find_last_not_of( search ) + 1 );
+};
+/* Trim the string from the end with the given character
+ * todo : use boost::algorithm::trim_right ?
+*/
+std::string string_trim_from_end( std::string str, const char search );
+/* Trim the string from the beginning and end with the given character
+ * todo : use boost::algorithm::trim ?
+*/
+inline void string_trim( std::string &str, const char search )
+{
+	string_trim_from_begin( str, search );
+	string_trim_from_end( str, search );
+};
+
+// Return the number as a string
+std::string int_to_string( const int number );
+std::string int64_to_string( const Uint64 number );
+std::string long_to_string( const long number );
+/* Return the float as a string
+ * prec: the precision after the decimal point
+*/
+std::string float_to_string( const float number, int prec = 6 );
+// Return the string as a number
+int string_to_int( const std::string &str );
+Uint64 string_to_int64( const std::string &str );
+long string_to_long( const std::string &str );
+// Return the string as a float
+float string_to_float( const std::string &str );
+// Return the string as a double
+double string_to_double( const std::string &str );
+// Return the real string
+std::string xml_string_to_string( std::string str );
+
 // Handle game events
 void Handle_Game_Events( void );
 // Handle generic game events
@@ -140,59 +192,31 @@ void Preload_Images( bool draw_gui = 0 );
  */
 void Preload_Sounds( bool draw_gui = 0 );
 
+// Write a property line to the serializer
+void Write_Property( CEGUI::XMLSerializer &stream, const CEGUI::String &name, const CEGUI::String &val );
+inline void Write_Property( CEGUI::XMLSerializer &stream, const CEGUI::String &name, int val )
+{
+	Write_Property( stream, name, CEGUI::PropertyHelper::intToString( val ) );
+};
+inline void Write_Property( CEGUI::XMLSerializer &stream, const CEGUI::String &name, unsigned int val )
+{
+	Write_Property( stream, name, CEGUI::PropertyHelper::uintToString( val ) );
+};
+inline void Write_Property( CEGUI::XMLSerializer &stream, const CEGUI::String &name, Uint64 val )
+{
+	Write_Property( stream, name, int64_to_string( val ) );
+};
+inline void Write_Property( CEGUI::XMLSerializer &stream, const CEGUI::String &name, long val )
+{
+	Write_Property( stream, name, long_to_string( val ) );
+};
+inline void Write_Property( CEGUI::XMLSerializer &stream, const CEGUI::String &name, float val )
+{
+	Write_Property( stream, name, CEGUI::PropertyHelper::floatToString( val ) );
+};
+
 // Changes the image path in the given xml attributes to the new one
 void Relocate_Image( CEGUI::XMLAttributes &xml_attributes, const std::string &filename_old, const std::string &filename_new, const CEGUI::String &attribute_name = "image" );
-
-/* Replace all occurrences of the search with the format string
- * todo : use boost::algorithm::replace_all ?
-*/
-void string_replace_all( std::string &str, const std::string &search, const std::string &format );
-
-/* Remove all occurrences of the search in the string
- * todo : use boost::algorithm::erase_all ?
-*/
-inline void string_erase_all( std::string &str, const char search )
-{
-	str.erase( std::remove(str.begin(), str.end(), search), str.end() );
-};
-
-/* Trim the string from the beginning with the given character
- * todo : use boost::algorithm::trim_left ?
-*/
-inline void string_trim_from_begin( std::string &str, const char search )
-{
-	str.erase( str.find_last_not_of( search ) + 1 );
-};
-/* Trim the string from the end with the given character
- * todo : use boost::algorithm::trim_right ?
-*/
-std::string string_trim_from_end( std::string str, const char search );
-/* Trim the string from the beginning and end with the given character
- * todo : use boost::algorithm::trim ?
-*/
-inline void string_trim( std::string &str, const char search )
-{
-	string_trim_from_begin( str, search );
-	string_trim_from_end( str, search );
-};
-
-// Return the number as a string
-std::string int_to_string( const int number );
-/* Return the float as a string
- * prec: the precision after the decimal point
-*/
-std::string float_to_string( const float number, int prec = 6 );
-// Return the string as a number
-int string_to_int( const std::string &str );
-long string_to_long( const std::string &str );
-// Return the string as a float
-float string_to_float( const std::string &str );
-// Return the string as a double
-double string_to_double( const std::string &str );
-// Return a valid XML string
-std::string string_to_xml_string( const std::string &str );
-// Return the real string
-std::string xml_string_to_string( std::string str );
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 

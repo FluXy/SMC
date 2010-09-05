@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Items>
-	<Item>
-		<Property Name="object_name" Value="waypoint" />
-		<Property Name="object_tags" Value="world;generic" />
-		<Property Name="level" Value="lvl_1" />
-		<Property Name="access" Value="0" />
-	</Item>
-	<Item>
-		<Property Name="object_name" Value="line" />
-		<Property Name="object_tags" Value="world;generic" />
-	</Item>
-	<Item>
-		<Property Name="object_name" Value="sound" />
-		<Property Name="object_tags" Value="world;generic" />
-		<Property Name="file" Value="waterdrop_1.ogg" />
-		<Property Name="delay_min" Value="350" />
-		<Property Name="delay_max" Value="400" />
-		<Property Name="volume_min" Value="80" />
-		<Property Name="volume_max" Value="100" />
-		<Property Name="volume_distance_full" Value="400" />
-		<Property Name="volume_distance_zero" Value="1000" />
-	</Item>
-</Items>
+<items>
+	<item>
+		<property name="object_name" value="waypoint" />
+		<property name="object_tags" value="world;generic" />
+		<property name="level" value="lvl_1" />
+		<property name="access" value="0" />
+	</item>
+	<item>
+		<property name="object_name" value="line" />
+		<property name="object_tags" value="world;generic" />
+	</item>
+	<item>
+		<property name="object_name" value="sound" />
+		<property name="object_tags" value="world;generic" />
+		<property name="file" value="waterdrop_1.ogg" />
+		<property name="delay_min" value="350" />
+		<property name="delay_max" value="400" />
+		<property name="volume_min" value="80" />
+		<property name="volume_max" value="100" />
+		<property name="volume_distance_full" value="400" />
+		<property name="volume_distance_zero" value="1000" />
+	</item>
+</items>

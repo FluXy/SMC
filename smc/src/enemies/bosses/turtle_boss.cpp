@@ -109,31 +109,31 @@ void cTurtleBoss :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Level_Ends_If_Killed( attributes.getValueAsBool( "level_ends_if_killed", m_level_ends_if_killed ) );
 }
 
-void cTurtleBoss :: Save_To_Stream( ofstream &file )
+void cTurtleBoss :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin enemy
-	file << "\t<enemy>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// name
-	file << "\t\t<Property name=\"type\" value=\"turtleboss\" />" << std::endl;
+	Write_Property( stream, "type", "turtleboss" );
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 	// color
-	file << "\t\t<Property name=\"color\" value=\"" << Get_Color_Name( m_color_type ) << "\" />" << std::endl;
+	Write_Property( stream, "color", Get_Color_Name( m_color_type ) );
 	// direction
-	file << "\t\t<Property name=\"direction\" value=\"" << Get_Direction_Name( m_start_direction ) << "\" />" << std::endl;
+	Write_Property( stream, "direction", Get_Direction_Name( m_start_direction ) );
 	// max hit count
-	file << "\t\t<Property name=\"max_hit_count\" value=\"" << m_max_hits << "\" />" << std::endl;
+	Write_Property( stream, "max_hit_count", m_max_hits );
 	// max downgrade count
-	file << "\t\t<Property name=\"max_downgrade_count\" value=\"" << m_max_downgrade_count << "\" />" << std::endl;
+	Write_Property( stream, "max_downgrade_count", m_max_downgrade_count );
 	// shell time
-	file << "\t\t<Property name=\"shell_time\" value=\"" << m_shell_time << "\" />" << std::endl;
+	Write_Property( stream, "shell_time", m_shell_time );
 	// level ends if killed
-	file << "\t\t<Property name=\"level_ends_if_killed\" value=\"" << m_level_ends_if_killed << "\" />" << std::endl;
+	Write_Property( stream, "level_ends_if_killed", m_level_ends_if_killed );
 
-	// end enemy
-	file << "\t</enemy>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cTurtleBoss :: Set_Max_Hits( int nmax_hits )
@@ -673,7 +673,10 @@ void cTurtleBoss :: Throw_Fireballs( unsigned int amount /* = 6 */ )
 		// add step size to angle
 		ball_angle += step_size;
 
-		cBall *ball = new cBall( m_sprite_manager, m_pos_x + m_col_rect.m_w / 2, m_pos_y + m_col_rect.m_h / 2, this, FIREBALL_EXPLOSION );
+		cBall *ball = new cBall( m_sprite_manager );
+		ball->Set_Pos( m_pos_x + m_col_rect.m_w / 2, m_pos_y + m_col_rect.m_h / 2, 1 );
+		ball->Set_Origin( m_sprite_array, m_type );
+		ball->Set_Ball_Type( FIREBALL_EXPLOSION );
 		ball->Set_Velocity_From_Angle( ball_angle, 15 );
 		if( ball->m_velx > 0.0f )
 		{

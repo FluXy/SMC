@@ -35,13 +35,13 @@ namespace SMC
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
 cLevel_Exit :: cLevel_Exit( cSprite_Manager *sprite_manager )
-: cAnimated_Sprite( sprite_manager )
+: cAnimated_Sprite( sprite_manager, "levelexit" )
 {
 	cLevel_Exit::Init();
 }
 
 cLevel_Exit :: cLevel_Exit( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manager )
-: cAnimated_Sprite( sprite_manager )
+: cAnimated_Sprite( sprite_manager, "levelexit" )
 {
 	cLevel_Exit::Init();
 	cLevel_Exit::Create_From_Stream( attributes );
@@ -120,30 +120,30 @@ void cLevel_Exit :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	}
 }
 
-void cLevel_Exit :: Save_To_Stream( ofstream &file )
+void cLevel_Exit :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin levelexit
-	file << "\t<levelexit>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 	// type
-	file << "\t\t<Property name=\"type\" value=\"" << m_exit_type << "\" />" << std::endl;
+	Write_Property( stream, "type", m_exit_type );
 	// camera motion
-	file << "\t\t<Property name=\"camera_motion\" value=\"" << m_exit_motion << "\" />" << std::endl;
+	Write_Property( stream, "camera_motion", m_exit_motion );
 
 	// destination level name
 	std::string str_level = Get_Level( 0, 0 );
 	if( !str_level.empty() )
 	{
-		file << "\t\t<Property name=\"level_name\" value=\"" << string_to_xml_string( str_level ) << "\" />" << std::endl;
+		Write_Property( stream, "level_name", str_level );
 	}
 
 	// destination entry name
 	if( !m_dest_entry.empty() )
 	{
-		file << "\t\t<Property name=\"entry\" value=\"" << string_to_xml_string( m_dest_entry ) << "\" />" << std::endl;
+		Write_Property( stream, "entry", m_dest_entry );
 	}
 
 	// path identifier
@@ -151,18 +151,18 @@ void cLevel_Exit :: Save_To_Stream( ofstream &file )
 	{
 		if( !m_path_identifier.empty() )
 		{
-			file << "\t\t<Property name=\"path_identifier\" value=\"" << string_to_xml_string( m_path_identifier ) << "\" />" << std::endl;
+			Write_Property( stream, "path_identifier", m_path_identifier );
 		}
 	}
 
 	if( m_exit_type == LEVEL_EXIT_WARP )
 	{
 		// direction
-		file << "\t\t<Property name=\"direction\" value=\"" << Get_Direction_Name( m_start_direction ) << "\" />" << std::endl;
+		Write_Property( stream, "direction", Get_Direction_Name( m_start_direction ) );
 	}
 
-	// end levelexit
-	file << "\t</levelexit>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cLevel_Exit :: Set_Direction( const ObjectDirection dir )

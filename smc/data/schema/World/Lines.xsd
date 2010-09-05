@@ -5,14 +5,16 @@
 	
 	<xsd:complexType name="LayerType">
 		<xsd:choice minOccurs="0" maxOccurs="unbounded">
-			<xsd:element name="line" type="LineType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="line" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:choice>
 	</xsd:complexType>
 
-	<xsd:complexType name="LineType">
-		<xsd:sequence>
-			<xsd:element name="Property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded" />
-		</xsd:sequence>
+	<xsd:complexType name="PropertyType">
+		<xsd:choice>
+			<xsd:element name="Property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- small case is used since V.2.0 -->
+			<xsd:element name="property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:choice>
 	</xsd:complexType>
 
 	<xsd:complexType name="PropertyBaseType">

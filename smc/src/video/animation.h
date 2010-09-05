@@ -37,7 +37,7 @@ enum BlendingMode
 class cAnimation : public cAnimated_Sprite
 {
 public:
-	cAnimation( cSprite_Manager *sprite_manager );
+	cAnimation( cSprite_Manager *sprite_manager, std::string type_name = "sprite" );
 	virtual ~cAnimation( void );
 
 	// initialize animation
@@ -117,7 +117,7 @@ public:
 
 /* *** *** *** *** *** *** *** Particle Emitter item *** *** *** *** *** *** *** *** *** *** */
 
-// pre declare
+// forward declare
 class cParticle_Emitter;
 
 // Particle Item
@@ -172,15 +172,16 @@ public:
 	// destructor
 	virtual ~cParticle_Emitter( void );
 
-	// create from stream
-	virtual void Create_From_Stream( CEGUI::XMLAttributes &attributes );
-	// save to stream
-	virtual void Save_To_Stream( ofstream &file );
-
 	// Init
 	virtual void Init( void );
 	// copy
 	virtual cParticle_Emitter *Copy( void ) const;
+
+	// create from stream
+	virtual void Create_From_Stream( CEGUI::XMLAttributes &attributes );
+	// save to stream
+	virtual void Save_To_XML( CEGUI::XMLSerializer &stream );
+
 	// pre-update animation
 	void Pre_Update( void );
 	// Emit Particles

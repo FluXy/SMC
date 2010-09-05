@@ -18,6 +18,7 @@
 #include "../core/framerate.h"
 #include "../video/animation.h"
 #include "../core/i18n.h"
+#include "../core/game_core.h"
 // CEGUI
 #include "CEGUIXMLAttributes.h"
 
@@ -75,19 +76,19 @@ void cjStar :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );
 }
 
-void cjStar :: Save_To_Stream( ofstream &file )
+void cjStar :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin item
-	file << "\t<item>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// type
-	file << "\t\t<Property name=\"type\" value=\"jstar\" />" << std::endl;
+	Write_Property( stream, "type", "jstar" );
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 
-	// end item
-	file << "\t</item>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cjStar :: Activate( void )

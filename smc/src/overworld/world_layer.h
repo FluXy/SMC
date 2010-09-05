@@ -40,7 +40,7 @@ public:
 	virtual ~cLayer_Line_Point( void );
 
 	// save to stream
-	virtual void Save_To_Stream( ofstream &file ) {};
+	virtual void Save_To_XML( CEGUI::XMLSerializer &stream ) {};
 
 	// draw
 	virtual void Draw( cSurface_Request *request = NULL );
@@ -172,7 +172,7 @@ private:
 	// XML element end
 	virtual void elementEnd( const CEGUI::String &element );
 
-	// XML element Property list
+	// XML element property list
 	CEGUI::XMLAttributes m_xml_attributes;
 };
 

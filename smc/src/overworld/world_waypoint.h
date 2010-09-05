@@ -52,7 +52,7 @@ public:
 	// create from stream
 	virtual void Create_From_Stream( CEGUI::XMLAttributes &attributes );
 	// save to stream
-	virtual void Save_To_Stream( ofstream &file );
+	virtual void Save_To_XML( CEGUI::XMLSerializer &stream );
 
 	// Update
 	virtual void Update( void );

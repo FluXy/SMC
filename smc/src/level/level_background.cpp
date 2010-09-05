@@ -86,47 +86,47 @@ void cBackground :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	}
 }
 
-void cBackground :: Save_To_Stream( ofstream &file )
+void cBackground :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
 	if( m_type == BG_NONE && m_image_1_filename.length() <= 3 )
 	{
 		return;
 	}
 
-	// begin background
-	file << "\t<background>" << std::endl;
+	// begin
+	stream.openTag( "background" );
 
 	// type
-	file << "\t\t<Property name=\"type\" value=\"" << m_type << "\" />" << std::endl;
+	Write_Property( stream, "type", m_type );
 
 	// gradient
 	if( m_type == BG_GR_HOR || m_type == BG_GR_VER )
 	{
 		// background color 1
-		file << "\t\t<Property name=\"bg_color_1_red\" value=\"" << static_cast<int>(m_color_1.red) << "\" />" << std::endl;
-		file << "\t\t<Property name=\"bg_color_1_green\" value=\"" << static_cast<int>(m_color_1.green) << "\" />" << std::endl;
-		file << "\t\t<Property name=\"bg_color_1_blue\" value=\"" << static_cast<int>(m_color_1.blue) << "\" />" << std::endl;
+		Write_Property( stream, "bg_color_1_red", static_cast<int>(m_color_1.red) );
+		Write_Property( stream, "bg_color_1_green", static_cast<int>(m_color_1.green) );
+		Write_Property( stream, "bg_color_1_blue", static_cast<int>(m_color_1.blue) );
 		// background color 2
-		file << "\t\t<Property name=\"bg_color_2_red\" value=\"" << static_cast<int>(m_color_2.red) << "\" />" << std::endl;
-		file << "\t\t<Property name=\"bg_color_2_green\" value=\"" << static_cast<int>(m_color_2.green) << "\" />" << std::endl;
-		file << "\t\t<Property name=\"bg_color_2_blue\" value=\"" << static_cast<int>(m_color_2.blue) << "\" />" << std::endl;
+		Write_Property( stream, "bg_color_2_red", static_cast<int>(m_color_2.red) );
+		Write_Property( stream, "bg_color_2_green", static_cast<int>(m_color_2.green) );
+		Write_Property( stream, "bg_color_2_blue", static_cast<int>(m_color_2.blue) );
 	}
 	// image
 	else if( m_type == BG_IMG_BOTTOM || m_type == BG_IMG_TOP || m_type == BG_IMG_ALL )
 	{
 		// position
-		file << "\t\t<Property name=\"posx\" value=\"" << m_start_pos_x << "\" />" << std::endl;
-		file << "\t\t<Property name=\"posy\" value=\"" << m_start_pos_y << "\" />" << std::endl;
-		file << "\t\t<Property name=\"posz\" value=\"" << m_pos_z << "\" />" << std::endl;
+		Write_Property( stream, "posx", m_start_pos_x );
+		Write_Property( stream, "posy", m_start_pos_y );
+		Write_Property( stream, "posz", m_pos_z );
 
 		// image filename
-		file << "\t\t<Property name=\"image\" value=\"" << m_image_1_filename << "\" />" << std::endl;
+		Write_Property( stream, "image", m_image_1_filename );
 		// speed
-		file << "\t\t<Property name=\"speedx\" value=\"" << m_speed_x << "\" />" << std::endl;
-		file << "\t\t<Property name=\"speedy\" value=\"" << m_speed_y << "\" />" << std::endl;
+		Write_Property( stream, "speedx", m_speed_x );
+		Write_Property( stream, "speedy", m_speed_y );
 		// constant velocity
-		file << "\t\t<Property name=\"const_velx\" value=\"" << m_const_vel_x << "\" />" << std::endl;
-		file << "\t\t<Property name=\"const_vely\" value=\"" << m_const_vel_y << "\" />" << std::endl;
+		Write_Property( stream, "const_velx", m_const_vel_x );
+		Write_Property( stream, "const_vely", m_const_vel_y );
 	}
 	else
 	{
@@ -134,7 +134,7 @@ void cBackground :: Save_To_Stream( ofstream &file )
 	}
 
 	// end background
-	file << "\t</background>" << std::endl;
+	stream.closeTag();
 }
 
 void cBackground :: Set_Sprite_Manager( cSprite_Manager *sprite_manager )

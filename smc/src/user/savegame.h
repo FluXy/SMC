@@ -26,7 +26,7 @@ namespace SMC
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-#define SAVEGAME_VERSION 11
+#define SAVEGAME_VERSION 12
 #define SAVEGAME_VERSION_UNSUPPORTED 5
 
 /* *** *** *** *** *** *** *** cSave_Overworld_Waypoint *** *** *** *** *** *** *** *** *** *** */
@@ -84,7 +84,7 @@ public:
 	// Check if property exists
 	bool exists( const std::string &val_name );
 
-	// Returns the Value
+	// Returns the value
 	std::string Get_Value( const std::string &val_name );
 
 	SpriteType m_type;
@@ -110,6 +110,8 @@ public:
 
 	// objects data
 	Save_Level_ObjectList m_level_objects;
+	// spawned objects
+	cSprite_List m_spawned_objects;
 };
 
 typedef vector<cSave_Level *> Save_LevelList;
@@ -124,12 +126,12 @@ public:
 	// Initialize data to empty values
 	void Init( void );
 
-	// description
-	std::string m_description;
 	// savegame version
 	int m_version;
 	// time ( seconds since 1970 )
 	time_t m_save_time;
+	// description
+	std::string m_description;
 
 	// lives
 	unsigned int m_lives;
@@ -148,6 +150,8 @@ public:
 	Save_LevelList m_levels;
 	// level time
 	Uint32 m_level_time;
+	// level engine version
+	int m_level_engine_version;
 
 	/* active overworld
 	 * if not set game mode is custom level
@@ -162,7 +166,7 @@ public:
 
 /* *** *** *** *** *** *** *** cSavegame *** *** *** *** *** *** *** *** *** *** */
 
-class cSavegame : public CEGUI::XMLHandler
+class cSavegame
 {
 public:
 	cSavegame( void );
@@ -190,7 +194,21 @@ public:
 
 	// savegame directory
 	std::string m_savegame_dir;
-private:
+};
+
+/* *** *** *** *** *** *** *** cSavegame_XML_Handler *** *** *** *** *** *** *** *** *** *** */
+
+class cSavegame_XML_Handler : public CEGUI::XMLHandler
+{
+public:
+	cSavegame_XML_Handler( const CEGUI::String &filename );
+	virtual ~cSavegame_XML_Handler( void );
+
+	/* Returns the savegame data
+	 * The returned savegame should be deleted if not used anymore
+	*/
+	cSave *Acquire_Savegame( void );
+
 	// XML element start
 	virtual void elementStart( const CEGUI::String &element, const CEGUI::XMLAttributes &attributes );
 	// XML element end
@@ -198,21 +216,27 @@ private:
 
 	void Handle_Level( const CEGUI::XMLAttributes &attributes );
 	void Handle_Level_Object( const CEGUI::XMLAttributes &attributes );
+	void Handle_Level_Spawned_Object( const CEGUI::String &element, CEGUI::XMLAttributes &attributes );
 	void Handle_Player( const CEGUI::XMLAttributes &attributes );
 	void Handle_Overworld_Data( const CEGUI::XMLAttributes &attributes );
 	void Handle_Overworld( const CEGUI::XMLAttributes &attributes );
-	void Handle_Overworld_Level( const CEGUI::XMLAttributes &attributes );
+	void Handle_Overworld_Waypoint( const CEGUI::XMLAttributes &attributes );
 
-	// XML element Item Tag list
+	// if old format savegame
+	bool m_old_format;
+
+	// XML attributes list
 	CEGUI::XMLAttributes m_xml_attributes;
 
-	// current savegame overworld waypoints for overworld parsing
+	// overworld waypoints for parsing
 	Save_Overworld_WaypointList m_active_waypoints;
-	// current savegame level objects for level parsing
+	// level objects for parsing
 	Save_Level_ObjectList m_level_objects;
+	// level spawned objects for parsing
+	cSprite_List m_level_spawned_objects;
 
-	// temp save used for loading
-	cSave *m_save_temp;
+	// savegame data
+	cSave *m_savegame;
 };
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */

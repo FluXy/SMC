@@ -78,27 +78,28 @@ void cOverworld_description :: Save( void )
 
 	if( !file )
 	{
-		pHud_Debug->Set_Text( _("Couldn't save world description ") + filename );
+		pHud_Debug->Set_Text( _("Couldn't save world description ") + filename, speedfactor_fps * 5.0f );
 		return;
 	}
 
-	// xml info
-	file << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
-	// begin Description
-	file << "<Description>" << std::endl;
+	CEGUI::XMLSerializer stream( file );
 
-	// begin World
-	file << "\t<World>" << std::endl;
+	// begin 
+	stream.openTag( "description" );
+
+	// begin
+	stream.openTag( "world" );
 		// name
-		file << "\t\t<Property Name=\"name\" Value=\"" << string_to_xml_string( m_name ) << "\" />" << std::endl;
+		Write_Property( stream, "name", m_name );
 		// visible
-		file << "\t\t<Property Name=\"visible\" Value=\"" << m_visible << "\" />" << std::endl;
-	// end World
-	file << "\t</World>" << std::endl;
+		Write_Property( stream, "visible", m_visible );
+	// end world
+	stream.closeTag();
 
 
-	// end Description
-	file << "</Description>" << std::endl;
+	// end description
+	stream.closeTag();
+
 	file.close();
 }
 
@@ -114,37 +115,40 @@ std::string cOverworld_description :: Get_Full_Path( void ) const
 	return DATA_DIR "/" GAME_OVERWORLD_DIR "/" + m_path;
 }
 
-// XML element start
 void cOverworld_description :: elementStart( const CEGUI::String &element, const CEGUI::XMLAttributes &attributes )
 {
-	// Property of an Element
-	if( element == "Property" )
+	if( element == "property" )
+	{
+		m_xml_attributes.add( attributes.getValueAsString( "name" ), attributes.getValueAsString( "value" ) );
+	}
+	else if( element == "Property" )
 	{
 		m_xml_attributes.add( attributes.getValueAsString( "Name" ), attributes.getValueAsString( "Value" ) );
 	}
 }
 
-// XML element end
 void cOverworld_description :: elementEnd( const CEGUI::String &element )
 {
-	if( element != "Property" )
+	if( element == "property" || element == "Property" )
 	{
-		if( element == "World" )
-		{
-			handle_world( m_xml_attributes );
-		}
-		else if( element == "Description" )
-		{
-			// ignore
-		}
-		else if( element.length() )
-		{
-			printf( "Warning : World Description Unknown element : %s\n", element.c_str() );
-		}
-
-		// clear
-		m_xml_attributes = CEGUI::XMLAttributes();
+		return;
 	}
+
+	if( element == "world" || element == "World" )
+	{
+		handle_world( m_xml_attributes );
+	}
+	else if( element == "description" || element == "Description" )
+	{
+		// ignore
+	}
+	else if( element.length() )
+	{
+		printf( "Warning : World Description Unknown element : %s\n", element.c_str() );
+	}
+
+	// clear
+	m_xml_attributes = CEGUI::XMLAttributes();
 }
 
 void cOverworld_description :: handle_world( const CEGUI::XMLAttributes &attributes )
@@ -301,50 +305,53 @@ void cOverworld :: Save( void )
 
 	if( !file )
 	{
-		pHud_Debug->Set_Text( _("Couldn't save world ") + filename );
+		printf( "Error : Couldn't open world file for saving. Is the file read-only ?" );
+		pHud_Debug->Set_Text( _("Couldn't save world ") + filename, speedfactor_fps * 5.0f );
 		return;
 	}
 
-	// xml info
-	file << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
-	// begin overworld
-	file << "<overworld>" << std::endl;
+	CEGUI::XMLSerializer stream( file );
 
-	// begin info
-	file << "\t<information>" << std::endl;
-	// game version
-	file << "\t\t<Property name=\"game_version\" value=\"" << smc_version << "\" />" << std::endl;
-	// engine version
-	file << "\t\t<Property name=\"engine_version\" value=\"" << world_engine_version << "\" />" << std::endl;
-	// time ( seconds since 1970 )
-	file << "\t\t<Property name=\"save_time\" value=\"" << time( NULL ) << "\" />" << std::endl;
-	// end info
-	file << "\t</information>" << std::endl;
 
-	// begin settings
-	file << "\t<settings>" << std::endl;
-	// music
-	file << "\t\t<Property name=\"music\" value=\"" << string_to_xml_string( m_musicfile ) << "\" />" << std::endl;
+	// begin
+	stream.openTag( "overworld" );
+
+	// begin
+	stream.openTag( "information" );
+		// game version
+		Write_Property( stream, "game_version", smc_version );
+		// engine version
+		Write_Property( stream, "engine_version", world_engine_version );
+		// time ( seconds since 1970 )
+		Write_Property( stream, "save_time", static_cast<Uint64>( time( NULL ) ) );
+	// end information
+	stream.closeTag();
+
+	// begin
+	stream.openTag( "settings" );
+		// music
+		Write_Property( stream, "music", m_musicfile );
 	// end settings
-	file << "\t</settings>" << std::endl;
+	stream.closeTag();
 
-	// begin background
-	file << "\t<background>" << std::endl;
-	// color
-	file << "\t\t<Property name=\"color_red\" value=\"" << static_cast<int>(m_background_color.red) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"color_green\" value=\"" << static_cast<int>(m_background_color.green) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"color_blue\" value=\"" << static_cast<int>(m_background_color.blue) << "\" />" << std::endl;
+	// begin
+	stream.openTag( "background" );
+		// color
+		Write_Property( stream, "color_red", static_cast<int>(m_background_color.red) );
+		Write_Property( stream, "color_green", static_cast<int>(m_background_color.green) );
+		Write_Property( stream, "color_blue", static_cast<int>(m_background_color.blue) );
 	// end background
-	file << "\t</background>" << std::endl;
+	stream.closeTag();
 
-	// begin player
-	file << "\t<player>" << std::endl;
-	// start waypoint
-	file << "\t\t<Property name=\"waypoint\" value=\"" << m_player_start_waypoint << "\" />" << std::endl;
-	// moving state
-	file << "\t\t<Property name=\"moving_state\" value=\"" << static_cast<int>(m_player_moving_state) << "\" />" << std::endl;
+	// begin
+	stream.openTag( "player" );
+		// start waypoint
+		Write_Property( stream, "waypoint", m_player_start_waypoint );
+		// moving state
+		Write_Property( stream, "moving_state", static_cast<int>(m_player_moving_state) );
 	// end player
-	file << "\t</player>" << std::endl;
+	stream.closeTag();
+
 	// objects
 	for( cSprite_List::iterator itr = m_sprite_manager->objects.begin(); itr != m_sprite_manager->objects.end(); ++itr )
 	{
@@ -357,19 +364,16 @@ void cOverworld :: Save( void )
 		}
 
 		// save to file stream
-		obj->Save_To_Stream( file );
+		obj->Save_To_XML( stream );
 	}
 
 	// end overworld
-	file << "</overworld>" << std::endl;
+	stream.closeTag();
+
 	file.close();
 
-	// save Layer
-	if( m_layer->Save( save_dir + "/layer.xml" ) )
-	{
-		printf( "Saving World %s Layer failed\n", m_description->m_name.c_str() );
-	}
-
+	// save layer
+	m_layer->Save( save_dir + "/layer.xml" );
 	// save description
 	m_description->Save();
 
@@ -1051,74 +1055,73 @@ bool cOverworld :: Is_Loaded( void ) const
 	return 0;
 }
 
-// XML element start
 void cOverworld :: elementStart( const CEGUI::String &element, const CEGUI::XMLAttributes &attributes )
 {
-	// Property of an Element
-	if( element == "Property" )
+	if( element == "property" || element == "Property" )
 	{
 		m_xml_attributes.add( attributes.getValueAsString( "name" ), attributes.getValueAsString( "value" ) );
 	}
 }
 
-// XML element end
 void cOverworld :: elementEnd( const CEGUI::String &element )
 {
-	if( element != "Property" )
+	if( element == "property" || element == "Property" )
 	{
-		if( element == "information" )
-		{
-			m_engine_version = m_xml_attributes.getValueAsInteger( "engine_version" );
-			m_last_saved = m_xml_attributes.getValueAsInteger( "save_time" );
-		}
-		else if( element == "settings" )
-		{
-			// Author
-			//author = m_xml_attributes.getValueAsString( "author" ).c_str();
-			// Version
-			//version = m_xml_attributes.getValueAsString( "version" ).c_str();
-			// Music
-			m_musicfile = xml_string_to_string( m_xml_attributes.getValueAsString( "music" ).c_str() );
-			// Camera Limits
-			//pOverworld_Manager->camera->Set_Limits( GL_rect( static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_x" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_y" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_w" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_h" )) ) );
-		}
-		else if( element == "player" )
-		{
-			// Start Waypoint
-			m_player_start_waypoint = m_xml_attributes.getValueAsInteger( "waypoint" );
-			// Moving State
-			m_player_moving_state = static_cast<Moving_state>(m_xml_attributes.getValueAsInteger( "moving_state" ));
-		}
-		else if( element == "background" )
-		{
-			m_background_color = Color( static_cast<Uint8>(m_xml_attributes.getValueAsInteger( "color_red" )), m_xml_attributes.getValueAsInteger( "color_green" ), m_xml_attributes.getValueAsInteger( "color_blue" ) );
-		}
-		else
-		{
-			// get World object
-			cSprite *object = Get_World_Object( element, m_xml_attributes, m_engine_version, m_sprite_manager, this );
-			
-			// valid
-			if( object )
-			{
-				m_sprite_manager->Add( object );
-			}
-			else if( element == "overworld" )
-			{
-				// ignore
-			}
-			else if( element.length() )
-			{
-				printf( "Warning : Overworld Unknown element : %s\n", element.c_str() );
-			}
-		}
-
-		// clear
-		m_xml_attributes = CEGUI::XMLAttributes();
+		return;
 	}
+
+	if( element == "information" )
+	{
+		m_engine_version = m_xml_attributes.getValueAsInteger( "engine_version" );
+		m_last_saved = string_to_int64( m_xml_attributes.getValueAsString( "save_time" ).c_str() );
+	}
+	else if( element == "settings" )
+	{
+		// Author
+		//author = m_xml_attributes.getValueAsString( "author" ).c_str();
+		// Version
+		//version = m_xml_attributes.getValueAsString( "version" ).c_str();
+		// Music
+		m_musicfile = xml_string_to_string( m_xml_attributes.getValueAsString( "music" ).c_str() );
+		// Camera Limits
+		//pOverworld_Manager->camera->Set_Limits( GL_rect( static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_x" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_y" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_w" )), static_cast<float>(m_xml_attributes.getValueAsInteger( "cam_limit_h" )) ) );
+	}
+	else if( element == "player" )
+	{
+		// Start Waypoint
+		m_player_start_waypoint = m_xml_attributes.getValueAsInteger( "waypoint" );
+		// Moving State
+		m_player_moving_state = static_cast<Moving_state>(m_xml_attributes.getValueAsInteger( "moving_state" ));
+	}
+	else if( element == "background" )
+	{
+		m_background_color = Color( static_cast<Uint8>(m_xml_attributes.getValueAsInteger( "color_red" )), m_xml_attributes.getValueAsInteger( "color_green" ), m_xml_attributes.getValueAsInteger( "color_blue" ) );
+	}
+	else
+	{
+		// get World object
+		cSprite *object = Create_World_Object_From_XML( element, m_xml_attributes, m_engine_version, m_sprite_manager, this );
+		
+		// valid
+		if( object )
+		{
+			m_sprite_manager->Add( object );
+		}
+		else if( element == "overworld" )
+		{
+			// ignore
+		}
+		else if( element.length() )
+		{
+			printf( "Warning : Overworld Unknown element : %s\n", element.c_str() );
+		}
+	}
+
+	// clear
+	m_xml_attributes = CEGUI::XMLAttributes();
 }
 
-cSprite *Get_World_Object( const CEGUI::String &element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager, cOverworld *overworld )
+cSprite *Create_World_Object_From_XML( const CEGUI::String &element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager, cOverworld *overworld )
 {
 	if( element == "sprite" )
 	{

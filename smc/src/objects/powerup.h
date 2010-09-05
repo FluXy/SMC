@@ -71,14 +71,13 @@ public:
 
 	// init defaults
 	void Init( void );
-
 	// copy
 	virtual cMushroom *Copy( void ) const;
 
 	// create from stream
 	virtual void Create_From_Stream( CEGUI::XMLAttributes &attributes );
 	// save to stream
-	virtual void Save_To_Stream( ofstream &file );
+	virtual void Save_To_XML( CEGUI::XMLSerializer &stream );
 
 	// Set the Mushroom Type
 	void Set_Type( SpriteType new_type );
@@ -120,7 +119,7 @@ public:
 	// create from stream
 	virtual void Create_From_Stream( CEGUI::XMLAttributes &attributes );
 	// save to stream
-	virtual void Save_To_Stream( ofstream &file );
+	virtual void Save_To_XML( CEGUI::XMLSerializer &stream );
 
 	// Activates the item
 	virtual void Activate( void );
@@ -148,14 +147,13 @@ public:
 
 	// init defaults
 	void Init( void );
-
 	// copy
 	virtual cMoon *Copy( void ) const;
 
 	// create from stream
 	virtual void Create_From_Stream( CEGUI::XMLAttributes &attributes );
 	// save to stream
-	virtual void Save_To_Stream( ofstream &file );
+	virtual void Save_To_XML( CEGUI::XMLSerializer &stream );
 
 	// Activates the item
 	virtual void Activate( void );

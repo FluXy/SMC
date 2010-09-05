@@ -40,7 +40,7 @@ public:
 class cAnimated_Sprite : public cMovingSprite
 {
 public:
-	cAnimated_Sprite( cSprite_Manager *sprite_manager );
+	cAnimated_Sprite( cSprite_Manager *sprite_manager, std::string type_name = "sprite" );
 	virtual ~cAnimated_Sprite( void );
 	
 	/* Add an image to the animation

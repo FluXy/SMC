@@ -27,9 +27,31 @@ namespace SMC
 class cBall : public cAnimated_Sprite
 {
 public:
-	cBall( cSprite_Manager *sprite_manager, float x, float y, const cSprite *origin_object = NULL, ball_effect btype = FIREBALL_DEFAULT );
+	// constructor
+	cBall( cSprite_Manager *sprite_manager );
+	// create from stream
+	cBall( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manager );
+	// destructor
 	virtual ~cBall( void );
 
+	// init defaults
+	void Init( void );
+	// copy
+	virtual cBall *Copy( void ) const;
+	// create from stream
+	virtual void Create_From_Stream( CEGUI::XMLAttributes &attributes );
+	// save to stream
+	virtual void Save_To_XML( CEGUI::XMLSerializer &stream );
+
+	// load from savegame
+	virtual void Load_From_Savegame( cSave_Level_Object *save_object );
+	// save to savegame
+	virtual cSave_Level_Object *Save_To_Savegame( void );
+
+	// set type
+	void Set_Ball_Type( ball_effect type );
+	// set origin
+	void Set_Origin( ArrayType origin_array, SpriteType origin_type );
 	// like Destroy but with sound option
 	void Destroy_Ball( bool with_sound = 0 );
 
@@ -63,7 +85,7 @@ public:
 	// handle moved out of Level event
 	virtual void Handle_out_of_Level( ObjectDirection dir );
 
-	// ball origin
+	// origin
 	ArrayType m_origin_array;
 	SpriteType m_origin_type;
 	// ball type

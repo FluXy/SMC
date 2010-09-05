@@ -86,23 +86,23 @@ void cTurtle :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Color( static_cast<DefaultColor>(Get_Color_Id( attributes.getValueAsString( "color", Get_Color_Name( m_color_type ) ).c_str() )) );
 }
 
-void cTurtle :: Save_To_Stream( ofstream &file )
+void cTurtle :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin enemy
-	file << "\t<enemy>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// name
-	file << "\t\t<Property name=\"type\" value=\"turtle\" />" << std::endl;
+	Write_Property( stream, "type", "turtle" );
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 	// color
-	file << "\t\t<Property name=\"color\" value=\"" << Get_Color_Name( m_color_type ) << "\" />" << std::endl;
+	Write_Property( stream, "color", Get_Color_Name( m_color_type ) );
 	// direction
-	file << "\t\t<Property name=\"direction\" value=\"" << Get_Direction_Name( m_start_direction ) << "\" />" << std::endl;
+	Write_Property( stream, "direction", Get_Direction_Name( m_start_direction ) );
 
-	// end enemy
-	file << "\t</enemy>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cTurtle :: Load_From_Savegame( cSave_Level_Object *save_object )
@@ -735,10 +735,21 @@ Col_Valid_Type cTurtle :: Validate_Collision( cSprite *obj )
 
 void cTurtle :: Handle_Collision_Player( cObjectCollision *collision )
 {
-	if( collision->m_direction == DIR_UNDEFINED || ( m_turtle_state == TURTLE_SHELL_RUN && m_player_counter > 0.0f ) || m_state == STA_OBJ_LINKED )
+	if( collision->m_direction == DIR_UNDEFINED || ( m_turtle_state == TURTLE_SHELL_RUN && m_player_counter > 0.0f ) )
 	{
 		return;
 	}
+
+	if( m_state == STA_OBJ_LINKED )
+	{
+		if( m_freeze_counter )
+		{
+			DownGrade();
+		}
+
+		return;
+	}
+	
 
 	if( collision->m_direction == DIR_TOP && pLevel_Player->m_state != STA_FLY )
 	{
@@ -1011,7 +1022,7 @@ void cTurtle :: Handle_Collision_Massive( cObjectCollision *collision )
 		}
 	}
 
-	if( m_state == STA_OBJ_LINKED )
+	if( m_state == STA_OBJ_LINKED && m_freeze_counter <= 0.0f )
 	{
 		return;
 	}
@@ -1037,7 +1048,14 @@ void cTurtle :: Handle_Collision_Massive( cObjectCollision *collision )
 	}
 	else if( collision->m_direction == DIR_RIGHT || collision->m_direction == DIR_LEFT )
 	{
-		Turn_Around( collision->m_direction );
+		if( m_freeze_counter )
+		{
+			m_velx = 0.0f;
+		}
+		else
+		{
+			Turn_Around( collision->m_direction );
+		}
 	}
 }
 

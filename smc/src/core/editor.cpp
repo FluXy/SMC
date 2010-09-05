@@ -1773,46 +1773,49 @@ void cEditor :: Add_Help_Line( std::string key_text, std::string description /* 
 	m_help_sprites.push_back( help_sprite_text );
 }
 
-// XML element start
 void cEditor :: elementStart( const CEGUI::String &element, const CEGUI::XMLAttributes &attributes )
 {
-	// Property/Item/Tag of an Element
-	if( element == "Property" )
+	if( element == "property" )
+	{
+		m_xml_attributes.add( attributes.getValueAsString( "name" ), attributes.getValueAsString( "value" ) );
+	}
+	else if( element == "Property" )
 	{
 		m_xml_attributes.add( attributes.getValueAsString( "Name" ), attributes.getValueAsString( "Value" ) );
 	}
 }
 
-// XML element end
 void cEditor :: elementEnd( const CEGUI::String &element )
 {
-	if( element != "Property" )
+	if( element == "property" || element == "Property" )
 	{
-		if( element == "Item" )
-		{
-			// Menu Item
-			if( m_xml_attributes.getValueAsString( "tags" ).length() )
-			{
-				Handle_Menu( m_xml_attributes );
-			}
-			// Items Item
-			else
-			{
-				Handle_Item( m_xml_attributes );
-			}
-		}
-		else if( element == "Items" || element == "Menu" )
-		{
-			// ignore
-		}
-		else if( element.length() )
-		{
-			printf( "Warning : Editor Unknown Item Element : %s\n", element.c_str() );
-		}
-
-		// clear
-		m_xml_attributes = CEGUI::XMLAttributes();
+		return;
 	}
+
+	if( element == "item" || element == "Item" )
+	{
+		// Menu Item
+		if( m_xml_attributes.getValueAsString( "tags" ).length() )
+		{
+			Handle_Menu( m_xml_attributes );
+		}
+		// Items Item
+		else
+		{
+			Handle_Item( m_xml_attributes );
+		}
+	}
+	else if( element == "items" || element == "menu" || element == "Items" || element == "Menu" )
+	{
+		// ignore
+	}
+	else if( element.length() )
+	{
+		printf( "Warning : Unknown editor item element : %s\n", element.c_str() );
+	}
+
+	// clear
+	m_xml_attributes = CEGUI::XMLAttributes();
 }
 
 void cEditor :: Handle_Item( const CEGUI::XMLAttributes &attributes )

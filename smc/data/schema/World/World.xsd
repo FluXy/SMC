@@ -17,9 +17,11 @@
 	</xsd:complexType>
 
 	<xsd:complexType name="PropertyType">
-		<xsd:sequence>
+		<xsd:choice>
 			<xsd:element name="Property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded" />
-		</xsd:sequence>
+			<!-- small case is used since engine version 4 -->
+			<xsd:element name="property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:choice>
 	</xsd:complexType>
 
 	<xsd:complexType name="PropertyBaseType">

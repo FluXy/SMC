@@ -24,14 +24,36 @@
 #include "../level/level.h"
 #include "../gui/hud.h"
 #include "../core/sprite_manager.h"
+#include "../user/savegame.h"
 
 namespace SMC
 {
 
 /* *** *** *** *** *** *** cBall *** *** *** *** *** *** *** *** *** *** *** */
 
-cBall :: cBall( cSprite_Manager *sprite_manager, float x, float y, const cSprite *origin_object /* = NULL */, ball_effect btype /* = FIREBALL_DEFAULT */  )
-: cAnimated_Sprite( sprite_manager )
+cBall :: cBall( cSprite_Manager *sprite_manager )
+: cAnimated_Sprite( sprite_manager, "ball" )
+{
+	cBall::Init();
+}
+
+cBall :: cBall( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manager )
+: cAnimated_Sprite( sprite_manager, "ball" )
+{
+	cBall::Init();
+	cBall::Create_From_Stream( attributes );
+}
+
+cBall :: ~cBall( void )
+{
+	// always destroy
+	if( !m_auto_destroy )
+	{
+		cBall::Destroy();
+	}
+}
+
+void cBall :: Init( void )
 {
 	m_sprite_array = ARRAY_ACTIVE;
 	m_type = TYPE_BALL;
@@ -47,58 +69,132 @@ cBall :: cBall( cSprite_Manager *sprite_manager, float x, float y, const cSprite
 	m_glim_counter = 0.0f;
 	m_fire_counter = 0.0f;
 
-	Set_Pos( x, y, 1 );
+	Set_Origin( ARRAY_UNDEFINED, TYPE_UNDEFINED );
+	Set_Ball_Type( FIREBALL_DEFAULT );
+}
 
-	if( btype == FIREBALL_DEFAULT || btype == FIREBALL_EXPLOSION )
+cBall *cBall :: Copy( void ) const
+{
+	cBall *ball = new cBall( m_sprite_manager );
+	ball->Set_Pos( m_start_pos_x, m_start_pos_y, 1 );
+	ball->Set_Origin( m_origin_array, m_origin_type );
+	ball->Set_Ball_Type( m_ball_type );
+	return ball;
+}
+
+void cBall :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+{
+	// position
+	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );
+	// direction
+	m_direction = static_cast<ObjectDirection>(attributes.getValueAsInteger( "direction" ));
+	// origin array and type
+	Set_Origin( static_cast<ArrayType>(attributes.getValueAsInteger( "origin_array" )), static_cast<SpriteType>(attributes.getValueAsInteger( "origin_type" )) );
+	// type
+	Set_Ball_Type( static_cast<ball_effect>(attributes.getValueAsInteger( "ball_type" )) );
+}
+
+void cBall :: Save_To_XML( CEGUI::XMLSerializer &stream )
+{
+	// begin
+	stream.openTag( m_type_name );
+
+	// position
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
+	// direction
+	Write_Property( stream, "direction", m_direction );
+	// origin array and type
+	Write_Property( stream, "origin_array", m_origin_array );
+	Write_Property( stream, "origin_type", m_origin_type );
+	// type
+	Write_Property( stream, "ball_type", m_ball_type );
+
+	// end
+	stream.closeTag();
+}
+
+void cBall :: Load_From_Savegame( cSave_Level_Object *save_object )
+{
+	// new position x
+	if( save_object->exists( "new_posx" ) )
 	{
-		Add_Image( pVideo->Get_Surface( "animation/fireball/1.png" ) );
+		Set_Pos_X( string_to_float( save_object->Get_Value( "new_posx" ) ) );
+	}
 
-		Set_Image_Num( 0, 1 );
-		Set_Animation( 0 );
+	// new position y
+	if( save_object->exists( "new_posy" ) )
+	{
+		Set_Pos_Y( string_to_float( save_object->Get_Value( "new_posy" ) ) );
+	}
 
+	// direction
+	if( save_object->exists( "direction" ) )
+	{
+		m_direction = static_cast<ObjectDirection>(string_to_int( save_object->Get_Value( "direction" ) ));
+	}
+
+	// velocity x
+	if( save_object->exists( "velx" ) )
+	{
+		m_velx = string_to_float( save_object->Get_Value( "velx" ) );
+	}
+
+	// velocity y
+	if( save_object->exists( "vely" ) )
+	{
+		m_vely = string_to_float( save_object->Get_Value( "vely" ) );
+	}
+}
+
+cSave_Level_Object *cBall :: Save_To_Savegame( void )
+{
+	cSave_Level_Object *save_object = new cSave_Level_Object();
+
+	// default values
+	save_object->m_type = m_type;
+	save_object->m_properties.push_back( cSave_Level_Object_Property( "posx", int_to_string( static_cast<int>(m_start_pos_x) ) ) );
+	save_object->m_properties.push_back( cSave_Level_Object_Property( "posy", int_to_string( static_cast<int>(m_start_pos_y) ) ) );
+
+	// new position
+	save_object->m_properties.push_back( cSave_Level_Object_Property( "new_posx", int_to_string( static_cast<int>(m_pos_x) ) ) );
+	save_object->m_properties.push_back( cSave_Level_Object_Property( "new_posy", int_to_string( static_cast<int>(m_pos_y) ) ) );
+
+	// direction
+	save_object->m_properties.push_back( cSave_Level_Object_Property( "direction", int_to_string( m_direction ) ) );
+
+	// velocity
+	save_object->m_properties.push_back( cSave_Level_Object_Property( "velx", float_to_string( m_velx ) ) );
+	save_object->m_properties.push_back( cSave_Level_Object_Property( "vely", float_to_string( m_vely ) ) );
+
+	return save_object;
+}
+
+void cBall :: Set_Ball_Type( ball_effect type )
+{
+	Clear_Images();
+
+	if( type == FIREBALL_DEFAULT || type == FIREBALL_EXPLOSION )
+	{
+		Set_Image( pVideo->Get_Surface( "animation/fireball/1.png" ) );
 		m_ball_type = FIREBALL_DEFAULT;
 	}
-	else if( btype == ICEBALL_DEFAULT || btype == ICEBALL_EXPLOSION )
+	else if( type == ICEBALL_DEFAULT || type == ICEBALL_EXPLOSION )
 	{
 		Set_Image( pVideo->Get_Surface( "animation/iceball/1.png" ) );
 		m_ball_type = ICEBALL_DEFAULT;
 	}
 	else
 	{
-		printf( "Warning : Ball unknown type %d\n", btype );
+		printf( "Warning : Ball unknown type %d\n", type );
 		cAnimated_Sprite::Destroy();
-		return;
-	}
-
-	if( origin_object )
-	{
-		m_origin_array = origin_object->m_sprite_array;
-		m_origin_type = origin_object->m_type;
-
-		if( m_origin_type == TYPE_PLAYER )
-		{
-			if( m_ball_type == FIREBALL_DEFAULT || m_ball_type == ICEBALL_DEFAULT )
-			{
-				pLevel_Player->m_shoot_counter = speedfactor_fps;
-			}
-		}
-	}
-	// if origin not set
-	else
-	{
-		printf( "Warning : Ball origin not set\n" );
-		m_origin_array = ARRAY_UNDEFINED;
-		m_origin_type = TYPE_UNDEFINED;
 	}
 }
 
-cBall :: ~cBall( void )
+void cBall :: Set_Origin( ArrayType origin_array, SpriteType origin_type )
 {
-	// always destroy
-	if( !m_auto_destroy )
-	{
-		cBall::Destroy();
-	}
+	m_origin_array = origin_array;
+	m_origin_type = origin_type;
 }
 
 void cBall :: Destroy_Ball( bool with_sound /* = 0 */ )

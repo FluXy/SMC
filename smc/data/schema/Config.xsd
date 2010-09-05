@@ -1,16 +1,24 @@
 <?xml version="1.0" ?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
-	<xsd:element name="Preferences" type="PrefType" />
+	<xsd:element name="Preferences" type="ConfigType" />
+	<xsd:element name="config" type="ConfigType" />
 	
-	<xsd:complexType name="PrefType">
-		<xsd:sequence>
-			<xsd:element name="Item" type="ItemType" maxOccurs="unbounded"/>
-		</xsd:sequence>
+	<xsd:complexType name="ConfigType">
+		<xsd:choice>
+			<xsd:element name="Item" type="ItemBaseType" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- property is used since V.2.0 -->
+			<xsd:element name="property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:choice>
 	</xsd:complexType>
-
-	<xsd:complexType name="ItemType">
-		<xsd:attribute name="Name" type="xsd:string" />
-		<xsd:attribute name="Value" type="xsd:string" />
+	
+	<xsd:complexType name="ItemBaseType">
+		<xsd:attribute name="Name" type="xsd:string" use="required"/>
+		<xsd:attribute name="Value" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="PropertyBaseType">
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="value" type="xsd:string" use="required"/>
 	</xsd:complexType>
 </xsd:schema>

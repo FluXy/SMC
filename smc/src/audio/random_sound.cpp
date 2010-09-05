@@ -30,14 +30,14 @@ namespace SMC
 /* *** *** *** *** *** cRandom_Sound *** *** *** *** *** *** *** *** *** *** *** */
 
 cRandom_Sound :: cRandom_Sound( cSprite_Manager *sprite_manager )
-: cSprite( sprite_manager )
+: cSprite( sprite_manager, "sound" )
 {
 	// Set defaults
 	cRandom_Sound::Init();
 }
 
 cRandom_Sound :: cRandom_Sound( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manager )
-: cSprite( sprite_manager )
+: cSprite( sprite_manager, "sound" )
 {
 	cRandom_Sound::Init();
 	cRandom_Sound::Create_From_Stream( attributes );
@@ -115,28 +115,30 @@ void cRandom_Sound :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Volume_Reduction_End( attributes.getValueAsFloat( "volume_reduction_end", m_volume_reduction_end ) );
 }
 
-void cRandom_Sound :: Save_To_Stream( ofstream &ofile )
+void cRandom_Sound :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	ofile << "\t<sound>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// filename
-	ofile << "\t\t<Property name=\"file\" value=\"" << m_filename.c_str() << "\" />" << std::endl;
+	Write_Property( stream, "file", m_filename.c_str() );
 	// position
-	ofile << "\t\t<Property name=\"pos_x\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	ofile << "\t\t<Property name=\"pos_y\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "pos_x", static_cast<int>(m_start_pos_x) );
+	Write_Property( stream, "pos_y", static_cast<int>(m_start_pos_y) );
 	// continuous
-	ofile << "\t\t<Property name=\"continuous\" value=\"" << m_continuous << "\" />" << std::endl;
+	Write_Property( stream, "continuous", m_continuous );
 	// delay
-	ofile << "\t\t<Property name=\"delay_min\" value=\"" << m_delay_min << "\" />" << std::endl;
-	ofile << "\t\t<Property name=\"delay_max\" value=\"" << m_delay_max << "\" />" << std::endl;
+	Write_Property( stream, "delay_min", m_delay_min );
+	Write_Property( stream, "delay_max", m_delay_max );
 	// volume
-	ofile << "\t\t<Property name=\"volume_min\" value=\"" << m_volume_min << "\" />" << std::endl;
-	ofile << "\t\t<Property name=\"volume_max\" value=\"" << m_volume_max << "\" />" << std::endl;
+	Write_Property( stream, "volume_min", m_volume_min );
+	Write_Property( stream, "volume_max", m_volume_max );
 	// volume reduction
-	ofile << "\t\t<Property name=\"volume_reduction_begin\" value=\"" << m_volume_reduction_begin << "\" />" << std::endl;
-	ofile << "\t\t<Property name=\"volume_reduction_end\" value=\"" << m_volume_reduction_end << "\" />" << std::endl;
+	Write_Property( stream, "volume_reduction_begin", m_volume_reduction_begin );
+	Write_Property( stream, "volume_reduction_end", m_volume_reduction_end );
 
-	ofile << "\t</sound>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cRandom_Sound :: Set_Filename( const std::string &str )

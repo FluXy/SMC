@@ -295,14 +295,14 @@ const float cSprite::m_pos_z_massive_start = 0.08f;
 const float cSprite::m_pos_z_front_passive_start = 0.1f;
 const float cSprite::m_pos_z_halfmassive_start = 0.04f;
 
-cSprite :: cSprite( cSprite_Manager *sprite_manager )
-: cCollidingSprite( sprite_manager )
+cSprite :: cSprite( cSprite_Manager *sprite_manager, const std::string type_name /* = "sprite" */ )
+: cCollidingSprite( sprite_manager ), m_type_name( type_name )
 {
 	cSprite::Init();
 }
 
-cSprite :: cSprite( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manager )
-: cCollidingSprite( sprite_manager )
+cSprite :: cSprite( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manager, const std::string type_name /* = "sprite" */ )
+: cCollidingSprite( sprite_manager ), m_type_name( type_name )
 {
 	cSprite::Init();
 	cSprite::Create_From_Stream( attributes );
@@ -421,14 +421,14 @@ void cSprite :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	Set_Sprite_Type( Get_Sprite_Type_Id( attributes.getValueAsString( "type" ).c_str() ) );
 }
 
-void cSprite :: Save_To_Stream( ofstream &file )
+void cSprite :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin sprite
-	file << "\t<sprite>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 	// image
 	std::string img_filename;
 
@@ -442,7 +442,7 @@ void cSprite :: Save_To_Stream( ofstream &file )
 	}
 	else
 	{
-		printf( "Warning: cSprite::Save_To_Stream no image from type %d\n", m_type );
+		printf( "Warning: cSprite::Save_To_XML no image from type %d\n", m_type );
 	}
 
 	// remove pixmaps directory from string
@@ -450,12 +450,12 @@ void cSprite :: Save_To_Stream( ofstream &file )
 	{
 		img_filename.erase( 0, strlen( DATA_DIR "/" GAME_PIXMAPS_DIR "/" ) );
 	}
-	file << "\t\t<Property name=\"image\" value=\"" << img_filename << "\" />" << std::endl;
+	Write_Property( stream, "image", img_filename );
 	// type
-	file << "\t\t<Property name=\"type\" value=\"" << Get_Sprite_Type_String() << "\" />" << std::endl;
+	Write_Property( stream, "type", Get_Sprite_Type_String() );
 
-	// end sprite
-	file << "\t</sprite>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cSprite :: Set_Image( cGL_Surface *new_image, bool new_start_image /* = 0 */, bool del_img /* = 0 */ )

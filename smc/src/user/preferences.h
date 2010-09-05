@@ -204,7 +204,7 @@ private:
 	// XML element end
 	virtual void elementEnd( const CEGUI::String &element );
 	// handles an item
-	void handle_item( const CEGUI::XMLAttributes& attributes );
+	void handle_item( CEGUI::XMLAttributes attributes );
 };
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */

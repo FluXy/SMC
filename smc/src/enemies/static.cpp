@@ -99,31 +99,31 @@ void cStaticEnemy :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	m_ice_resistance = static_cast<float>( attributes.getValueAsFloat( "ice_resistance", m_ice_resistance ) );
 }
 
-void cStaticEnemy :: Save_To_Stream( ofstream &file )
+void cStaticEnemy :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin enemy
-	file << "\t<enemy>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// name
-	file << "\t\t<Property name=\"type\" value=\"static\" />" << std::endl;
+	Write_Property( stream, "type", "static" );
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 	// rotation speed
-	file << "\t\t<Property name=\"rotation_speed\" value=\"" << m_rotation_speed << "\" />" << std::endl;
+	Write_Property( stream, "rotation_speed", m_rotation_speed );
 	// image
-	file << "\t\t<Property name=\"image\" value=\"" << m_img_filename << "\" />" << std::endl;
+	Write_Property( stream, "image", m_img_filename );
     // path
-    file << "\t\t<Property name=\"path\" value=\"" << m_path_state.m_path_identifier << "\" />" << std::endl;
+	Write_Property( stream, "path", m_path_state.m_path_identifier );
     // speed
-    file << "\t\t<Property name=\"speed\" value=\"" << m_speed << "\" />" << std::endl;
+    Write_Property( stream, "speed", m_speed );
 	// fire resistant
-	file << "\t\t<Property name=\"fire_resistant\" value=\"" << m_fire_resistant << "\" />" << std::endl;
+	Write_Property( stream, "fire_resistant", m_fire_resistant );
 	// ice resistance
-	file << "\t\t<Property name=\"ice_resistance\" value=\"" <<  m_ice_resistance << "\" />" << std::endl;
+	Write_Property( stream, "ice_resistance", m_ice_resistance );
 
-	// end enemy
-	file << "\t</enemy>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cStaticEnemy :: Set_Sprite_Manager( cSprite_Manager *sprite_manager )

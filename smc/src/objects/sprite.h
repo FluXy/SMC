@@ -106,9 +106,9 @@ class cSprite : public cCollidingSprite
 {
 public:
 	// constructor
-	cSprite( cSprite_Manager *sprite_manager );
+	cSprite( cSprite_Manager *sprite_manager, const std::string type_name = "sprite" );
 	// create from stream
-	cSprite( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manager );
+	cSprite( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manager, const std::string type_name = "sprite" );
 	// destructor
 	virtual ~cSprite( void );
 
@@ -124,7 +124,7 @@ public:
 	// create from stream
 	virtual void Create_From_Stream( CEGUI::XMLAttributes &attributes );
 	// save to stream
-	virtual void Save_To_Stream( ofstream &file );
+	virtual void Save_To_XML( CEGUI::XMLSerializer &stream );
 
 	// load from savegame
 	virtual void Load_From_Savegame( cSave_Level_Object *save_object ) {};
@@ -491,11 +491,13 @@ public:
 
 	// sprite type
 	SpriteType m_type;
+	// internal type name
+	const std::string m_type_name;
 	// sprite array type
 	ArrayType m_sprite_array;
 	// massive collision type
 	MassiveType m_massive_type;
-	// visible name
+	// visible name for the user
 	std::string m_name;
 	// sprite editor tags
 	std::string m_editor_tags;

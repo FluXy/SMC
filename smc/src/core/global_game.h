@@ -193,7 +193,7 @@ enum LevelLandType
 #define USER_WORLD_DIR "worlds"
 #define USER_IMGCACHE_DIR "cache"
 
-/* *** *** *** *** *** *** *** Pre-declare *** *** *** *** *** *** *** *** *** *** */
+/* *** *** *** *** *** *** *** forward declarations *** *** *** *** *** *** *** *** *** *** */
 
 // Allows use of pointers in header files without including individual headers
 // which decreases dependencies between files
@@ -202,9 +202,9 @@ enum LevelLandType
 static const int speedfactor_fps = 32;
 
 /* *** level engine version *** */
-static const int level_engine_version = 39;
+static const int level_engine_version = 40;
 /* *** world engine version *** */
-static const int world_engine_version = 3;
+static const int world_engine_version = 4;
 
 /* *** Sprite Types *** */
 

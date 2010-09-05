@@ -34,12 +34,12 @@ public:
 	// destructor
 	virtual ~cGoldpiece( void );
 
+	// init defaults
+	void Init( void );
 	// create from stream
 	virtual void Create_From_Stream( CEGUI::XMLAttributes &attributes );
 	// save to stream
-	virtual void Save_To_Stream( ofstream &file );
-	// init defaults
-	void Init( void );
+	virtual void Save_To_XML( CEGUI::XMLSerializer &stream );
 
 	// copy
 	virtual cGoldpiece *Copy( void ) const;

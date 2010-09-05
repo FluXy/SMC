@@ -452,14 +452,14 @@ void cPath_Segment :: Update( void )
 /* *** *** *** *** *** *** *** Path class *** *** *** *** *** *** *** *** *** *** */
 
 cPath :: cPath( cSprite_Manager *sprite_manager )
-: cSprite( sprite_manager )
+: cSprite( sprite_manager, "path" )
 {
 	// Set defaults
 	cPath::Init();
 }
 
 cPath :: cPath( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manager )
-: cSprite( sprite_manager )
+: cSprite( sprite_manager, "path" )
 {
 	cPath::Init();
 	cPath::Create_From_Stream( attributes );
@@ -535,18 +535,18 @@ void cPath :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
 	}
 }
 
-void cPath :: Save_To_Stream( ofstream &file )
+void cPath :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	// begin path
-	file << "\t<path>" << std::endl;
+	// begin
+	stream.openTag( m_type_name );
 
 	// position
-	file << "\t\t<Property name=\"posx\" value=\"" << static_cast<int>(m_start_pos_x) << "\" />" << std::endl;
-	file << "\t\t<Property name=\"posy\" value=\"" << static_cast<int>(m_start_pos_y) << "\" />" << std::endl;
+	Write_Property( stream, "posx", static_cast<int>( m_start_pos_x ) );
+	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 	// identifier
-	file << "\t\t<Property name=\"identifier\" value=\"" << string_to_xml_string( m_identifier ) << "\" />" << std::endl;
+	Write_Property( stream, "identifier", m_identifier );
 	// rewind
-	file << "\t\t<Property name=\"rewind\" value=\"" << m_rewind << "\" />" << std::endl;
+	Write_Property( stream, "rewind", m_rewind );
 
 	// segments
 	unsigned int count = m_segments.size();
@@ -555,14 +555,14 @@ void cPath :: Save_To_Stream( ofstream &file )
 	{
 		std::string str_pos = int_to_string( pos );
 
-		file << "\t\t<Property name=\"" << "segment_" + str_pos + "_x1" << "\" value=\"" << m_segments[pos].m_x1 << "\" />" << std::endl;
-		file << "\t\t<Property name=\"" << "segment_" + str_pos + "_y1" << "\" value=\"" << m_segments[pos].m_y1 << "\" />" << std::endl;
-		file << "\t\t<Property name=\"" << "segment_" + str_pos + "_x2" << "\" value=\"" << m_segments[pos].m_x2 << "\" />" << std::endl;
-		file << "\t\t<Property name=\"" << "segment_" + str_pos + "_y2" << "\" value=\"" << m_segments[pos].m_y2 << "\" />" << std::endl;
+		Write_Property( stream, "segment_" + str_pos + "_x1", m_segments[pos].m_x1 );
+		Write_Property( stream, "segment_" + str_pos + "_y1", m_segments[pos].m_y1 );
+		Write_Property( stream, "segment_" + str_pos + "_x2", m_segments[pos].m_x2 );
+		Write_Property( stream, "segment_" + str_pos + "_y2", m_segments[pos].m_y2 );
 	}
 
-	// end path
-	file << "\t</path>" << std::endl;
+	// end
+	stream.closeTag();
 }
 
 void cPath :: Load_From_Savegame( cSave_Level_Object *save_object )

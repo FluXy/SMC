@@ -286,7 +286,7 @@ void cEditor_Level :: Activate_Menu_Item( cEditor_Menu_Object *entry )
 
 cSprite *cEditor_Level :: Get_Object( const CEGUI::String &element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager )
 {
-	return Get_Level_Object( element, attributes, engine_version, m_sprite_manager );
+	return Create_Level_Object_From_XML( element, attributes, engine_version, m_sprite_manager );
 }
 
 bool cEditor_Level :: Switch_Object_State( cSprite *obj ) const
