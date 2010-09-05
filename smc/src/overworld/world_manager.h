@@ -30,7 +30,7 @@ namespace SMC
 
 class cOverworld;
 
-class cOverworld_Manager : public CEGUI::XMLHandler, public cObject_Manager<cOverworld>
+class cOverworld_Manager : public cObject_Manager<cOverworld>
 {
 public:
 	cOverworld_Manager( cSprite_Manager *sprite_manager );
@@ -67,9 +67,6 @@ public:
 	// Return Overworld array number
 	int Get_Array_Num( const std::string &path ) const;
 
-	// worlds descriptor filename
-	std::string m_worlds_filename;
-
 	// shows additional information
 	bool m_debug_mode;
 	// draw the layer
@@ -79,16 +76,6 @@ public:
 
 	// world camera
 	cCamera *m_camera;
-private:
-	// XML element start
-	virtual void elementStart( const CEGUI::String &element, const CEGUI::XMLAttributes &attributes );
-	// XML element end
-	virtual void elementEnd( const CEGUI::String &element );
-	// handles a world
-	void handle_world( const CEGUI::XMLAttributes &attributes );
-
-	// XML element property list
-	CEGUI::XMLAttributes m_xml_attributes;
 };
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */

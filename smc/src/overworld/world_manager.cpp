@@ -35,8 +35,6 @@ namespace SMC
 cOverworld_Manager :: cOverworld_Manager( cSprite_Manager *sprite_manager )
 : cObject_Manager<cOverworld>()
 {
-	m_worlds_filename = DATA_DIR "/" GAME_OVERWORLD_DIR "/worlds.xml";
-
 	m_debug_mode = 0;
 	m_draw_layer = 0;
 	m_camera_mode = 0;
@@ -87,18 +85,6 @@ void cOverworld_Manager :: Init( void )
 	// Load Worlds
 	Load_Dir( pResource_Manager->user_data_dir + USER_WORLD_DIR, 1 );
 	Load_Dir( DATA_DIR "/" GAME_OVERWORLD_DIR );
-
-	// Get Overworld user comments
-	if( File_Exists( m_worlds_filename ) )
-	{
-		// Parse
-		CEGUI::System::getSingleton().getXMLParser()->parseXMLFile( *this, m_worlds_filename.c_str(), DATA_DIR "/" GAME_SCHEMA_DIR "/Worlds_User_Data.xsd", "" );
-	}
-	else
-	{
-		// filename not valid
-		printf( "Warning : Couldn't open Worlds description file : %s\n", m_worlds_filename.c_str() );
-	}
 }
 
 void cOverworld_Manager :: Load_Dir( const std::string &dir, bool user_dir /* = 0 */ ) 
@@ -250,57 +236,6 @@ int cOverworld_Manager :: Get_Array_Num( const std::string &path ) const
 	}
 
 	return -1;
-}
-
-void cOverworld_Manager :: elementStart( const CEGUI::String &element, const CEGUI::XMLAttributes &attributes )
-{
-	if( element == "property" )
-	{
-		m_xml_attributes.add( attributes.getValueAsString( "name" ), attributes.getValueAsString( "value" ) );
-	}
-	else if( element == "Property" )
-	{
-		m_xml_attributes.add( attributes.getValueAsString( "Name" ), attributes.getValueAsString( "Value" ) );
-	}
-}
-
-void cOverworld_Manager :: elementEnd( const CEGUI::String &element )
-{
-	if( element == "property" || element == "Property" )
-	{
-		return;
-	}
-
-	if( element == "World" )
-	{
-		handle_world( m_xml_attributes );
-	}
-	else if( element == "Worlds" )
-	{
-		// ignore
-	}
-	else if( element.length() )
-	{
-		printf( "Warning : Overworld Description Unknown element : %s\n", element.c_str() );
-	}
-
-	// clear
-	m_xml_attributes = CEGUI::XMLAttributes();
-}
-
-void cOverworld_Manager :: handle_world( const CEGUI::XMLAttributes &attributes )
-{
-	std::string ow_name = attributes.getValueAsString( "Name" ).c_str();
-	std::string ow_comment = attributes.getValueAsString( "Comment" ).c_str();
-
-	// if available
-	cOverworld *overworld = Get_from_Name( ow_name );
-
-	// set comment
-	if( overworld )
-	{
-		overworld->m_description->m_comment = ow_comment;
-	}
 }
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */

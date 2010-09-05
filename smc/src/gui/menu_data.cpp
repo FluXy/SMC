@@ -853,18 +853,18 @@ bool cMenu_Start :: World_Select( const CEGUI::EventArgs &event )
 	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
 	CEGUI::ListboxItem *item = static_cast<CEGUI::Listbox *>( windowEventArgs.window )->getFirstSelectedItem();
 
-	// World Comment
-	CEGUI::Editbox *editbox_world_comment = static_cast<CEGUI::Editbox *>(CEGUI::WindowManager::getSingleton().getWindow( "editbox_world_comment" ));
+	// World description
+	CEGUI::Editbox *editbox_world_description = static_cast<CEGUI::Editbox *>(CEGUI::WindowManager::getSingleton().getWindow( "editbox_world_description" ));
 
-	// set world comment
+	// set world description
 	if( item )
 	{
-		editbox_world_comment->setText( reinterpret_cast<const CEGUI::utf8*>(pOverworld_Manager->Get_from_Name( item->getText().c_str() )->m_description->m_comment.c_str()) );
+		editbox_world_description->setText( reinterpret_cast<const CEGUI::utf8*>(pOverworld_Manager->Get_from_Name( item->getText().c_str() )->m_description->m_comment.c_str()) );
 	}
 	// clear
 	else
 	{
-		editbox_world_comment->setText( "" );
+		editbox_world_description->setText( "" );
 	}
 
 	return 1;
