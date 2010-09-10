@@ -50,8 +50,8 @@ public:
 	// Init defaults
 	void Init( void );
 
-	// create from stream
-	void Create_From_Stream( CEGUI::XMLAttributes &attributes );
+	// load from stream
+	void Load_From_XML( CEGUI::XMLAttributes &attributes );
 	// save to stream
 	void Save_To_XML( CEGUI::XMLSerializer &stream );
 

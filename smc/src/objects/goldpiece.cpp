@@ -39,7 +39,7 @@ cGoldpiece :: cGoldpiece( CEGUI::XMLAttributes &attributes, cSprite_Manager *spr
 : cAnimated_Sprite( sprite_manager, "item" )
 {
 	cGoldpiece::Init();
-	cGoldpiece::Create_From_Stream( attributes );
+	cGoldpiece::Load_From_XML( attributes );
 }
 
 cGoldpiece :: ~cGoldpiece( void )
@@ -66,7 +66,7 @@ cGoldpiece *cGoldpiece :: Copy( void ) const
 	return goldpiece;
 }
 
-void cGoldpiece :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cGoldpiece :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

@@ -462,7 +462,7 @@ cPath :: cPath( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manage
 : cSprite( sprite_manager, "path" )
 {
 	cPath::Init();
-	cPath::Create_From_Stream( attributes );
+	cPath::Load_From_XML( attributes );
 }
 
 cPath :: ~cPath( void )
@@ -502,7 +502,7 @@ cPath *cPath :: Copy( void ) const
 	return path;
 }
 
-void cPath :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cPath :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	m_segments.clear();
 

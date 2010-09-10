@@ -42,7 +42,7 @@ cMovingSprite :: cMovingSprite( CEGUI::XMLAttributes &attributes, cSprite_Manage
 : cSprite( sprite_manager, type_name )
 {
 	cMovingSprite::Init();
-	cMovingSprite::Create_From_Stream( attributes );
+	cMovingSprite::Load_From_XML( attributes );
 }
 
 cMovingSprite :: ~cMovingSprite( void )

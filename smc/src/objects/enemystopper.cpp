@@ -33,7 +33,7 @@ cEnemyStopper :: cEnemyStopper( CEGUI::XMLAttributes &attributes, cSprite_Manage
 : cAnimated_Sprite( sprite_manager, "enemystopper" )
 {
 	cEnemyStopper::Init();
-	cEnemyStopper::Create_From_Stream( attributes );
+	cEnemyStopper::Load_From_XML( attributes );
 }
 
 cEnemyStopper :: ~cEnemyStopper( void )
@@ -68,7 +68,7 @@ void cEnemyStopper :: Init( void )
 	m_editor_color = Color( static_cast<Uint8>(0), 0, 255, 128 );
 }
 
-void cEnemyStopper :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cEnemyStopper :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );
 }

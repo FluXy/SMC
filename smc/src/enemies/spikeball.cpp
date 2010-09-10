@@ -38,7 +38,7 @@ cSpikeball :: cSpikeball( CEGUI::XMLAttributes &attributes, cSprite_Manager *spr
 : cEnemy( sprite_manager )
 {
 	cSpikeball::Init();
-	cSpikeball::Create_From_Stream( attributes );
+	cSpikeball::Load_From_XML( attributes );
 }
 
 cSpikeball :: ~cSpikeball( void )
@@ -73,7 +73,7 @@ cSpikeball *cSpikeball :: Copy( void ) const
 	return spikeball;
 }
 
-void cSpikeball :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cSpikeball :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

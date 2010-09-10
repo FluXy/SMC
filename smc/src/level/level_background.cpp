@@ -34,7 +34,7 @@ cBackground :: cBackground( CEGUI::XMLAttributes &attributes, cSprite_Manager *s
 {
 	cBackground::Init();
 	cBackground::Set_Sprite_Manager( sprite_manager );
-	cBackground::Create_From_Stream( attributes );
+	cBackground::Load_From_XML( attributes );
 }
 
 cBackground :: ~cBackground( void )
@@ -65,7 +65,7 @@ void cBackground :: Init( void )
 	m_const_vel_y = 0.0f;
 }
 
-void cBackground :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cBackground :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	Set_Type( static_cast<BackgroundType>(attributes.getValueAsInteger( "type" )) );
 

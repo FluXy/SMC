@@ -78,8 +78,8 @@ public:
 	// copy (end point can not be copied)
 	virtual cLayer_Line_Point_Start *Copy( void ) const;
 
-	// create from stream
-	virtual void Create_From_Stream( CEGUI::XMLAttributes &attributes );
+	// load from stream
+	virtual void Load_From_XML( CEGUI::XMLAttributes &attributes );
 
 	// Set the parent sprite manager
 	virtual void Set_Sprite_Manager( cSprite_Manager *sprite_manager );

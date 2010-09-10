@@ -41,7 +41,7 @@ cTurtleBoss :: cTurtleBoss( CEGUI::XMLAttributes &attributes, cSprite_Manager *s
 : cEnemy( sprite_manager )
 {
 	cTurtleBoss::Init();
-	cTurtleBoss::Create_From_Stream( attributes );
+	cTurtleBoss::Load_From_XML( attributes );
 }
 
 cTurtleBoss :: ~cTurtleBoss( void )
@@ -91,7 +91,7 @@ cTurtleBoss *cTurtleBoss :: Copy( void ) const
 	return turtle;
 }
 
-void cTurtleBoss :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cTurtleBoss :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

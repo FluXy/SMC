@@ -41,7 +41,7 @@ cBall :: cBall( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manage
 : cAnimated_Sprite( sprite_manager, "ball" )
 {
 	cBall::Init();
-	cBall::Create_From_Stream( attributes );
+	cBall::Load_From_XML( attributes );
 }
 
 cBall :: ~cBall( void )
@@ -82,7 +82,7 @@ cBall *cBall :: Copy( void ) const
 	return ball;
 }
 
-void cBall :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cBall :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

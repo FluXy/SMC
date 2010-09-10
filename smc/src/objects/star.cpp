@@ -37,7 +37,7 @@ cjStar :: cjStar( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_mana
 : cPowerUp( sprite_manager )
 {
 	cjStar::Init();
-	cjStar::Create_From_Stream( attributes );
+	cjStar::Load_From_XML( attributes );
 }
 
 cjStar :: ~cjStar( void )
@@ -70,7 +70,7 @@ cjStar *cjStar :: Copy( void ) const
 	return star;
 }
 
-void cjStar :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cjStar :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

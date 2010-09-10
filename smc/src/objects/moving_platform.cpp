@@ -42,7 +42,7 @@ cMoving_Platform :: cMoving_Platform( CEGUI::XMLAttributes &attributes, cSprite_
 : cAnimated_Sprite( sprite_manager, "moving_platform" ), m_path_state( sprite_manager )
 {
 	cMoving_Platform::Init();
-	cMoving_Platform::Create_From_Stream( attributes );
+	cMoving_Platform::Load_From_XML( attributes );
 }
 
 cMoving_Platform :: ~cMoving_Platform( void )
@@ -120,7 +120,7 @@ cMoving_Platform *cMoving_Platform :: Copy( void ) const
 	return moving_platform;
 }
 
-void cMoving_Platform :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cMoving_Platform :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

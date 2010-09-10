@@ -128,7 +128,7 @@ cLayer_Line_Point_Start :: cLayer_Line_Point_Start( CEGUI::XMLAttributes &attrib
 : cLayer_Line_Point( sprite_manager, overworld, TYPE_OW_LINE_START )
 {
 	cLayer_Line_Point_Start::Init();
-	cLayer_Line_Point_Start::Create_From_Stream( attributes );
+	cLayer_Line_Point_Start::Load_From_XML( attributes );
 }
 
 cLayer_Line_Point_Start :: ~cLayer_Line_Point_Start( void )
@@ -166,7 +166,7 @@ cLayer_Line_Point_Start *cLayer_Line_Point_Start :: Copy( void ) const
 	return layer_line;
 }
 
-void cLayer_Line_Point_Start :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cLayer_Line_Point_Start :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// Start
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "X1" )) - 2, static_cast<float>(attributes.getValueAsInteger( "Y1" )) - 2, 1 );

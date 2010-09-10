@@ -1147,7 +1147,7 @@ void cLevel :: elementEnd( const CEGUI::String &element )
 		// use gradient background
 		if( bg_type == BG_GR_HOR || bg_type == BG_GR_VER )
 		{
-			m_background_manager->Get_Pointer(0)->Create_From_Stream( m_xml_attributes );
+			m_background_manager->Get_Pointer(0)->Load_From_XML( m_xml_attributes );
 		}
 		// default background
 		else

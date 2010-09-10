@@ -305,7 +305,7 @@ cSprite :: cSprite( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_ma
 : cCollidingSprite( sprite_manager ), m_type_name( type_name )
 {
 	cSprite::Init();
-	cSprite::Create_From_Stream( attributes );
+	cSprite::Load_From_XML( attributes );
 }
 
 cSprite :: ~cSprite( void )
@@ -411,7 +411,7 @@ cSprite *cSprite :: Copy( void ) const
 	return basic_sprite;
 }
 
-void cSprite :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cSprite :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

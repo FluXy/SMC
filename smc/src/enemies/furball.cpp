@@ -39,7 +39,7 @@ cFurball :: cFurball( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_
 : cEnemy( sprite_manager )
 {
 	cFurball::Init();
-	cFurball::Create_From_Stream( attributes );
+	cFurball::Load_From_XML( attributes );
 }
 
 cFurball :: ~cFurball( void )
@@ -81,7 +81,7 @@ cFurball *cFurball :: Copy( void ) const
 	return furball;
 }
 
-void cFurball :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cFurball :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

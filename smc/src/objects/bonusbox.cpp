@@ -43,7 +43,7 @@ cBonusBox :: cBonusBox( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprit
 : cBaseBox( sprite_manager )
 {
 	cBonusBox::Init();
-	cBonusBox::Create_From_Stream( attributes );
+	cBonusBox::Load_From_XML( attributes );
 }
 
 cBonusBox :: ~cBonusBox( void )
@@ -83,9 +83,9 @@ cBonusBox *cBonusBox :: Copy( void ) const
 	return bonusbox;
 }
 
-void cBonusBox :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cBonusBox :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
-	cBaseBox::Create_From_Stream( attributes );
+	cBaseBox::Load_From_XML( attributes );
 
 	// item
 	Set_Bonus_Type( static_cast<SpriteType>(attributes.getValueAsInteger( "item" )) );

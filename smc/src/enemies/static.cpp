@@ -41,7 +41,7 @@ cStaticEnemy :: cStaticEnemy( CEGUI::XMLAttributes &attributes, cSprite_Manager 
 : cEnemy( sprite_manager ), m_path_state( sprite_manager )
 {
 	cStaticEnemy::Init();
-	cStaticEnemy::Create_From_Stream( attributes );
+	cStaticEnemy::Load_From_XML( attributes );
 }
 
 cStaticEnemy :: ~cStaticEnemy( void )
@@ -81,7 +81,7 @@ cStaticEnemy *cStaticEnemy :: Copy( void ) const
 	return static_enemy;
 }
 
-void cStaticEnemy :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cStaticEnemy :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

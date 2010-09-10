@@ -40,7 +40,7 @@ cWaypoint :: cWaypoint( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprit
 : cSprite( sprite_manager, "waypoint" )
 {
 	cWaypoint::Init();
-	cWaypoint::Create_From_Stream( attributes );
+	cWaypoint::Load_From_XML( attributes );
 }
 
 
@@ -87,7 +87,7 @@ cWaypoint *cWaypoint :: Copy( void ) const
 	return waypoint;
 }
 
-void cWaypoint :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cWaypoint :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "x" )), static_cast<float>(attributes.getValueAsInteger( "y" )), 1 );

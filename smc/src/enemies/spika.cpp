@@ -40,7 +40,7 @@ cSpika :: cSpika( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_mana
 : cEnemy( sprite_manager )
 {
 	cSpika::Init();
-	cSpika::Create_From_Stream( attributes );
+	cSpika::Load_From_XML( attributes );
 }
 
 cSpika :: ~cSpika( void )
@@ -70,7 +70,7 @@ cSpika *cSpika :: Copy( void ) const
 	return spika;
 }
 
-void cSpika :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cSpika :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

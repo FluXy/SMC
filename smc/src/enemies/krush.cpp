@@ -40,7 +40,7 @@ cKrush :: cKrush( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_mana
 : cEnemy( sprite_manager )
 {
 	cKrush::Init();
-	cKrush::Create_From_Stream( attributes );
+	cKrush::Load_From_XML( attributes );
 }
 
 cKrush :: ~cKrush( void )
@@ -78,7 +78,7 @@ cKrush *cKrush :: Copy( void ) const
 	return krush;
 }
 
-void cKrush :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cKrush :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

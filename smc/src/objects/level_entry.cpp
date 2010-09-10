@@ -43,7 +43,7 @@ cLevel_Entry :: cLevel_Entry( CEGUI::XMLAttributes &attributes, cSprite_Manager 
 : cAnimated_Sprite( sprite_manager, "level_entry" )
 {
 	cLevel_Entry::Init();
-	cLevel_Entry::Create_From_Stream( attributes );
+	cLevel_Entry::Load_From_XML( attributes );
 }
 
 cLevel_Entry :: ~cLevel_Entry( void )
@@ -90,7 +90,7 @@ cLevel_Entry *cLevel_Entry :: Copy( void ) const
 	return level_entry;
 }
 
-void cLevel_Entry :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cLevel_Entry :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

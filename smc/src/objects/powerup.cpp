@@ -218,7 +218,7 @@ cMushroom :: cMushroom( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprit
 : cPowerUp( sprite_manager )
 {
 	cMushroom::Init();
-	cMushroom::Create_From_Stream( attributes );
+	cMushroom::Load_From_XML( attributes );
 }
 
 cMushroom :: ~cMushroom( void )
@@ -246,7 +246,7 @@ cMushroom *cMushroom :: Copy( void ) const
 	return mushroom;
 }
 
-void cMushroom :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cMushroom :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )) );
@@ -532,7 +532,7 @@ cFirePlant :: cFirePlant( CEGUI::XMLAttributes &attributes, cSprite_Manager *spr
 : cPowerUp( sprite_manager )
 {
 	cFirePlant::Init();
-	cFirePlant::Create_From_Stream( attributes );
+	cFirePlant::Load_From_XML( attributes );
 }
 
 cFirePlant :: ~cFirePlant( void )
@@ -564,7 +564,7 @@ cFirePlant *cFirePlant :: Copy( void ) const
 	return fireplant;
 }
 
-void cFirePlant :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cFirePlant :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );
@@ -691,7 +691,7 @@ cMoon :: cMoon( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manage
 : cPowerUp( sprite_manager )
 {
 	cMoon::Init();
-	cMoon::Create_From_Stream( attributes );
+	cMoon::Load_From_XML( attributes );
 }
 
 cMoon :: ~cMoon( void )
@@ -723,7 +723,7 @@ cMoon *cMoon :: Copy( void ) const
 	return moon;
 }
 
-void cMoon :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cMoon :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )) );

@@ -44,7 +44,7 @@ cLevel_Exit :: cLevel_Exit( CEGUI::XMLAttributes &attributes, cSprite_Manager *s
 : cAnimated_Sprite( sprite_manager, "levelexit" )
 {
 	cLevel_Exit::Init();
-	cLevel_Exit::Create_From_Stream( attributes );
+	cLevel_Exit::Load_From_XML( attributes );
 }
 
 cLevel_Exit :: ~cLevel_Exit( void )
@@ -96,7 +96,7 @@ cLevel_Exit *cLevel_Exit :: Copy( void ) const
 	return level_exit;
 }
 
-void cLevel_Exit :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cLevel_Exit :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

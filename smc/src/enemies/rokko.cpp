@@ -40,7 +40,7 @@ cRokko :: cRokko( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_mana
 : cEnemy( sprite_manager )
 {
 	cRokko::Init();
-	cRokko::Create_From_Stream( attributes );
+	cRokko::Load_From_XML( attributes );
 }
 
 cRokko :: ~cRokko( void )
@@ -86,7 +86,7 @@ cRokko *cRokko :: Copy( void ) const
 	return rokko;
 }
 
-void cRokko :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cRokko :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

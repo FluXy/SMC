@@ -40,7 +40,7 @@ cRandom_Sound :: cRandom_Sound( CEGUI::XMLAttributes &attributes, cSprite_Manage
 : cSprite( sprite_manager, "sound" )
 {
 	cRandom_Sound::Init();
-	cRandom_Sound::Create_From_Stream( attributes );
+	cRandom_Sound::Load_From_XML( attributes );
 }
 
 cRandom_Sound :: ~cRandom_Sound( void )
@@ -96,7 +96,7 @@ cRandom_Sound *cRandom_Sound :: Copy( void ) const
 	return random_sound;
 }
 
-void cRandom_Sound :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cRandom_Sound :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// filename
 	Set_Filename( attributes.getValueAsString( "file" ).c_str() );

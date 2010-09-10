@@ -46,7 +46,7 @@ cThromp :: cThromp( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_ma
 : cEnemy( sprite_manager )
 {
 	cThromp::Init();
-	cThromp::Create_From_Stream( attributes );
+	cThromp::Load_From_XML( attributes );
 }
 
 cThromp :: ~cThromp( void )
@@ -86,7 +86,7 @@ cThromp *cThromp :: Copy( void ) const
 	return thromp;
 }
 
-void cThromp :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cThromp :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

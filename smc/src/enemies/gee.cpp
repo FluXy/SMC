@@ -38,7 +38,7 @@ cGee :: cGee( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_manager 
 : cEnemy( sprite_manager )
 {
 	cGee::Init();
-	cGee::Create_From_Stream( attributes );
+	cGee::Load_From_XML( attributes );
 }
 
 cGee :: ~cGee( void )
@@ -84,7 +84,7 @@ cGee *cGee :: Copy( void ) const
 	return gee;
 }
 
-void cGee :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cGee :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

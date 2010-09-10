@@ -74,8 +74,8 @@ public:
 	// copy
 	virtual cMushroom *Copy( void ) const;
 
-	// create from stream
-	virtual void Create_From_Stream( CEGUI::XMLAttributes &attributes );
+	// load from stream
+	virtual void Load_From_XML( CEGUI::XMLAttributes &attributes );
 	// save to stream
 	virtual void Save_To_XML( CEGUI::XMLSerializer &stream );
 
@@ -116,8 +116,8 @@ public:
 	// copy
 	virtual cFirePlant *Copy( void ) const;
 
-	// create from stream
-	virtual void Create_From_Stream( CEGUI::XMLAttributes &attributes );
+	// load from stream
+	virtual void Load_From_XML( CEGUI::XMLAttributes &attributes );
 	// save to stream
 	virtual void Save_To_XML( CEGUI::XMLSerializer &stream );
 
@@ -150,8 +150,8 @@ public:
 	// copy
 	virtual cMoon *Copy( void ) const;
 
-	// create from stream
-	virtual void Create_From_Stream( CEGUI::XMLAttributes &attributes );
+	// load from stream
+	virtual void Load_From_XML( CEGUI::XMLAttributes &attributes );
 	// save to stream
 	virtual void Save_To_XML( CEGUI::XMLSerializer &stream );
 

@@ -520,7 +520,7 @@ cParticle_Emitter :: cParticle_Emitter( CEGUI::XMLAttributes &attributes, cSprit
 : cAnimation( sprite_manager, "particle_emitter" )
 {
 	cParticle_Emitter::Init();
-	cParticle_Emitter::Create_From_Stream( attributes );
+	cParticle_Emitter::Load_From_XML( attributes );
 }
 
 cParticle_Emitter :: ~cParticle_Emitter( void )
@@ -621,7 +621,7 @@ cParticle_Emitter *cParticle_Emitter :: Copy( void ) const
 	return particle_animation;
 }
 
-void cParticle_Emitter :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cParticle_Emitter :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// filename
 	Set_Image_Filename( attributes.getValueAsString( "image" ).c_str() );

@@ -42,7 +42,7 @@ cText_Box :: cText_Box( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprit
 : cBaseBox( sprite_manager )
 {
 	cText_Box::Init();
-	cText_Box::Create_From_Stream( attributes );
+	cText_Box::Load_From_XML( attributes );
 }
 
 cText_Box :: ~cText_Box( void )
@@ -76,9 +76,9 @@ cText_Box *cText_Box :: Copy( void ) const
 	return text_box;
 }
 
-void cText_Box :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cText_Box :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
-	cBaseBox::Create_From_Stream( attributes );
+	cBaseBox::Load_From_XML( attributes );
 
 	// text
 	Set_Text( xml_string_to_string( attributes.getValueAsString( "text" ).c_str() ) );

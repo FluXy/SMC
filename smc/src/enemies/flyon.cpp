@@ -44,7 +44,7 @@ cFlyon :: cFlyon( CEGUI::XMLAttributes &attributes, cSprite_Manager *sprite_mana
 : cEnemy( sprite_manager )
 {
 	cFlyon::Init();
-	cFlyon::Create_From_Stream( attributes );
+	cFlyon::Load_From_XML( attributes );
 }
 
 cFlyon :: ~cFlyon( void )
@@ -86,7 +86,7 @@ cFlyon *cFlyon :: Copy( void ) const
 	return jpiranha;
 }
 
-void cFlyon :: Create_From_Stream( CEGUI::XMLAttributes &attributes )
+void cFlyon :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 {
 	// position
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );

@@ -51,8 +51,8 @@ public:
 	// copy
 	virtual cTurtle *Copy( void ) const;
 
-	// create from stream
-	virtual void Create_From_Stream( CEGUI::XMLAttributes &attributes );
+	// load from stream
+	virtual void Load_From_XML( CEGUI::XMLAttributes &attributes );
 	// save to stream
 	virtual void Save_To_XML( CEGUI::XMLSerializer &stream );
 
