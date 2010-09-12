@@ -94,13 +94,12 @@ public:
 
 /* *** *** *** *** *** cFGoldpiece *** *** *** *** *** *** *** *** *** *** *** *** */
 
-/* Falling Goldpiece
- * if direction is undefined it moves into a random direction
-*/
+// Falling Goldpiece
 class cFGoldpiece : public cGoldpiece
 {
 public:
-	cFGoldpiece( cSprite_Manager *sprite_manager, float x, float y, ObjectDirection dir = DIR_UNDEFINED );
+	// if direction is undefined it moves into a random direction
+	cFGoldpiece( cSprite_Manager *sprite_manager, ObjectDirection dir = DIR_UNDEFINED );
 	virtual ~cFGoldpiece( void );
 
 	// update

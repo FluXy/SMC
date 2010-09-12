@@ -382,16 +382,13 @@ Col_Valid_Type cJGoldpiece :: Validate_Collision( cSprite *obj )
 
 /* *** *** *** *** *** *** cFGoldpiecee *** *** *** *** *** *** *** *** *** *** *** */
 
-cFGoldpiece :: cFGoldpiece( cSprite_Manager *sprite_manager, float x, float y, ObjectDirection dir /* = DIR_NOTHING */ )
+cFGoldpiece :: cFGoldpiece( cSprite_Manager *sprite_manager, ObjectDirection dir /* = DIR_NOTHING */ )
 : cGoldpiece( sprite_manager )
 {
 	m_type = TYPE_FALLING_GOLDPIECE;
-	Set_Spawned( 1 );
 	m_camera_range = 2000;
 	m_gravity_max = 25.0f;
 	m_can_be_on_ground = 1;
-
-	Set_Pos( x, y, 1 );
 
 	// direction set
 	if( dir == DIR_LEFT || dir == DIR_RIGHT )

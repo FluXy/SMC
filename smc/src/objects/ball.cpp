@@ -537,9 +537,10 @@ void cBall :: Handle_Collision_Enemy( cObjectCollision *collision )
 			pHud_Points->Add_Points( enemy->m_kill_points, m_pos_x, m_pos_y, "", static_cast<Uint8>(255), 1 );
 
 			// create goldpiece
-			cMovingSprite *goldpiece = new cFGoldpiece( m_sprite_manager, enemy->m_col_rect.m_x, enemy->m_col_rect.m_y + enemy->m_col_rect.m_h, collision->m_direction );
+			cMovingSprite *goldpiece = new cFGoldpiece( m_sprite_manager, collision->m_direction );
+			goldpiece->Set_Spawned( 1 );
 			// set optimal position
-			goldpiece->Col_Move( -( ( goldpiece->m_col_rect.m_w - enemy->m_col_rect.m_w ) / 2 ), -( goldpiece->m_col_pos.m_y + goldpiece->m_col_rect.m_h ), 1, 1 );
+			goldpiece->Set_Pos( enemy->m_rect.m_x + ( ( enemy->m_rect.m_w / 2 ) - ( goldpiece->m_rect.m_w / 2 ) ), enemy->m_rect.m_y + ( ( enemy->m_rect.m_h / 2 ) - ( goldpiece->m_rect.m_h / 2 ) ), 1 );
 			// add goldpiece
 			m_sprite_manager->Add( goldpiece );
 
