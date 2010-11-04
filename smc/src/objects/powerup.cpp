@@ -714,6 +714,7 @@ void cMoon :: Init( void )
 	Reset_Animation();
 
 	m_name = _("Moon (3-UP)");
+	m_particle_counter = 0.0f;
 }
 
 cMoon *cMoon :: Copy( void ) const
