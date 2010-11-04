@@ -235,7 +235,7 @@ public:
 	// level spawned objects for parsing
 	cSprite_List m_level_spawned_objects;
 
-	// savegame data
+	// object we are constructing
 	cSave *m_savegame;
 };
 

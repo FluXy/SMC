@@ -240,7 +240,6 @@ int cOverworld_Manager :: Get_Array_Num( const std::string &path ) const
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-// Overworld information handler
 cOverworld_Manager *pOverworld_Manager = NULL;
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */

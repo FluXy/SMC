@@ -36,7 +36,7 @@ public:
 	cOverworld_Manager( cSprite_Manager *sprite_manager );
 	virtual ~cOverworld_Manager( void );
 
-	/* Create a new world
+	/* Create a new overworld
 	 * returns true if successful
 	*/
 	bool New( std::string name );
@@ -57,14 +57,14 @@ public:
 	// Reset to default world first Waypoint
 	void Reset( void );
 
-	// Get Overworld pointer
+	// Get overworld pointer
 	cOverworld *Get( const std::string &str );
-	// Get Overworld pointer from path
+	// Get overworld from path
 	cOverworld *Get_from_Path( const std::string &path );
-	// Get Overworld pointer from name
+	// Get overworld from name
 	cOverworld *Get_from_Name( const std::string &name );
 
-	// Return Overworld array number
+	// Return overworld array number
 	int Get_Array_Num( const std::string &path ) const;
 
 	// shows additional information
@@ -80,7 +80,7 @@ public:
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-// Overworld information handler
+// Overworld Manager
 extern cOverworld_Manager *pOverworld_Manager;
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */

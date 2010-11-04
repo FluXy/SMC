@@ -539,6 +539,7 @@ cSave *cSavegame :: Load( unsigned int save_slot )
 {
 	std::string filename = m_savegame_dir + "/" + int_to_string( save_slot ) + ".smcsav";
 
+	// if not new format try the old
 	if( !File_Exists( filename ) )
 	{
 		filename = m_savegame_dir + "/" + int_to_string( save_slot ) + ".save";
@@ -546,7 +547,7 @@ cSave *cSavegame :: Load( unsigned int save_slot )
 
 	if( !File_Exists( filename ) )
 	{
-		printf( "Error : Savegame Loading : No Savegame found at Slot : %s\n", filename.c_str() );
+		printf( "Error : cSavegame::Load : No Savegame found at Slot : %s\n", filename.c_str() );
 		return NULL;
 	}
 

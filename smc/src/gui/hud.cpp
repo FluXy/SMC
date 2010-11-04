@@ -1034,15 +1034,9 @@ void cDebugDisplay :: Draw_Debug_Mode( void )
 	pVideo->Draw_Rect( static_cast<float>(game_res_w) - 205, static_cast<float>(game_res_h) * 0.08f, 190, 390, m_pos_z - 0.00001f, &color );
 
 	// Active objects rect
-
-	// create request
 	cRect_Request *request = new cRect_Request();
 	pVideo->Draw_Rect( m_sprites[11]->m_pos_x - 4, m_sprites[11]->m_pos_y - 4, 135, 95, m_pos_z, &white, request );
-
-	// not filled
 	request->filled = 0;
-
-	// add request
 	pRenderer->Add( request );
 
 	// fps
