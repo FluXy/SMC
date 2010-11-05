@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<level >
+    <information >
+        <property name="game_version" value="2" />
+        <property name="engine_version" value="40" />
+        <property name="save_time" value="1288950142" />
+    </information>
+    <settings >
+        <property name="lvl_author" value="SMC Team" />
+        <property name="lvl_version" value="1.5" />
+        <property name="lvl_music" value="land/land_5.ogg" />
+        <property name="lvl_description" value="" />
+        <property name="lvl_difficulty" value="0" />
+        <property name="lvl_land_type" value="undefined" />
+        <property name="cam_limit_x" value="0" />
+        <property name="cam_limit_y" value="0" />
+        <property name="cam_limit_w" value="2200" />
+        <property name="cam_limit_h" value="-1500" />
+        <property name="cam_fixed_hor_vel" value="0" />
+    </settings>
+    <background >
+        <property name="type" value="103" />
+        <property name="bg_color_1_red" value="32" />
+        <property name="bg_color_1_green" value="60" />
+        <property name="bg_color_1_blue" value="150" />
+        <property name="bg_color_2_red" value="10" />
+        <property name="bg_color_2_green" value="60" />
+        <property name="bg_color_2_blue" value="110" />
+    </background>
+    <player >
+        <property name="posx" value="595" />
+        <property name="posy" value="-688" />
+        <property name="direction" value="right" />
+    </player>
+    <sprite >
+        <property name="posx" value="449" />
+        <property name="posy" value="-348" />
+        <property name="image" value="blocks/stone/1.png" />
+        <property name="type" value="massive" />
+    </sprite>
+    <sprite >
+        <property name="posx" value="492" />
+        <property name="posy" value="-348" />
+        <property name="image" value="blocks/stone/1.png" />
+        <property name="type" value="massive" />
+    </sprite>
+    <sprite >
+        <property name="posx" value="535" />
+        <property name="posy" value="-348" />
+        <property name="image" value="blocks/stone/1.png" />
+        <property name="type" value="massive" />
+    </sprite>
+    <sprite >
+        <property name="posx" value="578" />
+        <property name="posy" value="-348" />
+        <property name="image" value="blocks/stone/1.png" />
+        <property name="type" value="massive" />
+    </sprite>
+    <sprite >
+        <property name="posx" value="621" />
+        <property name="posy" value="-348" />
+        <property name="image" value="blocks/stone/1.png" />
+        <property name="type" value="massive" />
+    </sprite>
+    <sprite >
+        <property name="posx" value="664" />
+        <property name="posy" value="-348" />
+        <property name="image" value="blocks/stone/1.png" />
+        <property name="type" value="massive" />
+    </sprite>
+    <sprite >
+        <property name="posx" value="707" />
+        <property name="posy" value="-348" />
+        <property name="image" value="blocks/stone/1.png" />
+        <property name="type" value="massive" />
+    </sprite>
+    <sprite >
+        <property name="posx" value="750" />
+        <property name="posy" value="-348" />
+        <property name="image" value="blocks/stone/1.png" />
+        <property name="type" value="massive" />
+    </sprite>
+    <sprite >
+        <property name="posx" value="406" />
+        <property name="posy" value="-348" />
+        <property name="image" value="blocks/stone/1.png" />
+        <property name="type" value="massive" />
+    </sprite>
+    <moving_platform >
+        <property name="posx" value="543" />
+        <property name="posy" value="-401" />
+        <property name="move_type" value="1" />
+        <property name="massive_type" value="halfmassive" />
+        <property name="direction" value="right" />
+        <property name="max_distance" value="100" />
+        <property name="speed" value="3" />
+        <property name="touch_time" value="0" />
+        <property name="shake_time" value="16" />
+        <property name="touch_move_time" value="0" />
+        <property name="middle_img_count" value="4" />
+        <property name="image_top_left" value="ground/green_1/slider/1/brown/left.png" />
+        <property name="image_top_middle" value="ground/green_1/slider/1/brown/middle.png" />
+        <property name="image_top_right" value="ground/green_1/slider/1/brown/right.png" />
+    </moving_platform>
+    <box >
+        <property name="posx" value="756" />
+        <property name="posy" value="-555" />
+        <property name="type" value="text" />
+        <property name="invisible" value="0" />
+        <property name="useable_count" value="-1" />
+        <property name="text" value="This stutters every second using vsync in windowed mode on an &lt;br/&gt;ATI 3870 card (10.4 driver)&lt;br/&gt;ATI 4850 card (10.9 driver)&lt;br/&gt;&lt;br/&gt;but not on fullscreen.&lt;br/&gt;&lt;br/&gt;Nvidia/Intel cards not tested.&lt;br/&gt;" />
+    </box>
+</level>
