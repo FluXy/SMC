@@ -144,6 +144,11 @@ void cVideo :: Init_CEGUI( void ) const
 	logger->setLoggingLevel( CEGUI::Errors );
 #endif
 
+	// set initial mouse position
+	int mouse_x, mouse_y;
+	SDL_GetMouseState( &mouse_x, &mouse_y );
+	CEGUI::MouseCursor::setInitialMousePosition( CEGUI::Point( mouse_x, mouse_y ) );
+
 	// create system
 	try
 	{

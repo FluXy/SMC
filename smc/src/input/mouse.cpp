@@ -92,6 +92,8 @@ cMouseCursor :: cMouseCursor( cSprite_Manager *sprite_manager )
 
 	Reset_Keys();
 	Update_Position();
+	// disable mouse initially
+	Set_Active( 0 );
 }
 
 cMouseCursor :: ~cMouseCursor( void )
@@ -99,6 +101,12 @@ cMouseCursor :: ~cMouseCursor( void )
 	Clear_Copy_Objects();
 	Clear_Selected_Objects();
 	delete m_hovering_object;
+}
+
+void cMouseCursor :: Set_Active( bool enabled )
+{
+	cMovingSprite::Set_Active( enabled );
+	CEGUI::MouseCursor::getSingleton().setVisible( enabled );
 }
 
 void cMouseCursor :: Reset( bool clear_copy_buffer /* = 1 */ )
@@ -425,14 +433,7 @@ void cMouseCursor :: Draw( void )
 
 void cMouseCursor :: Render( void ) const
 {
-	CEGUI::MouseCursor *mouse = CEGUI::MouseCursor::getSingletonPtr();
 
-	if( m_active == mouse->isVisible() )
-	{
-		return;
-	}
-
-	mouse->setVisible( m_active );
 }
 
 void cMouseCursor :: Update_Position( void )

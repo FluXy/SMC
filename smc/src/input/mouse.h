@@ -66,6 +66,8 @@ public:
 	cMouseCursor( cSprite_Manager *sprite_manager );
 	virtual ~cMouseCursor( void );
 
+	// Set active/visible
+	virtual void Set_Active( bool enabled );
 	// resets editor features
 	void Reset( bool clear_copy_buffer = 1 );
 	// only reset buttons

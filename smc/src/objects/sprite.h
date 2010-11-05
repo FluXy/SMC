@@ -162,7 +162,7 @@ public:
 	void Set_Pos_X( float x, bool new_startpos = 0 );
 	void Set_Pos_Y( float y, bool new_startpos = 0 );
 	// Set if active
-	void Set_Active( bool enabled );
+	virtual void Set_Active( bool enabled );
 	/* Set the shadow
 	 * if position is set to 0 the shadow is disabled
 	*/
