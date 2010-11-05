@@ -600,7 +600,6 @@ void cMenu_Start :: Load_World( std::string name )
 	{
 		pHud_Debug->Set_Text( _("Couldn't load overworld ") + name, static_cast<float>(speedfactor_fps) );
 	}
-	// if successfully set active
 	else
 	{
 		// enter world
@@ -2352,7 +2351,7 @@ bool cMenu_Options_Audio :: Sound_Select( const CEGUI::EventArgs &event )
 
 	if( item->getText().compare( UTF8_("On") ) == 0 )
 	{
-		sound_enabled= 1;
+		sound_enabled = 1;
 	}
 
 	if( pAudio->m_sound_enabled != sound_enabled )

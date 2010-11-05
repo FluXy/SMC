@@ -219,9 +219,7 @@ int main( int argc, char **argv )
 		pFramerate->Update();
 	}
 
-	// exit
 	Exit_Game();
-	// no errors
 	return EXIT_SUCCESS;
 }
 
