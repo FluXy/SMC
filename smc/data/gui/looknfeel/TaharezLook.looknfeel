@@ -102,6 +102,30 @@
                 <HorzFormatProperty name="HorzImageFormatting" />
             </ImageryComponent>
         </ImagerySection>
+        <ImagerySection name="disabled">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <Image type="LeftEdge" imageset="TaharezLook" image="ButtonLeftNormal" />
+                <Image type="RightEdge" imageset="TaharezLook" image="ButtonRightNormal" />
+                <Image type="Background" imageset="TaharezLook" image="ButtonMiddleNormal" />
+            </FrameComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <ImageProperty name="DisabledImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
         <StateImagery name="Normal">
             <Layer>
                 <Section section="normal" />
@@ -136,7 +160,7 @@
         </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
-                <Section section="normal">
+                <Section section="disabled">
                     <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
                 </Section>
                 <Section section="label">
@@ -1371,6 +1395,7 @@
     -->
     <WidgetLook name="TaharezLook/SliderThumb">
         <Property name="HorzFree" value="True" />
+		<Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>
@@ -1509,6 +1534,7 @@
     -->
     <WidgetLook name="TaharezLook/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="True" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -1651,6 +1677,7 @@
     -->
     <WidgetLook name="TaharezLook/VerticalScrollbarThumb">
         <Property name="VertFree" value="True" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -2623,6 +2650,7 @@
     <WidgetLook name="TaharezLook/ListHeaderSegment">
         <Property name="SizingCursorImage" value="set:TaharezLook image:MouseEsWeCursor" />
         <Property name="MovingCursorImage" value="set:TaharezLook image:MouseMoveCursor" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="segment_normal">
             <Colours topLeft="FFDDDDDD" topRight="FFDDDDDD" bottomLeft="FFDDDDDD" bottomRight="FFDDDDDD" />
             <ImageryComponent>
@@ -2696,7 +2724,7 @@
                     <Dim type="Width" ><ImageDim imageset="TaharezLook" image="HeaderBarSortUp" dimension="Width" /></Dim>
                     <Dim type="Height" ><ImageDim imageset="TaharezLook" image="HeaderBarSortUp" dimension="Height" /></Dim>
                 </Area>
-                <Image imageset="TaharezLook" image="HeaderBarSortUp" />
+                <Image imageset="TaharezLook" image="HeaderBarSortDown" />
             </ImageryComponent>
         </ImagerySection>
         <ImagerySection name="descend_icon">
@@ -2707,7 +2735,7 @@
                     <Dim type="Width" ><ImageDim imageset="TaharezLook" image="HeaderBarSortDown" dimension="Width" /></Dim>
                     <Dim type="Height" ><ImageDim imageset="TaharezLook" image="HeaderBarSortDown" dimension="Height" /></Dim>
                 </Area>
-                <Image imageset="TaharezLook" image="HeaderBarSortDown" />
+                <Image imageset="TaharezLook" image="HeaderBarSortUp" />
             </ImageryComponent>
         </ImagerySection>
         <ImagerySection name="label">
@@ -2807,6 +2835,7 @@
     -->
     <WidgetLook name="TaharezLook/ListHeader">
         <Property name="SegmentWidgetType" value="TaharezLook/ListHeaderSegment" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
     </WidgetLook>
@@ -4206,6 +4235,7 @@
     -->
     <WidgetLook name="TaharezLook/LargeVerticalScrollbarThumb">
         <Property name="VertFree" value="True" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>
@@ -4657,6 +4687,7 @@
         <PropertyDefinition name="SelectionBrush" initialValue="set:TaharezLook image:ListboxSelectionBrush" redrawOnWrite="true" />
         <PropertyDefinition name="SelectionColour" initialValue="FF4444AA" redrawOnWrite="true" />
         <Property name="Selectable" value="True" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <NamedArea name="ContentSize">
             <Area>
                 <Dim type="LeftEdge" >
