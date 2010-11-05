@@ -79,6 +79,17 @@ void string_replace_all( std::string &str, const std::string &search, const std:
 	}
 }
 
+void cegui_string_replace_all( CEGUI::String &str, const CEGUI::String &search, const CEGUI::String &format )
+{
+	size_t pos = 0;
+
+	while( (pos = str.find(search, pos)) != CEGUI::String::npos )
+	{
+		str.replace( pos, search.length(), format );
+		pos += format.length();
+	}
+}
+
 std::string string_trim_from_end( std::string str, const char search )
 {
 	// find last position from end which is not the given character
@@ -1500,8 +1511,11 @@ void Preload_Sounds( bool draw_gui /* = 0 */ )
 	}
 }
 
-void Write_Property( CEGUI::XMLSerializer &stream, const CEGUI::String &name, const CEGUI::String &val )
+void Write_Property( CEGUI::XMLSerializer &stream, const CEGUI::String &name, CEGUI::String val )
 {
+	// CEGUI doesn't handle line breaks
+	cegui_string_replace_all( val, "\n", "<br/>" );
+
 	stream.openTag( "property" )
 		.attribute( "name", name )
 		.attribute( "value", val )

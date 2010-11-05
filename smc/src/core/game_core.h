@@ -75,6 +75,7 @@ extern cSprite *pActive_Player;
  * todo : use boost::algorithm::replace_all ?
 */
 void string_replace_all( std::string &str, const std::string &search, const std::string &format );
+void cegui_string_replace_all( CEGUI::String &str, const CEGUI::String &search, const CEGUI::String &format );
 
 /* Remove all occurrences of the search in the string
  * todo : use boost::algorithm::erase_all ?
@@ -193,7 +194,7 @@ void Preload_Images( bool draw_gui = 0 );
 void Preload_Sounds( bool draw_gui = 0 );
 
 // Write a property line to the serializer
-void Write_Property( CEGUI::XMLSerializer &stream, const CEGUI::String &name, const CEGUI::String &val );
+void Write_Property( CEGUI::XMLSerializer &stream, const CEGUI::String &name, CEGUI::String val );
 inline void Write_Property( CEGUI::XMLSerializer &stream, const CEGUI::String &name, int val )
 {
 	Write_Property( stream, name, CEGUI::PropertyHelper::intToString( val ) );
