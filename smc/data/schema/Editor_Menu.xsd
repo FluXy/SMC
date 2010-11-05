@@ -21,10 +21,15 @@
 	</xsd:complexType>
 
 	<xsd:complexType name="PropertyBaseType">
-		<xsd:attribute name="Name" type="xsd:string"/>
-		<xsd:attribute name="Value" type="xsd:string"/>
-		<!-- small case is used since V.2.0 -->
-		<xsd:attribute name="name" type="xsd:string"/>
-		<xsd:attribute name="value" type="xsd:string"/>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="Name" type="xsd:string" use="optional"/>
+				<xsd:attribute name="Value" type="xsd:string" use="optional"/>
+				<!-- small case is used since V.2.0 -->
+				<xsd:attribute name="name" type="xsd:string" use="optional"/>
+				<xsd:attribute name="value" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent> 
 	</xsd:complexType>
+	
 </xsd:schema>

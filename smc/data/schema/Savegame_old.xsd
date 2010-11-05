@@ -34,7 +34,12 @@
 	</xsd:complexType>
 
 	<xsd:complexType name="PropertyBaseType">
-		<xsd:attribute name="Name" type="xsd:string" use="required"/>
-		<xsd:attribute name="Value" type="xsd:string" use="required"/>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="Name" type="xsd:string" use="required"/>
+				<xsd:attribute name="Value" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
 	</xsd:complexType>
+	
 </xsd:schema>
