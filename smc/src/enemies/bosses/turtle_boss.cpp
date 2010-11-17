@@ -53,6 +53,7 @@ void cTurtleBoss :: Init( void )
 {
 	m_type = TYPE_TURTLE_BOSS;
 	m_pos_z = 0.092f;
+	m_gravity_max = 19.0f;
 
 	m_player_counter = 0.0f;
 	m_fire_resistant = 1;
@@ -390,7 +391,12 @@ void cTurtleBoss :: Set_Turtle_Moving_State( TurtleBoss_state new_state )
 
 		Set_Animation( 1 );
 		Set_Animation_Image_Range( 0, 3 );
-		Set_Time_All( 220, 1 );
+		Uint32 time_subtract = ( m_hits + ( m_downgrade_count * m_max_hits ) ) * 10;
+		if( time_subtract > 280 )
+		{
+			time_subtract = 280;
+		}
+		Set_Time_All( 300 - time_subtract, 1 );
 		Reset_Animation();
 		Set_Image_Num( m_anim_img_start );
 	}
