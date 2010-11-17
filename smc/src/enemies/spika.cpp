@@ -437,7 +437,7 @@ void cSpika :: Handle_Collision_Enemy( cObjectCollision *collision )
 	else
 	{
 		// only if moving
-		if( Is_Float_Equal( m_velx, 0.0f ) )
+		if( Is_Float_Equal( m_velx, 0.0f ) && Is_Float_Equal( m_vely, 0.0f ) )
 		{
 			return;
 		}
