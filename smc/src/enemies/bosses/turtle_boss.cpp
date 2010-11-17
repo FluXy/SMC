@@ -424,7 +424,12 @@ void cTurtleBoss :: Set_Turtle_Moving_State( TurtleBoss_state new_state )
 
 		Set_Animation( 1 );
 		Set_Animation_Image_Range( 6, 9 );
-		Set_Time_All( 80, 1 );
+		Uint32 time_subtract = ( m_hits + ( m_downgrade_count * m_max_hits ) ) * 2;
+		if( time_subtract > 80 )
+		{
+			time_subtract = 80;
+		}
+		Set_Time_All( 100 - time_subtract, 1 );
 		Reset_Animation();
 		Set_Image_Num( m_anim_img_start );
 	}
