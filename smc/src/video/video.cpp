@@ -1710,6 +1710,7 @@ void cVideo :: Save_Surface( const std::string &filename, const unsigned char *d
 	else
 	{
 		printf( "Warning: cVideo :: Save_Surface : %s Unknown bytes per pixel %d\n", filename.c_str(), bpp );
+		fclose( fp );
 		return;
 	}
 
