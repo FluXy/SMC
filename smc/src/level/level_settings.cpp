@@ -68,7 +68,7 @@ void cLevel_Settings :: Init( void )
 	// tab main
 	CEGUI::Window *tabwindow = wmgr.loadWindowLayout( "level_settings/tab_main.layout" );
 	m_tabcontrol->addTab( tabwindow );
-	// Tab background
+	// tab background
 	tabwindow = wmgr.loadWindowLayout( "level_settings/tab_background.layout" );
 	m_tabcontrol->addTab( tabwindow );
 	// tab global effects

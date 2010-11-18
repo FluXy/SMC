@@ -20,6 +20,7 @@
 #include "../gui/generic.h"
 #include "../video/font.h"
 #include "../overworld/overworld.h"
+#include "../core/campaign_manager.h"
 #include "../user/preferences.h"
 #include "../input/joystick.h"
 #include "../input/mouse.h"
@@ -356,12 +357,51 @@ void cMenu_Start :: Init_GUI( void )
 	tabcontrol->subscribeEvent( CEGUI::TabControl::EventSelectionChanged, CEGUI::Event::Subscriber( &cMenu_Start::TabControl_Selection_Changed, this ) );
 	tabcontrol->subscribeEvent( CEGUI::Window::EventKeyDown, CEGUI::Event::Subscriber( &cMenu_Start::TabControl_Keydown, this ) );
 
-	// Worlds
-	CEGUI::Listbox *listbox_worlds = static_cast<CEGUI::Listbox *>(CEGUI::WindowManager::getSingleton().getWindow( "listbox_worlds" ));
-	
+	// ### Campaign ###
+	CEGUI::Listbox *listbox_campaigns = static_cast<CEGUI::Listbox *>(CEGUI::WindowManager::getSingleton().getWindow( "listbox_campaigns" ));
+
+	// campaign names
+	for( vector<cCampaign *>::const_iterator itr = pCampaign_Manager->objects.begin(); itr != pCampaign_Manager->objects.end(); ++itr )
+	{
+		const cCampaign *campaign = (*itr);
+		
+		CEGUI::ListboxTextItem *item = new CEGUI::ListboxTextItem( reinterpret_cast<const CEGUI::utf8*>(campaign->m_name.c_str()) );
+		// is in game dir
+		if( campaign->m_user == 0 )
+		{
+			item->setTextColours( CEGUI::colour( 1, 0.8f, 0.6f ) );
+		}
+		// is in user dir
+		else if( campaign->m_user == 1 )
+		{
+			item->setTextColours( CEGUI::colour( 0.8f, 1, 0.6f ) );
+		}
+		// is in both
+		else if( campaign->m_user == 2 )
+		{
+			// mix colors
+			item->setTextColours( CEGUI::colour( 0.8f, 1, 0.6f ), CEGUI::colour( 0.8f, 1, 0.6f ), CEGUI::colour( 1, 0.8f, 0.6f ), CEGUI::colour( 1, 0.8f, 0.6f ) );
+		}
+
+		item->setSelectionColours( CEGUI::colour( 0.33f, 0.33f, 0.33f ) );
+		item->setSelectionBrushImage( "TaharezLook", "ListboxSelectionBrush" );
+		listbox_campaigns->addItem( item );
+	}
+
 	// events
-	listbox_worlds->subscribeEvent( CEGUI::Window::EventKeyDown, CEGUI::Event::Subscriber( &cMenu_Start::Listbox_Keydown, this ) );
-	listbox_worlds->subscribeEvent( CEGUI::Window::EventCharacterKey, CEGUI::Event::Subscriber( &cMenu_Start::Listbox_Character_Key, this ) );
+	listbox_campaigns->subscribeEvent( CEGUI::Window::EventKeyDown, CEGUI::Event::Subscriber( &cMenu_Start::Listbox_Keydown, this ) );
+	listbox_campaigns->subscribeEvent( CEGUI::Window::EventCharacterKey, CEGUI::Event::Subscriber( &cMenu_Start::Listbox_Character_Key, this ) );
+	listbox_campaigns->subscribeEvent( CEGUI::Listbox::EventSelectionChanged, CEGUI::Event::Subscriber( &cMenu_Start::Campaign_Select, this ) );
+	listbox_campaigns->subscribeEvent( CEGUI::Listbox::EventMouseDoubleClick, CEGUI::Event::Subscriber( &cMenu_Start::Campaign_Select_final_list, this ) );
+	
+	// select first item
+	if( listbox_campaigns->getItemCount() )
+	{
+		listbox_campaigns->setItemSelectState( static_cast<size_t>(0), 1 );
+	}
+
+	// ### World ###
+	CEGUI::Listbox *listbox_worlds = static_cast<CEGUI::Listbox *>(CEGUI::WindowManager::getSingleton().getWindow( "listbox_worlds" ));
 
 	// overworld names
 	for( vector<cOverworld *>::const_iterator itr = pOverworld_Manager->objects.begin(); itr != pOverworld_Manager->objects.end(); ++itr )
@@ -399,25 +439,33 @@ void cMenu_Start :: Init_GUI( void )
 		listbox_worlds->addItem( item );
 	}
 
-	// Level Listbox
+	// events
+	listbox_worlds->subscribeEvent( CEGUI::Window::EventKeyDown, CEGUI::Event::Subscriber( &cMenu_Start::Listbox_Keydown, this ) );
+	listbox_worlds->subscribeEvent( CEGUI::Window::EventCharacterKey, CEGUI::Event::Subscriber( &cMenu_Start::Listbox_Character_Key, this ) );
+	listbox_worlds->subscribeEvent( CEGUI::Listbox::EventSelectionChanged, CEGUI::Event::Subscriber( &cMenu_Start::World_Select, this ) );
+	listbox_worlds->subscribeEvent( CEGUI::Listbox::EventMouseDoubleClick, CEGUI::Event::Subscriber( &cMenu_Start::World_Select_final_list, this ) );
+	
+	// select first item
+	if( listbox_worlds->getItemCount() )
+	{
+		listbox_worlds->setItemSelectState( static_cast<size_t>(0), 1 );
+	}
+
+	// ### Level ###
 	CEGUI::Listbox *listbox_levels = static_cast<CEGUI::Listbox *>(CEGUI::WindowManager::getSingleton().getWindow( "listbox_levels" ));
 	listbox_levels->setSortingEnabled( 1 );
-
-	// events
-	listbox_levels->subscribeEvent( CEGUI::Window::EventKeyDown, CEGUI::Event::Subscriber( &cMenu_Start::Listbox_Keydown, this ) );
-	listbox_levels->subscribeEvent( CEGUI::Window::EventCharacterKey, CEGUI::Event::Subscriber( &cMenu_Start::Listbox_Character_Key, this ) );
 
 	// get game level
 	Get_Levels( DATA_DIR "/" GAME_LEVEL_DIR, CEGUI::colour( 1, 0.8f, 0.6f ) );
 	// get user level
 	Get_Levels( pResource_Manager->user_data_dir + USER_LEVEL_DIR, CEGUI::colour( 0.8f, 1, 0.6f ) );
 
-	// World Listbox events
-	listbox_worlds->subscribeEvent( CEGUI::Listbox::EventSelectionChanged, CEGUI::Event::Subscriber( &cMenu_Start::World_Select, this ) );
-	listbox_worlds->subscribeEvent( CEGUI::Listbox::EventMouseDoubleClick, CEGUI::Event::Subscriber( &cMenu_Start::World_Select_final_list, this ) );
-	// Level Listbox events
+	// events
 	listbox_levels->subscribeEvent( CEGUI::Listbox::EventSelectionChanged, CEGUI::Event::Subscriber( &cMenu_Start::Level_Select, this ) );
 	listbox_levels->subscribeEvent( CEGUI::Listbox::EventMouseDoubleClick, CEGUI::Event::Subscriber( &cMenu_Start::Level_Select_Final_List, this ) );
+	listbox_levels->subscribeEvent( CEGUI::Window::EventKeyDown, CEGUI::Event::Subscriber( &cMenu_Start::Listbox_Keydown, this ) );
+	listbox_levels->subscribeEvent( CEGUI::Window::EventCharacterKey, CEGUI::Event::Subscriber( &cMenu_Start::Listbox_Character_Key, this ) );
+	
 	// Level Buttons
 	CEGUI::PushButton *button_new = static_cast<CEGUI::PushButton *>(CEGUI::WindowManager::getSingleton().getWindow( "button_level_new" ));
 	button_new->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cMenu_Start::Button_Level_New_Clicked, this ) );
@@ -425,9 +473,6 @@ void cMenu_Start :: Init_GUI( void )
 	button_edit->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cMenu_Start::Button_Level_Edit_Clicked, this ) );
 	CEGUI::PushButton *button_delete = static_cast<CEGUI::PushButton *>(CEGUI::WindowManager::getSingleton().getWindow( "button_level_delete" ));
 	button_delete->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cMenu_Start::Button_Level_Delete_Clicked, this ) );
-
-	// select first Item
-	listbox_worlds->setItemSelectState( static_cast<size_t>(0), 1 );
 
 	// Button Enter 
 	CEGUI::PushButton *button_enter = static_cast<CEGUI::PushButton *>(CEGUI::WindowManager::getSingleton().getWindow( "button_enter" ));
@@ -557,17 +602,27 @@ bool cMenu_Start :: Highlight_Level( std::string lvl_name )
 
 	return 1;
 }
+
 void cMenu_Start :: Load_Selected( void )
 {
 	// Get Tab Control
 	CEGUI::TabControl *tabcontrol = static_cast<CEGUI::TabControl *>(CEGUI::WindowManager::getSingleton().getWindow( "tabcontrol_main" ));
 
-	// World
+	// Campaign
 	if( tabcontrol->getSelectedTabIndex() == 0 )
+	{
+		CEGUI::ListboxItem *item = (static_cast<CEGUI::Listbox *>(CEGUI::WindowManager::getSingleton().getWindow( "listbox_campaigns" )))->getFirstSelectedItem();
+
+		if( item )
+		{
+			Load_Campaign( item->getText().c_str() );
+		}
+	}
+	// World
+	else if( tabcontrol->getSelectedTabIndex() == 1 )
 	{
 		CEGUI::ListboxItem *item = (static_cast<CEGUI::Listbox *>(CEGUI::WindowManager::getSingleton().getWindow( "listbox_worlds" )))->getFirstSelectedItem();
 
-		// load world
 		if( item )
 		{
 			Load_World( item->getText().c_str() );
@@ -578,10 +633,43 @@ void cMenu_Start :: Load_Selected( void )
 	{
 		CEGUI::ListboxItem *item = (static_cast<CEGUI::Listbox *>(CEGUI::WindowManager::getSingleton().getWindow( "listbox_levels" )))->getFirstSelectedItem();
 
-		// load level
 		if( item )
 		{
 			Load_Level( item->getText().c_str() );
+		}
+	}
+}
+
+void cMenu_Start :: Load_Campaign( std::string name )
+{
+	if( pLevel_Player->m_points > 0 && !Box_Question( _("This will reset your current progress.\nContinue ?") ) )
+	{
+		return;
+	}
+
+	cCampaign *new_campaign = pCampaign_Manager->Get_from_Name( name );
+
+	// if not available
+	if( !new_campaign )
+	{
+		pHud_Debug->Set_Text( _("Couldn't load campaign ") + name, static_cast<float>(speedfactor_fps) );
+	}
+	else
+	{
+		// enter level
+		if( new_campaign->m_is_target_level )
+		{
+			Game_Action = GA_ENTER_LEVEL;
+			Game_Mode_Type = MODE_TYPE_LEVEL_CUSTOM;
+			Game_Action_Data.add( "level", new_campaign->m_target.c_str() );
+			Game_Action_Data.add( "reset_save", "1" );
+		}
+		// enter world
+		else
+		{
+			Game_Action = GA_ENTER_WORLD;
+			Game_Action_Data.add( "world", new_campaign->m_target.c_str() );
+			Game_Action_Data.add( "reset_save", "1" );
 		}
 	}
 }
@@ -611,6 +699,11 @@ void cMenu_Start :: Load_World( std::string name )
 
 bool cMenu_Start :: Load_Level( std::string level_name )
 {
+	if( pLevel_Player->m_points > 0 && !Box_Question( _("This will reset your current progress.\nContinue ?") ) )
+	{
+		return 0;
+	}
+
 	// if not available
 	if( !pLevel_Manager->Get_Path( level_name ) )
 	{
@@ -635,9 +728,13 @@ bool cMenu_Start :: TabControl_Selection_Changed( const CEGUI::EventArgs &e )
 
 	if( tabcontrol->getSelectedTabIndex() == 0 )
 	{
-		static_cast<CEGUI::Listbox *>(CEGUI::WindowManager::getSingleton().getWindow( "listbox_worlds" ))->activate();
+		static_cast<CEGUI::Listbox *>(CEGUI::WindowManager::getSingleton().getWindow( "listbox_campaigns" ))->activate();
 	}
 	else if( tabcontrol->getSelectedTabIndex() == 1 )
+	{
+		static_cast<CEGUI::Listbox *>(CEGUI::WindowManager::getSingleton().getWindow( "listbox_worlds" ))->activate();
+	}
+	else if( tabcontrol->getSelectedTabIndex() == 2 )
 	{
 		static_cast<CEGUI::Listbox *>(CEGUI::WindowManager::getSingleton().getWindow( "listbox_levels" ))->activate();
 	}
@@ -847,17 +944,55 @@ bool cMenu_Start :: Listbox_Character_Key( const CEGUI::EventArgs &e )
 	return 0;
 }
 
+bool cMenu_Start :: Campaign_Select( const CEGUI::EventArgs &event )
+{
+	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
+	CEGUI::ListboxItem *item = static_cast<CEGUI::Listbox *>( windowEventArgs.window )->getFirstSelectedItem();
+
+	// description
+	CEGUI::Editbox *editbox_campaign_description = static_cast<CEGUI::Editbox *>(CEGUI::WindowManager::getSingleton().getWindow( "editbox_campaign_description" ));
+
+	// set description
+	if( item )
+	{
+		// todo : should be from the filename not name (more unique)
+		editbox_campaign_description->setText( reinterpret_cast<const CEGUI::utf8*>(pCampaign_Manager->Get_from_Name( item->getText().c_str() )->m_description.c_str()) );
+	}
+	// clear
+	else
+	{
+		editbox_campaign_description->setText( "" );
+	}
+
+	return 1;
+}
+
+bool cMenu_Start :: Campaign_Select_final_list( const CEGUI::EventArgs &event )
+{
+	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
+	CEGUI::ListboxItem *item = static_cast<CEGUI::Listbox *>( windowEventArgs.window )->getFirstSelectedItem();
+
+	// load campaign
+	if( item )
+	{
+		Load_Campaign( item->getText().c_str() );
+	}
+
+	return 1;
+}
+
 bool cMenu_Start :: World_Select( const CEGUI::EventArgs &event )
 {
 	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
 	CEGUI::ListboxItem *item = static_cast<CEGUI::Listbox *>( windowEventArgs.window )->getFirstSelectedItem();
 
-	// World description
+	// description
 	CEGUI::Editbox *editbox_world_description = static_cast<CEGUI::Editbox *>(CEGUI::WindowManager::getSingleton().getWindow( "editbox_world_description" ));
 
-	// set world description
+	// set description
 	if( item )
 	{
+		// todo : should be from the path not name (more unique)
 		editbox_world_description->setText( reinterpret_cast<const CEGUI::utf8*>(pOverworld_Manager->Get_from_Name( item->getText().c_str() )->m_description->m_comment.c_str()) );
 	}
 	// clear

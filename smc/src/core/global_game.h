@@ -173,6 +173,7 @@ enum LevelLandType
 // Core
 #define GAME_OVERWORLD_DIR "world"
 #define GAME_LEVEL_DIR "levels"
+#define GAME_CAMPAIGN_DIR "campaign"
 #define GAME_PIXMAPS_DIR "pixmaps"
 #define GAME_SOUNDS_DIR "sounds"
 #define GAME_MUSIC_DIR "music"
@@ -191,6 +192,7 @@ enum LevelLandType
 #define USER_SCREENSHOT_DIR "screenshots"
 #define USER_LEVEL_DIR "levels"
 #define USER_WORLD_DIR "worlds"
+#define USER_CAMPAIGN_DIR "campaign"
 #define USER_IMGCACHE_DIR "cache"
 
 /* *** *** *** *** *** *** *** forward declarations *** *** *** *** *** *** *** *** *** *** */

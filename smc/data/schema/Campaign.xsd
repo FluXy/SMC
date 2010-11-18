@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xsd:element name="campaign" type="CampaignType"/>
+	
+	<xsd:complexType name="CampaignType">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="information" type="PropertyType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="target" type="PropertyType" minOccurs="0" maxOccurs="1"/>
+		</xsd:choice>
+	</xsd:complexType>
+	
+	<xsd:complexType name="PropertyType">
+		<xsd:sequence>
+			<xsd:element name="property" type="PropertyBaseType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PropertyBaseType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="name" type="xsd:string" use="required"/>
+				<xsd:attribute name="value" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+</xsd:schema>

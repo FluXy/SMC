@@ -109,11 +109,15 @@ public:
 	*/
 	void Load_Selected( void );
 
-	/* Load the Selected World
+	/* Load the Campaign
 	 * and exit if successful
 	*/
-	void Load_World( std::string level_name );
-	/* Load the Selected Level
+	void Load_Campaign( std::string name );
+	/* Load the World
+	 * and exit if successful
+	*/
+	void Load_World( std::string name );
+	/* Load the Level
 	 * and exit if successful
 	*/
 	bool Load_Level( std::string name );
@@ -126,6 +130,11 @@ public:
 	bool Listbox_Keydown( const CEGUI::EventArgs &event );
 	// listbox level/world character key event
 	bool Listbox_Character_Key( const CEGUI::EventArgs &event );
+
+	// campaign selected event
+	bool Campaign_Select( const CEGUI::EventArgs &event );
+	// campaign selected for entering event
+	bool Campaign_Select_final_list( const CEGUI::EventArgs &event );
 
 	// world selected event
 	bool World_Select( const CEGUI::EventArgs &event );

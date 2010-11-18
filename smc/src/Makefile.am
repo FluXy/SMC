@@ -12,6 +12,7 @@ smc_SOURCES = \
 	audio/random_sound.cpp \
 	audio/sound_manager.cpp \
 	core/camera.cpp \
+	core/campaign_manager.cpp \
 	core/collision.cpp \
 	core/editor.cpp \
 	core/filesystem/filesystem.cpp \

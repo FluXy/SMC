@@ -30,6 +30,7 @@
 #include "../input/joystick.h"
 #include "../overworld/world_manager.h"
 #include "../overworld/overworld.h"
+#include "../core/campaign_manager.h"
 #include "../input/mouse.h"
 #include "../user/savegame.h"
 #include "../input/keyboard.h"
@@ -276,6 +277,7 @@ void Init_Game( void )
 	// audio init
 	pAudio->Init();
 
+	pCampaign_Manager = new cCampaign_Manager();
 	pLevel_Player = new cLevel_Player( NULL );
 	pLevel_Player->m_disallow_managed_delete = 1;
 	// set the first active player available
@@ -399,6 +401,12 @@ void Exit_Game( void )
 		pKeyboard = NULL;
 	}
 
+	if( pCampaign_Manager )
+	{
+		delete pCampaign_Manager;
+		pCampaign_Manager = NULL;
+	}
+	
 	if( pOverworld_Manager )
 	{
 		delete pOverworld_Manager;

@@ -11,19 +11,55 @@
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
             <Property Name="TabPanePosition" Value="Top" />
             <Property Name="UnifiedAreaRect" Value="{{0.182812,0},{0.241666,0},{0.840625,0},{0.793749,0}}" />
+            <Window Type="DefaultWindow" Name="tab_campaign" >
+                <Property Name="Text" Value="Campaign" />
+				<Property Name="Visible" Value="True" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+                <Window Type="TaharezLook/Listbox" Name="listbox_campaigns" >
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.015,0},{0.105,0},{0.5,0},{0.9,0}}" />
+                </Window>
+                <Window Type="TaharezLook/MultiLineEditbox" Name="editbox_campaign_description" >
+                    <Property Name="Text" ></Property>
+                    <Property Name="ReadOnly" Value="True" />
+                    <Property Name="MaxTextLength" Value="1073741823" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.53,0},{0.21,0},{0.98,0},{0.6,0}}" />
+                </Window>
+                <Window Type="TaharezLook/StaticText" Name="text_campaign_description" >
+                    <Property Name="Text" Value="Description" />
+                    <Property Name="Tooltip" Value="Campaign Description" />
+                    <Property Name="FrameEnabled" Value="False" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.53,0},{0.11,0},{0.8,0},{0.19,0}}" />
+                    <Property Name="BackgroundEnabled" Value="False" />
+                </Window>
+                <Window Type="TaharezLook/StaticText" Name="text_campaign_select" >
+                    <Property Name="Text" Value="Select Campaign" />
+                    <Property Name="TextColours" Value="tl:FFAAFFAA tr:FFAAFFAA bl:FFAAFFAA br:FFAAFFAA" />
+                    <Property Name="FrameEnabled" Value="False" />
+                    <Property Name="HorzFormatting" Value="HorzCentred" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.015,0},{0,0},{0.497184,0},{0.1,0}}" />
+                    <Property Name="BackgroundEnabled" Value="False" />
+                </Window>
+            </Window>
             <Window Type="DefaultWindow" Name="tab_world" >
                 <Property Name="Text" Value="World" />
+                <Property Name="Visible" Value="False" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
                 <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
                 <Window Type="TaharezLook/Listbox" Name="listbox_worlds" >
                     <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
                     <Property Name="UnifiedAreaRect" Value="{{0.015,0},{0.105,0},{0.5,0},{0.9,0}}" />
                 </Window>
-                <Window Type="TaharezLook/Editbox" Name="editbox_world_description" >
+                <Window Type="TaharezLook/MultiLineEditbox" Name="editbox_world_description" >
+                    <Property Name="Text" ></Property>
                     <Property Name="ReadOnly" Value="True" />
                     <Property Name="MaxTextLength" Value="1073741823" />
                     <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                    <Property Name="UnifiedAreaRect" Value="{{0.53,0},{0.21,0},{0.98,0},{0.3,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.53,0},{0.21,0},{0.98,0},{0.6,0}}" />
                 </Window>
                 <Window Type="TaharezLook/StaticText" Name="text_world_description" >
                     <Property Name="Text" Value="Description" />

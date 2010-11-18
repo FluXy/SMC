@@ -61,6 +61,11 @@ void cResource_Manager :: Init_User_Directory( void )
 	{
 		Create_Directory( user_data_dir + USER_WORLD_DIR );
 	}
+	// Create campaign directory
+	if( !Dir_Exists( user_data_dir + USER_CAMPAIGN_DIR ) )
+	{
+		Create_Directory( user_data_dir + USER_CAMPAIGN_DIR );
+	}
 	// Create cache directory
 	if( !Dir_Exists( user_data_dir + USER_IMGCACHE_DIR ) )
 	{

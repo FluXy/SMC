@@ -317,6 +317,7 @@ Section "Uninstall"
 		RMDir /r "$APPDATA\smc\screenshots"
 		RMDir /r "$APPDATA\smc\levels"
 		RMDir /r "$APPDATA\smc\worlds"
+		RMDir /r "$APPDATA\smc\campaign"
 		RMDir "$APPDATA\smc"
 	next:
 
@@ -338,6 +339,7 @@ Section "Uninstall"
 	Delete "$INSTDIR\*.xsd"
 
 	; Remove data files
+	RMDir /r "$INSTDIR\data\campaign"
 	RMDir /r "$INSTDIR\data\editor"
 	RMDir /r "$INSTDIR\data\gui"
 	RMDir /r "$INSTDIR\data\icon"
