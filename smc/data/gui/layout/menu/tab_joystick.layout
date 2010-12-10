@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+	<Window Type="DefaultWindow" Name="tab_joystick" >
+		<Property Name="Text" Value="Joystick" />
+		<Property Name="InheritsAlpha" Value="False" />
+		<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+		<Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+		<Window Type="TaharezLook/Combobox" Name="joystick_combo" >
+			<Property Name="Text" Value="none" />
+			<Property Name="Tooltip" Value="Select the Joystick to use." />
+			<Property Name="ReadOnly" Value="True" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="ClippedByParent" Value="False" />
+			<Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.05,0},{0.95,0},{0.34,0}}" />
+			<Property Name="MaxEditTextLength" Value="1073741823" />
+		</Window>
+		<Window Type="TaharezLook/Combobox" Name="joystick_combo_analog_jump" >
+			<Property Name="Text" Value="off" />
+			<Property Name="Tooltip" Value="Enable Joystick Analog up for Jumping." />
+			<Property Name="ReadOnly" Value="True" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="ClippedByParent" Value="False" />
+			<Property Name="UnifiedAreaRect" Value="{{0.81,0},{0.42,0},{0.96,0},{0.67,0}}" />
+			<Property Name="MaxEditTextLength" Value="1073741823" />
+		</Window>
+		<Window Type="TaharezLook/StaticText" Name="joystick_text_name" >
+			<Property Name="Text" Value="_Joystick" />
+			<Property Name="FrameEnabled" Value="False" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.05,0},{0.25,0},{0.15,0}}" />
+			<Property Name="BackgroundEnabled" Value="False" />
+		</Window>
+		<Window Type="TaharezLook/StaticText" Name="joystick_text_analog_jump" >
+			<Property Name="Text" Value="_Analog Jump" />
+			<Property Name="FrameEnabled" Value="False" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.42,0},{0.42,0},{0.66,0},{0.52,0}}" />
+			<Property Name="BackgroundEnabled" Value="False" />
+		</Window>
+		<Window Type="TaharezLook/StaticText" Name="joystick_text_shortcuts" >
+			<Property Name="Text" Value="_Shortcuts" />
+			<Property Name="FrameEnabled" Value="False" />
+			<Property Name="HorzFormatting" Value="HorzCentred" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.08,0},{0.32,0},{0.36,0},{0.42,0}}" />
+			<Property Name="BackgroundEnabled" Value="False" />
+		</Window>
+		<Window Type="TaharezLook/MultiColumnList" Name="joystick_listbox" >
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.43,0},{0.4,0},{0.88,0}}" />
+		</Window>
+		<Window Type="TaharezLook/Spinner" Name="joystick_spinner_axis_hor" >
+			<Property Name="StepSize" Value="1" />
+			<Property Name="CurrentValue" Value="0" />
+			<Property Name="MaximumValue" Value="32767" />
+			<Property Name="MinimumValue" Value="-32768" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.58,0},{0.55,0},{0.68,0},{0.63,0}}" />
+		</Window>
+		<Window Type="TaharezLook/Spinner" Name="joystick_spinner_axis_ver" >
+			<Property Name="StepSize" Value="1" />
+			<Property Name="CurrentValue" Value="0" />
+			<Property Name="MaximumValue" Value="32767" />
+			<Property Name="MinimumValue" Value="-32768" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.81,0},{0.55,0},{0.91,0},{0.63,0}}" />
+		</Window>
+		<Window Type="TaharezLook/StaticText" Name="joystick_text_axis_hor" >
+			<Property Name="Text" Value="_Axis Hor" />
+			<Property Name="Tooltip" Value="Joystick horizontal axis." />
+			<Property Name="FrameEnabled" Value="False" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.42,0},{0.55,0},{0.57,0},{0.63,0}}" />
+			<Property Name="BackgroundEnabled" Value="False" />
+		</Window>
+		<Window Type="TaharezLook/StaticText" Name="joystick_text_axis_ver" >
+			<Property Name="Text" Value="_Ver" />
+			<Property Name="Tooltip" Value="Joystick vertical axis." />
+			<Property Name="FrameEnabled" Value="False" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.71,0},{0.55,0},{0.79,0},{0.63,0}}" />
+			<Property Name="BackgroundEnabled" Value="False" />
+		</Window>
+		<Window Type="TaharezLook/Button" Name="joystick_button_reset" >
+			<Property Name="Text" Value="_Reset" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.02,0},{0.9,0},{0.16,0},{0.98,0}}" />
+		</Window>
+		<Window Type="TaharezLook/StaticText" Name="joystick_text_sensitivity" >
+			<Property Name="Text" Value="_Sensitivity" />
+			<Property Name="FrameEnabled" Value="False" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.19,0},{0.25,0},{0.3,0}}" />
+			<Property Name="BackgroundEnabled" Value="False" />
+		</Window>
+		<Window Type="TaharezLook/Slider" Name="joystick_slider_sensitivity" >
+			<Property Name="CurrentValue" Value="0" />
+			<Property Name="MaximumValue" Value="32767" />
+			<Property Name="ClickStepSize" Value="1000" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.19,0},{0.55,0},{0.29,0}}" />
+		</Window>
+    </Window>
+</GUILayout>

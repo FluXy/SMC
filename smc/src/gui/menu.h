@@ -38,14 +38,6 @@ enum MenuID
 	MENU_CREDITS = 6
 };
 
-enum OptionMenuID
-{
-	MENU_GAME = 0,
-	MENU_VIDEO = 1,
-	MENU_AUDIO = 2,
-	MENU_CONTROLS = 3
-};
-
 /* *** *** *** *** *** *** cMenu_Item *** *** *** *** *** *** *** *** *** *** *** */
 
 class cMenu_Item : public cHudSprite
@@ -185,8 +177,6 @@ public:
 	MenuID m_menu_id;
 	// for entering another menu after leaving
 	MenuID m_next_menu;
-	// the current option menu
-	OptionMenuID m_options_menu_id;
 
 	// Menu class
 	cMenu_Base *m_menu_data;

@@ -268,7 +268,6 @@ cMenuCore :: cMenuCore( void )
 {
 	m_menu_id = MENU_NOTHING;
 	m_next_menu = MENU_NOTHING;
-	m_options_menu_id = MENU_GAME;
 
 	m_menu_data = NULL;
 	m_handler = new cMenuHandler();
@@ -607,26 +606,7 @@ void cMenuCore :: Load( const MenuID menu /* = MENU_MAIN */, const GameMode exit
 	// Options
 	else if( m_menu_id == MENU_OPTIONS )
 	{
-		// Game
-		if( m_options_menu_id == MENU_GAME )
-		{
-			m_menu_data = static_cast<cMenu_Base *>(new cMenu_Options_Game());
-		}
-		// Video
-		else if( m_options_menu_id == MENU_VIDEO )
-		{
-			m_menu_data = static_cast<cMenu_Base *>(new cMenu_Options_Video());
-		}
-		// Audio
-		else if( m_options_menu_id == MENU_AUDIO )
-		{
-			m_menu_data = static_cast<cMenu_Base *>(new cMenu_Options_Audio());
-		}
-		// Controls
-		else if( m_options_menu_id == MENU_CONTROLS )
-		{
-			m_menu_data = static_cast<cMenu_Base *>(new cMenu_Options_Controls());
-		}
+		m_menu_data = static_cast<cMenu_Base *>(new cMenu_Options());
 	}
 	// Load
 	else if( m_menu_id == MENU_LOAD )

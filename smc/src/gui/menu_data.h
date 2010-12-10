@@ -173,153 +173,20 @@ public:
 
 	virtual void Init( void );
 	virtual void Init_GUI( void );
-	// Exit
+	void Init_GUI_Game( void );
+	void Init_GUI_Editor( void );
+	void Init_GUI_Video( void );
+	void Init_GUI_Audio( void );
+	void Init_GUI_Keyboard( void );
+	void Init_GUI_Joystick( void );
 	virtual void Exit( void );
 	virtual void Update( void );
-	virtual void Draw( void );
-};
-
-/* *** *** *** *** *** *** *** cMenu_Options_Game *** *** *** *** *** *** *** *** *** *** */
-
-class cMenu_Options_Game : public cMenu_Options
-{
-public:
-	cMenu_Options_Game( void );
-	virtual ~cMenu_Options_Game( void );
-
-	virtual void Init( void );
-	virtual void Init_GUI( void );
-	virtual void Update( void );
-	virtual void Draw( void );
-
-	// always run option selected event
-	bool Always_Run_Select( const CEGUI::EventArgs &event );
-	// camera horizontal value changed event
-	bool Camera_Hor_Select( const CEGUI::EventArgs &event );
-	// camera vertical value changed event
-	bool Camera_Ver_Select( const CEGUI::EventArgs &event );
-	// language option selected event
-	bool Language_Select( const CEGUI::EventArgs &event );
-	// menu level option selected event
-	bool Menu_Level_Select( const CEGUI::EventArgs &event );
-	// menu level text changed event
-	bool Menu_Level_Text_Changed( const CEGUI::EventArgs &event );
-	// editor show item images option selected event
-	bool Editor_Show_Item_Images_Select( const CEGUI::EventArgs &event );
-	// editor item image size value changed event
-	bool Editor_Item_Image_Size_Select( const CEGUI::EventArgs &event );
-	// editor auto hide mouse option selected event
-	bool Editor_Auto_Hide_Mouse_Select( const CEGUI::EventArgs &event );
-	// Button reset game clicked event
-	bool Button_Reset_Game_Clicked( const CEGUI::EventArgs &event );
-	// Button reset editor clicked event
-	bool Button_Reset_Editor_Clicked( const CEGUI::EventArgs &event );
-
-	// game
-	CEGUI::Combobox *m_combo_always_run;
-	CEGUI::Spinner *m_spinner_camera_hor_speed;
-	CEGUI::Spinner *spinner_camera_ver_speed;
-	CEGUI::Combobox *m_combo_language;
-	CEGUI::Combobox *m_combo_menu_level;
-	// editor
-	CEGUI::Combobox *m_combo_editor_show_item_images;
-	CEGUI::Spinner *m_spinner_editor_item_image_size;
-	CEGUI::Combobox *m_combo_editor_mouse_auto_hide;
-};
-
-/* *** *** *** *** *** *** *** cMenu_Options_Video *** *** *** *** *** *** *** *** *** *** */
-
-class cMenu_Options_Video : public cMenu_Options
-{
-public:
-	cMenu_Options_Video( void );
-	virtual ~cMenu_Options_Video( void );
-
-	virtual void Init( void );
-	virtual void Init_GUI( void );
-	virtual void Update( void );
-	virtual void Draw( void );
-
-	// Resolution option selected event
-	bool Res_Select( const CEGUI::EventArgs &event );
-	// Bpp option selected event
-	bool Bpp_Select( const CEGUI::EventArgs &event );
-	// Fullscreen option selected event
-	bool Fullscreen_Select( const CEGUI::EventArgs &event );
-	// Vsync option selected event
-	bool Vsync_Select( const CEGUI::EventArgs &event );
-	// Geometry quality value changed event
-	bool Slider_Geometry_Quality_Changed( const CEGUI::EventArgs &event );
-	// Texture quality value changed event
-	bool Slider_Texture_Quality_Changed( const CEGUI::EventArgs &event );
-	// Button reset clicked event
-	bool Button_Reset_Clicked( const CEGUI::EventArgs &event );
-	// Button apply clicked event
-	bool Button_Apply_Clicked( const CEGUI::EventArgs &event );
-	// Button recreate cache clicked event
-	bool Button_Recreate_Cache_Clicked( const CEGUI::EventArgs &event );
-
-	CEGUI::Combobox *m_combo_resolution;
-	CEGUI::Combobox *m_combo_bpp;
-	CEGUI::Combobox *m_combo_fullscreen;
-	CEGUI::Combobox *m_combo_vsync;
-	CEGUI::Slider *m_slider_geometry_quality;
-	CEGUI::Slider *m_slider_texture_quality;
-
-	// video settings
-	unsigned int m_vid_w;
-	unsigned int m_vid_h;
-	unsigned int m_vid_bpp;
-	bool m_vid_fullscreen;
-	bool m_vid_vsync;
-	float m_vid_geometry_detail;
-	float m_vid_texture_detail;
-};
-
-/* *** *** *** *** *** *** *** cMenu_Options_Audio *** *** *** *** *** *** *** *** *** *** */
-
-class cMenu_Options_Audio : public cMenu_Options
-{
-public:
-	cMenu_Options_Audio( void );
-	virtual ~cMenu_Options_Audio( void );
-
-	virtual void Init( void );
-	virtual void Init_GUI( void );
-	virtual void Update( void );
-	virtual void Draw( void );
-
-	// Audio Hz option selected event
-	bool Audio_Hz_Select( const CEGUI::EventArgs &event );
-	// music option selected event
-	bool Music_Select( const CEGUI::EventArgs &event );
-	// music volume changed event
-	bool Music_Vol_Changed( const CEGUI::EventArgs &event );
-	// sound option selected event
-	bool Sound_Select( const CEGUI::EventArgs &event );
-	// sound volume changed event
-	bool Sound_Vol_Changed( const CEGUI::EventArgs &event );
-	// Button reset clicked event
-	bool Button_Reset_Clicked( const CEGUI::EventArgs &event );
-
-	CEGUI::Combobox *m_combo_audio_hz;
-	CEGUI::Combobox *m_combo_music;
-	CEGUI::Slider *m_slider_music;
-	CEGUI::Combobox *m_combo_sounds;
-	CEGUI::Slider *m_slider_sound;
-};
-
-/* *** *** *** *** *** *** *** cMenu_Options_Controls *** *** *** *** *** *** *** *** *** *** */
-
-class cMenu_Options_Controls : public cMenu_Options
-{
-public:
-	cMenu_Options_Controls( void );
-	virtual ~cMenu_Options_Controls( void );
-
-	virtual void Init( void );
-	virtual void Init_GUI( void );
-	virtual void Update( void );
+	void Change_Game_Setting( int setting );
+	void Change_Editor_Setting( int setting );
+	void Change_Video_Setting( int setting );
+	void Change_Audio_Setting( int setting );
+	void Change_Keyboard_Setting( int setting );
+	void Change_Joystick_Setting( int setting );
 	virtual void Draw( void );
 
 	/* Build the shortcut list
@@ -337,30 +204,82 @@ public:
 	// Disable Joystick
 	void Joy_Disable( void );
 
-	// keyboard listbox item double clicked event
+	bool Button_Back_Click( const CEGUI::EventArgs &event );
+	// game
+	bool Game_Always_Run_Select( const CEGUI::EventArgs &event );
+	bool Game_Camera_Hor_Select( const CEGUI::EventArgs &event );
+	bool Game_Camera_Ver_Select( const CEGUI::EventArgs &event );
+	bool Game_Language_Select( const CEGUI::EventArgs &event );
+	bool Game_Menu_Level_Select( const CEGUI::EventArgs &event );
+	bool Game_Menu_Level_Text_Changed( const CEGUI::EventArgs &event );
+	bool Game_Editor_Show_Item_Images_Select( const CEGUI::EventArgs &event );
+	bool Game_Editor_Item_Image_Size_Select( const CEGUI::EventArgs &event );
+	bool Game_Editor_Auto_Hide_Mouse_Select( const CEGUI::EventArgs &event );
+	bool Game_Button_Reset_Game_Clicked( const CEGUI::EventArgs &event );
+	bool Game_Button_Reset_Editor_Clicked( const CEGUI::EventArgs &event );
+	// video
+	bool Video_Resolution_Select( const CEGUI::EventArgs &event );
+	bool Video_Bpp_Select( const CEGUI::EventArgs &event );
+	bool Video_Fullscreen_Select( const CEGUI::EventArgs &event );
+	bool Video_Vsync_Select( const CEGUI::EventArgs &event );
+	bool Video_Slider_Geometry_Quality_Changed( const CEGUI::EventArgs &event );
+	bool Video_Slider_Texture_Quality_Changed( const CEGUI::EventArgs &event );
+	bool Video_Button_Reset_Clicked( const CEGUI::EventArgs &event );
+	bool Video_Button_Apply_Clicked( const CEGUI::EventArgs &event );
+	bool Video_Button_Recreate_Cache_Clicked( const CEGUI::EventArgs &event );
+	// audio
+	bool Audio_Hz_Select( const CEGUI::EventArgs &event );
+	bool Audio_Music_Select( const CEGUI::EventArgs &event );
+	bool Audio_Music_Volume_Changed( const CEGUI::EventArgs &event );
+	bool Audio_Sound_Select( const CEGUI::EventArgs &event );
+	bool Audio_Sound_Volume_Changed( const CEGUI::EventArgs &event );
+	bool Audio_Button_Reset_Clicked( const CEGUI::EventArgs &event );
 	bool Keyboard_List_Double_Click( const CEGUI::EventArgs &event );
-	// keyboard scroll speed value changed event
+	// keyboard
 	bool Keyboard_Slider_Scroll_Speed_Changed( const CEGUI::EventArgs &event );
-	// joystick name click event
+	bool Keyboard_Button_Reset_Clicked( const CEGUI::EventArgs &event );
+	// joystick
 	bool Joystick_Name_Click( const CEGUI::EventArgs &event );
-	// joystick analog jump click event
-	bool Joystick_Analog_Jump_Click( const CEGUI::EventArgs &event );
-	// joystick name option selected event
 	bool Joystick_Name_Select( const CEGUI::EventArgs &event );
-	// joystick sensitivity value changed event
 	bool Joystick_Sensitivity_Changed( const CEGUI::EventArgs &event );
-	// joystick analog jump option selected event
 	bool Joystick_Analog_Jump_Select( const CEGUI::EventArgs &event );
-	// joystick axis horizontal changed event
 	bool Joystick_Spinner_Axis_Hor_Changed( const CEGUI::EventArgs &event );
-	// joystick axis vertical changed event
 	bool Joystick_Spinner_Axis_Ver_Changed( const CEGUI::EventArgs &event );
-	// joystick listbox item double clicked event
 	bool Joystick_List_Double_Click( const CEGUI::EventArgs &event );
-	// Button reset keyboard clicked event
-	bool Button_Reset_Keyboard_Clicked( const CEGUI::EventArgs &event );
-	// Button reset joystick clicked event
-	bool Button_Reset_Joystick_Clicked( const CEGUI::EventArgs &event );
+	bool Joystick_Button_Reset_Clicked( const CEGUI::EventArgs &event );
+
+	CEGUI::TabControl *m_tabcontrol;
+	// game
+	CEGUI::Combobox *m_game_combo_always_run;
+	CEGUI::Spinner *m_game_spinner_camera_hor_speed;
+	CEGUI::Spinner *m_game_spinner_camera_ver_speed;
+	CEGUI::Combobox *m_game_combo_language;
+	CEGUI::Combobox *m_game_combo_menu_level;
+	// game editor
+	CEGUI::Combobox *m_game_combo_editor_show_item_images;
+	CEGUI::Spinner *m_game_spinner_editor_item_image_size;
+	CEGUI::Combobox *m_game_combo_editor_mouse_auto_hide;
+	// video
+	CEGUI::Combobox *m_video_combo_resolution;
+	CEGUI::Combobox *m_video_combo_bpp;
+	CEGUI::Combobox *m_video_combo_fullscreen;
+	CEGUI::Combobox *m_video_combo_vsync;
+	CEGUI::Slider *m_video_slider_geometry_quality;
+	CEGUI::Slider *m_video_slider_texture_quality;
+	// video settings
+	unsigned int m_vid_w;
+	unsigned int m_vid_h;
+	unsigned int m_vid_bpp;
+	bool m_vid_fullscreen;
+	bool m_vid_vsync;
+	float m_vid_geometry_detail;
+	float m_vid_texture_detail;
+	// audio
+	CEGUI::Combobox *m_audio_combo_hz;
+	CEGUI::Combobox *m_audio_combo_music;
+	CEGUI::Slider *m_audio_slider_music;
+	CEGUI::Combobox *m_audio_combo_sounds;
+	CEGUI::Slider *m_audio_slider_sound;
 
 	// Shortcut item
 	class cShortcut_item

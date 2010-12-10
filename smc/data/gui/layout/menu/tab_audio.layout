@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+	<Window Type="DefaultWindow" Name="tab_audio" >
+		<Property Name="Text" Value="Audio" />
+		<Property Name="InheritsAlpha" Value="False" />
+		<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+		<Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+		<Window Type="TaharezLook/Combobox" Name="audio_combo_music" >
+			<Property Name="ReadOnly" Value="True" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="ClippedByParent" Value="False" />
+			<Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.13,0},{0.42,0},{0.37,0}}" />
+			<Property Name="MaxEditTextLength" Value="1073741823" />
+		</Window>
+		<Window Type="TaharezLook/Combobox" Name="audio_combo_sounds" >
+			<Property Name="ReadOnly" Value="True" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="ClippedByParent" Value="False" />
+			<Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.21,0},{0.42,0},{0.45,0}}" />
+			<Property Name="MaxEditTextLength" Value="1073741823" />
+		</Window>
+		<Window Type="TaharezLook/Slider" Name="audio_slider_music_volume" >
+			<Property Name="CurrentValue" Value="0" />
+			<Property Name="MaximumValue" Value="128" />
+			<Property Name="ClickStepSize" Value="8" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.43,0},{0.13,0},{0.57,0},{0.2,0}}" />
+		</Window>
+		<Window Type="TaharezLook/Slider" Name="audio_slider_sound_volume" >
+			<Property Name="CurrentValue" Value="0" />
+			<Property Name="MaximumValue" Value="128" />
+			<Property Name="ClickStepSize" Value="8" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.43,0},{0.21,0},{0.57,0},{0.28,0}}" />
+		</Window>
+		<Window Type="TaharezLook/Combobox" Name="audio_combo_hz" >
+			<Property Name="ReadOnly" Value="True" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="ClippedByParent" Value="False" />
+			<Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.05,0},{0.46,0},{0.34,0}}" />
+			<Property Name="MaxEditTextLength" Value="1073741823" />
+		</Window>
+		<Window Type="TaharezLook/StaticText" Name="audio_text_hz" >
+			<Property Name="Text" Value="_Hz" />
+			<Property Name="FrameEnabled" Value="False" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.05,0},{0.3,0},{0.12,0}}" />
+			<Property Name="BackgroundEnabled" Value="False" />
+		</Window>
+		<Window Type="TaharezLook/StaticText" Name="audio_text_music" >
+			<Property Name="Text" Value="_Music" />
+			<Property Name="FrameEnabled" Value="False" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.13,0},{0.3,0},{0.2,0}}" />
+			<Property Name="BackgroundEnabled" Value="False" />
+		</Window>
+		<Window Type="TaharezLook/StaticText" Name="audio_text_sound" >
+			<Property Name="Text" Value="_Sound" />
+			<Property Name="FrameEnabled" Value="False" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.21,0},{0.3,0},{0.28,0}}" />
+			<Property Name="BackgroundEnabled" Value="False" />
+		</Window>
+		<Window Type="TaharezLook/Button" Name="audio_button_reset" >
+			<Property Name="Text" Value="_Reset" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.02,0},{0.9,0},{0.16,0},{0.98,0}}" />
+		</Window>
+    </Window>
+</GUILayout>

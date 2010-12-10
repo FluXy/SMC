@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+	<Window Type="DefaultWindow" Name="tab_keyboard" >
+		<Property Name="Text" Value="Keyboard" />
+		<Property Name="Visible" Value="True" />
+		<Property Name="InheritsAlpha" Value="False" />
+		<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+		<Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+		<Window Type="TaharezLook/MultiColumnList" Name="keyboard_listbox" >
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.15,0},{0.8,0},{0.88,0}}" />
+		</Window>
+		<Window Type="TaharezLook/StaticText" Name="keyboard_text_shortcuts" >
+			<Property Name="Text" Value="_Shortcuts" />
+			<Property Name="FrameEnabled" Value="False" />
+			<Property Name="HorzFormatting" Value="HorzCentred" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.08,0},{0.04,0},{0.36,0},{0.14,0}}" />
+			<Property Name="BackgroundEnabled" Value="False" />
+		</Window>
+		<Window Type="TaharezLook/Slider" Name="keyboard_slider_scroll_speed" >
+			<Property Name="CurrentValue" Value="0" />
+			<Property Name="MaximumValue" Value="2" />
+			<Property Name="ClickStepSize" Value="0.1" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.7,0},{0.05,0},{0.95,0},{0.15,0}}" />
+		</Window>
+		<Window Type="TaharezLook/StaticText" Name="keyboard_text_scroll_speed" >
+			<Property Name="Text" Value="_Scroll Speed" />
+			<Property Name="FrameEnabled" Value="False" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.45,0},{0.05,0},{0.7,0},{0.15,0}}" />
+			<Property Name="BackgroundEnabled" Value="False" />
+		</Window>
+		<Window Type="TaharezLook/Button" Name="keyboard_button_reset" >
+			<Property Name="Text" Value="_Reset" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.02,0},{0.9,0},{0.16,0},{0.98,0}}" />
+		</Window>
+    </Window>
+</GUILayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+	<Window Type="DefaultWindow" Name="tab_editor" >
+		<Property Name="Text" Value="Editor" />
+		<Property Name="Visible" Value="False" />
+		<Property Name="InheritsAlpha" Value="False" />
+		<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+		<Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+		<Window Type="TaharezLook/StaticText" Name="editor_text_show_item_images" >
+			<Property Name="Text" Value="_Show images" />
+			<Property Name="FrameEnabled" Value="False" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.05,0},{0.3,0},{0.12,0}}" />
+			<Property Name="BackgroundEnabled" Value="False" />
+		</Window>
+		<Window Type="TaharezLook/StaticText" Name="editor_text_item_image_size" >
+			<Property Name="Text" Value="_Item image size" />
+			<Property Name="FrameEnabled" Value="False" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.13,0},{0.3,0},{0.2,0}}" />
+			<Property Name="BackgroundEnabled" Value="False" />
+		</Window>
+		<Window Type="TaharezLook/Spinner" Name="editor_spinner_item_image_size" >
+			<Property Name="Tooltip" Value="Item image size. The default is 50." />
+			<Property Name="StepSize" Value="5" />
+			<Property Name="CurrentValue" Value="5" />
+			<Property Name="MaximumValue" Value="60" />
+			<Property Name="MinimumValue" Value="5" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.13,0},{0.42,0},{0.2,0}}" />
+		</Window>
+		<Window Type="TaharezLook/Combobox" Name="editor_combo_show_item_images" >
+			<Property Name="Tooltip" Value="Enable this to show the item images." />
+			<Property Name="ReadOnly" Value="True" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="ClippedByParent" Value="False" />
+			<Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.05,0},{0.42,0},{0.29,0}}" />
+			<Property Name="MaxEditTextLength" Value="1073741823" />
+		</Window>
+		<Window Type="TaharezLook/Button" Name="editor_button_reset" >
+			<Property Name="Text" Value="_Reset" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.02,0},{0.9,0},{0.16,0},{0.98,0}}" />
+		</Window>
+		<Window Type="TaharezLook/StaticText" Name="editor_text_mouse_auto_hide" >
+			<Property Name="Text" Value="_Auto-Hide Mouse" />
+			<Property Name="FrameEnabled" Value="False" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.21,0},{0.3,0},{0.28,0}}" />
+			<Property Name="BackgroundEnabled" Value="False" />
+		</Window>
+		<Window Type="TaharezLook/Combobox" Name="editor_combo_mouse_auto_hide" >
+			<Property Name="ReadOnly" Value="True" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+			<Property Name="ClippedByParent" Value="False" />
+			<Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.21,0},{0.42,0},{0.45,0}}" />
+			<Property Name="MaxEditTextLength" Value="1073741823" />
+		</Window>
+    </Window>
+</GUILayout>
