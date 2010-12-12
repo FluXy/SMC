@@ -142,8 +142,10 @@ static void strreverse(char* begin, char* end)
 		aux = *end, *end-- = *begin, *begin++ = aux;
 }
 
-// from stringencoders with modifications ( Copyright (C) 2007 Nick Galbreath ) - BSD License
-std::string float_to_string( const float number, int prec /* = 6 */ )
+/* from stringencoders with modifications ( Copyright (C) 2007 Nick Galbreath -- nickg [at] modp [dot] com )
+ * BSD License - http://www.opensource.org/licenses/bsd-license.php
+ */
+std::string float_to_string( const float number, int prec /* = 6 */, bool keep_zeros /* = 1 */ )
 {
 	double value = number;
 	/* if input is larger than thres_max, revert to native */
@@ -226,17 +228,48 @@ std::string float_to_string( const float number, int prec /* = 6 */ )
 	else
 	{
 		int count = prec;
-		// now do fractional part, as an unsigned number
-		do
+
+        // This section is from the CEGUI project to eliminate
+        // the output of trailing zeros in the fractional part.
+		if( !keep_zeros )
 		{
-			--count;
-			*wstr++ = 48 + (frac % 10);
+			bool non_zero = false;
+
+			uint32_t digit = 0;
+			// now do fractional part, as an unsigned number
+			do
+			{
+				--count;
+				digit = (frac % 10);
+				if( non_zero || (digit != 0) )
+				{
+					*wstr++ = 48 + digit;
+					non_zero = true;
+				}
+			}
+			while( frac /= 10 );
+			// add extra 0s
+			if( non_zero )
+			{
+				while(count-- > 0) *wstr++ = '0';
+				// add decimal
+				*wstr++ = '.';
+			}
 		}
-		while(frac /= 10);
-		// add extra 0s
-		while(count-- > 0) *wstr++ = '0';
-		// add decimal
-		*wstr++ = '.';
+		else
+		{
+			// now do fractional part, as an unsigned number
+			do
+			{
+				--count;
+				*wstr++ = 48 + (frac % 10);
+			}
+			while(frac /= 10);
+			// add extra 0s
+			while(count-- > 0) *wstr++ = '0';
+			// add decimal
+			*wstr++ = '.';
+		}
 	}
 
 	// do whole part

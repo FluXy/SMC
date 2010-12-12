@@ -197,9 +197,7 @@ void cLevel_Settings :: Init( void )
 	m_background_preview->Set_Pos_Y( window_background_preview->getUnclippedOuterRect().d_top * global_downscaley, 1 );
 
 	Update_BG_Colors( CEGUI::EventArgs() );
-
 	Clear_Layer_Field();
-
 	Load_BG_Image_List();
 }
 
@@ -418,11 +416,11 @@ bool cLevel_Settings :: Set_Background_Image( const CEGUI::EventArgs &event )
 		editbox->setText( background_filename.c_str() );
 		// position
 		editbox = static_cast<CEGUI::Editbox *>(wmgr.getWindow( "editbox_bg_image_posx" ));
-		editbox->setText( float_to_string( background->m_start_pos_x ).c_str() );
+		editbox->setText( float_to_string( background->m_start_pos_x, 6, 0 ).c_str() );
 		editbox = static_cast<CEGUI::Editbox *>(wmgr.getWindow( "editbox_bg_image_posy" ));
-		editbox->setText( float_to_string( background->m_start_pos_y ).c_str() );
+		editbox->setText( float_to_string( background->m_start_pos_y, 6, 0 ).c_str() );
 		editbox = static_cast<CEGUI::Editbox *>(wmgr.getWindow( "editbox_bg_image_posz" ));
-		editbox->setText( float_to_string( background->m_pos_z ).c_str() );
+		editbox->setText( float_to_string( background->m_pos_z, 6, 0 ).c_str() );
 		// speed
 		CEGUI::Spinner *spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_bg_image_speed_x" ));
 		spinner->setCurrentValue( background->m_speed_x );

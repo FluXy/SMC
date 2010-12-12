@@ -61,7 +61,7 @@ cEditor_Object_Settings_Item :: ~cEditor_Object_Settings_Item( void )
 /* *** *** *** *** *** *** *** *** cEditor_Item_Object *** *** *** *** *** *** *** *** *** */
 
 cEditor_Item_Object :: cEditor_Item_Object( const std::string &text )
-: ListboxItem( "" )
+: CEGUI::ListboxItem( "" )
 {
 	list_text = new CEGUI::ListboxTextItem( reinterpret_cast<const CEGUI::utf8*>(text.c_str()) );
 
