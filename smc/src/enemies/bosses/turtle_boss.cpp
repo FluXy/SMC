@@ -1198,7 +1198,7 @@ void cTurtleBoss :: Editor_Activate( void )
 	Editor_Add( UTF8_("Shell Time"), UTF8_("Time running as shell to rise again"), editbox, 200 );
 
 	editbox->setValidationString( "[+]?[0-9]*\\.?[0-9]*" );
-	editbox->setText( float_to_string( m_shell_time ) );
+	editbox->setText( float_to_string( m_shell_time, 6, 0 ) );
 	editbox->subscribeEvent( CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber( &cTurtleBoss::Editor_Shell_Time_Text_Changed, this ) );
 
 	// level ends if killed

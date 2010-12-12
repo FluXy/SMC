@@ -863,16 +863,16 @@ void cPath :: Editor_State_Update( void )
 	// Set selected segment values
 	// x1
 	CEGUI::Editbox *editbox_x1 = static_cast<CEGUI::Editbox *>(wmgr.getWindow( "path_segment_x1" ));
-	editbox_x1->setText( float_to_string( m_segments[m_editor_selected_segment].m_x1 ) );
+	editbox_x1->setText( float_to_string( m_segments[m_editor_selected_segment].m_x1, 6, 0 ) );
 	// y1
 	CEGUI::Editbox *editbox_y1 = static_cast<CEGUI::Editbox *>(wmgr.getWindow( "path_segment_y1" ));
-	editbox_y1->setText( float_to_string( m_segments[m_editor_selected_segment].m_y1 ) );
+	editbox_y1->setText( float_to_string( m_segments[m_editor_selected_segment].m_y1, 6, 0 ) );
 	// x2
 	CEGUI::Editbox *editbox_x2 = static_cast<CEGUI::Editbox *>(wmgr.getWindow( "path_segment_x2" ));
-	editbox_x2->setText( float_to_string( m_segments[m_editor_selected_segment].m_x2 ) );
+	editbox_x2->setText( float_to_string( m_segments[m_editor_selected_segment].m_x2, 6, 0 ) );
 	// y2
 	CEGUI::Editbox *editbox_y2 = static_cast<CEGUI::Editbox *>(wmgr.getWindow( "path_segment_y2" ));
-	editbox_y2->setText( float_to_string( m_segments[m_editor_selected_segment].m_y2 ) );
+	editbox_y2->setText( float_to_string( m_segments[m_editor_selected_segment].m_y2, 6, 0 ) );
 
 	// do not allow to change the start point position
 	if( m_editor_selected_segment == 0 )

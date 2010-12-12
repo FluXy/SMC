@@ -1127,7 +1127,7 @@ void cMoving_Platform :: Editor_Activate( void )
 	Editor_Add( UTF8_("Speed"), UTF8_("Maximum speed"), editbox, 120 );
 
 	editbox->setValidationString( "[+]?[0-9]*\\.?[0-9]*" );
-	editbox->setText( float_to_string( m_speed ) );
+	editbox->setText( float_to_string( m_speed, 6, 0 ) );
 	editbox->subscribeEvent( CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber( &cMoving_Platform::Editor_Speed_Text_Changed, this ) );
 
 	// touch time
@@ -1135,7 +1135,7 @@ void cMoving_Platform :: Editor_Activate( void )
 	Editor_Add( UTF8_("Touch time"), UTF8_("Time when touched until shaking starts"), editbox, 120 );
 
 	editbox->setValidationString( "[+]?[0-9]*\\.?[0-9]*" );
-	editbox->setText( float_to_string( m_touch_time ) );
+	editbox->setText( float_to_string( m_touch_time, 6, 0 ) );
 	editbox->subscribeEvent( CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber( &cMoving_Platform::Editor_Touch_Time_Text_Changed, this ) );
 
 	// shake time
@@ -1143,7 +1143,7 @@ void cMoving_Platform :: Editor_Activate( void )
 	Editor_Add( UTF8_("Shake time"), UTF8_("Time it's shaking until falling"), editbox, 120 );
 
 	editbox->setValidationString( "[+]?[0-9]*\\.?[0-9]*" );
-	editbox->setText( float_to_string( m_shake_time ) );
+	editbox->setText( float_to_string( m_shake_time, 6, 0 ) );
 	editbox->subscribeEvent( CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber( &cMoving_Platform::Editor_Shake_Time_Text_Changed, this ) );
 
 	// touch move time
@@ -1151,7 +1151,7 @@ void cMoving_Platform :: Editor_Activate( void )
 	Editor_Add( UTF8_("Touch move time"), UTF8_("If set does not move until this time has elapsed after touched"), editbox, 120 );
 
 	editbox->setValidationString( "[+]?[0-9]*\\.?[0-9]*" );
-	editbox->setText( float_to_string( m_touch_move_time ) );
+	editbox->setText( float_to_string( m_touch_move_time, 6, 0 ) );
 	editbox->subscribeEvent( CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber( &cMoving_Platform::Editor_Touch_Move_Time_Text_Changed, this ) );
 
 	// horizontal middle image count

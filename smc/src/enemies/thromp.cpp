@@ -812,7 +812,7 @@ void cThromp :: Editor_Activate( void )
 	Editor_Add( UTF8_("Speed"), UTF8_("Speed when activated"), editbox, 120 );
 
 	editbox->setValidationString( "[+]?[0-9]*\\.?[0-9]*" );
-	editbox->setText( float_to_string( m_speed ) );
+	editbox->setText( float_to_string( m_speed, 6, 0 ) );
 	editbox->subscribeEvent( CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber( &cThromp::Editor_Speed_Text_Changed, this ) );
 
 	// init
