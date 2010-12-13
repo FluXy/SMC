@@ -236,7 +236,7 @@ void cMenu_Main :: Init_GUI( void )
 	cMenu_Base::Init_GUI();
 
 	CEGUI::Window *text_version = CEGUI::WindowManager::getSingleton().getWindow( "text_version" );
-	text_version->setProperty( "Text", UTF8_("Version ") + static_cast<CEGUI::String>(float_to_string( smc_version, 1 )) );
+	text_version->setProperty( "Text", UTF8_("Version ") + CEGUI::PropertyHelper::intToString(SMC_VERSION_MAJOR) + "." + CEGUI::PropertyHelper::intToString(SMC_VERSION_MINOR) + "." + CEGUI::PropertyHelper::intToString(SMC_VERSION_PATCH) );
 
 	// if in a level/world
 	if( m_exit_to_gamemode != MODE_NOTHING )

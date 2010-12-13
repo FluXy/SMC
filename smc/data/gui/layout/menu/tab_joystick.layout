@@ -50,7 +50,7 @@
 			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
 			<Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.43,0},{0.4,0},{0.88,0}}" />
 		</Window>
-		<Window Type="TaharezLook/Spinner" Name="joystick_spinner_axis_hor" >
+		<Window Type="TaharezLook/SMC_Spinner" Name="joystick_spinner_axis_hor" >
 			<Property Name="StepSize" Value="1" />
 			<Property Name="CurrentValue" Value="0" />
 			<Property Name="MaximumValue" Value="32767" />
@@ -58,7 +58,7 @@
 			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
 			<Property Name="UnifiedAreaRect" Value="{{0.58,0},{0.55,0},{0.68,0},{0.63,0}}" />
 		</Window>
-		<Window Type="TaharezLook/Spinner" Name="joystick_spinner_axis_ver" >
+		<Window Type="TaharezLook/SMC_Spinner" Name="joystick_spinner_axis_ver" >
 			<Property Name="StepSize" Value="1" />
 			<Property Name="CurrentValue" Value="0" />
 			<Property Name="MaximumValue" Value="32767" />

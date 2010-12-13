@@ -122,7 +122,9 @@ long string_to_long( const std::string &str );
 float string_to_float( const std::string &str );
 // Return the string as a double
 double string_to_double( const std::string &str );
-// Return the real string
+// Return the version number
+unsigned int string_to_version_number( std::string str );
+// Return the non-xml string
 std::string xml_string_to_string( std::string str );
 
 // Handle game events

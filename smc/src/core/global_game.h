@@ -24,12 +24,21 @@ namespace SMC
 	#include "config.h"
 #endif
 
+/* Turns the version numbers into a numeric value:
+ * (1,2,3) -> (10203)
+ * Assumes that there will never be more than 100 minor or patch versions
+ */
+#define SMC_VERSION_NUM(X, Y, Z) ((X)*10000 + (Y)*100 + (Z))
+
 /* *** *** *** *** *** *** *** Secret Maryo ! *** *** *** *** *** *** *** *** *** *** */
 
 // Caption
 #define CAPTION "Secret Maryo Chronicles"
 // Version
-static const float smc_version = 2.0f;
+#define SMC_VERSION_MAJOR 2
+#define SMC_VERSION_MINOR 0
+#define SMC_VERSION_PATCH 0
+static const unsigned int smc_version = SMC_VERSION_NUM(SMC_VERSION_MAJOR, SMC_VERSION_MINOR, SMC_VERSION_PATCH);
 
 /* *** *** *** *** *** *** *** Object Direction *** *** *** *** *** *** *** *** *** *** */
 

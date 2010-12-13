@@ -28,6 +28,7 @@
 #include "../core/math/size.h"
 #include "../core/filesystem/filesystem.h"
 #include "../core/filesystem/resource_manager.h"
+#include "../gui/spinner.h"
 // SDL
 #include "SDL_opengl.h"
 // CEGUI
@@ -144,10 +145,15 @@ void cVideo :: Init_CEGUI( void ) const
 	logger->setLoggingLevel( CEGUI::Errors );
 #endif
 
+// only CEGUI 0.7.4 or later supports this
+#if SMC_VERSION_NUM(CEGUI_VERSION_MAJOR, CEGUI_VERSION_MINOR, CEGUI_VERSION_PATCH) >= SMC_VERSION_NUM(0, 7, 4)
 	// set initial mouse position
 	int mouse_x, mouse_y;
 	SDL_GetMouseState( &mouse_x, &mouse_y );
 	CEGUI::MouseCursor::setInitialMousePosition( CEGUI::Point( mouse_x, mouse_y ) );
+#endif
+	// add custom widgets
+	CEGUI::WindowFactoryManager::addFactory<CEGUI::SMC_SpinnerFactory>();
 
 	// create system
 	try

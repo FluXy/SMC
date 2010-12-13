@@ -87,7 +87,7 @@ bool cFile_parser :: Parse_Line( std::string str_line, int line_num )
 	std::string tempstr = str_line;
 	int count = 1;
 
-	// Count spaces
+	// count spaces
 	while( tempstr.find( ' ' ) != std::string::npos  )
 	{
 		tempstr.erase( tempstr.find( ' ' ) , 1 );
@@ -109,7 +109,6 @@ bool cFile_parser :: Parse_Line( std::string str_line, int line_num )
 		parts[part_count] = tempstr.substr( 0, len );
 		// remove part from temp string
 		tempstr.erase( 0, len + 1 );
-
 
 		part_count++;
 		count--;

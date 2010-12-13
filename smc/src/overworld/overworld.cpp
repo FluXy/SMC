@@ -319,7 +319,7 @@ void cOverworld :: Save( void )
 	// begin
 	stream.openTag( "information" );
 		// game version
-		Write_Property( stream, "game_version", smc_version );
+		Write_Property( stream, "game_version", int_to_string(SMC_VERSION_MAJOR) + "." + int_to_string(SMC_VERSION_MINOR) + "." + int_to_string(SMC_VERSION_PATCH) );
 		// engine version
 		Write_Property( stream, "engine_version", world_engine_version );
 		// time ( seconds since 1970 )

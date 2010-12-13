@@ -181,7 +181,7 @@ void cPreferences :: Save( void )
 	// begin
 	stream.openTag( "config" );
 	// Game
-	Write_Property( stream, "game_version", smc_version );
+	Write_Property( stream, "game_version", int_to_string(SMC_VERSION_MAJOR) + "." + int_to_string(SMC_VERSION_MINOR) + "." + int_to_string(SMC_VERSION_PATCH) );
 	Write_Property( stream, "game_language", m_language );
 	Write_Property( stream, "game_always_run", m_always_run );
 	Write_Property( stream, "game_menu_level", m_menu_level );
@@ -463,7 +463,7 @@ void cPreferences :: handle_item( CEGUI::XMLAttributes attributes )
 	// Game
 	if( name.compare( "game_version" ) == 0 )
 	{
-		m_game_version = attributes.getValueAsFloat( "value" );
+		m_game_version = string_to_version_number( attributes.getValueAsString( "value" ).c_str() );
 	}
 	else if( name.compare( "game_language" ) == 0 )
 	{

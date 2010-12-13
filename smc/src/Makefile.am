@@ -42,6 +42,7 @@ smc_SOURCES = \
 	gui/hud.cpp \
 	gui/menu.cpp \
 	gui/menu_data.cpp \
+	gui/spinner.cpp \
 	input/joystick.cpp \
 	input/keyboard.cpp \
 	input/mouse.cpp \

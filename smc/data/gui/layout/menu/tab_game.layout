@@ -15,9 +15,9 @@
 			<Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.05,0},{0.42,0},{0.29,0}}" />
 			<Property Name="MaxEditTextLength" Value="1073741823" />
 		</Window>
-		<Window Type="TaharezLook/Spinner" Name="game_spinner_camera_hor_speed" >
+		<Window Type="TaharezLook/SMC_Spinner" Name="game_spinner_camera_hor_speed" >
 			<Property Name="Tooltip" Value="Camera Horizontal Speed" />
-			<Property Name="StepSize" Value="1" />
+			<Property Name="StepSize" Value="0.1" />
 			<Property Name="CurrentValue" Value="0" />
 			<Property Name="MaximumValue" Value="32767" />
 			<Property Name="MinimumValue" Value="0" />
@@ -25,9 +25,9 @@
 			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
 			<Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.13,0},{0.42,0},{0.2,0}}" />
 		</Window>
-		<Window Type="TaharezLook/Spinner" Name="game_spinner_camera_ver_speed" >
+		<Window Type="TaharezLook/SMC_Spinner" Name="game_spinner_camera_ver_speed" >
 			<Property Name="Tooltip" Value="Camera Vertical Speed" />
-			<Property Name="StepSize" Value="1" />
+			<Property Name="StepSize" Value="0.1" />
 			<Property Name="CurrentValue" Value="0" />
 			<Property Name="MaximumValue" Value="32767" />
 			<Property Name="MinimumValue" Value="0" />

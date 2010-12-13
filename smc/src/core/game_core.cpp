@@ -342,6 +342,54 @@ double string_to_double( const std::string &str )
 	return num;
 }
 
+unsigned int string_to_version_number( std::string str )
+{
+	if( str.empty() )
+	{
+		return 0;
+	}
+
+	std::string::size_type pos = str.find( '.' );
+
+	// only major version
+	if( pos == std::string::npos )
+	{
+		return string_to_int( str ) * 10000;
+	}
+
+	unsigned int ver = 0;
+
+	if( pos != 0 )
+	{
+		// number before first '.' is major
+		ver = string_to_int( str.substr( 0, pos ) ) * 10000;
+	}
+
+	str.erase( 0, pos + 1 );
+	pos = str.find( '.' );
+
+	if( pos != 0 )
+	{
+		// number after first '.' is minor
+		ver += string_to_int( str.substr( 0, pos ) ) * 100;
+	}
+	
+	if( pos == std::string::npos )
+	{
+		return ver;
+	}
+	
+	str.erase( 0, pos + 1 );
+
+	if( !str.empty() )
+	{
+		// number after second '.' is patch
+		ver += string_to_int( str );
+	}
+
+	return ver;
+}
+
 std::string xml_string_to_string( std::string str )
 {
 	while( 1 )

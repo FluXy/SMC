@@ -130,7 +130,7 @@
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
             <Property Name="UnifiedAreaRect" Value="{{0.25,0},{0.34,0},{0.8,0},{0.39,0}}" />
         </Window>
-        <Window Type="TaharezLook/Spinner" Name="spinner_bg_image_speed_x" >
+        <Window Type="TaharezLook/SMC_Spinner" Name="spinner_bg_image_speed_x" >
             <Property Name="Tooltip" Value="Image x scrolling speed" />
             <Property Name="StepSize" Value="1" />
             <Property Name="CurrentValue" Value="0" />
@@ -140,7 +140,7 @@
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
             <Property Name="UnifiedAreaRect" Value="{{0.25,0},{0.41,0},{0.35,0},{0.46,0}}" />
         </Window>
-        <Window Type="TaharezLook/Spinner" Name="spinner_bg_image_speed_y" >
+        <Window Type="TaharezLook/SMC_Spinner" Name="spinner_bg_image_speed_y" >
             <Property Name="Tooltip" Value="Image y scrolling speed" />
             <Property Name="StepSize" Value="1" />
             <Property Name="CurrentValue" Value="0" />
@@ -247,7 +247,7 @@
             <Property Name="UnifiedAreaRect" Value="{{0.14,0},{0.47,0},{0.25,0},{0.52,0}}" />
             <Property Name="BackgroundEnabled" Value="False" />
         </Window>
-        <Window Type="TaharezLook/Spinner" Name="spinner_bg_image_const_vel_x" >
+        <Window Type="TaharezLook/SMC_Spinner" Name="spinner_bg_image_const_vel_x" >
             <Property Name="Tooltip" Value="Constant x scrolling velocity" />
             <Property Name="StepSize" Value="1" />
             <Property Name="CurrentValue" Value="0" />
@@ -265,7 +265,7 @@
             <Property Name="UnifiedAreaRect" Value="{{0.36,0},{0.47,0},{0.39,0},{0.52,0}}" />
             <Property Name="BackgroundEnabled" Value="False" />
         </Window>
-        <Window Type="TaharezLook/Spinner" Name="spinner_bg_image_const_vel_y" >
+        <Window Type="TaharezLook/SMC_Spinner" Name="spinner_bg_image_const_vel_y" >
             <Property Name="Tooltip" Value="Constant y scrolling velocity" />
             <Property Name="StepSize" Value="1" />
             <Property Name="CurrentValue" Value="0" />

@@ -60,7 +60,7 @@ public:
 
 	// Game
 	// last version of smc which saved the preferences file
-	float m_game_version;
+	unsigned int m_game_version;
 	// default language
 	std::string m_language;
 	// player always runs

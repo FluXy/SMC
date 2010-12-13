@@ -119,7 +119,7 @@ int main( int argc, char **argv )
 			// version
 			else if( arguments[i] == "--version" || arguments[i] == "-v" )
 			{
-				printf( "%s %s\n", CAPTION, float_to_string( smc_version, 1 ) );
+				printf( "%s %d.%d.%d\n", CAPTION, SMC_VERSION_MAJOR, SMC_VERSION_MINOR, SMC_VERSION_PATCH );
 				return EXIT_SUCCESS;
 			}
 			// debug

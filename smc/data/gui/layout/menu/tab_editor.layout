@@ -21,7 +21,7 @@
 			<Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.13,0},{0.3,0},{0.2,0}}" />
 			<Property Name="BackgroundEnabled" Value="False" />
 		</Window>
-		<Window Type="TaharezLook/Spinner" Name="editor_spinner_item_image_size" >
+		<Window Type="TaharezLook/SMC_Spinner" Name="editor_spinner_item_image_size" >
 			<Property Name="Tooltip" Value="Item image size. The default is 50." />
 			<Property Name="StepSize" Value="5" />
 			<Property Name="CurrentValue" Value="5" />
