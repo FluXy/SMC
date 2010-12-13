@@ -453,19 +453,6 @@ void cLevel :: Enter( const GameMode old_mode /* = MODE_NOTHING */ )
 	// set animation manager
 	pActive_Animation_Manager = m_animation_manager;
 
-	// camera position
-	pLevel_Manager->m_camera->Center();
-
-	// play music
-	if( m_valid_music )
-	{
-		pAudio->Play_Music( m_musicfile, -1, 0, 1000 );
-	}
-	else if( pAudio->m_music_enabled )
-	{
-		printf( "Warning : Music file not found %s\n", pActive_Level->m_musicfile.c_str() );
-	}
-
 	// disable world editor
 	pWorld_Editor->Disable();
 
@@ -485,6 +472,26 @@ void cLevel :: Enter( const GameMode old_mode /* = MODE_NOTHING */ )
 	{
 		Game_Mode_Type = MODE_TYPE_LEVEL_CUSTOM;
 		pLevel_Editor->Enable();
+	}
+
+	// camera
+	if( pLevel_Editor->m_enabled )
+	{
+		pActive_Camera->Update_Position();
+	}
+	else
+	{
+		pLevel_Manager->m_camera->Center();
+	}
+
+	// play music
+	if( m_valid_music )
+	{
+		pAudio->Play_Music( m_musicfile, -1, 0, 1000 );
+	}
+	else if( pAudio->m_music_enabled )
+	{
+		printf( "Warning : Music file not found %s\n", pActive_Level->m_musicfile.c_str() );
 	}
 
 	// Update Hud Text and position
