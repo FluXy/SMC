@@ -113,7 +113,7 @@ std::string long_to_string( const long number );
  * prec: the precision after the decimal point
  * keep_zeros: keep trailing zeros in the fractional part
 */
-std::string float_to_string( const float number, int prec = 6, bool keep_zeros = 1 );
+std::string float_to_string( double value, int prec = 6, bool keep_zeros = 1 );
 // Return the string as a number
 int string_to_int( const std::string &str );
 Uint64 string_to_int64( const std::string &str );

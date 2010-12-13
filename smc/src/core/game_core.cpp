@@ -134,7 +134,7 @@ std::string long_to_string( const long number )
  */
 static const double pow_of_10[] = {1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000};
 
-// from stringencoders for float_to_string
+// function from stringencoders for float_to_string
 static void strreverse(char* begin, char* end)
 {
 	char aux;
@@ -142,12 +142,21 @@ static void strreverse(char* begin, char* end)
 		aux = *end, *end-- = *begin, *begin++ = aux;
 }
 
-/* from stringencoders with modifications ( Copyright (C) 2007 Nick Galbreath -- nickg [at] modp [dot] com )
+/* function from stringencoders 3.10.3 with modifications. Copyright (C) 2007 Nick Galbreath -- nickg [at] modp [dot] com
  * BSD License - http://www.opensource.org/licenses/bsd-license.php
  */
-std::string float_to_string( const float number, int prec /* = 6 */, bool keep_zeros /* = 1 */ )
+std::string float_to_string( double value, int prec /* = 6 */, bool keep_zeros /* = 1 */ )
 {
-	double value = number;
+    /* Hacky test for NaN
+     * under -fast-math this won't work, but then you also won't
+     * have correct nan values anyways.  The alternative is
+     * to link with libmath (bad) or hack IEEE double bits (bad)
+     */
+    if( !(value == value) )
+	{
+        return "nan";
+    }
+
 	/* if input is larger than thres_max, revert to native */
 	const double thres_max = static_cast<double>(0x7FFFFFFF);
 
@@ -155,11 +164,11 @@ std::string float_to_string( const float number, int prec /* = 6 */, bool keep_z
 	char str[64];
 	char* wstr = str;
 
-	if (prec < 0)
+	if(prec < 0)
 	{
 		prec = 0;
 	}
-	else if (prec > 6)
+	else if(prec > 6)
 	{
 		/* precision of >= 7 for float can lead to overflow errors */
 		prec = 6;
@@ -168,7 +177,7 @@ std::string float_to_string( const float number, int prec /* = 6 */, bool keep_z
 	/* we'll work in positive values and deal with the
 	   negative sign issue later */
 	int neg = 0;
-	if (value < 0)
+	if(value < 0)
 	{
 		neg = 1;
 		value = -value;
@@ -189,28 +198,28 @@ std::string float_to_string( const float number, int prec /* = 6 */, bool keep_z
 			++whole;
 		}
 	}
-	else if( diff == 0.5 && ((frac == 0) || (frac & 1)) )
+	else if(diff == 0.5 && ((frac == 0) || (frac & 1)))
 	{
 		/* if halfway, round up if odd, OR
 		   if last digit is 0.  That last part is strange */
 		++frac;
 	}
 
-	/* for very large numbers switch back to native */
+	/* for very large numbers switch back to native for exponentials. */
 	/*
 		normal printf behavior is to print EVERY whole number digit
 		which can be 100s of characters overflowing your buffers == bad
 	*/
-	if( value > thres_max )
+	if(value > thres_max)
 	{
 		std::ostringstream temp;
 		temp.setf( std::ios_base::fixed );
-		temp << number;
+		temp << value;
 
 		return temp.str();
 	}
 
-	if( prec == 0 )
+	if(prec == 0)
 	{
 		diff = value - whole;
 		if(diff > 0.5)
@@ -229,28 +238,27 @@ std::string float_to_string( const float number, int prec /* = 6 */, bool keep_z
 	{
 		int count = prec;
 
-        // This section is from the CEGUI project to eliminate
-        // the output of trailing zeros in the fractional part.
-		if( !keep_zeros )
+		if(!keep_zeros)
 		{
-			bool non_zero = false;
-
-			uint32_t digit = 0;
-			// now do fractional part, as an unsigned number
-			do
+			if(frac)
 			{
-				--count;
-				digit = (frac % 10);
-				if( non_zero || (digit != 0) )
+				// now do fractional part, as an unsigned number
+				// we know it is not 0 but we can have leading zeros, these
+				// should be removed
+				while(!(frac % 10))
 				{
-					*wstr++ = 48 + digit;
-					non_zero = true;
+					--count;
+					frac /= 10;
 				}
-			}
-			while( frac /= 10 );
-			// add extra 0s
-			if( non_zero )
-			{
+
+				// now do fractional part, as an unsigned number
+				do
+				{
+					--count;
+					*wstr++ = (char)(48 + (frac % 10));
+				}
+				while(frac /= 10);
+				// add extra 0s
 				while(count-- > 0) *wstr++ = '0';
 				// add decimal
 				*wstr++ = '.';
@@ -262,7 +270,7 @@ std::string float_to_string( const float number, int prec /* = 6 */, bool keep_z
 			do
 			{
 				--count;
-				*wstr++ = 48 + (frac % 10);
+				*wstr++ = (char)(48 + (frac % 10));
 			}
 			while(frac /= 10);
 			// add extra 0s
@@ -275,14 +283,14 @@ std::string float_to_string( const float number, int prec /* = 6 */, bool keep_z
 	// do whole part
 	// Take care of sign
 	// Conversion. Number is reversed.
-	do *wstr++ = 48 + (whole % 10); while (whole /= 10);
+	do *wstr++ = (char)(48 + (whole % 10)); while (whole /= 10);
 	if(neg)
 	{
 		*wstr++ = '-';
 	}
 
 	*wstr='\0';
-	strreverse(str, wstr-1);
+	strreverse(str, wstr - 1);
 
 	return str;
 }
