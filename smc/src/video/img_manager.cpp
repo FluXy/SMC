@@ -16,6 +16,9 @@
 #include "../video/img_manager.h"
 #include "../video/renderer.h"
 #include "../core/i18n.h"
+// CEGUI
+#include "CEGUIWindowManager.h"
+#include "elements/CEGUIProgressBar.h"
 
 namespace SMC
 {

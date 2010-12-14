@@ -57,6 +57,7 @@
 #include "../overworld/world_editor.h"
 // CEGUI
 #include "CEGUIXMLParser.h"
+#include "CEGUIExceptions.h"
 
 namespace SMC
 {

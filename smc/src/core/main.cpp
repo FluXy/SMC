@@ -37,11 +37,15 @@
 #include "../video/renderer.h"
 #include "../core/i18n.h"
 #include "../gui/generic.h"
+
 #ifdef __APPLE__
 // needed for datapath detection
 #include <CoreFoundation/CoreFoundation.h>
 #include <unistd.h>
 #endif
+
+// CEGUI
+#include "CEGUIDefaultLogger.h"
 
 // SMC namespace is set later to exclude main() from it
 using namespace SMC;
@@ -446,9 +450,11 @@ void Exit_Game( void )
 	if( pGuiSystem )
 	{
 		CEGUI::ResourceProvider* rp = pGuiSystem->getResourceProvider();
+		CEGUI::Logger *logger = CEGUI::Logger::getSingletonPtr();
 		pGuiSystem->destroy();
 		pGuiSystem = NULL;
 		delete rp;
+		delete logger;
 	}
 
 	if( pGuiRenderer )

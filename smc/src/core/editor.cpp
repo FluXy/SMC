@@ -37,6 +37,10 @@
 namespace fs = boost::filesystem;
 // CEGUI
 #include "CEGUIXMLParser.h"
+#include "CEGUIWindowManager.h"
+#include "elements/CEGUITabControl.h"
+#include "elements/CEGUIScrollbar.h"
+#include "CEGUIFontManager.h"
 
 namespace SMC
 {

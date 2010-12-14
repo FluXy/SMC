@@ -34,6 +34,15 @@
 // CEGUI
 #include "CEGUIDefaultResourceProvider.h"
 #include "CEGUIDefaultLogger.h"
+#include "CEGUIExceptions.h"
+#include "CEGUIWindowFactoryManager.h"
+#include "CEGUIImagesetManager.h"
+#include "CEGUIFontManager.h"
+#include "CEGUIWindowManager.h"
+#include "CEGUISchemeManager.h"
+#include "falagard/CEGUIFalWidgetLookManager.h"
+#include "elements/CEGUIProgressBar.h"
+#include "RendererModules/NULL/CEGUINULLRenderer.h"
 // boost filesystem
 #include "boost/filesystem/convenience.hpp"
 namespace fs = boost::filesystem;
@@ -91,7 +100,7 @@ void cVideo :: Init_CEGUI_Fake( void ) const
 	std::string log_dump_dir = "/dev/null";
 #endif
 	// create fake system and renderer
-	pGuiSystem = &CEGUI::System::create( *new cFake_Renderer(), rp, NULL, NULL, NULL, "", log_dump_dir );
+	pGuiSystem = &CEGUI::System::create( CEGUI::NullRenderer::create(), rp, NULL, NULL, NULL, "", log_dump_dir );
 }
 
 void cVideo :: Delete_CEGUI_Fake( void ) const
@@ -122,7 +131,7 @@ void cVideo :: Init_CEGUI( void ) const
 	pGuiRenderer->enableExtraStateSettings( 1 );
 
 	// create Resource Provider
-	CEGUI::DefaultResourceProvider *rp = new CEGUI::DefaultResourceProvider;
+	CEGUI::DefaultResourceProvider *rp = new CEGUI::DefaultResourceProvider();
 
 	// set Resource Provider directories
 	rp->setResourceGroupDirectory( "schemes", DATA_DIR "/" GUI_SCHEME_DIR "/" );
@@ -145,13 +154,10 @@ void cVideo :: Init_CEGUI( void ) const
 	logger->setLoggingLevel( CEGUI::Errors );
 #endif
 
-// only CEGUI 0.7.4 or later supports this
-#if SMC_VERSION_NUM(CEGUI_VERSION_MAJOR, CEGUI_VERSION_MINOR, CEGUI_VERSION_PATCH) >= SMC_VERSION_NUM(0, 7, 4)
 	// set initial mouse position
 	int mouse_x, mouse_y;
 	SDL_GetMouseState( &mouse_x, &mouse_y );
 	CEGUI::MouseCursor::setInitialMousePosition( CEGUI::Point( mouse_x, mouse_y ) );
-#endif
 	// add custom widgets
 	CEGUI::WindowFactoryManager::addFactory<CEGUI::SMC_SpinnerFactory>();
 

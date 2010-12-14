@@ -33,6 +33,7 @@
 // CEGUI
 #include "CEGUIXMLParser.h"
 #include "CEGUIXMLAttributes.h"
+#include "CEGUIExceptions.h"
 
 namespace SMC
 {

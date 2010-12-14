@@ -20,6 +20,8 @@
 #include "../core/math/rect.h"
 #include "../video/video.h"
 #include "../core/collision.h"
+// CEGUI
+#include "CEGUIXMLSerializer.h"
 
 namespace SMC
 {

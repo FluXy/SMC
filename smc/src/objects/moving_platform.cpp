@@ -26,6 +26,11 @@
 #include "../level/level.h"
 #include "../objects/path.h"
 #include "../input/mouse.h"
+// CEGUI
+#include "CEGUIWindowManager.h"
+#include "elements/CEGUICombobox.h"
+#include "elements/CEGUIListboxTextItem.h"
+#include "elements/CEGUIEditbox.h"
 
 namespace SMC
 {

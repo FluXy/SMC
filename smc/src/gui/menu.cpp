@@ -28,6 +28,9 @@
 #include "../input/keyboard.h"
 // CEGUI
 #include "CEGUIXMLAttributes.h"
+#include "CEGUIWindowManager.h"
+#include "elements/CEGUIListbox.h"
+#include "elements/CEGUIListboxItem.h"
 
 namespace SMC
 {

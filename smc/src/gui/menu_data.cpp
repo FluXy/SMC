@@ -38,6 +38,17 @@
 // boost filesystem
 #include "boost/filesystem/convenience.hpp"
 namespace fs = boost::filesystem;
+// CEGUI
+#include "CEGUIWindowManager.h"
+#include "CEGUIFontManager.h"
+#include "elements/CEGUITabControl.h"
+#include "elements/CEGUIPushButton.h"
+#include "elements/CEGUIEditbox.h"
+#include "elements/CEGUICombobox.h"
+#include "elements/CEGUISpinner.h"
+#include "elements/CEGUIMultiLineEditbox.h"
+#include "elements/CEGUISlider.h"
+#include "elements/CEGUIMultiColumnList.h"
 
 namespace SMC
 {

@@ -1,5 +1,5 @@
 AC_PREREQ(2.57)
-AC_INIT(smc, 1.9, , smc, http://www.secretmaryo.org/)
+AC_INIT(smc, 2.0, , smc, http://www.secretmaryo.org/)
 AC_CANONICAL_TARGET
 AC_CONFIG_HEADERS(config.h)
 AM_INIT_AUTOMAKE(foreign)
@@ -55,7 +55,7 @@ AC_CHECK_LIB(SDL_ttf, TTF_Init, ,
 	AC_MSG_ERROR([SDL_ttf library not found]))
 
 # Check for the CEGUI library
-PKG_CHECK_MODULES(CEGUI, CEGUI-OPENGL >= 0.7.2)
+PKG_CHECK_MODULES(CEGUI, CEGUI-NULL, CEGUI-OPENGL >= 0.7.2)
 CPPFLAGS="$CPPFLAGS $CEGUI_CFLAGS"
 LIBS="$LIBS $CEGUI_LIBS"
 

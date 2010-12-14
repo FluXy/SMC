@@ -32,6 +32,9 @@
 // boost filesystem
 #include "boost/filesystem/convenience.hpp"
 namespace fs = boost::filesystem;
+// CEGUI
+#include "CEGUIWindowManager.h"
+#include "elements/CEGUIProgressBar.h"
 
 namespace SMC
 {
@@ -147,15 +150,15 @@ static void strreverse(char* begin, char* end)
  */
 std::string float_to_string( double value, int prec /* = 6 */, bool keep_zeros /* = 1 */ )
 {
-    /* Hacky test for NaN
-     * under -fast-math this won't work, but then you also won't
-     * have correct nan values anyways.  The alternative is
-     * to link with libmath (bad) or hack IEEE double bits (bad)
-     */
-    if( !(value == value) )
+	/* Hacky test for NaN
+	 * under -fast-math this won't work, but then you also won't
+	 * have correct nan values anyways.  The alternative is
+	 * to link with libmath (bad) or hack IEEE double bits (bad)
+	 */
+	if( !(value == value) )
 	{
-        return "nan";
-    }
+		return "nan";
+	}
 
 	/* if input is larger than thres_max, revert to native */
 	const double thres_max = static_cast<double>(0x7FFFFFFF);

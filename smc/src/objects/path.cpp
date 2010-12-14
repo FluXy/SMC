@@ -23,6 +23,12 @@
 #include "../core/sprite_manager.h"
 #include "../enemies/static.h"
 #include "../objects/moving_platform.h"
+// CEGUI
+#include "CEGUIWindowManager.h"
+#include "elements/CEGUIEditbox.h"
+#include "elements/CEGUICombobox.h"
+#include "elements/CEGUIListboxTextItem.h"
+#include "elements/CEGUIPushButton.h"
 
 namespace SMC
 {

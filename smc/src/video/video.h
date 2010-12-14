@@ -23,8 +23,9 @@
 #include "SDL_image.h"
 #include "SDL_opengl.h"
 // CEGUI
-#include "CEGUI.h"
-#include <RendererModules/OpenGL/CEGUIOpenGLRenderer.h>
+#include "CEGUIcolour.h"
+#include "CEGUISystem.h"
+#include "RendererModules/OpenGL/CEGUIOpenGLRenderer.h"
 
 namespace SMC
 {
@@ -179,93 +180,6 @@ enum Effect_Fadein
 	EFFECT_IN_RANDOM,
 	EFFECT_IN_BLACK, // fade in the screen from black
 	EFFECT_IN_AMOUNT
-};
-
-/* *** *** *** *** *** *** *** CEGUI renderer fake classes *** *** *** *** *** *** *** *** *** *** */
-// CEGUI 0.7.x requires more 'fake' classes than the 0.6.x version did...
-class cFake_GeometryBuffer : public CEGUI::GeometryBuffer
-{
-	void draw() const {}
-	void setTranslation(const CEGUI::Vector3&) {}
-	void setRotation(const CEGUI::Vector3&) {}
-	void setPivot(const CEGUI::Vector3&) {}
-	void setClippingRegion(const CEGUI::Rect&) {}
-	void appendVertex(const CEGUI::Vertex&) {}
-	void appendGeometry(const CEGUI::Vertex* const, CEGUI::uint) {}
-	void setActiveTexture(CEGUI::Texture*) {}
-	void reset() {}
-	CEGUI::Texture* getActiveTexture() const { return 0; }
-	CEGUI::uint getVertexCount() const { return 0; }
-	CEGUI::uint getBatchCount() const { return 0; }
-	void setRenderEffect(CEGUI::RenderEffect*) {}
-	CEGUI::RenderEffect* getRenderEffect() { return 0; }
-};
-
-class cFake_Texture : public CEGUI::Texture
-{
-public:
-	cFake_Texture() : m_size(1, 1), m_scaling(1, 1) {}
-	const CEGUI::Size& getSize() const { return m_size; }
-	const CEGUI::Size& getOriginalDataSize() const { return m_size; }
-	const CEGUI::Vector2& getTexelScaling() const { return m_scaling; }
-	void loadFromFile(const CEGUI::String&, const CEGUI::String&) {}
-	void loadFromMemory(const void*, const CEGUI::Size&, CEGUI::Texture::PixelFormat) {}
-	void saveToMemory(void*) {}
-
-private:
-	CEGUI::Size m_size;
-	CEGUI::Vector2 m_scaling;
-};
-
-class cFake_RenderTarget : public CEGUI::RenderTarget
-{
-public:
-	cFake_RenderTarget() : m_area(0, 0, 0, 0) {}
-	void draw(const CEGUI::GeometryBuffer&) {}
-	void draw(const CEGUI::RenderQueue&) {}
-	void setArea(const CEGUI::Rect&) {}
-	const CEGUI::Rect& getArea() const { return m_area; }
-	bool isImageryCache() const { return false; }
-	void activate() {}
-	void deactivate() {}
-	void unprojectPoint(const CEGUI::GeometryBuffer&, const CEGUI::Vector2&, CEGUI::Vector2&) const {}
-
-private:
-    CEGUI::Rect m_area;
-};
-
-class cFake_Renderer : public CEGUI::Renderer
-{
-public:
-	cFake_Renderer( void ) : m_size(0, 0), m_dpi(0, 0), m_identifierString("Fake Renderer"), m_root(m_target) {}
-	CEGUI::RenderingRoot& getDefaultRenderingRoot() { return m_root; }
-	CEGUI::GeometryBuffer& createGeometryBuffer() { return m_geometry; }
-	void destroyGeometryBuffer(const CEGUI::GeometryBuffer&) {}
-	void destroyAllGeometryBuffers() {}
-	CEGUI::TextureTarget* createTextureTarget() { return 0; }
-	void destroyTextureTarget(CEGUI::TextureTarget*) {}
-	void destroyAllTextureTargets() {}
-	CEGUI::Texture& createTexture() { return m_texture; }
-	CEGUI::Texture& createTexture(const CEGUI::String&, const CEGUI::String&) { return m_texture; }
-	CEGUI::Texture& createTexture(const CEGUI::Size&) { return m_texture; }
-	void destroyTexture(CEGUI::Texture&) {}
-	void destroyAllTextures() {}
-	void beginRendering() {}
-	void endRendering() {}
-	void setDisplaySize(const CEGUI::Size&) {}
-	const CEGUI::Size& getDisplaySize() const { return m_size; }
-	const CEGUI::Vector2& getDisplayDPI() const {return m_dpi; }
-	CEGUI::uint getMaxTextureSize() const { return 0; }
-	const CEGUI::String& getIdentifierString() const { return m_identifierString; }
-
-private:
-	CEGUI::Size m_size;
-	CEGUI::Vector2 m_dpi;
-	CEGUI::String m_identifierString;
-	cFake_GeometryBuffer m_geometry;
-	cFake_Texture m_texture;
-	cFake_RenderTarget m_target;
-	CEGUI::RenderingRoot m_root;
 };
 
 /* *** *** *** *** *** *** *** Video class *** *** *** *** *** *** *** *** *** *** */

@@ -21,6 +21,9 @@
 #include "../overworld/world_editor.h"
 // CEGUI
 #include "CEGUIXMLParser.h"
+#include "CEGUIWindowManager.h"
+#include "CEGUIExceptions.h"
+#include "elements/CEGUIEditbox.h"
 
 namespace SMC
 {

@@ -24,6 +24,11 @@
 #include "../input/mouse.h"
 // CEGUI
 #include "CEGUIXMLAttributes.h"
+#include "CEGUIWindowManager.h"
+#include "elements/CEGUIEditbox.h"
+#include "elements/CEGUICheckbox.h"
+#include "elements/CEGUICombobox.h"
+#include "elements/CEGUIListboxTextItem.h"
 
 namespace SMC
 {

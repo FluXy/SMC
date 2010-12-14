@@ -23,6 +23,8 @@
 // CEGUI
 #include "CEGUIXMLHandler.h"
 #include "CEGUIXMLAttributes.h"
+#include "elements/CEGUIListbox.h"
+#include "elements/CEGUIListboxTextItem.h"
 
 namespace SMC
 {

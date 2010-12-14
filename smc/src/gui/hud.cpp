@@ -25,6 +25,9 @@
 #include "../video/renderer.h"
 #include "../core/i18n.h"
 #include "../core/filesystem/filesystem.h"
+// CEGUI
+#include "CEGUIWindowManager.h"
+#include "CEGUIFontManager.h"
 
 namespace SMC
 {

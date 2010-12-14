@@ -18,6 +18,8 @@
 
 #include "../objects/movingsprite.h"
 #include "../core/camera.h"
+// CEGUI
+#include "CEGUIPropertyHelper.h"
 
 namespace SMC
 {

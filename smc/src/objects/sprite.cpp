@@ -25,6 +25,12 @@
 #include "../core/sprite_manager.h"
 #include "../core/editor.h"
 #include "../core/i18n.h"
+// CEGUI
+#include "CEGUIWindowManager.h"
+#include "CEGUIFontManager.h"
+#include "elements/CEGUIEditbox.h"
+#include "elements/CEGUICombobox.h"
+#include "elements/CEGUIComboDropList.h"
 
 namespace SMC
 {
