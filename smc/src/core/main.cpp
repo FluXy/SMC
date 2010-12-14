@@ -259,6 +259,9 @@ void Init_Game( void )
 	 * because CEGUI creates the system normally with the OpenGL-Renderer and OpenGL calls may 
 	 * only be made with a valid OpenGL-context, which we would get only by setting 
 	 * the videomode first. That would mean we need to init the videomode twice.
+	 *
+	 * The XMLParser can not be used without an initialized CEGUI::System because the XMLParser
+	 * uses the CEGUI::System internally. Tested with CEGUI 0.7.4.
 	*/
 	pVideo->Init_CEGUI_Fake();
 	// load user data

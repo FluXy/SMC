@@ -137,7 +137,6 @@ void Handle_Generic_Game_Events( const CEGUI::XMLAttributes &Current_Game_Action
  * mostly to prepare for a new game mode
 */
 void Leave_Game_Mode( const GameMode next_mode );
-
 /* Enter the given game mode
  * handles/changes game mode specific managers and objects
 */
