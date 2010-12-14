@@ -1178,9 +1178,6 @@ void cMenu_Options :: Init_GUI( void )
 	// tab game
 	CEGUI::Window *tabwindow = wmgr.loadWindowLayout( "menu/tab_game.layout" );
 	m_tabcontrol->addTab( tabwindow );
-	// tab editor
-	tabwindow = wmgr.loadWindowLayout( "menu/tab_editor.layout" );
-	m_tabcontrol->addTab( tabwindow );
 	// tab video
 	tabwindow = wmgr.loadWindowLayout( "menu/tab_video.layout" );
 	m_tabcontrol->addTab( tabwindow );
@@ -1193,13 +1190,16 @@ void cMenu_Options :: Init_GUI( void )
 	// tab joystick
 	tabwindow = wmgr.loadWindowLayout( "menu/tab_joystick.layout" );
 	m_tabcontrol->addTab( tabwindow );
+	// tab editor
+	tabwindow = wmgr.loadWindowLayout( "menu/tab_editor.layout" );
+	m_tabcontrol->addTab( tabwindow );
 
 	Init_GUI_Game();
-	Init_GUI_Editor();
 	Init_GUI_Video();
 	Init_GUI_Audio();
 	Init_GUI_Keyboard();
 	Init_GUI_Joystick();
+	Init_GUI_Editor();
 }
 
 void cMenu_Options :: Init_GUI_Game( void )
@@ -1312,74 +1312,6 @@ void cMenu_Options :: Init_GUI_Game( void )
 	CEGUI::PushButton *button_reset_game = static_cast<CEGUI::PushButton *>(CEGUI::WindowManager::getSingleton().getWindow( "game_button_reset" ));
 	button_reset_game->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cMenu_Options::Game_Button_Reset_Game_Clicked, this ) );
 	button_reset_game->setText( UTF8_("Reset") );
-}
-
-void cMenu_Options :: Init_GUI_Editor( void )
-{
-	// get the CEGUI window manager
-	CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
-
-	// show item images
-	CEGUI::Window *text_editor_show_item_images = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "editor_text_show_item_images" ));
-	text_editor_show_item_images->setText( UTF8_("Show images") );
-
-	m_game_combo_editor_show_item_images = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "editor_combo_show_item_images" ));
-
-	CEGUI::ListboxTextItem *item = new CEGUI::ListboxTextItem( UTF8_("On") );
-	item->setTextColours( CEGUI::colour( 0, 1, 0 ) );
-	m_game_combo_editor_show_item_images->addItem( item );
-	item = new CEGUI::ListboxTextItem( UTF8_("Off") );
-	item->setTextColours( CEGUI::colour( 0, 0, 1 ) );
-	m_game_combo_editor_show_item_images->addItem( item );
-
-	if( pPreferences->m_editor_show_item_images )
-	{
-		m_game_combo_editor_show_item_images->setText( UTF8_("On") );
-	}
-	else
-	{
-		m_game_combo_editor_show_item_images->setText( UTF8_("Off") );
-	}
-
-	m_game_combo_editor_show_item_images->subscribeEvent( CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber( &cMenu_Options::Game_Editor_Show_Item_Images_Select, this ) );
-
-	// item image size
-	CEGUI::Window *text_editor_item_image_size = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "editor_text_item_image_size" ));
-	text_editor_item_image_size->setText( UTF8_("Item image size") );
-
-	m_game_spinner_editor_item_image_size = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "editor_spinner_item_image_size" ));
-	m_game_spinner_editor_item_image_size->setCurrentValue( static_cast<float>(pPreferences->m_editor_item_image_size) );
-
-	m_game_spinner_editor_item_image_size->subscribeEvent( CEGUI::Spinner::EventValueChanged, CEGUI::Event::Subscriber( &cMenu_Options::Game_Editor_Item_Image_Size_Select, this ) );
-
-	// editor mouse auto hide
-	CEGUI::Window *text_editor_mouse_auto_hide = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "editor_text_mouse_auto_hide" ));
-	text_editor_mouse_auto_hide->setText( UTF8_("Auto-Hide Mouse") );
-
-	m_game_combo_editor_mouse_auto_hide = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "editor_combo_mouse_auto_hide" ));
-
-	item = new CEGUI::ListboxTextItem( UTF8_("On") );
-	item->setTextColours( CEGUI::colour( 0, 1, 0 ) );
-	m_game_combo_editor_mouse_auto_hide->addItem( item );
-	item = new CEGUI::ListboxTextItem( UTF8_("Off") );
-	item->setTextColours( CEGUI::colour( 0, 0, 1 ) );
-	m_game_combo_editor_mouse_auto_hide->addItem( item );
-
-	if( pPreferences->m_editor_mouse_auto_hide )
-	{
-		m_game_combo_editor_mouse_auto_hide->setText( UTF8_("On") );
-	}
-	else
-	{
-		m_game_combo_editor_mouse_auto_hide->setText( UTF8_("Off") );
-	}
-
-	m_game_combo_editor_mouse_auto_hide->subscribeEvent( CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber( &cMenu_Options::Game_Editor_Auto_Hide_Mouse_Select, this ) );
-
-	// Reset Editor
-	CEGUI::PushButton *button_reset_editor = static_cast<CEGUI::PushButton *>(CEGUI::WindowManager::getSingleton().getWindow( "editor_button_reset" ));
-	button_reset_editor->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cMenu_Options::Game_Button_Reset_Editor_Clicked, this ) );
-	button_reset_editor->setText( UTF8_("Reset") );
 }
 
 void cMenu_Options :: Init_GUI_Video( void )
@@ -1774,6 +1706,74 @@ void cMenu_Options :: Init_GUI_Joystick( void )
 	button_reset_joystick->setText( UTF8_("Reset") );
 }
 
+void cMenu_Options :: Init_GUI_Editor( void )
+{
+	// get the CEGUI window manager
+	CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
+
+	// show item images
+	CEGUI::Window *text_editor_show_item_images = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "editor_text_show_item_images" ));
+	text_editor_show_item_images->setText( UTF8_("Show images") );
+
+	m_game_combo_editor_show_item_images = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "editor_combo_show_item_images" ));
+
+	CEGUI::ListboxTextItem *item = new CEGUI::ListboxTextItem( UTF8_("On") );
+	item->setTextColours( CEGUI::colour( 0, 1, 0 ) );
+	m_game_combo_editor_show_item_images->addItem( item );
+	item = new CEGUI::ListboxTextItem( UTF8_("Off") );
+	item->setTextColours( CEGUI::colour( 0, 0, 1 ) );
+	m_game_combo_editor_show_item_images->addItem( item );
+
+	if( pPreferences->m_editor_show_item_images )
+	{
+		m_game_combo_editor_show_item_images->setText( UTF8_("On") );
+	}
+	else
+	{
+		m_game_combo_editor_show_item_images->setText( UTF8_("Off") );
+	}
+
+	m_game_combo_editor_show_item_images->subscribeEvent( CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber( &cMenu_Options::Game_Editor_Show_Item_Images_Select, this ) );
+
+	// item image size
+	CEGUI::Window *text_editor_item_image_size = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "editor_text_item_image_size" ));
+	text_editor_item_image_size->setText( UTF8_("Item image size") );
+
+	m_game_spinner_editor_item_image_size = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "editor_spinner_item_image_size" ));
+	m_game_spinner_editor_item_image_size->setCurrentValue( static_cast<float>(pPreferences->m_editor_item_image_size) );
+
+	m_game_spinner_editor_item_image_size->subscribeEvent( CEGUI::Spinner::EventValueChanged, CEGUI::Event::Subscriber( &cMenu_Options::Game_Editor_Item_Image_Size_Select, this ) );
+
+	// editor mouse auto hide
+	CEGUI::Window *text_editor_mouse_auto_hide = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "editor_text_mouse_auto_hide" ));
+	text_editor_mouse_auto_hide->setText( UTF8_("Auto-Hide Mouse") );
+
+	m_game_combo_editor_mouse_auto_hide = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "editor_combo_mouse_auto_hide" ));
+
+	item = new CEGUI::ListboxTextItem( UTF8_("On") );
+	item->setTextColours( CEGUI::colour( 0, 1, 0 ) );
+	m_game_combo_editor_mouse_auto_hide->addItem( item );
+	item = new CEGUI::ListboxTextItem( UTF8_("Off") );
+	item->setTextColours( CEGUI::colour( 0, 0, 1 ) );
+	m_game_combo_editor_mouse_auto_hide->addItem( item );
+
+	if( pPreferences->m_editor_mouse_auto_hide )
+	{
+		m_game_combo_editor_mouse_auto_hide->setText( UTF8_("On") );
+	}
+	else
+	{
+		m_game_combo_editor_mouse_auto_hide->setText( UTF8_("Off") );
+	}
+
+	m_game_combo_editor_mouse_auto_hide->subscribeEvent( CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber( &cMenu_Options::Game_Editor_Auto_Hide_Mouse_Select, this ) );
+
+	// Reset Editor
+	CEGUI::PushButton *button_reset_editor = static_cast<CEGUI::PushButton *>(CEGUI::WindowManager::getSingleton().getWindow( "editor_button_reset" ));
+	button_reset_editor->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cMenu_Options::Game_Button_Reset_Editor_Clicked, this ) );
+	button_reset_editor->setText( UTF8_("Reset") );
+}
+
 void cMenu_Options :: Exit( void )
 {
 	pMenuCore->m_next_menu = MENU_MAIN;
@@ -1806,11 +1806,11 @@ void cMenu_Options :: Update( void )
 
 	// todo : use this functionality again
 	Change_Game_Setting( pMenuCore->m_handler->m_active );
-	Change_Editor_Setting( pMenuCore->m_handler->m_active );
 	Change_Video_Setting( pMenuCore->m_handler->m_active );
 	Change_Audio_Setting( pMenuCore->m_handler->m_active );
 	Change_Keyboard_Setting( pMenuCore->m_handler->m_active );
 	Change_Joystick_Setting( pMenuCore->m_handler->m_active );
+	Change_Editor_Setting( pMenuCore->m_handler->m_active );
 }
 
 void cMenu_Options :: Change_Game_Setting( int setting )
@@ -1882,43 +1882,6 @@ void cMenu_Options :: Change_Game_Setting( int setting )
 		m_game_combo_menu_level->setText( new_selected->getText() );
 		m_game_combo_menu_level->setItemSelectState( new_selected, 1 );
 		Game_Menu_Level_Select( CEGUI::WindowEventArgs( m_game_combo_menu_level ) );
-	}
-}
-
-void cMenu_Options :: Change_Editor_Setting( int setting )
-{
-	// editor show item images
-	if( pMenuCore->m_handler->m_active == 10 )
-	{
-		pPreferences->m_editor_show_item_images = !pPreferences->m_editor_show_item_images;
-
-		if( pPreferences->m_editor_show_item_images )
-		{
-			m_game_combo_editor_show_item_images->setText( UTF8_("On") );
-		}
-		else
-		{
-			m_game_combo_editor_show_item_images->setText( UTF8_("Off") );
-		}
-	}
-	// editor item image size
-	else if( pMenuCore->m_handler->m_active == 11 )
-	{
-		// nothing
-	}
-	// editor auto mouse hide
-	else if( pMenuCore->m_handler->m_active == 12 )
-	{
-		pPreferences->m_editor_mouse_auto_hide = !pPreferences->m_editor_mouse_auto_hide;
-
-		if( pPreferences->m_editor_mouse_auto_hide )
-		{
-			m_game_combo_editor_show_item_images->setText( UTF8_("On") );
-		}
-		else
-		{
-			m_game_combo_editor_show_item_images->setText( UTF8_("Off") );
-		}
 	}
 }
 
@@ -2053,6 +2016,43 @@ void cMenu_Options :: Change_Keyboard_Setting( int setting )
 void cMenu_Options :: Change_Joystick_Setting( int setting )
 {
 	// todo
+}
+
+void cMenu_Options :: Change_Editor_Setting( int setting )
+{
+	// editor show item images
+	if( pMenuCore->m_handler->m_active == 10 )
+	{
+		pPreferences->m_editor_show_item_images = !pPreferences->m_editor_show_item_images;
+
+		if( pPreferences->m_editor_show_item_images )
+		{
+			m_game_combo_editor_show_item_images->setText( UTF8_("On") );
+		}
+		else
+		{
+			m_game_combo_editor_show_item_images->setText( UTF8_("Off") );
+		}
+	}
+	// editor item image size
+	else if( pMenuCore->m_handler->m_active == 11 )
+	{
+		// nothing
+	}
+	// editor auto mouse hide
+	else if( pMenuCore->m_handler->m_active == 12 )
+	{
+		pPreferences->m_editor_mouse_auto_hide = !pPreferences->m_editor_mouse_auto_hide;
+
+		if( pPreferences->m_editor_mouse_auto_hide )
+		{
+			m_game_combo_editor_show_item_images->setText( UTF8_("On") );
+		}
+		else
+		{
+			m_game_combo_editor_show_item_images->setText( UTF8_("Off") );
+		}
+	}
 }
 
 void cMenu_Options :: Draw( void )
@@ -2327,65 +2327,9 @@ bool cMenu_Options :: Game_Menu_Level_Text_Changed( const CEGUI::EventArgs &even
 	return 1;
 }
 
-
-bool cMenu_Options :: Game_Editor_Show_Item_Images_Select( const CEGUI::EventArgs &event )
-{
-	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
-	CEGUI::ListboxItem *item = static_cast<CEGUI::Combobox*>( windowEventArgs.window )->getSelectedItem();
-
-	bool show_item_images = 0;
-
-	if( item->getText().compare( UTF8_("On") ) == 0 )
-	{
-		show_item_images = 1;
-	}
-
-	pPreferences->m_editor_show_item_images = show_item_images;
-
-	return 1;
-}
-
-bool cMenu_Options :: Game_Editor_Item_Image_Size_Select( const CEGUI::EventArgs &event )
-{
-	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
-	CEGUI::Spinner *spinner_item_image_size = static_cast<CEGUI::Spinner *>( windowEventArgs.window );
-
-	pPreferences->m_editor_item_image_size = static_cast<unsigned int>(spinner_item_image_size->getCurrentValue());
-
-	return 1;
-}
-
-bool cMenu_Options :: Game_Editor_Auto_Hide_Mouse_Select( const CEGUI::EventArgs &event )
-{
-	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
-	CEGUI::ListboxItem *item = static_cast<CEGUI::Combobox*>( windowEventArgs.window )->getSelectedItem();
-
-	bool auto_hide_mouse = 0;
-
-	if( item->getText().compare( UTF8_("On") ) == 0 )
-	{
-		auto_hide_mouse = 1;
-	}
-
-	pPreferences->m_editor_mouse_auto_hide = auto_hide_mouse;
-
-	return 1;
-}
-
 bool cMenu_Options :: Game_Button_Reset_Game_Clicked( const CEGUI::EventArgs &event )
 {
 	pPreferences->Reset_Game();
-
-	// clear
-	pMenuCore->m_next_menu = MENU_OPTIONS;
-	Game_Action = GA_ENTER_MENU;
-
-	return 1;
-}
-
-bool cMenu_Options :: Game_Button_Reset_Editor_Clicked( const CEGUI::EventArgs &event )
-{
-	pPreferences->Reset_Editor();
 
 	// clear
 	pMenuCore->m_next_menu = MENU_OPTIONS;
@@ -2850,6 +2794,61 @@ bool cMenu_Options :: Joystick_List_Double_Click( const CEGUI::EventArgs &event 
 bool cMenu_Options :: Joystick_Button_Reset_Clicked( const CEGUI::EventArgs &event )
 {
 	pPreferences->Reset_Joystick();
+
+	// clear
+	pMenuCore->m_next_menu = MENU_OPTIONS;
+	Game_Action = GA_ENTER_MENU;
+
+	return 1;
+}
+
+bool cMenu_Options :: Game_Editor_Show_Item_Images_Select( const CEGUI::EventArgs &event )
+{
+	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
+	CEGUI::ListboxItem *item = static_cast<CEGUI::Combobox*>( windowEventArgs.window )->getSelectedItem();
+
+	bool show_item_images = 0;
+
+	if( item->getText().compare( UTF8_("On") ) == 0 )
+	{
+		show_item_images = 1;
+	}
+
+	pPreferences->m_editor_show_item_images = show_item_images;
+
+	return 1;
+}
+
+bool cMenu_Options :: Game_Editor_Item_Image_Size_Select( const CEGUI::EventArgs &event )
+{
+	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
+	CEGUI::Spinner *spinner_item_image_size = static_cast<CEGUI::Spinner *>( windowEventArgs.window );
+
+	pPreferences->m_editor_item_image_size = static_cast<unsigned int>(spinner_item_image_size->getCurrentValue());
+
+	return 1;
+}
+
+bool cMenu_Options :: Game_Editor_Auto_Hide_Mouse_Select( const CEGUI::EventArgs &event )
+{
+	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
+	CEGUI::ListboxItem *item = static_cast<CEGUI::Combobox*>( windowEventArgs.window )->getSelectedItem();
+
+	bool auto_hide_mouse = 0;
+
+	if( item->getText().compare( UTF8_("On") ) == 0 )
+	{
+		auto_hide_mouse = 1;
+	}
+
+	pPreferences->m_editor_mouse_auto_hide = auto_hide_mouse;
+
+	return 1;
+}
+
+bool cMenu_Options :: Game_Button_Reset_Editor_Clicked( const CEGUI::EventArgs &event )
+{
+	pPreferences->Reset_Editor();
 
 	// clear
 	pMenuCore->m_next_menu = MENU_OPTIONS;

@@ -174,19 +174,19 @@ public:
 	virtual void Init( void );
 	virtual void Init_GUI( void );
 	void Init_GUI_Game( void );
-	void Init_GUI_Editor( void );
 	void Init_GUI_Video( void );
 	void Init_GUI_Audio( void );
 	void Init_GUI_Keyboard( void );
 	void Init_GUI_Joystick( void );
+	void Init_GUI_Editor( void );
 	virtual void Exit( void );
 	virtual void Update( void );
 	void Change_Game_Setting( int setting );
-	void Change_Editor_Setting( int setting );
 	void Change_Video_Setting( int setting );
 	void Change_Audio_Setting( int setting );
 	void Change_Keyboard_Setting( int setting );
 	void Change_Joystick_Setting( int setting );
+	void Change_Editor_Setting( int setting );
 	virtual void Draw( void );
 
 	/* Build the shortcut list
@@ -212,11 +212,7 @@ public:
 	bool Game_Language_Select( const CEGUI::EventArgs &event );
 	bool Game_Menu_Level_Select( const CEGUI::EventArgs &event );
 	bool Game_Menu_Level_Text_Changed( const CEGUI::EventArgs &event );
-	bool Game_Editor_Show_Item_Images_Select( const CEGUI::EventArgs &event );
-	bool Game_Editor_Item_Image_Size_Select( const CEGUI::EventArgs &event );
-	bool Game_Editor_Auto_Hide_Mouse_Select( const CEGUI::EventArgs &event );
 	bool Game_Button_Reset_Game_Clicked( const CEGUI::EventArgs &event );
-	bool Game_Button_Reset_Editor_Clicked( const CEGUI::EventArgs &event );
 	// video
 	bool Video_Resolution_Select( const CEGUI::EventArgs &event );
 	bool Video_Bpp_Select( const CEGUI::EventArgs &event );
@@ -247,6 +243,11 @@ public:
 	bool Joystick_Spinner_Axis_Ver_Changed( const CEGUI::EventArgs &event );
 	bool Joystick_List_Double_Click( const CEGUI::EventArgs &event );
 	bool Joystick_Button_Reset_Clicked( const CEGUI::EventArgs &event );
+	// editor
+	bool Game_Editor_Show_Item_Images_Select( const CEGUI::EventArgs &event );
+	bool Game_Editor_Item_Image_Size_Select( const CEGUI::EventArgs &event );
+	bool Game_Editor_Auto_Hide_Mouse_Select( const CEGUI::EventArgs &event );
+	bool Game_Button_Reset_Editor_Clicked( const CEGUI::EventArgs &event );
 
 	CEGUI::TabControl *m_tabcontrol;
 	// game
