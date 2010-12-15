@@ -642,6 +642,17 @@ void Update_Game( void )
 		return;
 	}
 
+	// if in menu and vsync is disabled then limit the fps to reduce the load for CPU/GPU
+	if( Game_Mode == MODE_MENU && !pPreferences->m_video_vsync )
+	{
+		Correct_Frame_Time( 100 );
+	}
+	// if fps limit is set
+	else if( pPreferences->m_video_fps_limit )
+	{
+		Correct_Frame_Time( pPreferences->m_video_fps_limit );
+	}
+	
 	// ## game events
 	Handle_Game_Events();
 

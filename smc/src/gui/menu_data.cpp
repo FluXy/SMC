@@ -1327,11 +1327,14 @@ void cMenu_Options :: Init_GUI_Game( void )
 
 void cMenu_Options :: Init_GUI_Video( void )
 {
+	// get the CEGUI window manager
+	CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
+
 	// Resolution
-	CEGUI::Window *text_resolution = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "video_text_resolution" ));
+	CEGUI::Window *text_resolution = static_cast<CEGUI::Window *>(wmgr.getWindow( "video_text_resolution" ));
 	text_resolution->setText( UTF8_("Resolution") );
 
-	m_video_combo_resolution = static_cast<CEGUI::Combobox *>(CEGUI::WindowManager::getSingleton().getWindow( "video_combo_resolution" ));
+	m_video_combo_resolution = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "video_combo_resolution" ));
 	
 	vector<cSize_Int> valid_resolutions = pVideo->Get_Supported_Resolutions();
 	CEGUI::ListboxTextItem *item;
@@ -1386,10 +1389,10 @@ void cMenu_Options :: Init_GUI_Video( void )
 	m_video_combo_resolution->subscribeEvent( CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber( &cMenu_Options::Video_Resolution_Select, this ) );
 
 	// Bpp
-	CEGUI::Window *text_bpp = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "video_text_bpp" ));
+	CEGUI::Window *text_bpp = static_cast<CEGUI::Window *>(wmgr.getWindow( "video_text_bpp" ));
 	text_bpp->setText( UTF8_("Bpp") );
 
-	m_video_combo_bpp = static_cast<CEGUI::Combobox *>(CEGUI::WindowManager::getSingleton().getWindow( "video_combo_bpp" ));
+	m_video_combo_bpp = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "video_combo_bpp" ));
 
 	item = new CEGUI::ListboxTextItem( "16" );
 	item->setTextColours( CEGUI::colour( 1, 0.6f, 0.3f ) );
@@ -1403,10 +1406,10 @@ void cMenu_Options :: Init_GUI_Video( void )
 	m_video_combo_bpp->subscribeEvent( CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber( &cMenu_Options::Video_Bpp_Select, this ) );
 
 	// Fullscreen
-	CEGUI::Window *text_fullscreen = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "video_text_fullscreen" ));
+	CEGUI::Window *text_fullscreen = static_cast<CEGUI::Window *>(wmgr.getWindow( "video_text_fullscreen" ));
 	text_fullscreen->setText( UTF8_("Fullscreen") );
 
-	m_video_combo_fullscreen = static_cast<CEGUI::Combobox *>(CEGUI::WindowManager::getSingleton().getWindow( "video_combo_fullscreen" ));
+	m_video_combo_fullscreen = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "video_combo_fullscreen" ));
 
 	item = new CEGUI::ListboxTextItem( UTF8_("On") );
 	item->setTextColours( CEGUI::colour( 0, 1, 0 ) );
@@ -1427,10 +1430,10 @@ void cMenu_Options :: Init_GUI_Video( void )
 	m_video_combo_fullscreen->subscribeEvent( CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber( &cMenu_Options::Video_Fullscreen_Select, this ) );
 
 	// VSync
-	CEGUI::Window *text_vsync = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "video_text_vsync" ));
+	CEGUI::Window *text_vsync = static_cast<CEGUI::Window *>(wmgr.getWindow( "video_text_vsync" ));
 	text_vsync->setText( UTF8_("VSync") );
 
-	m_video_combo_vsync = static_cast<CEGUI::Combobox *>(CEGUI::WindowManager::getSingleton().getWindow( "video_combo_vsync" ));
+	m_video_combo_vsync = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "video_combo_vsync" ));
 
 	item = new CEGUI::ListboxTextItem( UTF8_("On") );
 	item->setTextColours( CEGUI::colour( 0, 1, 0 ) );
@@ -1450,46 +1453,58 @@ void cMenu_Options :: Init_GUI_Video( void )
 
 	m_video_combo_vsync->subscribeEvent( CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber( &cMenu_Options::Video_Vsync_Select, this ) );
 
+	// FPS Limit
+	CEGUI::Window *text_fps_limit = static_cast<CEGUI::Window *>(wmgr.getWindow( "video_text_fps_limit" ));
+	text_fps_limit->setText( UTF8_("FPS Limit") );
+
+	m_video_spinner_fps_limit = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "video_spinner_fps_limit" ));
+	m_video_spinner_fps_limit->setCurrentValue( pPreferences->m_video_fps_limit );
+
+	m_video_spinner_fps_limit->subscribeEvent( CEGUI::Spinner::EventValueChanged, CEGUI::Event::Subscriber( &cMenu_Options::Video_FPS_Limit_Select, this ) );
+
 	// Geometry quality
-	CEGUI::Window *text_geometry_quality = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "video_text_geometry_quality" ));
+	CEGUI::Window *text_geometry_quality = static_cast<CEGUI::Window *>(wmgr.getWindow( "video_text_geometry_quality" ));
 	text_geometry_quality->setText( UTF8_("Geometry Quality") );
 
-	m_video_slider_geometry_quality = static_cast<CEGUI::Slider *>(CEGUI::WindowManager::getSingleton().getWindow( "video_slider_geometry_quality" ));
+	m_video_slider_geometry_quality = static_cast<CEGUI::Slider *>(wmgr.getWindow( "video_slider_geometry_quality" ));
 	m_video_slider_geometry_quality->setCurrentValue( pVideo->m_geometry_quality );
 	m_video_slider_geometry_quality->subscribeEvent( CEGUI::Slider::EventValueChanged, CEGUI::Event::Subscriber( &cMenu_Options::Video_Slider_Geometry_Quality_Changed, this ) );
 
 	// Texture quality
-	CEGUI::Window *text_texture_quality = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "video_text_texture_quality" ));
+	CEGUI::Window *text_texture_quality = static_cast<CEGUI::Window *>(wmgr.getWindow( "video_text_texture_quality" ));
 	text_texture_quality->setText( UTF8_("Texture Quality") );
 
-	m_video_slider_texture_quality = static_cast<CEGUI::Slider *>(CEGUI::WindowManager::getSingleton().getWindow( "video_slider_texture_quality" ));
+	m_video_slider_texture_quality = static_cast<CEGUI::Slider *>(wmgr.getWindow( "video_slider_texture_quality" ));
 	m_video_slider_texture_quality->setCurrentValue( pVideo->m_texture_quality );
 	m_video_slider_texture_quality->subscribeEvent( CEGUI::Slider::EventValueChanged, CEGUI::Event::Subscriber( &cMenu_Options::Video_Slider_Texture_Quality_Changed, this ) );
 
 	// Reset
-	CEGUI::PushButton *button_reset = static_cast<CEGUI::PushButton *>(CEGUI::WindowManager::getSingleton().getWindow( "video_button_reset" ));
+	CEGUI::PushButton *button_reset = static_cast<CEGUI::PushButton *>(wmgr.getWindow( "video_button_reset" ));
 	button_reset->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cMenu_Options::Video_Button_Reset_Clicked, this ) );
 	button_reset->setText( UTF8_("Reset") );
 
 	// Apply
-	CEGUI::PushButton *button_apply = static_cast<CEGUI::PushButton *>(CEGUI::WindowManager::getSingleton().getWindow( "video_button_apply" ));
+	CEGUI::PushButton *button_apply = static_cast<CEGUI::PushButton *>(wmgr.getWindow( "video_button_apply" ));
 	button_apply->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cMenu_Options::Video_Button_Apply_Clicked, this ) );
 	button_apply->setText( UTF8_("Apply") );
 
 	// Recreate Cache
-	CEGUI::PushButton *button_recreate_cache = static_cast<CEGUI::PushButton *>(CEGUI::WindowManager::getSingleton().getWindow( "video_button_recreate_cache" ));
+	CEGUI::PushButton *button_recreate_cache = static_cast<CEGUI::PushButton *>(wmgr.getWindow( "video_button_recreate_cache" ));
 	button_recreate_cache->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cMenu_Options::Video_Button_Recreate_Cache_Clicked, this ) );
 	button_recreate_cache->setText( UTF8_("Recreate Cache") );
 }
 
 void cMenu_Options :: Init_GUI_Audio( void )
 {
+	// get the CEGUI window manager
+	CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
+
 	// Audio Hz
-	CEGUI::Window *text_hz = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "audio_text_hz" ));
+	CEGUI::Window *text_hz = static_cast<CEGUI::Window *>(wmgr.getWindow( "audio_text_hz" ));
 	text_hz->setText( UTF8_("Hertz (Hz)") );
 	text_hz->setTooltipText( UTF8_("You should only change the value if the audio is scratchy.") );
 
-	m_audio_combo_hz = static_cast<CEGUI::Combobox *>(CEGUI::WindowManager::getSingleton().getWindow( "audio_combo_hz" ));
+	m_audio_combo_hz = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "audio_combo_hz" ));
 
 	CEGUI::ListboxTextItem *item = new CEGUI::ListboxTextItem( "22050" );
 	item->setTextColours( CEGUI::colour( 1, 0, 0 ) );
@@ -1508,11 +1523,11 @@ void cMenu_Options :: Init_GUI_Audio( void )
 
 
 	// Music
-	CEGUI::Window *text_music = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "audio_text_music" ));
+	CEGUI::Window *text_music = static_cast<CEGUI::Window *>(wmgr.getWindow( "audio_text_music" ));
 	text_music->setText( UTF8_("Music") );
 	text_music->setTooltipText( UTF8_("Enable to play music. You need to have the Music Addon installed.") );
 
-	m_audio_combo_music = static_cast<CEGUI::Combobox *>(CEGUI::WindowManager::getSingleton().getWindow( "audio_combo_music" ));
+	m_audio_combo_music = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "audio_combo_music" ));
 
 	item = new CEGUI::ListboxTextItem( UTF8_("On") );
 	item->setTextColours( CEGUI::colour( 0, 1, 0 ) );
@@ -1533,7 +1548,7 @@ void cMenu_Options :: Init_GUI_Audio( void )
 	m_audio_combo_music->subscribeEvent( CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber( &cMenu_Options::Audio_Music_Select, this ) );
 
 	// music volume slider
-	m_audio_slider_music = static_cast<CEGUI::Slider *>(CEGUI::WindowManager::getSingleton().getWindow( "audio_slider_music_volume" ));
+	m_audio_slider_music = static_cast<CEGUI::Slider *>(wmgr.getWindow( "audio_slider_music_volume" ));
 	m_audio_slider_music->setTooltipText( UTF8_("Set the Music Volume.") );
 
 	m_audio_slider_music->setCurrentValue( static_cast<float>(pAudio->m_music_volume) );
@@ -1541,11 +1556,11 @@ void cMenu_Options :: Init_GUI_Audio( void )
 	
 
 	// Sounds
-	CEGUI::Window *text_sound = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "audio_text_sound" ));
+	CEGUI::Window *text_sound = static_cast<CEGUI::Window *>(wmgr.getWindow( "audio_text_sound" ));
 	text_sound->setText( UTF8_("Sound") );
 	text_sound->setTooltipText( UTF8_("Enable to play Sounds.") ) ;
 
-	m_audio_combo_sounds = static_cast<CEGUI::Combobox *>(CEGUI::WindowManager::getSingleton().getWindow( "audio_combo_sounds" ));
+	m_audio_combo_sounds = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "audio_combo_sounds" ));
 
 	item = new CEGUI::ListboxTextItem( UTF8_("On") );
 	item->setTextColours( CEGUI::colour( 0, 1, 0 ) );
@@ -1566,25 +1581,28 @@ void cMenu_Options :: Init_GUI_Audio( void )
 	m_audio_combo_sounds->subscribeEvent( CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber( &cMenu_Options::Audio_Sound_Select, this ) );
 
 	// sound volume slider
-	m_audio_slider_sound = static_cast<CEGUI::Slider *>(CEGUI::WindowManager::getSingleton().getWindow( "audio_slider_sound_volume" ));
+	m_audio_slider_sound = static_cast<CEGUI::Slider *>(wmgr.getWindow( "audio_slider_sound_volume" ));
 	m_audio_slider_sound->setTooltipText( UTF8_("Set the Sound Volume.") );
 
 	m_audio_slider_sound->setCurrentValue( static_cast<float>(pAudio->m_sound_volume) );
 	m_audio_slider_sound->subscribeEvent( CEGUI::Slider::EventValueChanged, CEGUI::Event::Subscriber( &cMenu_Options::Audio_Sound_Volume_Changed, this ) );
 
 	// Reset
-	CEGUI::PushButton *button_reset = static_cast<CEGUI::PushButton *>(CEGUI::WindowManager::getSingleton().getWindow( "audio_button_reset" ));
+	CEGUI::PushButton *button_reset = static_cast<CEGUI::PushButton *>(wmgr.getWindow( "audio_button_reset" ));
 	button_reset->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cMenu_Options::Audio_Button_Reset_Clicked, this ) );
 	button_reset->setText( UTF8_("Reset") );
 }
 
 void cMenu_Options :: Init_GUI_Keyboard( void )
 {
+	// get the CEGUI window manager
+	CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
+
 	// Keyboard listbox
-	CEGUI::Window *text_keyboard_shortcuts = CEGUI::WindowManager::getSingleton().getWindow( "keyboard_text_shortcuts" );
+	CEGUI::Window *text_keyboard_shortcuts = wmgr.getWindow( "keyboard_text_shortcuts" );
 	text_keyboard_shortcuts->setText( UTF8_("Shortcuts") );
 
-	CEGUI::MultiColumnList *listbox_keyboard = static_cast<CEGUI::MultiColumnList *>(CEGUI::WindowManager::getSingleton().getWindow( "keyboard_listbox" ));
+	CEGUI::MultiColumnList *listbox_keyboard = static_cast<CEGUI::MultiColumnList *>(wmgr.getWindow( "keyboard_listbox" ));
 
 	listbox_keyboard->addColumn( UTF8_("Name"), 0, CEGUI::UDim( 0.47f, 0 ) );
 	listbox_keyboard->addColumn( UTF8_("Key"), 1, CEGUI::UDim( 0.47f, 0 ) );
@@ -1593,36 +1611,39 @@ void cMenu_Options :: Init_GUI_Keyboard( void )
 	listbox_keyboard->subscribeEvent( CEGUI::MultiColumnList::EventMouseDoubleClick, CEGUI::Event::Subscriber( &cMenu_Options::Keyboard_List_Double_Click, this ) );
 
 	// Keyboard scroll speed
-	CEGUI::Window *text_keyboard_scroll_speed = CEGUI::WindowManager::getSingleton().getWindow( "keyboard_text_scroll_speed" );
+	CEGUI::Window *text_keyboard_scroll_speed = wmgr.getWindow( "keyboard_text_scroll_speed" );
 	text_keyboard_scroll_speed->setText( UTF8_("Scroll Speed") );
 
-	CEGUI::Slider *slider_scoll_speed = static_cast<CEGUI::Slider *>(CEGUI::WindowManager::getSingleton().getWindow( "keyboard_slider_scroll_speed" ));
+	CEGUI::Slider *slider_scoll_speed = static_cast<CEGUI::Slider *>(wmgr.getWindow( "keyboard_slider_scroll_speed" ));
 	slider_scoll_speed->setCurrentValue( pPreferences->m_scroll_speed );
 	slider_scoll_speed->subscribeEvent( CEGUI::Slider::EventValueChanged, CEGUI::Event::Subscriber( &cMenu_Options::Keyboard_Slider_Scroll_Speed_Changed, this ) );
 
 	// Reset Keyboard
-	CEGUI::PushButton *button_reset_keyboard = static_cast<CEGUI::PushButton *>(CEGUI::WindowManager::getSingleton().getWindow( "keyboard_button_reset" ));
+	CEGUI::PushButton *button_reset_keyboard = static_cast<CEGUI::PushButton *>(wmgr.getWindow( "keyboard_button_reset" ));
 	button_reset_keyboard->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cMenu_Options::Keyboard_Button_Reset_Clicked, this ) );
 	button_reset_keyboard->setText( UTF8_("Reset") );
 }
 
 void cMenu_Options :: Init_GUI_Joystick( void )
 {
+	// get the CEGUI window manager
+	CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
+
 	// Joystick sensitivity text
-	CEGUI::Window *text_joystick_sensitivity = CEGUI::WindowManager::getSingleton().getWindow( "joystick_text_sensitivity" );
+	CEGUI::Window *text_joystick_sensitivity = wmgr.getWindow( "joystick_text_sensitivity" );
 	text_joystick_sensitivity->setText( UTF8_("Sensitivity") );	
 
 	// Joystick analog jump text
-	CEGUI::Window *text_joystick_analog_jump = CEGUI::WindowManager::getSingleton().getWindow( "joystick_text_analog_jump" );
+	CEGUI::Window *text_joystick_analog_jump = wmgr.getWindow( "joystick_text_analog_jump" );
 	text_joystick_analog_jump->setText( UTF8_("Analog Jump") );
 	
 	// Joystick name
-	CEGUI::Window *text_joystick_name = CEGUI::WindowManager::getSingleton().getWindow( "joystick_text_name" );
+	CEGUI::Window *text_joystick_name = wmgr.getWindow( "joystick_text_name" );
 	text_joystick_name->setText( UTF8_("Joystick") );
 
 	text_joystick_name->subscribeEvent( CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber( &cMenu_Options::Joystick_Name_Click, this ) );
 
-	CEGUI::Combobox *combo_joy = static_cast<CEGUI::Combobox *>(CEGUI::WindowManager::getSingleton().getWindow( "joystick_combo" ));
+	CEGUI::Combobox *combo_joy = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "joystick_combo" ));
 
 	// Add None
 	CEGUI::ListboxTextItem *item = new CEGUI::ListboxTextItem( UTF8_("None") );
@@ -1658,12 +1679,12 @@ void cMenu_Options :: Init_GUI_Joystick( void )
 	combo_joy->subscribeEvent( CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber( &cMenu_Options::Joystick_Name_Select, this ) );
 
 	// Joystick Sensitivity
-	CEGUI::Slider *slider_joy_sensitivity = static_cast<CEGUI::Slider *>(CEGUI::WindowManager::getSingleton().getWindow( "joystick_slider_sensitivity" ));
+	CEGUI::Slider *slider_joy_sensitivity = static_cast<CEGUI::Slider *>(wmgr.getWindow( "joystick_slider_sensitivity" ));
 	slider_joy_sensitivity->setCurrentValue( pPreferences->m_joy_axis_threshold );
 	slider_joy_sensitivity->subscribeEvent( CEGUI::Slider::EventValueChanged, CEGUI::Event::Subscriber( &cMenu_Options::Joystick_Sensitivity_Changed, this ) );
 
 	// Joystick analog jump
-	CEGUI::Combobox *combo_joy_analog_jump = static_cast<CEGUI::Combobox *>(CEGUI::WindowManager::getSingleton().getWindow( "joystick_combo_analog_jump" ));
+	CEGUI::Combobox *combo_joy_analog_jump = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "joystick_combo_analog_jump" ));
 
 	item = new CEGUI::ListboxTextItem( UTF8_("On") );
 	item->setTextColours( CEGUI::colour( 0, 0, 1 ) );
@@ -1684,26 +1705,26 @@ void cMenu_Options :: Init_GUI_Joystick( void )
 	combo_joy_analog_jump->subscribeEvent( CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber( &cMenu_Options::Joystick_Analog_Jump_Select, this ) );
 
 	// Joystick axis horizontal
-	CEGUI::Window *text_joystick_axis_hor = CEGUI::WindowManager::getSingleton().getWindow( "joystick_text_axis_hor" );
+	CEGUI::Window *text_joystick_axis_hor = wmgr.getWindow( "joystick_text_axis_hor" );
 	text_joystick_axis_hor->setText( UTF8_("Axis Hor") );
 
-	CEGUI::Spinner *spinner_joystick_axis_hor = static_cast<CEGUI::Spinner *>(CEGUI::WindowManager::getSingleton().getWindow( "joystick_spinner_axis_hor" ));
+	CEGUI::Spinner *spinner_joystick_axis_hor = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "joystick_spinner_axis_hor" ));
 	spinner_joystick_axis_hor->setCurrentValue( static_cast<float>(pPreferences->m_joy_axis_hor) );
 	spinner_joystick_axis_hor->subscribeEvent( CEGUI::Spinner::EventValueChanged, CEGUI::Event::Subscriber( &cMenu_Options::Joystick_Spinner_Axis_Hor_Changed, this ) );
 
 	// Joystick axis vertical
-	CEGUI::Window *text_joystick_axis_ver = CEGUI::WindowManager::getSingleton().getWindow( "joystick_text_axis_ver" );
+	CEGUI::Window *text_joystick_axis_ver = wmgr.getWindow( "joystick_text_axis_ver" );
 	text_joystick_axis_ver->setText( UTF8_("Ver") );
 
-	CEGUI::Spinner *spinner_joystick_axis_ver = static_cast<CEGUI::Spinner *>(CEGUI::WindowManager::getSingleton().getWindow( "joystick_spinner_axis_ver" ));
+	CEGUI::Spinner *spinner_joystick_axis_ver = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "joystick_spinner_axis_ver" ));
 	spinner_joystick_axis_ver->setCurrentValue( static_cast<float>(pPreferences->m_joy_axis_ver) );
 	spinner_joystick_axis_ver->subscribeEvent( CEGUI::Spinner::EventValueChanged, CEGUI::Event::Subscriber( &cMenu_Options::Joystick_Spinner_Axis_Ver_Changed, this ) );
 
 	// Joystick shortcut listbox
-	CEGUI::Window *text_joystick_shortcuts = CEGUI::WindowManager::getSingleton().getWindow( "joystick_text_shortcuts" );
+	CEGUI::Window *text_joystick_shortcuts = wmgr.getWindow( "joystick_text_shortcuts" );
 	text_joystick_shortcuts->setText( UTF8_("Shortcuts") );
 
-	CEGUI::MultiColumnList *listbox_joystick = static_cast<CEGUI::MultiColumnList *>(CEGUI::WindowManager::getSingleton().getWindow( "joystick_listbox" ));
+	CEGUI::MultiColumnList *listbox_joystick = static_cast<CEGUI::MultiColumnList *>(wmgr.getWindow( "joystick_listbox" ));
 
 	listbox_joystick->addColumn( UTF8_("Name"), 0, CEGUI::UDim( 0.47f, 0 ) );
 	listbox_joystick->addColumn( UTF8_("Button"), 1, CEGUI::UDim( 0.47f, 0 ) );
@@ -1712,7 +1733,7 @@ void cMenu_Options :: Init_GUI_Joystick( void )
 	listbox_joystick->subscribeEvent( CEGUI::MultiColumnList::EventMouseDoubleClick, CEGUI::Event::Subscriber( &cMenu_Options::Joystick_List_Double_Click, this ) );
 
 	// Reset Joystick
-	CEGUI::PushButton *button_reset_joystick = static_cast<CEGUI::PushButton *>(CEGUI::WindowManager::getSingleton().getWindow( "joystick_button_reset" ));
+	CEGUI::PushButton *button_reset_joystick = static_cast<CEGUI::PushButton *>(wmgr.getWindow( "joystick_button_reset" ));
 	button_reset_joystick->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cMenu_Options::Joystick_Button_Reset_Clicked, this ) );
 	button_reset_joystick->setText( UTF8_("Reset") );
 }
@@ -1723,7 +1744,7 @@ void cMenu_Options :: Init_GUI_Editor( void )
 	CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
 
 	// show item images
-	CEGUI::Window *text_editor_show_item_images = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "editor_text_show_item_images" ));
+	CEGUI::Window *text_editor_show_item_images = static_cast<CEGUI::Window *>(wmgr.getWindow( "editor_text_show_item_images" ));
 	text_editor_show_item_images->setText( UTF8_("Show images") );
 
 	m_game_combo_editor_show_item_images = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "editor_combo_show_item_images" ));
@@ -1747,7 +1768,7 @@ void cMenu_Options :: Init_GUI_Editor( void )
 	m_game_combo_editor_show_item_images->subscribeEvent( CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber( &cMenu_Options::Game_Editor_Show_Item_Images_Select, this ) );
 
 	// item image size
-	CEGUI::Window *text_editor_item_image_size = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "editor_text_item_image_size" ));
+	CEGUI::Window *text_editor_item_image_size = static_cast<CEGUI::Window *>(wmgr.getWindow( "editor_text_item_image_size" ));
 	text_editor_item_image_size->setText( UTF8_("Item image size") );
 
 	m_game_spinner_editor_item_image_size = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "editor_spinner_item_image_size" ));
@@ -1756,7 +1777,7 @@ void cMenu_Options :: Init_GUI_Editor( void )
 	m_game_spinner_editor_item_image_size->subscribeEvent( CEGUI::Spinner::EventValueChanged, CEGUI::Event::Subscriber( &cMenu_Options::Game_Editor_Item_Image_Size_Select, this ) );
 
 	// editor mouse auto hide
-	CEGUI::Window *text_editor_mouse_auto_hide = static_cast<CEGUI::Window *>(CEGUI::WindowManager::getSingleton().getWindow( "editor_text_mouse_auto_hide" ));
+	CEGUI::Window *text_editor_mouse_auto_hide = static_cast<CEGUI::Window *>(wmgr.getWindow( "editor_text_mouse_auto_hide" ));
 	text_editor_mouse_auto_hide->setText( UTF8_("Auto-Hide Mouse") );
 
 	m_game_combo_editor_mouse_auto_hide = static_cast<CEGUI::Combobox *>(wmgr.getWindow( "editor_combo_mouse_auto_hide" ));
@@ -1780,7 +1801,7 @@ void cMenu_Options :: Init_GUI_Editor( void )
 	m_game_combo_editor_mouse_auto_hide->subscribeEvent( CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber( &cMenu_Options::Game_Editor_Auto_Hide_Mouse_Select, this ) );
 
 	// Reset Editor
-	CEGUI::PushButton *button_reset_editor = static_cast<CEGUI::PushButton *>(CEGUI::WindowManager::getSingleton().getWindow( "editor_button_reset" ));
+	CEGUI::PushButton *button_reset_editor = static_cast<CEGUI::PushButton *>(wmgr.getWindow( "editor_button_reset" ));
 	button_reset_editor->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cMenu_Options::Game_Button_Reset_Editor_Clicked, this ) );
 	button_reset_editor->setText( UTF8_("Reset") );
 }
@@ -1962,6 +1983,11 @@ void cMenu_Options :: Change_Video_Setting( int setting )
 		{
 			m_video_combo_vsync->setText( UTF8_("Off") );
 		}
+	}
+	// FPS Limit
+	else if( pMenuCore->m_handler->m_active == 8 )
+	{
+		// nothing
 	}
 }
 
@@ -2432,6 +2458,16 @@ bool cMenu_Options :: Video_Vsync_Select( const CEGUI::EventArgs &event )
 	return 1;
 }
 
+bool cMenu_Options :: Video_FPS_Limit_Select( const CEGUI::EventArgs &event )
+{
+	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
+	CEGUI::Spinner *spinner_fps_limit = static_cast<CEGUI::Spinner *>( windowEventArgs.window );
+	
+	pPreferences->m_video_fps_limit = spinner_fps_limit->getCurrentValue();
+
+	return 1;
+}
+
 bool cMenu_Options :: Video_Slider_Geometry_Quality_Changed( const CEGUI::EventArgs &event )
 {
 	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
@@ -2487,6 +2523,9 @@ bool cMenu_Options :: Video_Button_Reset_Clicked( const CEGUI::EventArgs &event 
 		m_video_combo_vsync->setText( UTF8_("Off") );
 	}
 	m_vid_vsync = cPreferences::m_video_vsync_default;
+
+	m_video_spinner_fps_limit->setCurrentValue( cPreferences::m_video_fps_limit_default );
+	pPreferences->m_video_fps_limit = cPreferences::m_video_fps_limit_default;
 
 	m_video_slider_geometry_quality->setCurrentValue( cPreferences::m_geometry_quality_default );
 	m_vid_geometry_detail = cPreferences::m_geometry_quality_default;

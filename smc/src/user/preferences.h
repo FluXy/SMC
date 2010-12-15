@@ -84,6 +84,7 @@ public:
 	Uint16 m_video_screen_h;
 	Uint8 m_video_screen_bpp;
 	bool m_video_vsync;
+	Uint16 m_video_fps_limit;
 
 	// Keyboard
 	// key definitions
@@ -161,6 +162,7 @@ public:
 	static const Uint16 m_video_screen_h_default;
 	static const Uint8 m_video_screen_bpp_default;
 	static const bool m_video_vsync_default;
+	static const Uint16 m_video_fps_limit_default;
 	static const float m_geometry_quality_default;
 	static const float m_texture_quality_default;
 	// Keyboard

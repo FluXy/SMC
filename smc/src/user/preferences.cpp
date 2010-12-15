@@ -53,6 +53,7 @@ const Uint8 cPreferences::m_video_screen_bpp_default = 32;
  * which can't handle visual sync
 */
 const bool cPreferences::m_video_vsync_default = 0;
+const Uint16 cPreferences::m_video_fps_limit_default = 240;
 // default geometry detail is medium
 const float cPreferences::m_geometry_quality_default = 0.5f;
 // default texture detail is high
@@ -195,6 +196,7 @@ void cPreferences :: Save( void )
 	Write_Property( stream, "video_screen_h", m_video_screen_h );
 	Write_Property( stream, "video_screen_bpp", static_cast<int>(m_video_screen_bpp) );
 	Write_Property( stream, "video_vsync", m_video_vsync );
+	Write_Property( stream, "video_fps_limit", m_video_fps_limit );
 	Write_Property( stream, "video_geometry_quality", pVideo->m_geometry_quality );
 	Write_Property( stream, "video_texture_quality", pVideo->m_texture_quality );
 	// Audio
@@ -284,6 +286,7 @@ void cPreferences :: Reset_Video( void )
 	m_video_screen_h = m_video_screen_h_default;
 	m_video_screen_bpp = m_video_screen_bpp_default;
 	m_video_vsync = m_video_vsync_default;
+	m_video_fps_limit = m_video_fps_limit_default;
 	m_video_fullscreen = m_video_fullscreen_default;
 	pVideo->m_geometry_quality = m_geometry_quality_default;
 	pVideo->m_texture_quality = m_texture_quality_default;
@@ -551,6 +554,10 @@ void cPreferences :: handle_item( CEGUI::XMLAttributes attributes )
 	else if( name.compare( "video_vsync" ) == 0 )
 	{
 		m_video_vsync = attributes.getValueAsBool( "value" );
+	}
+	else if( name.compare( "video_fps_limit" ) == 0 )
+	{
+		m_video_fps_limit = attributes.getValueAsInteger( "value" );
 	}
 	else if( name.compare( "video_fullscreen" ) == 0 )
 	{

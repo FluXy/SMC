@@ -713,12 +713,6 @@ void cMenuCore :: Draw( void )
 
 	m_menu_data->Draw();
 
-	// if vsync is disabled then limit the fps to reduce the CPU usage
-	if( !pPreferences->m_video_vsync )
-	{
-		Correct_Frame_Time( 100 );
-	}
-
 	// update performance timer
 	pFramerate->m_perf_timer[PERF_DRAW_MENU]->Update();
 }
