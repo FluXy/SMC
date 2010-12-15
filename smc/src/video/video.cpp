@@ -1168,8 +1168,8 @@ cGL_Surface *cVideo :: Load_GL_Surface( std::string filename, bool use_settings 
 SDL_Surface *cVideo :: Convert_To_Final_Software_Image( SDL_Surface *surface ) const
 {
 	// get power of two size
-	unsigned int width = Get_Power_of_2( surface->w );
-	unsigned int height = Get_Power_of_2( surface->h );
+	const unsigned int width = Get_Power_of_2( surface->w );
+	const unsigned int height = Get_Power_of_2( surface->h );
 
 	// if it needs to be changed
 	if( width != surface->w || height != surface->h || surface->format->BitsPerPixel != 32 )

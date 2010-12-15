@@ -274,9 +274,10 @@ public:
 	*/
 	cGL_Surface *Load_GL_Surface( std::string filename, bool use_settings = 1, bool print_errors = 1 );
 
-	/* Convert to a software image with a power of 2 size and 32 bits per pixel
+	/* Convert to a scaled software image with a power of 2 size and 32 bits per pixel.
+	 * Conversion only happens if needed.
 	 * surface : the source image which gets converted if needed
-	 * use the returned image after this conversion
+	 * only use the returned image after this conversion
 	*/
 	SDL_Surface *Convert_To_Final_Software_Image( SDL_Surface *surface ) const;
 
