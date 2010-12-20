@@ -3174,9 +3174,6 @@ void cMenu_Credits :: Init( void )
 	Add_Credits_Line( " - Forum and Wiki Moderator", 0, -3 );
 	Add_Credits_Line( " - Game Tester", 0, -3 );
 
-	Add_Credits_Line( "Grant ... (youngheart80)", 0, 20, green, 1.0f );
-	Add_Credits_Line( " - Graphic Designer", 0, -3 );
-
 	Add_Credits_Line( "Anthony Smith (mrvertigo27)", 0, 20, Color( 0.58f, 0.52f, 1.0f ), 1.0f );
 	Add_Credits_Line( " - Graphic Designer", 0, -3 );
 
@@ -3188,6 +3185,9 @@ void cMenu_Credits :: Init( void )
 
 	Add_Credits_Line( "... (Crabmaster)", 0, 20, Color( 0.8f, 0.35f, 0.25f ), 1.0f );
 	Add_Credits_Line( " - Graphic Designer", 0, -3 );
+
+	Add_Credits_Line( "Norbu Tsering (Naerbu)", 0, 20, Color( 0.8f, 0.0f, 0.0f ), 1.0f );
+	Add_Credits_Line( " - Music Artist", 0, -3 );
 
 	Add_Credits_Line( "Tristan Heaven (nyhm)", 0, 20, lightblue, 1.0f );
 	Add_Credits_Line( " - Gentoo eBuild Maintainer", 0, -3 );
@@ -3205,6 +3205,9 @@ void cMenu_Credits :: Init( void )
 
 	// Retired
 	Add_Credits_Line( "-- Retired --", 0, 20, lightgrey, 1.0f );
+
+	Add_Credits_Line( "Grant ... (youngheart80)", 0, 20, green, 1.0f );
+	Add_Credits_Line( " - Graphic Designer", 0, -3 );
 
 	Add_Credits_Line( "... (Sauer2)", 0, 20, Color( 0.1f, 0.6f, 0.1f ), 1.0f );
 	Add_Credits_Line( " - Level Contributor", 0, -3 );
@@ -3369,7 +3372,7 @@ void cMenu_Credits :: Update( void )
 		cHudSprite *obj = (*itr);
 
 		// long inactive reset
-		if( obj->m_pos_y < -2500 )
+		if( obj->m_pos_y < -2700 )
 		{
 			obj->Set_Pos_Y( static_cast<float>(game_res_h) * 1.1f );
 		}
