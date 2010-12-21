@@ -136,6 +136,15 @@
 	<item>
 		<property name="object_name" value="enemy" />
 		<property name="object_tags" value="level;enemy" />
+		<property name="type" value="static" />
+		<property name="rotation_speed" value="3" />
+		<property name="fire_resistant" value="1" />
+		<property name="ice_resistance" value="0" />
+		<property name="image" value="enemy/static/fire/fireballs_1/1.png" />
+	</item>
+	<item>
+		<property name="object_name" value="enemy" />
+		<property name="object_tags" value="level;enemy" />
 		<property name="type" value="furball" />
 	</item>
 	<item>
