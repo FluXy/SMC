@@ -42,7 +42,7 @@
 #include "CEGUISchemeManager.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "elements/CEGUIProgressBar.h"
-#include "RendererModules/NULL/CEGUINULLRenderer.h"
+#include "RendererModules/Null/CEGUINullRenderer.h"
 // boost filesystem
 #include "boost/filesystem/convenience.hpp"
 namespace fs = boost::filesystem;
