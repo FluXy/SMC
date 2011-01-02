@@ -445,6 +445,7 @@ void cEditor_Level :: Function_Delete( void )
 	std::string filename = pActive_Level->m_level_filename;
 	if( !pLevel_Manager->Get_Path( filename, 1 ) )
 	{
+		pHud_Debug->Set_Text( _("Level was not yet saved") );
 		return;
 	}
 
@@ -458,6 +459,9 @@ void cEditor_Level :: Function_Delete( void )
 	Disable();
 
 	Game_Action = GA_ENTER_MENU;
+	Game_Action_Data.add( "music_fadeout", "1500" );
+	Game_Action_Data.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK ) );
+	Game_Action_Data.add( "screen_fadeout_speed", "3" );
 }
 
 void cEditor_Level :: Function_Reload( void )

@@ -45,6 +45,7 @@ bool game_exit = 0;
 GameMode Game_Mode = MODE_NOTHING;
 GameModeType Game_Mode_Type = MODE_TYPE_DEFAULT;
 GameAction Game_Action = GA_NONE;
+CEGUI::XMLAttributes Game_Action_Data_Start;
 CEGUI::XMLAttributes Game_Action_Data;
 void *Game_Action_ptr = NULL;
 
@@ -416,33 +417,33 @@ void Handle_Game_Events( void )
 	while( Game_Action != GA_NONE )
 	{
 		// get current data
-		const GameMode Current_Game_Mode = Game_Mode;
-		const GameModeType Current_Game_Mode_Type = Game_Mode_Type;
-		const GameAction Current_Game_Action = Game_Action;
-		const CEGUI::XMLAttributes Current_Game_Action_Data = Game_Action_Data;
-		void *Current_Game_Action_ptr = Game_Action_ptr;
+		const GameMode current_game_mode = Game_Mode;
+		const GameModeType current_game_mode_type = Game_Mode_Type;
+		const GameAction current_game_action = Game_Action;
+		const CEGUI::XMLAttributes current_game_action_data_start = Game_Action_Data_Start;
+		const CEGUI::XMLAttributes current_game_action_data = Game_Action_Data;
+		void *current_game_action_ptr = Game_Action_ptr;
 		// clear
 		Game_Action = GA_NONE;
+		Game_Action_Data_Start = CEGUI::XMLAttributes();
 		Game_Action_Data = CEGUI::XMLAttributes();
 		Game_Action_ptr = NULL;
 
 		// handle player downgrade
-		if( Current_Game_Action == GA_DOWNGRADE_PLAYER )
+		if( current_game_action == GA_DOWNGRADE_PLAYER )
 		{
-			pLevel_Player->DownGrade_Player( 0, Current_Game_Action_Data.getValueAsBool( "force" ) );
-			// generic events
-			Handle_Generic_Game_Events( Current_Game_Action_Data );
+			pLevel_Player->DownGrade_Player( 0, current_game_action_data.getValueAsBool( "force" ) );
+			Handle_Generic_Game_Events( current_game_action_data );
 		}
 		// activate level exit
-		else if( Current_Game_Action == GA_ACTIVATE_LEVEL_EXIT )
+		else if( current_game_action == GA_ACTIVATE_LEVEL_EXIT )
 		{
-			cLevel_Exit *level_exit = static_cast<cLevel_Exit *>(Current_Game_Action_ptr);
+			cLevel_Exit *level_exit = static_cast<cLevel_Exit *>(current_game_action_ptr);
 			level_exit->Activate();
-			// generic events
-			Handle_Generic_Game_Events( Current_Game_Action_Data );
+			Handle_Generic_Game_Events( current_game_action_data );
 		}
 		// Enter Level
-		else if( Current_Game_Action == GA_ENTER_LEVEL )
+		else if( current_game_action == GA_ENTER_LEVEL )
 		{
 			Leave_Game_Mode( MODE_LEVEL );
 
@@ -452,7 +453,7 @@ void Handle_Game_Events( void )
 			if( Game_Mode == MODE_MENU )
 			{
 				// if level loaded and not entering custom level
-				if( (pMenuCore->m_menu_data && pMenuCore->m_menu_data->m_exit_to_gamemode == MODE_LEVEL) && !Current_Game_Action_Data.exists( "level" ) )
+				if( (pMenuCore->m_menu_data && pMenuCore->m_menu_data->m_exit_to_gamemode == MODE_LEVEL) && !current_game_action_data.exists( "level" ) )
 				{
 					level_active = 1;
 				}
@@ -487,7 +488,7 @@ void Handle_Game_Events( void )
 			}
 
 			// generic events
-			Handle_Generic_Game_Events( Current_Game_Action_Data );
+			Handle_Generic_Game_Events( current_game_action_data );
 
 			// loading failed
 			if( !pActive_Level->Is_Loaded() )
@@ -500,9 +501,9 @@ void Handle_Game_Events( void )
 
 			// enter level entry
 			cLevel_Entry *entry = NULL;
-			if( Current_Game_Action_Data.exists( "entry" ) )
+			if( current_game_action_data.exists( "entry" ) )
 			{
-				std::string str_entry = Current_Game_Action_Data.getValueAsString( "entry" ).c_str();
+				std::string str_entry = current_game_action_data.getValueAsString( "entry" ).c_str();
 				entry = pActive_Level->Get_Entry( str_entry.c_str() );
 
 				// set camera position to the entry
@@ -522,7 +523,7 @@ void Handle_Game_Events( void )
 			}
 
 			// fade in
-			if( Current_Game_Mode == MODE_MENU )
+			if( current_game_mode == MODE_MENU )
 			{
 				if( !level_active )
 				{
@@ -530,7 +531,7 @@ void Handle_Game_Events( void )
 					Draw_Effect_In( EFFECT_IN_BLACK, 3 );
 				}
 			}
-			else if( Current_Game_Mode == MODE_LEVEL && Current_Game_Mode_Type == MODE_TYPE_LEVEL_CUSTOM )
+			else if( current_game_mode == MODE_LEVEL && current_game_mode_type == MODE_TYPE_LEVEL_CUSTOM )
 			{
 				Draw_Effect_In( EFFECT_IN_BLACK, 3 );
 			}
@@ -546,14 +547,11 @@ void Handle_Game_Events( void )
 			}
 		}
 		// Enter World
-		else if( Current_Game_Action == GA_ENTER_WORLD )
+		else if( current_game_action == GA_ENTER_WORLD )
 		{
 			Leave_Game_Mode( MODE_OVERWORLD );
-			// play music
-			if( Current_Game_Action_Data.exists( "music" ) )
-			{
-				pAudio->Play_Music( Current_Game_Action_Data.getValueAsString( "music" ).c_str() );
-			}
+
+			Handle_Generic_Game_Events( current_game_action_data_start );
 			// check if world is active
 			bool world_active = 0;
 
@@ -569,7 +567,7 @@ void Handle_Game_Events( void )
 				}
 
 				// if world loaded and not entering a new world
-				if( (pMenuCore->m_menu_data && pMenuCore->m_menu_data->m_exit_to_gamemode == MODE_OVERWORLD) && !Current_Game_Action_Data.exists( "world" ) )
+				if( (pMenuCore->m_menu_data && pMenuCore->m_menu_data->m_exit_to_gamemode == MODE_OVERWORLD) && !current_game_action_data.exists( "world" ) )
 				{
 					world_active = 1;
 				}
@@ -592,11 +590,11 @@ void Handle_Game_Events( void )
 			}
 
 			// generic events
-			Handle_Generic_Game_Events( Current_Game_Action_Data );
+			Handle_Generic_Game_Events( current_game_action_data );
 			// enter world
 			Enter_Game_Mode( MODE_OVERWORLD );
 			// draw fade in
-			if( Current_Game_Mode == MODE_MENU )
+			if( current_game_mode == MODE_MENU )
 			{
 				if( !world_active )
 				{
@@ -610,47 +608,53 @@ void Handle_Game_Events( void )
 			}
 		}
 		// Enter Menu
-		else if( Current_Game_Action == GA_ENTER_MENU )
+		else if( current_game_action == GA_ENTER_MENU )
 		{
 			Leave_Game_Mode( MODE_MENU );
-			// set exit game mode
-			GameMode exit_gamemode = MODE_NOTHING;
+			// generic events
+			Handle_Generic_Game_Events( current_game_action_data );
 
-			// if level is loaded and active
-			if( Game_Mode == MODE_MENU )
+			if( !pAudio->Is_Music_Playing() || pAudio->Is_Music_Fading() == MIX_FADING_OUT )
+			{
+				if( pMenuCore->m_next_menu == MENU_CREDITS )
+				{
+					pAudio->Play_Music( "land/hyper_1.ogg", -1, 0, 1500 );
+				}
+				else
+				{
+					pAudio->Play_Music( "game/menu.ogg", -1, 0, 1500 );
+				}
+			}
+
+			// set exit game mode
+			GameMode exit_back_to_gamemode = MODE_NOTHING;
+
+			// copy previous
+			if( current_game_mode == MODE_MENU )
 			{
 				if( pMenuCore->m_menu_data )
 				{
-					exit_gamemode = pMenuCore->m_menu_data->m_exit_to_gamemode;
+					exit_back_to_gamemode = pMenuCore->m_menu_data->m_exit_to_gamemode;
 				}
 			}
-			else if( Game_Mode == MODE_LEVEL && pActive_Level->Is_Loaded() && !pActive_Level->m_delayed_unload )
+			// level
+			else if( current_game_mode == MODE_LEVEL && pActive_Level->Is_Loaded() && !pActive_Level->m_delayed_unload )
 			{
-				exit_gamemode = MODE_LEVEL;
+				exit_back_to_gamemode = MODE_LEVEL;
 			}
-			else if( Game_Mode == MODE_OVERWORLD )
+			// world
+			else if( current_game_mode == MODE_OVERWORLD )
 			{
-				exit_gamemode = MODE_OVERWORLD;
+				exit_back_to_gamemode = MODE_OVERWORLD;
 			}
-
-			if( Game_Mode != MODE_MENU && exit_gamemode == MODE_NOTHING )
-			{
-				// play music if exited level 
-				pAudio->Play_Music( "game/menu.ogg", -1, 0, 1500 );
-				// fade out
-				Draw_Effect_Out( EFFECT_OUT_BLACK, 3 );
-			}
-
-			// generic events
-			Handle_Generic_Game_Events( Current_Game_Action_Data );
 
 			// custom level
-			if( Game_Mode == MODE_LEVEL && Game_Mode_Type == MODE_TYPE_LEVEL_CUSTOM && Current_Game_Action_Data.exists( "current_level" ) )
+			if( Game_Mode == MODE_LEVEL && Game_Mode_Type == MODE_TYPE_LEVEL_CUSTOM && current_game_action_data.exists( "current_level" ) )
 			{
-				pMenuCore->Load( MENU_START, exit_gamemode );
+				pMenuCore->Load( MENU_START, exit_back_to_gamemode );
 
 				cMenu_Start *menu_start = static_cast<cMenu_Start *>(pMenuCore->m_menu_data);
-				menu_start->Highlight_Level( Current_Game_Action_Data.getValueAsString( "current_level" ).c_str() );
+				menu_start->Highlight_Level( current_game_action_data.getValueAsString( "current_level" ).c_str() );
 			}
 			// default menu
 			else
@@ -662,38 +666,38 @@ void Handle_Game_Events( void )
 					menu_id = pMenuCore->m_next_menu;
 				}
 
-				pMenuCore->Load( menu_id, exit_gamemode );
+				pMenuCore->Load( menu_id, exit_back_to_gamemode );
 			}
 
 			Enter_Game_Mode( MODE_MENU );
 
-			if( Current_Game_Mode != MODE_MENU && exit_gamemode == MODE_NOTHING )
+			if( current_game_mode != MODE_MENU && exit_back_to_gamemode == MODE_NOTHING )
 			{
 				// fade in
 				Draw_Effect_In( EFFECT_IN_BLACK, 3 );
 			}
 		}
 		// Enter Settings
-		else if( Current_Game_Action == GA_ENTER_LEVEL_SETTINGS )
+		else if( current_game_action == GA_ENTER_LEVEL_SETTINGS )
 		{
 			// leave
 			Leave_Game_Mode( MODE_LEVEL_SETTINGS );
 			Draw_Effect_Out( EFFECT_OUT_BLACK, 3 );
 			// generic events
-			Handle_Generic_Game_Events( Current_Game_Action_Data );
+			Handle_Generic_Game_Events( current_game_action_data );
 			// enter
 			Enter_Game_Mode( MODE_LEVEL_SETTINGS );
 			Draw_Effect_In( EFFECT_IN_BLACK, 3 );
 		}
 		// Enter Credits Menu
-		else if( Current_Game_Action == GA_ENTER_MENU_CREDITS )
+		else if( current_game_action == GA_ENTER_MENU_CREDITS )
 		{
 			// leave
 			Leave_Game_Mode( MODE_MENU );
 			pAudio->Fadeout_Music( 1500 );
 			Draw_Effect_Out( EFFECT_OUT_HORIZONTAL_VERTICAL );
 			// generic events
-			Handle_Generic_Game_Events( Current_Game_Action_Data );
+			Handle_Generic_Game_Events( current_game_action_data );
 			pMenuCore->Load( MENU_CREDITS, MODE_OVERWORLD );
 			// enter
 			Enter_Game_Mode( MODE_MENU );
@@ -702,33 +706,38 @@ void Handle_Game_Events( void )
 	}
 }
 
-void Handle_Generic_Game_Events( const CEGUI::XMLAttributes &Current_Game_Action_Data )
+void Handle_Generic_Game_Events( const CEGUI::XMLAttributes &action_data )
 {
-	// play music
-	if( Current_Game_Action_Data.exists( "music" ) )
+	// fadeout music
+	if( action_data.exists( "music_fadeout" ) )
 	{
-		pAudio->Play_Music( Current_Game_Action_Data.getValueAsString( "music" ).c_str() );
+		pAudio->Fadeout_Music( action_data.getValueAsInteger( "music_fadeout" ) );
+	}
+	if( action_data.exists( "screen_fadeout" ) )
+	{
+		// fade out screen
+		Draw_Effect_Out( static_cast<Effect_Fadeout>(action_data.getValueAsInteger( "screen_fadeout" )), action_data.getValueAsInteger( "screen_fadeout_speed", 1 ) );
 	}
 	// reset saved data
-	if( Current_Game_Action_Data.getValueAsBool( "reset_save" ) )
+	if( action_data.getValueAsBool( "reset_save" ) )
 	{
 		pLevel_Player->Reset_Save();
 	}
 	// unload levels
-	if( Current_Game_Action_Data.getValueAsBool( "unload_levels" ) )
+	if( action_data.getValueAsBool( "unload_levels" ) )
 	{
 		pLevel_Manager->Unload();
 	}
 	// set active world
-	if( Current_Game_Action_Data.exists( "world" ) )
+	if( action_data.exists( "world" ) )
 	{
-		pOverworld_Manager->Set_Active( Current_Game_Action_Data.getValueAsString( "world" ).c_str() );
+		pOverworld_Manager->Set_Active( action_data.getValueAsString( "world" ).c_str() );
 	}
 	// set player waypoint
-	if( Current_Game_Action_Data.exists( "player_waypoint" ) )
+	if( action_data.exists( "player_waypoint" ) )
 	{
 		// get world waypoint
-		int waypoint_num = pActive_Overworld->Get_Waypoint_Num( Current_Game_Action_Data.getValueAsString( "player_waypoint" ).c_str() );
+		int waypoint_num = pActive_Overworld->Get_Waypoint_Num( action_data.getValueAsString( "player_waypoint" ).c_str() );
 
 		// waypoint available
 		if( waypoint_num >= 0 )
@@ -739,9 +748,9 @@ void Handle_Generic_Game_Events( const CEGUI::XMLAttributes &Current_Game_Action
 		}
 	}
 	// load level
-	if( Current_Game_Action_Data.exists( "level" ) )
+	if( action_data.exists( "level" ) )
 	{
-		std::string str_level = Current_Game_Action_Data.getValueAsString( "level" ).c_str();
+		std::string str_level = action_data.getValueAsString( "level" ).c_str();
 		// load new level
 		cLevel *level = pLevel_Manager->Load( str_level );
 
@@ -758,6 +767,11 @@ void Handle_Generic_Game_Events( const CEGUI::XMLAttributes &Current_Game_Action
 
 			pLevel_Manager->Finish_Level();
 		}
+	}
+	// play music
+	if( action_data.exists( "music" ) )
+	{
+		pAudio->Play_Music( action_data.getValueAsString( "music" ).c_str(), action_data.getValueAsInteger( "music_loops" ), action_data.getValueAsBool( "music_force", 1 ), action_data.getValueAsInteger( "music_fadein" ) );
 	}
 }
 

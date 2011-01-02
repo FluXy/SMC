@@ -22,6 +22,7 @@
 #include "../video/renderer.h"
 #include "../core/filesystem/filesystem.h"
 #include "../core/framerate.h"
+#include "../audio/audio.h"
 // CEGUI
 #include "CEGUIWindowManager.h"
 #include "elements/CEGUISpinner.h"
@@ -92,7 +93,7 @@ void cLevel_Settings :: Init( void )
 	editbox_level_filename->setText( Trim_Filename( m_level->m_level_filename, 0, 0 ).c_str() );
 	// music filename
 	CEGUI::Editbox *editbox_music_filename = static_cast<CEGUI::Editbox *>(wmgr.getWindow( "editbox_music_filename" ));
-	editbox_music_filename->setText( m_level->Get_Musicfile( 1 ).c_str() );
+	editbox_music_filename->setText( m_level->Get_Music_Filename( 1 ).c_str() );
 	// author
 	CEGUI::Editbox *editbox_author = static_cast<CEGUI::Editbox *>(wmgr.getWindow( "editbox_author" ));
 	editbox_author->setText( reinterpret_cast<const CEGUI::utf8*>(m_level->m_author.c_str()) );
@@ -246,8 +247,13 @@ void cLevel_Settings :: Leave( void )
 		// show no level saved info text
 		pHud_Debug->Set_Text( "", 0 );
 	}
-	// musicfile
-	m_level->Set_Musicfile( wmgr.getWindow( "editbox_music_filename" )->getText().c_str() );
+	// music
+	m_level->Set_Music( wmgr.getWindow( "editbox_music_filename" )->getText().c_str() );
+	// switch to the new music if music is playing
+	if( pAudio->Is_Music_Playing() )
+	{
+		pAudio->Fadeout_Music( 1000 );
+	}
 	// author
 	m_level->Set_Author( wmgr.getWindow( "editbox_author" )->getText().c_str() );
 	// version

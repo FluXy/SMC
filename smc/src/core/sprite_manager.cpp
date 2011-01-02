@@ -265,7 +265,7 @@ cSprite *cSprite_Manager :: Get_Last( const SpriteType type ) const
 	return last;
 }
 
-cSprite *cSprite_Manager :: Get_from_Position( int start_pos_x, int start_pos_y, const SpriteType type /* = TYPE_UNDEFINED */, bool check_pos /* = 0 */ ) const
+cSprite *cSprite_Manager :: Get_from_Position( int start_pos_x, int start_pos_y, const SpriteType type /* = TYPE_UNDEFINED */, int check_pos /* = 0 */ ) const
 {
 	for( cSprite_List::const_iterator itr = objects.begin(); itr != objects.end(); ++itr )
 	{
@@ -274,10 +274,13 @@ cSprite *cSprite_Manager :: Get_from_Position( int start_pos_x, int start_pos_y,
 
 		if( static_cast<int>(obj->m_start_pos_x) != start_pos_x || static_cast<int>(obj->m_start_pos_y) != start_pos_y )
 		{
-			continue;
+			if( check_pos != 2 || ( static_cast<int>(obj->m_pos_x) != start_pos_x && static_cast<int>(obj->m_pos_y) != start_pos_y ) )
+			{
+				continue;
+			}
 		}
 
-		if( check_pos && static_cast<int>(obj->m_pos_x) != start_pos_x || static_cast<int>(obj->m_pos_y) != start_pos_y )
+		if( check_pos == 1 && ( static_cast<int>(obj->m_pos_x) != start_pos_x || static_cast<int>(obj->m_pos_y) != start_pos_y ) )
 		{
 			continue;
 		}

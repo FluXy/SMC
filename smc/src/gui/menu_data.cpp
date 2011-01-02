@@ -314,6 +314,7 @@ void cMenu_Main :: Update( void )
 	{
 		pMenuCore->m_next_menu = MENU_CREDITS;
 		Game_Action = GA_ENTER_MENU;
+		Game_Action_Data.add( "music_fadeout", "500" );
 	}
 }
 
@@ -3328,8 +3329,6 @@ void cMenu_Credits :: Init_GUI( void )
 
 void cMenu_Credits :: Enter( const GameMode old_mode /* = MODE_NOTHING */ )
 {
-	pAudio->Play_Music( "land/hyper_1.ogg", -1, 1, 1500 );
-
 	// black background because of fade alpha
 	glClearColor( 0, 0, 0, 1 );
 
@@ -3342,10 +3341,6 @@ void cMenu_Credits :: Enter( const GameMode old_mode /* = MODE_NOTHING */ )
 
 void cMenu_Credits :: Exit( void )
 {
-	// stop credits music
-	pAudio->Fadeout_Music();
-	pAudio->Play_Music( "game/menu.ogg", -1, 0, 1500 );
-
 	if( m_exit_to_gamemode == MODE_NOTHING || m_exit_to_gamemode == MODE_MENU )
 	{
 		// fade out
@@ -3361,6 +3356,7 @@ void cMenu_Credits :: Exit( void )
 
 	pMenuCore->m_next_menu = MENU_MAIN;
 	Game_Action = GA_ENTER_MENU;
+	Game_Action_Data.add( "music_fadeout", "1500" );
 }
 
 void cMenu_Credits :: Update( void )
@@ -3508,6 +3504,8 @@ void cMenu_Credits :: Add_Credits_Line( const std::string &text, float posx, flo
 
 void cMenu_Credits :: Menu_Fade( bool fade_in /* = 1 */ )
 {
+	// logo position y
+	int logo_pos_y = 0;
 	// fade counter
 	float counter;
 	// move speed
@@ -3515,17 +3513,19 @@ void cMenu_Credits :: Menu_Fade( bool fade_in /* = 1 */ )
 
 	if( fade_in )
 	{
+		logo_pos_y = 20;
 		counter = 255.0f;
 		move_speed = -2.0f;
 	}
 	else
 	{
+		logo_pos_y = -200;
 		counter = 60.0f;
 		move_speed = 2.0f;
 	}
 
 	// get logo
-	cSprite *logo = pMenuCore->m_handler->m_level->m_sprite_manager->Get_from_Position( 180, 20, TYPE_FRONT_PASSIVE );
+	cSprite *logo = pMenuCore->m_handler->m_level->m_sprite_manager->Get_from_Position( 180, logo_pos_y, TYPE_FRONT_PASSIVE, 2 );
 
 	// fade out
 	while( 1 )
@@ -3546,6 +3546,12 @@ void cMenu_Credits :: Menu_Fade( bool fade_in /* = 1 */ )
 			if( logo && logo->m_pos_y > -200.0f )
 			{
 				logo->Move( 0.0f, move_speed );
+
+				if( logo->m_pos_y < -200.0f )
+				{
+					logo->Set_Pos_Y( -200.0f );
+				}
+				printf( "1 %f\n", logo->m_pos_y );
 			}
 		}
 		else
@@ -3567,6 +3573,7 @@ void cMenu_Credits :: Menu_Fade( bool fade_in /* = 1 */ )
 				{
 					logo->Set_Pos_Y( 20.0f );
 				}
+				printf( "2 %f\n", logo->m_pos_y );
 			}
 		}
 

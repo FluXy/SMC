@@ -309,7 +309,7 @@ void cLevel :: Save( void )
 		// level version
 		Write_Property( stream, "lvl_version", m_version );
 		// music
-		Write_Property( stream, "lvl_music", Get_Musicfile( 1 ) );
+		Write_Property( stream, "lvl_music", Get_Music_Filename( 1 ) );
 		// description
 		Write_Property( stream, "lvl_description", m_description );
 		// difficulty
@@ -380,7 +380,7 @@ void cLevel :: Reset_Settings( void )
 	m_version.clear();
 
 	// set default music
-	Set_Musicfile( DATA_DIR "/" GAME_MUSIC_DIR "/" LEVEL_DEFAULT_MUSIC );
+	Set_Music( DATA_DIR "/" GAME_MUSIC_DIR "/" LEVEL_DEFAULT_MUSIC );
 
 	m_description.clear();
 	m_difficulty = 0;
@@ -524,6 +524,12 @@ void cLevel :: Leave( const GameMode next_mode /* = MODE_NOTHING */ )
 		pAudio->Fadeout_Music( 500 );
 		return;
 	}
+	// if new mode: it should play different music
+	else if( next_mode != MODE_MENU && next_mode != MODE_LEVEL_SETTINGS )
+	{
+		// fade out music
+		pAudio->Fadeout_Music( 1000 );
+	}
 
 	pJoystick->Reset_keys();
 
@@ -534,13 +540,6 @@ void cLevel :: Leave( const GameMode next_mode /* = MODE_NOTHING */ )
 		{
 			pLevel_Editor->m_editor_window->hide();
 		}
-	}
-
-	// if new mode should play different music
-	if( next_mode != MODE_MENU && next_mode != MODE_LEVEL_SETTINGS )
-	{
-		// fade out music
-		pAudio->Fadeout_Music( 1000 );
 	}
 }
 
@@ -934,7 +933,7 @@ bool cLevel :: Joy_Button_Up( Uint8 button )
 	return 1;
 }
 
-std::string cLevel :: Get_Musicfile( int with_dir /* = 2 */, bool with_end /* = 1 */ ) const
+std::string cLevel :: Get_Music_Filename( int with_dir /* = 2 */, bool with_end /* = 1 */ ) const
 {
 	std::string filename = m_musicfile;
 
@@ -958,7 +957,7 @@ std::string cLevel :: Get_Musicfile( int with_dir /* = 2 */, bool with_end /* = 
 	return filename;
 }
 
-void cLevel :: Set_Musicfile( std::string filename )
+void cLevel :: Set_Music( std::string filename )
 {
 	if( filename.length() < 4 )
 	{
@@ -982,12 +981,6 @@ void cLevel :: Set_Musicfile( std::string filename )
 	m_musicfile = filename;
 	// check if music is available
 	m_valid_music = File_Exists( filename );
-
-	// switch to the new music if music is playing
-	if( pAudio->Is_Music_Playing() )
-	{
-		pAudio->Fadeout_Music( 1000 );
-	}
 }
 
 void cLevel :: Set_Levelfile( std::string filename, bool delete_old /* = 1 */ )
@@ -1141,7 +1134,7 @@ void cLevel :: elementEnd( const CEGUI::String &element )
 
 		Set_Author( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_author" ).c_str() ) );
 		Set_Version( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_version" ).c_str() ) );
-		Set_Musicfile( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_music" ).c_str() ) );
+		Set_Music( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_music" ).c_str() ) );
 		Set_Description( xml_string_to_string( m_xml_attributes.getValueAsString( "lvl_description" ).c_str() ) );
 		Set_Difficulty( m_xml_attributes.getValueAsInteger( "lvl_difficulty" ) );
 		Set_Land_Type( Get_Level_Land_Type_Id( m_xml_attributes.getValueAsString( "lvl_land_type", "undefined" ).c_str() ) );

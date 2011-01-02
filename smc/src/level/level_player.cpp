@@ -453,6 +453,10 @@ animation_end:
 
 	// delay unload level
 	Game_Action_Data.add( "unload_levels", "1" );
+	// fade out
+	Game_Action_Data.add( "music_fadeout", "1500" );
+	Game_Action_Data.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK ) );
+	Game_Action_Data.add( "screen_fadeout_speed", "3" );
 }
 
 void cLevel_Player :: Move_Player( float velocity, float vel_wrongway )
@@ -4491,7 +4495,7 @@ void cLevel_Player :: Handle_out_of_Level( ObjectDirection dir )
 		{
 			/*if( pActive_Level->limit_bottom_blocks )
 			{
-				Set_Pos_Y( pLevel_Manager->m_camera->m_limit_rect.m_y + game_res_h - m_col_pos.m_x - m_ccol_rect.m_w + 0.01f );
+				Set_Pos_Y( pLevel_Manager->m_camera->m_limit_rect.m_y + game_res_h - m_col_pos.m_x - m_col_rect.m_w + 0.01f );
 				m_vely = 0.0f;
 			}
 			// falling below ground

@@ -85,7 +85,7 @@ void cLevel_Manager :: Unload( void )
 	{
 		pActive_Level->Set_Sprite_Manager();
 	}
-	// always keep level player manager valid
+	// always keep the level player manager valid
 	else
 	{
 		pLevel_Player->Set_Sprite_Manager( pActive_Level->m_sprite_manager );
@@ -309,6 +309,9 @@ void cLevel_Manager :: Finish_Level( bool win_music /* = 0 */ )
 		// Enter Menu
 		Game_Action_Data.add( "current_level", Trim_Filename( pActive_Level->m_level_filename, 0, 0 ) );
 		Game_Action = GA_ENTER_MENU;
+		Game_Action_Data.add( "music_fadeout", "1500" );
+		Game_Action_Data.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK ) );
+		Game_Action_Data.add( "screen_fadeout_speed", "3" );
 	}
 	// normal level
 	else
@@ -324,7 +327,8 @@ void cLevel_Manager :: Finish_Level( bool win_music /* = 0 */ )
 
 	if( win_music )
 	{
-		Game_Action_Data.add( "music", "game/courseclear.ogg" );
+		Game_Action_Data_Start.add( "music", "game/courseclear.ogg" );
+		Game_Action_Data_Start.add( "music_loops", "1" );
 	}
 }
 

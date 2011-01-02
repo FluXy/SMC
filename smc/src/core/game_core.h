@@ -35,6 +35,7 @@ extern GameModeType Game_Mode_Type;
 // next global Game Action
 extern GameAction Game_Action;
 // Game Action data
+extern CEGUI::XMLAttributes Game_Action_Data_Start;
 extern CEGUI::XMLAttributes Game_Action_Data;
 // Game Action pointer
 extern void *Game_Action_ptr;

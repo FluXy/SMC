@@ -109,9 +109,9 @@ public:
 	 * if set to 1 the music directory is cut out
 	 * if set to 1 the full directory will be returned
 	*/
-	std::string Get_Musicfile( int with_dir = 2, bool with_end = 1 ) const;
-	// Set the Music filename
-	void Set_Musicfile( std::string filename );
+	std::string Get_Music_Filename( int with_dir = 2, bool with_end = 1 ) const;
+	// Set the Music from filename
+	void Set_Music( std::string filename );
 	/* Set a new Level filename name and automatically re-save the level
 	 * delete_old : if set delete the old level name
 	*/
