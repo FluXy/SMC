@@ -239,13 +239,6 @@ void cLevel_Exit :: Draw( cSurface_Request *request /* = NULL */ )
 
 void cLevel_Exit :: Activate( void )
 {
-	// if leaving level
-	if( m_dest_level.empty() && m_dest_entry.empty() )
-	{
-		// fade out music
-		pAudio->Fadeout_Music( 500 );
-	}
-
 	// warp player out
 	if( m_exit_type == LEVEL_EXIT_WARP )
 	{

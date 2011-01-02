@@ -696,7 +696,7 @@ void cAudio :: Toggle_Sounds( void )
 	pPreferences->m_audio_sound = !pPreferences->m_audio_sound;
 	Init();
 
-	// play a test sound
+	// play test sound
 	if( m_sound_enabled )
 	{
 		Play_Sound( "audio_on.ogg" );
@@ -710,7 +710,7 @@ void cAudio :: Pause_Music( void ) const
 		return;
 	}
 
-	// Check if music is currently playing
+	// if music is playing
 	if( Mix_PlayingMusic() )
 	{
 		Mix_PauseMusic();
@@ -735,7 +735,7 @@ void cAudio :: Resume_Music( void ) const
 		return;
 	}
 
-	// Check if music is currently paused
+	// if music is paused
 	if( Mix_PausedMusic() )
 	{
 		Mix_ResumeMusic();
@@ -749,17 +749,19 @@ void cAudio :: Fadeout_Sounds( unsigned int ms /* = 200 */, int channel /* = -1 
 		return;
 	}
 
-	// Check the Channels
-	if( Mix_Playing( channel ) )
+	// if not playing
+	if( Mix_Playing( channel ) <= 0 )
 	{
-		// Do not fade out the sound again
-		if( !overwrite_fading && Is_Sound_Fading( -1 ) == MIX_FADING_OUT )
-		{
-			return;
-		}
-
-		Mix_FadeOutChannel( channel, ms );
+		return;
 	}
+
+	// Do not fade-out the sound again
+	if( channel >= 0 && !overwrite_fading && Is_Sound_Fading( channel ) == MIX_FADING_OUT )
+	{
+		return;
+	}
+
+	Mix_FadeOutChannel( channel, ms );
 }
 
 void cAudio :: Fadeout_Sounds( unsigned int ms, std::string filename, bool overwrite_fading /* = 0 */ )
@@ -804,33 +806,35 @@ void cAudio :: Fadeout_Music( unsigned int ms /* = 500 */, bool overwrite_fading
 		return;
 	}
 
-	// if music is currently playing
-	if( Mix_PlayingMusic() )
+	// if music is currently not playing
+	if( !Mix_PlayingMusic() )
 	{
-		Mix_Fading status = Is_Music_Fading();
+		return;
+	}
 
-		// if already fading out
-		if( status == MIX_FADING_OUT )
-		{
-			// don't fade the music out again
-			if( !overwrite_fading )
-			{
-				return;
-			}
-		} 
-		// if fading in
-		else if( status == MIX_FADING_IN )
-		{
-			// Can t stop fade in with SDL_Mixer and fade out is ignored when fading in
-			Halt_Music();
-		}
+	Mix_Fading status = Is_Music_Fading();
 
-		// if it failed
-		if( !Mix_FadeOutMusic( ms ) )
+	// if already fading out
+	if( status == MIX_FADING_OUT )
+	{
+		// don't fade the music out again
+		if( !overwrite_fading )
 		{
-			// stop music
-			Halt_Music();
+			return;
 		}
+	} 
+	// if fading in
+	else if( status == MIX_FADING_IN )
+	{
+		// Can't stop fade-in with SDL_Mixer and fade-out is ignored when fading in
+		Halt_Music();
+		return;
+	}
+
+	if( !Mix_FadeOutMusic( ms ) )
+	{
+		// if it failed stop the music
+		Halt_Music();
 	}
 }
 
@@ -856,12 +860,12 @@ Mix_Fading cAudio :: Is_Music_Fading( void ) const
 
 Mix_Fading cAudio :: Is_Sound_Fading( int sound_channel ) const
 {
-	if( !m_sound_enabled || !m_initialised )
+	if( !m_sound_enabled || !m_initialised || sound_channel < 0 )
 	{
 		return MIX_NO_FADING;
 	}
 
-	 return Mix_FadingChannel( sound_channel );
+	return Mix_FadingChannel( sound_channel );
 }
 
 bool cAudio :: Is_Music_Paused( void ) const

@@ -124,13 +124,12 @@ enum GameModeType
 enum GameAction
 {
 	GA_NONE				= 0,
-	GA_DOWNGRADE_PLAYER	= 1,
-	GA_ENTER_MENU		= 2,
-	GA_ENTER_MENU_CREDITS = 3,
-	GA_ENTER_WORLD		= 4,
-	GA_ENTER_LEVEL		= 5,
-	GA_ACTIVATE_LEVEL_EXIT	= 6,
-	GA_ENTER_LEVEL_SETTINGS	= 7
+	GA_ENTER_MENU		= 1,
+	GA_ENTER_WORLD		= 2,
+	GA_ENTER_LEVEL		= 3,
+	GA_DOWNGRADE_PLAYER	= 4,
+	GA_ACTIVATE_LEVEL_EXIT	= 5,
+	GA_ENTER_LEVEL_SETTINGS	= 6
 };
 
 /* *** *** *** *** *** Level draw type *** *** *** *** *** *** *** *** *** *** *** *** */
@@ -332,7 +331,7 @@ enum ArrayType
 	ARRAY_PLAYER = 7
 };
 
-/* *** *** *** *** *** *** *** collision validation types *** *** *** *** *** *** *** *** *** *** */
+/* *** collision validation types *** */
 
 enum Col_Valid_Type
 {
@@ -346,7 +345,7 @@ enum Col_Valid_Type
 	COL_VTYPE_NOT_POSSIBLE = 3
 };
 
-/* *** Input identifier ***  */
+/* *** Input identifier *** */
 
 enum input_identifier
 {
@@ -364,7 +363,20 @@ enum input_identifier
 	INP_EXIT = 9
 };
 
-/* *** Ball Effect types ***  */
+/* *** Menu Types *** */
+
+enum MenuID
+{
+	MENU_NOTHING = 0,
+	MENU_MAIN = 1,
+	MENU_START = 5,
+	MENU_OPTIONS = 2,
+	MENU_LOAD = 3,
+	MENU_SAVE = 4,
+	MENU_CREDITS = 6
+};
+
+/* *** Ball Effect types *** */
 
 enum ball_effect
 {
@@ -374,7 +386,7 @@ enum ball_effect
 	ICEBALL_EXPLOSION = 4
 };
 
-/* *** Performance timer types ***  */
+/* *** Performance timer types *** */
 
 enum performance_timer_type
 {
@@ -414,7 +426,7 @@ enum performance_timer_type
 	PERF_RENDER_BUFFER = 21
 };
 
-/* *** Classes ***  */
+/* *** Classes *** */
 
 class cCamera;
 class cCircle_Request;

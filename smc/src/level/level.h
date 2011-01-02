@@ -50,9 +50,9 @@ public:
 	void Unload( bool delayed = 0 );
 	// Save the Level
 	void Save( void );
-	// Delete and Unload Level
+	// Delete and unload
 	void Delete( void );
-	// reset settings data
+	// Reset settings data
 	void Reset_Settings( void );
 
 	// Init
@@ -105,9 +105,9 @@ public:
 	bool Joy_Button_Up( Uint8 button );
 
 	/* Return the current Music filename with the given options
-	 * if with_dir is set to 0 the whole directory is cut
+	 * if with_dir is set to 0 the whole directory is cut out
 	 * if set to 1 the music directory is cut out
-	 * if set to 1 the full directory will be returned
+	 * if set to 2 the full directory will be returned
 	*/
 	std::string Get_Music_Filename( int with_dir = 2, bool with_end = 1 ) const;
 	// Set the Music from filename
@@ -187,7 +187,7 @@ public:
 	float m_player_start_pos_x;
 	float m_player_start_pos_y;
 	ObjectDirection m_player_start_direction;
-	// camera 
+	// camera
 	GL_rect m_camera_limits;
 	float m_fixed_camera_hor_vel;
 

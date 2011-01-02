@@ -187,6 +187,32 @@ void cSave :: Init( void )
 	m_overworld_current_waypoint = 0;
 }
 
+std::string cSave :: Get_Active_Level( void )
+{
+	if( m_levels.empty() )
+	{
+		return "";
+	}
+
+	for( Save_LevelList::iterator itr = m_levels.begin(); itr != m_levels.end(); ++itr )
+	{
+		cSave_Level *save_level = (*itr);
+
+		if( !pLevel_Manager->Get_Path( save_level->m_name ) )
+		{
+			continue;
+		}
+
+		// if active level
+		if( !Is_Float_Equal( save_level->m_level_pos_x, 0.0f ) && !Is_Float_Equal( save_level->m_level_pos_y, 0.0f ) )
+		{
+			return save_level->m_name;
+		}
+	}
+
+	return "";
+}
+
 /* *** *** *** *** *** *** *** cSavegame *** *** *** *** *** *** *** *** *** *** */
 
 cSavegame :: cSavegame( void )
@@ -214,8 +240,6 @@ int cSavegame :: Load_Game( unsigned int save_slot )
 		printf( "Warning : Savegame %d : Versions %d and below are unsupported\n", save_slot, SAVEGAME_VERSION_UNSUPPORTED );
 	}
 
-	// reset saved data
-	pLevel_Player->Reset_Save();
 	// reset custom level mode type
 	if( Game_Mode_Type == MODE_TYPE_LEVEL_CUSTOM )
 	{

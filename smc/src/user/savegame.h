@@ -126,6 +126,9 @@ public:
 	// Initialize data to empty values
 	void Init( void );
 
+	// return the active level if available
+	std::string Get_Active_Level( void );
+
 	// savegame version
 	int m_version;
 	// time ( seconds since 1970 )
@@ -173,20 +176,24 @@ public:
 	virtual ~cSavegame( void );
 
 	/* Load a save
-	 * Returns 0 if failed
-	 * 1 if level save
-	 * 2 if overworld save
+	* Previous progress should be reset before.
+	* Returns:
+	* 0 if failed
+	* 1 if level save
+	* 2 if overworld save
 	*/
 	int Load_Game( unsigned int save_slot );
 	// Save the game with the given description
 	bool Save_Game( unsigned int save_slot, std::string description );
 
-	// Load a Save
+	/* Load a Save
+	* The returned object should be deleted if not used anymore
+	*/
 	cSave *Load( unsigned int save_slot );
 	// Save a Save
 	int Save( unsigned int save_slot, cSave *savegame );
 
-	// Returns only the Savegame Description
+	// Returns only the Savegame description
 	std::string Get_Description( unsigned int save_slot, bool only_description = 0 );
 
 	// Returns true if the Savegame is valid

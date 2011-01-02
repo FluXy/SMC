@@ -25,19 +25,6 @@
 namespace SMC
 {
 
-/* *** *** *** *** *** *** *** Menu Types *** *** *** *** *** *** *** *** *** *** */
-
-enum MenuID
-{
-	MENU_NOTHING = 0,
-	MENU_MAIN = 1,
-	MENU_START = 5,
-	MENU_OPTIONS = 2,
-	MENU_LOAD = 3,
-	MENU_SAVE = 4,
-	MENU_CREDITS = 6
-};
-
 /* *** *** *** *** *** *** cMenu_Item *** *** *** *** *** *** *** *** *** *** *** */
 
 class cMenu_Item : public cHudSprite
@@ -163,9 +150,9 @@ public:
 	// Unload
 	void Unload( void );
 
-	// Enter
+	// Enter game mode
 	void Enter( const GameMode old_mode = MODE_NOTHING );
-	// Leave
+	// Leave game mode
 	void Leave( const GameMode next_mode = MODE_NOTHING );
 
 	// Update current Menu
@@ -175,8 +162,6 @@ public:
 
 	// current menu id
 	MenuID m_menu_id;
-	// for entering another menu after leaving
-	MenuID m_next_menu;
 
 	// Menu class
 	cMenu_Base *m_menu_data;

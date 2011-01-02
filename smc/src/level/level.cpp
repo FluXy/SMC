@@ -146,7 +146,7 @@ bool cLevel :: New( std::string filename )
 	// open file
 	ifs.open( filename.c_str(), ios::in );
 
-	// Level doesn't exist
+	// level doesn't exist
 	if( !ifs )
 	{
 		// set filename
@@ -367,7 +367,6 @@ void cLevel :: Save( void )
 void cLevel :: Delete( void )
 {
 	Delete_File( m_level_filename );
-
 	Unload();
 }
 
@@ -488,7 +487,10 @@ void cLevel :: Enter( const GameMode old_mode /* = MODE_NOTHING */ )
 	// play music
 	if( m_valid_music )
 	{
-		pAudio->Play_Music( m_musicfile, -1, 0, 1000 );
+		if( pAudio->m_music_filename.compare( Get_Music_Filename( 2, 1 ) ) != 0 )
+		{
+			pAudio->Play_Music( m_musicfile, -1, 0, 1000 );
+		}
 	}
 	else if( pAudio->m_music_enabled )
 	{
@@ -520,8 +522,6 @@ void cLevel :: Leave( const GameMode next_mode /* = MODE_NOTHING */ )
 	// level to level
 	if( next_mode == MODE_LEVEL )
 	{
-		// fade out music
-		pAudio->Fadeout_Music( 500 );
 		return;
 	}
 	// if new mode: it should play different music

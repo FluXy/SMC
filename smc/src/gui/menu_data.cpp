@@ -103,6 +103,11 @@ void cMenu_Base :: Enter( const GameMode old_mode /* = MODE_NOTHING */ )
 	// virtual
 }
 
+void cMenu_Base :: Leave( const GameMode next_mode /* = MODE_NOTHING */ )
+{
+	// virtual
+}
+
 void cMenu_Base :: Exit( void )
 {
 	// virtual
@@ -262,10 +267,12 @@ void cMenu_Main :: Exit( void )
 	if( m_exit_to_gamemode == MODE_LEVEL )
 	{
 		Game_Action = GA_ENTER_LEVEL;
+		Game_Action_Data_Middle.add( "unload_menu", "1" );
 	}
 	else if( m_exit_to_gamemode == MODE_OVERWORLD )
 	{
 		Game_Action = GA_ENTER_WORLD;
+		Game_Action_Data_Middle.add( "unload_menu", "1" );
 	}
 }
 
@@ -283,26 +290,26 @@ void cMenu_Main :: Update( void )
 	// Start
 	if( pMenuCore->m_handler->m_active == 0 )
 	{
-		pMenuCore->m_next_menu = MENU_START;
 		Game_Action = GA_ENTER_MENU;
+		Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_START ) );
 	}
 	// Options
 	else if( pMenuCore->m_handler->m_active == 1 )
 	{
-		pMenuCore->m_next_menu = MENU_OPTIONS;
 		Game_Action = GA_ENTER_MENU;
+		Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_OPTIONS ) );
 	}
 	// Load
 	else if( pMenuCore->m_handler->m_active == 2 )
 	{
-		pMenuCore->m_next_menu = MENU_LOAD;
 		Game_Action = GA_ENTER_MENU;
+		Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_LOAD ) );
 	}
 	// Save
 	else if( pMenuCore->m_handler->m_active == 3 )
 	{
-		pMenuCore->m_next_menu = MENU_SAVE;
 		Game_Action = GA_ENTER_MENU;
+		Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_SAVE ) );
 	}
 	// Quit
 	else if( pMenuCore->m_handler->m_active == 4 )
@@ -312,9 +319,14 @@ void cMenu_Main :: Update( void )
 	// Credits
 	else if( pMenuCore->m_handler->m_active == 5 )
 	{
-		pMenuCore->m_next_menu = MENU_CREDITS;
 		Game_Action = GA_ENTER_MENU;
-		Game_Action_Data.add( "music_fadeout", "500" );
+		Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_CREDITS ) );
+		Game_Action_Data_Start.add( "music_fadeout", "500" );
+	}
+
+	if( m_exit_to_gamemode != MODE_NOTHING )
+	{
+		Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( m_exit_to_gamemode ) );
 	}
 }
 
@@ -501,8 +513,12 @@ void cMenu_Start :: Init_GUI( void )
 
 void cMenu_Start :: Exit( void )
 {
-	pMenuCore->m_next_menu = MENU_MAIN;
 	Game_Action = GA_ENTER_MENU;
+	Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_MAIN ) );
+	if( m_exit_to_gamemode != MODE_NOTHING )
+	{
+		Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( m_exit_to_gamemode ) );
+	}
 }
 
 void cMenu_Start :: Update( void )
@@ -673,16 +689,22 @@ void cMenu_Start :: Load_Campaign( std::string name )
 		{
 			Game_Action = GA_ENTER_LEVEL;
 			Game_Mode_Type = MODE_TYPE_LEVEL_CUSTOM;
-			Game_Action_Data.add( "level", new_campaign->m_target.c_str() );
-			Game_Action_Data.add( "reset_save", "1" );
+			Game_Action_Data_Middle.add( "load_level", new_campaign->m_target.c_str() );
 		}
 		// enter world
 		else
 		{
 			Game_Action = GA_ENTER_WORLD;
-			Game_Action_Data.add( "world", new_campaign->m_target.c_str() );
-			Game_Action_Data.add( "reset_save", "1" );
+			Game_Action_Data_Middle.add( "enter_world", new_campaign->m_target.c_str() );
 		}
+
+		Game_Action_Data_Start.add( "music_fadeout", "1000" );
+		Game_Action_Data_Start.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK ) );
+		Game_Action_Data_Start.add( "screen_fadeout_speed", "3" );
+		Game_Action_Data_Middle.add( "unload_menu", "1" );
+		Game_Action_Data_Middle.add( "reset_save", "1" );
+		Game_Action_Data_End.add( "screen_fadein", CEGUI::PropertyHelper::intToString( EFFECT_IN_RANDOM ) );
+		Game_Action_Data_End.add( "screen_fadein_speed", "3" );
 	}
 }
 
@@ -704,8 +726,14 @@ void cMenu_Start :: Load_World( std::string name )
 	{
 		// enter world
 		Game_Action = GA_ENTER_WORLD;
-		Game_Action_Data.add( "world", name.c_str() );
-		Game_Action_Data.add( "reset_save", "1" );
+		Game_Action_Data_Start.add( "music_fadeout", "1000" );
+		Game_Action_Data_Start.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK ) );
+		Game_Action_Data_Start.add( "screen_fadeout_speed", "3" );
+		Game_Action_Data_Middle.add( "enter_world", name.c_str() );
+		Game_Action_Data_Middle.add( "unload_menu", "1" );
+		Game_Action_Data_Middle.add( "reset_save", "1" );
+		Game_Action_Data_End.add( "screen_fadein", CEGUI::PropertyHelper::intToString( EFFECT_IN_RANDOM ) );
+		Game_Action_Data_End.add( "screen_fadein_speed", "3" );
 	}
 }
 
@@ -727,8 +755,14 @@ bool cMenu_Start :: Load_Level( std::string level_name )
 	// enter level
 	Game_Action = GA_ENTER_LEVEL;
 	Game_Mode_Type = MODE_TYPE_LEVEL_CUSTOM;
-	Game_Action_Data.add( "level", level_name.c_str() );
-	Game_Action_Data.add( "reset_save", "1" );
+	Game_Action_Data_Start.add( "music_fadeout", "1000" );
+	Game_Action_Data_Start.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK ) );
+	Game_Action_Data_Start.add( "screen_fadeout_speed", "3" );
+	Game_Action_Data_Middle.add( "load_level", level_name.c_str() );
+	Game_Action_Data_Middle.add( "unload_menu", "1" );
+	Game_Action_Data_Middle.add( "reset_save", "1" );
+	Game_Action_Data_End.add( "screen_fadein", CEGUI::PropertyHelper::intToString( EFFECT_IN_RANDOM ) );
+	Game_Action_Data_End.add( "screen_fadein_speed", "3" );
 
 	return 1;
 }
@@ -1076,6 +1110,13 @@ bool cMenu_Start :: Button_Level_New_Clicked( const CEGUI::EventArgs &event )
 	// Enter level
 	Game_Action = GA_ENTER_LEVEL;
 	Game_Mode_Type = MODE_TYPE_LEVEL_CUSTOM_EDITOR;
+	Game_Action_Data_Start.add( "music_fadeout", "1000" );
+	Game_Action_Data_Start.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK ) );
+	Game_Action_Data_Start.add( "screen_fadeout_speed", "3" );
+	Game_Action_Data_Middle.add( "unload_menu", "1" );
+	Game_Action_Data_Middle.add( "reset_save", "1" );
+	Game_Action_Data_End.add( "screen_fadein", CEGUI::PropertyHelper::intToString( EFFECT_IN_RANDOM ) );
+	Game_Action_Data_End.add( "screen_fadein_speed", "3" );
 
 	return 1;
 }
@@ -1809,9 +1850,13 @@ void cMenu_Options :: Init_GUI_Editor( void )
 
 void cMenu_Options :: Exit( void )
 {
-	pMenuCore->m_next_menu = MENU_MAIN;
 	pPreferences->Save();
 	Game_Action = GA_ENTER_MENU;
+	Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_MAIN ) );
+	if( m_exit_to_gamemode != MODE_NOTHING )
+	{
+		Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( m_exit_to_gamemode ) );
+	}
 }
 
 void cMenu_Options :: Update( void )
@@ -2370,8 +2415,12 @@ bool cMenu_Options :: Game_Button_Reset_Game_Clicked( const CEGUI::EventArgs &ev
 	pPreferences->Reset_Game();
 
 	// clear
-	pMenuCore->m_next_menu = MENU_OPTIONS;
 	Game_Action = GA_ENTER_MENU;
+	Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_OPTIONS ) );
+	if( m_exit_to_gamemode != MODE_NOTHING )
+	{
+		Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( m_exit_to_gamemode ) );
+	}
 
 	return 1;
 }
@@ -2550,8 +2599,12 @@ bool cMenu_Options :: Video_Button_Apply_Clicked( const CEGUI::EventArgs &event 
 	pPreferences->Apply_Video( m_vid_w, m_vid_h, m_vid_bpp, m_vid_fullscreen, m_vid_vsync, m_vid_geometry_detail, m_vid_texture_detail );
 
 	// clear
-	pMenuCore->m_next_menu = MENU_OPTIONS;
 	Game_Action = GA_ENTER_MENU;
+	Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_OPTIONS ) );
+	if( m_exit_to_gamemode != MODE_NOTHING )
+	{
+		Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( m_exit_to_gamemode ) );
+	}
 
 	return 1;
 }
@@ -2668,8 +2721,12 @@ bool cMenu_Options :: Audio_Button_Reset_Clicked( const CEGUI::EventArgs &event 
 	pPreferences->Reset_Audio();
 
 	// clear
-	pMenuCore->m_next_menu = MENU_OPTIONS;
 	Game_Action = GA_ENTER_MENU;
+	Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_OPTIONS ) );
+	if( m_exit_to_gamemode != MODE_NOTHING )
+	{
+		Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( m_exit_to_gamemode ) );
+	}
 
 	return 1;
 }
@@ -2702,8 +2759,12 @@ bool cMenu_Options :: Keyboard_Button_Reset_Clicked( const CEGUI::EventArgs &eve
 	pPreferences->Reset_Keyboard();
 
 	// clear
-	pMenuCore->m_next_menu = MENU_OPTIONS;
 	Game_Action = GA_ENTER_MENU;
+	Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_OPTIONS ) );
+	if( m_exit_to_gamemode != MODE_NOTHING )
+	{
+		Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( m_exit_to_gamemode ) );
+	}
 
 	return 1;
 }
@@ -2847,8 +2908,12 @@ bool cMenu_Options :: Joystick_Button_Reset_Clicked( const CEGUI::EventArgs &eve
 	pPreferences->Reset_Joystick();
 
 	// clear
-	pMenuCore->m_next_menu = MENU_OPTIONS;
 	Game_Action = GA_ENTER_MENU;
+	Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_OPTIONS ) );
+	if( m_exit_to_gamemode != MODE_NOTHING )
+	{
+		Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( m_exit_to_gamemode ) );
+	}
 
 	return 1;
 }
@@ -2902,8 +2967,12 @@ bool cMenu_Options :: Game_Button_Reset_Editor_Clicked( const CEGUI::EventArgs &
 	pPreferences->Reset_Editor();
 
 	// clear
-	pMenuCore->m_next_menu = MENU_OPTIONS;
 	Game_Action = GA_ENTER_MENU;
+	Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_OPTIONS ) );
+	if( m_exit_to_gamemode != MODE_NOTHING )
+	{
+		Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( m_exit_to_gamemode ) );
+	}
 
 	return 1;
 }
@@ -2995,8 +3064,12 @@ void cMenu_Savegames :: Init_GUI( void )
 
 void cMenu_Savegames :: Exit( void )
 {
-	pMenuCore->m_next_menu = MENU_MAIN;
 	Game_Action = GA_ENTER_MENU;
+	Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_MAIN ) );
+	if( m_exit_to_gamemode != MODE_NOTHING )
+	{
+		Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( m_exit_to_gamemode ) );
+	}
 }
 
 void cMenu_Savegames :: Update( void )
@@ -3035,27 +3108,44 @@ void cMenu_Savegames :: Draw( void )
 
 void cMenu_Savegames :: Update_Load( void )
 {
+	int save_num = pMenuCore->m_handler->m_active + 1;
+
 	// not valid
-	if( !pSavegame->Is_Valid( pMenuCore->m_handler->m_active + 1 ) )
+	if( !pSavegame->Is_Valid( save_num ) )
 	{
 		return;
 	}
 
-	pAudio->Fadeout_Music( 1000 );
 	pAudio->Play_Sound( "savegame_load.ogg" );
+	// reset before loading the level to keep the level in the manager
+	pLevel_Player->Reset_Save();
 
-	int save_type = pSavegame->Load_Game( pMenuCore->m_handler->m_active + 1 );
+	cSave *savegame = pSavegame->Load( save_num );
+	std::string level_name = savegame->Get_Active_Level();
+	delete savegame;
 
-	// Level save
-	if( save_type == 1 )
+	if( !level_name.empty() )
 	{
 		Game_Action = GA_ENTER_LEVEL;
+		cLevel *level = pLevel_Manager->Load( level_name );
+		// only fade-out music if different
+		if( pActive_Level->Get_Music_Filename( 1 ).compare( level->Get_Music_Filename( 1 ) ) != 0 )
+		{
+			Game_Action_Data_Start.add( "music_fadeout", "1000" );
+		}
 	}
-	// World save
-	else if( save_type == 2 )
+	else
 	{
 		Game_Action = GA_ENTER_WORLD;
+		Game_Action_Data_Start.add( "music_fadeout", "1000" );
 	}
+
+	Game_Action_Data_Start.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK ) );
+	Game_Action_Data_Start.add( "screen_fadeout_speed", "3" );
+	Game_Action_Data_Middle.add( "unload_menu", "1" );
+	Game_Action_Data_Middle.add( "load_savegame", int_to_string( save_num ) );
+	Game_Action_Data_End.add( "screen_fadein", CEGUI::PropertyHelper::intToString( EFFECT_IN_BLACK ) );
+	Game_Action_Data_End.add( "screen_fadein_speed", "3" );
 }
 
 void cMenu_Savegames :: Update_Save( void )
@@ -3073,7 +3163,11 @@ void cMenu_Savegames :: Update_Save( void )
 	if( descripion.compare( "Not enough Points" ) == 0 ) 
 	{
 		Game_Action = GA_ENTER_MENU;
-		pMenuCore->m_next_menu = MENU_MAIN;
+		Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_MAIN ) );
+		if( m_exit_to_gamemode != MODE_NOTHING )
+		{
+			Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( m_exit_to_gamemode ) );
+		}
 		return;
 	}
 
@@ -3095,7 +3189,11 @@ void cMenu_Savegames :: Update_Save( void )
 	pSavegame->Save_Game( pMenuCore->m_handler->m_active + 1, descripion );
 
 	Game_Action = GA_ENTER_MENU;
-	pMenuCore->m_next_menu = MENU_MAIN;
+	Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_MAIN ) );
+	if( m_exit_to_gamemode != MODE_NOTHING )
+	{
+		Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( m_exit_to_gamemode ) );
+	}
 }
 
 std::string cMenu_Savegames :: Set_Save_Description( unsigned int save_slot )
@@ -3339,7 +3437,7 @@ void cMenu_Credits :: Enter( const GameMode old_mode /* = MODE_NOTHING */ )
 	}
 }
 
-void cMenu_Credits :: Exit( void )
+void cMenu_Credits :: Leave( const GameMode next_mode /* = MODE_NOTHING */ )
 {
 	if( m_exit_to_gamemode == MODE_NOTHING || m_exit_to_gamemode == MODE_MENU )
 	{
@@ -3353,10 +3451,17 @@ void cMenu_Credits :: Exit( void )
 	// set menu gradient colors back
 	pMenuCore->m_handler->m_level->m_background_manager->Get_Pointer( 0 )->m_color_1.alpha = 255;
 	pMenuCore->m_handler->m_level->m_background_manager->Get_Pointer( 0 )->m_color_2.alpha = 255;
+}
 
-	pMenuCore->m_next_menu = MENU_MAIN;
+void cMenu_Credits :: Exit( void )
+{
 	Game_Action = GA_ENTER_MENU;
-	Game_Action_Data.add( "music_fadeout", "1500" );
+	Game_Action_Data_Start.add( "music_fadeout", "500" );
+	Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_MAIN ) );
+	if( m_exit_to_gamemode != MODE_NOTHING )
+	{
+		Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( m_exit_to_gamemode ) );
+	}
 }
 
 void cMenu_Credits :: Update( void )
@@ -3471,7 +3576,7 @@ void cMenu_Credits :: Update( void )
 void cMenu_Credits :: Draw( void )
 {
 	// do not draw if exiting
-	if( pMenuCore->m_next_menu != MENU_NOTHING )
+	if( Game_Action != GA_NONE )
 	{
 		return;
 	}
@@ -3551,7 +3656,6 @@ void cMenu_Credits :: Menu_Fade( bool fade_in /* = 1 */ )
 				{
 					logo->Set_Pos_Y( -200.0f );
 				}
-				printf( "1 %f\n", logo->m_pos_y );
 			}
 		}
 		else
@@ -3573,7 +3677,6 @@ void cMenu_Credits :: Menu_Fade( bool fade_in /* = 1 */ )
 				{
 					logo->Set_Pos_Y( 20.0f );
 				}
-				printf( "2 %f\n", logo->m_pos_y );
 			}
 		}
 

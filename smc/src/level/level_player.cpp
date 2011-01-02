@@ -47,7 +47,7 @@ namespace SMC
 const int power_jump_delta = 1000;
 
 const float cLevel_Player::m_default_pos_x = 200.0f;
-const float cLevel_Player::m_default_pos_y = 50.0f;
+const float cLevel_Player::m_default_pos_y = -300.0f;
 
 /* *** *** *** *** *** *** *** *** cLevel_Player *** *** *** *** *** *** *** *** *** */
 
@@ -211,7 +211,7 @@ void cLevel_Player :: DownGrade_Player( bool delayed /* = 1 */, bool force /* = 
 		Game_Action = GA_DOWNGRADE_PLAYER;
 		if( force )
 		{
-			Game_Action_Data.add( "force", "1" );
+			Game_Action_Data_Middle.add( "downgrade_force", "1" );
 		}
 
 		return;
@@ -306,7 +306,7 @@ void cLevel_Player :: DownGrade_Player( bool delayed /* = 1 */, bool force /* = 
 	pFramerate->Reset();
 	m_walk_count = 0.0f;
 	
-	for( i = 0.0f; m_col_rect.m_y < pActive_Camera->m_limit_rect.m_y; i++ )
+	for( i = 0.0f; m_col_rect.m_y < pActive_Camera->m_y + game_res_h; i++ )
 	{
 		while( SDL_PollEvent( &input_event ) )
 		{
@@ -434,15 +434,17 @@ animation_end:
 	{
 		Game_Action = GA_ENTER_MENU;
 		// reset saved data
-		Game_Action_Data.add( "reset_save", "1" );
+		Game_Action_Data_Middle.add( "reset_save", "1" );
+		Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_MAIN ) );
 	}
 	// custom level
 	else if( Game_Mode_Type == MODE_TYPE_LEVEL_CUSTOM )
 	{
 		Game_Action = GA_ENTER_MENU;
-		Game_Action_Data.add( "current_level", Trim_Filename( pActive_Level->m_level_filename, 0, 0 ) );
+		Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_START ) );
+		Game_Action_Data_Middle.add( "menu_start_current_level", Trim_Filename( pActive_Level->m_level_filename, 0, 0 ) );
 		// reset saved data
-		Game_Action_Data.add( "reset_save", "1" );
+		Game_Action_Data_Middle.add( "reset_save", "1" );
 	}
 	// back to overworld
 	else
@@ -451,12 +453,13 @@ animation_end:
 		Game_Action = GA_ENTER_WORLD;
 	}
 
-	// delay unload level
-	Game_Action_Data.add( "unload_levels", "1" );
 	// fade out
-	Game_Action_Data.add( "music_fadeout", "1500" );
-	Game_Action_Data.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK ) );
-	Game_Action_Data.add( "screen_fadeout_speed", "3" );
+	Game_Action_Data_Start.add( "music_fadeout", "1500" );
+	Game_Action_Data_Start.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK ) );
+	Game_Action_Data_Start.add( "screen_fadeout_speed", "3" );
+	// delay unload level
+	Game_Action_Data_Middle.add( "unload_levels", "1" );
+	Game_Action_Data_End.add( "screen_fadein", CEGUI::PropertyHelper::intToString( EFFECT_IN_BLACK ) );
 }
 
 void cLevel_Player :: Move_Player( float velocity, float vel_wrongway )
@@ -3310,7 +3313,7 @@ void cLevel_Player :: Action_Interact( input_identifier key_type )
 	// Up
 	if( key_type == INP_UP )
 	{
-		// Search for colliding level exit Objects
+		// Search for colliding level exit objects
 		for( cSprite_List::iterator itr = m_sprite_manager->objects.begin(); itr != m_sprite_manager->objects.end(); ++itr )
 		{
 			cSprite *obj = (*itr);
@@ -3339,7 +3342,6 @@ void cLevel_Player :: Action_Interact( input_identifier key_type )
 					{
 						Game_Action = GA_ACTIVATE_LEVEL_EXIT;
 						Game_Action_ptr = level_exit;
-						return;
 					}
 				}
 				// warp
@@ -3351,10 +3353,17 @@ void cLevel_Player :: Action_Interact( input_identifier key_type )
 						{
 							Game_Action = GA_ACTIVATE_LEVEL_EXIT;
 							Game_Action_ptr = level_exit;
-							return;
 						}
 					}
 				}
+
+				// if leaving level
+				if( level_exit->m_dest_level.empty() && level_exit->m_dest_entry.empty() )
+				{
+					Game_Action_Data_Start.add( "music_fadeout", "1000" );
+				}
+				
+				return;
 			}
 			// climbable
 			else if( obj->m_massive_type == MASS_CLIMBABLE )
@@ -3366,7 +3375,7 @@ void cLevel_Player :: Action_Interact( input_identifier key_type )
 	// Down
 	else if( key_type == INP_DOWN )
 	{
-		// Search for colliding Levelexit Objects
+		// Search for colliding level exit objects
 		for( cSprite_List::iterator itr = m_sprite_manager->objects.begin(); itr != m_sprite_manager->objects.end(); ++itr )
 		{
 			cSprite *obj = (*itr);
@@ -3397,6 +3406,12 @@ void cLevel_Player :: Action_Interact( input_identifier key_type )
 						{
 							Game_Action = GA_ACTIVATE_LEVEL_EXIT;
 							Game_Action_ptr = level_exit;
+
+							// if leaving level
+							if( level_exit->m_dest_level.empty() && level_exit->m_dest_entry.empty() )
+							{
+								Game_Action_Data_Start.add( "music_fadeout", "1000" );
+							}
 							return;
 						}
 					}
@@ -3423,7 +3438,7 @@ void cLevel_Player :: Action_Interact( input_identifier key_type )
 	// Left
 	else if( key_type == INP_LEFT )
 	{
-		// Search for colliding Levelexit Objects
+		// Search for colliding level exit objects
 		for( cSprite_List::iterator itr = m_sprite_manager->objects.begin(); itr != m_sprite_manager->objects.end(); ++itr )
 		{
 			cSprite *obj = (*itr);
@@ -3453,6 +3468,11 @@ void cLevel_Player :: Action_Interact( input_identifier key_type )
 						{
 							Game_Action = GA_ACTIVATE_LEVEL_EXIT;
 							Game_Action_ptr = level_exit;
+							// if leaving level
+							if( level_exit->m_dest_level.empty() && level_exit->m_dest_entry.empty() )
+							{
+								Game_Action_Data_Start.add( "music_fadeout", "1000" );
+							}
 							return;
 						}
 					}
@@ -3478,7 +3498,7 @@ void cLevel_Player :: Action_Interact( input_identifier key_type )
 	// Right
 	else if( key_type == INP_RIGHT )
 	{
-		// Search for colliding Levelexit Objects
+		// Search for colliding level exit objects
 		for( cSprite_List::iterator itr = m_sprite_manager->objects.begin(); itr != m_sprite_manager->objects.end(); ++itr )
 		{
 			cSprite *obj = (*itr);
@@ -3508,6 +3528,11 @@ void cLevel_Player :: Action_Interact( input_identifier key_type )
 						{
 							Game_Action = GA_ACTIVATE_LEVEL_EXIT;
 							Game_Action_ptr = level_exit;
+							// if leaving level
+							if( level_exit->m_dest_level.empty() && level_exit->m_dest_entry.empty() )
+							{
+								Game_Action_Data_Start.add( "music_fadeout", "1000" );
+							}
 							return;
 						}
 					}
@@ -3549,10 +3574,16 @@ void cLevel_Player :: Action_Interact( input_identifier key_type )
 	else if( key_type == INP_EXIT )
 	{
 		Game_Action = GA_ENTER_MENU;
+		Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( MODE_LEVEL ) );
 
 		if( Game_Mode_Type == MODE_TYPE_LEVEL_CUSTOM )
 		{
-			Game_Action_Data.add( "current_level", Trim_Filename( pActive_Level->m_level_filename, 0, 0 ) );
+			Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_START ) );
+			Game_Action_Data_Middle.add( "menu_start_current_level", Trim_Filename( pActive_Level->m_level_filename, 0, 0 ) );
+		}
+		else
+		{
+			Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_MAIN ) );
 		}
 	}
 }

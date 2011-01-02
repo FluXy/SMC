@@ -314,6 +314,8 @@ void cOverworld_Player :: Action_Interact( input_identifier key_type )
 	else if( key_type == INP_EXIT )
 	{
 		Game_Action = GA_ENTER_MENU;
+		Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_MAIN ) );
+		Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( MODE_OVERWORLD ) );
 	}
 }
 
@@ -338,7 +340,10 @@ void cOverworld_Player :: Activate_Waypoint( void )
 	{
 		// Enter Level
 		Game_Action = GA_ENTER_LEVEL;
-		Game_Action_Data.add( "level", waypoint->Get_Destination() );
+		Game_Action_Data_Start.add( "music_fadeout", "1000" );
+		Game_Action_Data_Start.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_FIXED_COLORBOX ) );
+		Game_Action_Data_Middle.add( "load_level", waypoint->Get_Destination() );
+		Game_Action_Data_End.add( "screen_fadein", CEGUI::PropertyHelper::intToString( EFFECT_IN_RANDOM ) );
 	}
 	// world link waypoint
 	else if( waypoint->m_waypoint_type == WAYPOINT_WORLD_LINK )
@@ -352,18 +357,24 @@ void cOverworld_Player :: Activate_Waypoint( void )
 		// Enter Credits Menu ( World End )
 		if( str_world.compare( "credits" ) == 0 )
 		{
-			Game_Action = GA_ENTER_MENU_CREDITS;
+			Game_Action = GA_ENTER_MENU;
+			Game_Action_Data_Start.add( "music_fadeout", "1500" );
+			Game_Action_Data_Start.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_HORIZONTAL_VERTICAL ) );
+			Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_CREDITS ) );
+			Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( MODE_OVERWORLD ) );
+			Game_Action_Data_End.add( "screen_fadein", CEGUI::PropertyHelper::intToString( EFFECT_IN_RANDOM ) );
 		}
 		// world link
 		else
 		{
-			cOverworld *new_world = pOverworld_Manager->Get( str_world );
-
-			if( new_world )
+			if( pOverworld_Manager->Get( str_world ) )
 			{
 				Game_Action = GA_ENTER_WORLD;
-				Game_Action_Data.add( "world", str_world.c_str() );
-				Game_Action_Data.add( "player_waypoint", overworld_origin->m_description->m_path.c_str() );
+				Game_Action_Data_Start.add( "music_fadeout", "1500" );
+				Game_Action_Data_Start.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK_TILED_RECTS ) );
+				Game_Action_Data_Middle.add( "enter_world", str_world.c_str() );
+				Game_Action_Data_Middle.add( "world_player_waypoint", overworld_origin->m_description->m_path.c_str() );
+				Game_Action_Data_End.add( "screen_fadein", CEGUI::PropertyHelper::intToString( EFFECT_IN_BLACK ) );
 			}
 			else
 			{

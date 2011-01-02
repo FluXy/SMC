@@ -186,7 +186,11 @@ bool cEditor_World :: Function_New( void )
 	if( pOverworld_Manager->New( world_name ) )
 	{
 		Game_Action = GA_ENTER_WORLD;
-		Game_Action_Data.add( "world", world_name.c_str() );
+		Game_Action_Data_Start.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK_TILED_RECTS ) );
+		Game_Action_Data_Start.add( "screen_fadeout_speed", "3" );
+		Game_Action_Data_Middle.add( "enter_world", world_name.c_str() );
+		Game_Action_Data_End.add( "screen_fadein", CEGUI::PropertyHelper::intToString( EFFECT_IN_BLACK ) );
+		Game_Action_Data_End.add( "screen_fadein_speed", "3" );
 
 		pHud_Debug->Set_Text( _("Created ") + world_name );
 		return 1;
@@ -214,13 +218,15 @@ void cEditor_World :: Function_Load( void )
 			break;
 		}
 
-		cOverworld *new_world = pOverworld_Manager->Get( world_name );
-
 		// success
-		if( new_world )
+		if( pOverworld_Manager->Get( world_name ) )
 		{
 			Game_Action = GA_ENTER_WORLD;
-			Game_Action_Data.add( "world", world_name.c_str() );
+			Game_Action_Data_Start.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK_TILED_RECTS ) );
+			Game_Action_Data_Start.add( "screen_fadeout_speed", "3" );
+			Game_Action_Data_Middle.add( "enter_world", world_name.c_str() );
+			Game_Action_Data_End.add( "screen_fadein", CEGUI::PropertyHelper::intToString( EFFECT_IN_BLACK ) );
+			Game_Action_Data_End.add( "screen_fadein_speed", "3" );
 
 			pHud_Debug->Set_Text( _("Loaded ") + world_name );
 			break;

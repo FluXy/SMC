@@ -213,6 +213,16 @@ void cLevel_Settings :: Init( void )
 	Load_BG_Image_List();
 }
 
+void cLevel_Settings :: Exit( void )
+{
+	// back to level
+	Game_Action = GA_ENTER_LEVEL;
+	Game_Action_Data_Start.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK ) );
+	Game_Action_Data_Start.add( "screen_fadeout_speed", "3" );
+	Game_Action_Data_End.add( "screen_fadein", CEGUI::PropertyHelper::intToString( EFFECT_IN_BLACK ) );
+	Game_Action_Data_End.add( "screen_fadein_speed", "3" );
+}
+
 void cLevel_Settings :: Enter( void )
 {
 	// set active camera
@@ -248,10 +258,11 @@ void cLevel_Settings :: Leave( void )
 		pHud_Debug->Set_Text( "", 0 );
 	}
 	// music
-	m_level->Set_Music( wmgr.getWindow( "editbox_music_filename" )->getText().c_str() );
-	// switch to the new music if music is playing
-	if( pAudio->Is_Music_Playing() )
+	std::string new_music = wmgr.getWindow( "editbox_music_filename" )->getText().c_str();
+	// if the music is new
+	if( pAudio->Is_Music_Playing() && new_music.compare( m_level->Get_Music_Filename( 1 ) ) != 0 )
 	{
+		m_level->Set_Music( new_music );
 		pAudio->Fadeout_Music( 1000 );
 	}
 	// author
@@ -278,6 +289,8 @@ void cLevel_Settings :: Leave( void )
 	// Gradient
 	m_level->m_background_manager->Get_Pointer(0)->Set_Color_1( m_bg_color_1 );
 	m_level->m_background_manager->Get_Pointer(0)->Set_Color_2( m_bg_color_2 );
+
+	Unload();
 }
 
 void cLevel_Settings :: Unload( void )
@@ -350,8 +363,7 @@ bool cLevel_Settings :: Key_Down( SDLKey key )
 
 	if( key == SDLK_ESCAPE )
 	{
-		// back to level mode
-		Game_Action = GA_ENTER_LEVEL;
+		Exit();
 	}
 	else
 	{
@@ -464,8 +476,7 @@ bool cLevel_Settings :: Set_Background_Image( const CEGUI::EventArgs &event )
 
 bool cLevel_Settings :: Button_Save( const CEGUI::EventArgs &event )
 {
-	// back to level mode
-	Game_Action = GA_ENTER_LEVEL;
+	Exit();
 	return 1;
 }
 

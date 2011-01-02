@@ -33,9 +33,11 @@ public:
 
 	virtual void Init( void );
 	virtual void Init_GUI( void );
-	// Enter
+	// Enter mode
 	virtual void Enter( const GameMode old_mode = MODE_NOTHING );
-	// Exit
+	// Leave mode
+	virtual void Leave( const GameMode next_mode = MODE_NOTHING );
+	// Exit menu
 	virtual void Exit( void );
 	virtual void Update( void );
 	virtual void Draw( void );
@@ -76,7 +78,6 @@ public:
 
 	virtual void Init( void );
 	virtual void Init_GUI( void );
-	// Exit
 	virtual void Exit( void );
 	virtual void Update( void );
 	virtual void Draw( void );
@@ -92,7 +93,6 @@ public:
 
 	virtual void Init( void );
 	virtual void Init_GUI( void );
-	// Exit
 	virtual void Exit( void );
 	virtual void Update( void );
 	virtual void Draw( void );
@@ -311,7 +311,6 @@ public:
 
 	virtual void Init( void );
 	virtual void Init_GUI( void );
-	// Exit
 	virtual void Exit( void );
 	virtual void Update( void );
 	virtual void Draw( void );
@@ -341,9 +340,8 @@ public:
 
 	virtual void Init( void );
 	virtual void Init_GUI( void );
-	// Enter
 	virtual void Enter( const GameMode old_mode = MODE_NOTHING );
-	// Exit
+	virtual void Leave( const GameMode next_mode = MODE_NOTHING );
 	virtual void Exit( void );
 	virtual void Update( void );
 	virtual void Draw( void );

@@ -29,18 +29,15 @@ public:
 	cLevel_Settings( cSprite_Manager *sprite_manager, cLevel *level );
 	~cLevel_Settings( void );
 
-	// Initialize
 	void Init( void );
-	// Enter
+	void Exit( void );
+	// Enter game mode
 	void Enter( void );
-	// Leave (saves settings)
+	// Leave game mode (saves settings)
 	void Leave( void );
-	// Unload
 	void Unload( void );
 
-	// Update
 	void Update( void );
-	// Draw
 	void Draw( void );
 
 	/* handle key down event

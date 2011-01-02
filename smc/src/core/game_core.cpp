@@ -29,6 +29,7 @@
 #include "../core/filesystem/filesystem.h"
 #include "../objects/level_exit.h"
 #include "../gui/menu_data.h"
+#include "../user/savegame.h"
 // boost filesystem
 #include "boost/filesystem/convenience.hpp"
 namespace fs = boost::filesystem;
@@ -46,7 +47,8 @@ GameMode Game_Mode = MODE_NOTHING;
 GameModeType Game_Mode_Type = MODE_TYPE_DEFAULT;
 GameAction Game_Action = GA_NONE;
 CEGUI::XMLAttributes Game_Action_Data_Start;
-CEGUI::XMLAttributes Game_Action_Data;
+CEGUI::XMLAttributes Game_Action_Data_Middle;
+CEGUI::XMLAttributes Game_Action_Data_End;
 void *Game_Action_ptr = NULL;
 
 int game_res_w = 800;
@@ -421,92 +423,131 @@ void Handle_Game_Events( void )
 		const GameModeType current_game_mode_type = Game_Mode_Type;
 		const GameAction current_game_action = Game_Action;
 		const CEGUI::XMLAttributes current_game_action_data_start = Game_Action_Data_Start;
-		const CEGUI::XMLAttributes current_game_action_data = Game_Action_Data;
+		const CEGUI::XMLAttributes current_game_action_data_middle = Game_Action_Data_Middle;
+		const CEGUI::XMLAttributes current_game_action_data_end = Game_Action_Data_End;
 		void *current_game_action_ptr = Game_Action_ptr;
 		// clear
 		Game_Action = GA_NONE;
 		Game_Action_Data_Start = CEGUI::XMLAttributes();
-		Game_Action_Data = CEGUI::XMLAttributes();
+		Game_Action_Data_Middle = CEGUI::XMLAttributes();
+		Game_Action_Data_End = CEGUI::XMLAttributes();
 		Game_Action_ptr = NULL;
 
 		// handle player downgrade
 		if( current_game_action == GA_DOWNGRADE_PLAYER )
 		{
-			pLevel_Player->DownGrade_Player( 0, current_game_action_data.getValueAsBool( "force" ) );
-			Handle_Generic_Game_Events( current_game_action_data );
+			Handle_Generic_Game_Events( current_game_action_data_start );
+			pLevel_Player->DownGrade_Player( 0, current_game_action_data_middle.getValueAsBool( "downgrade_force" ) );
+			Handle_Generic_Game_Events( current_game_action_data_middle );
+			Handle_Generic_Game_Events( current_game_action_data_end );
 		}
 		// activate level exit
 		else if( current_game_action == GA_ACTIVATE_LEVEL_EXIT )
 		{
+			Handle_Generic_Game_Events( current_game_action_data_start );
 			cLevel_Exit *level_exit = static_cast<cLevel_Exit *>(current_game_action_ptr);
 			level_exit->Activate();
-			Handle_Generic_Game_Events( current_game_action_data );
+			Handle_Generic_Game_Events( current_game_action_data_middle );
+			Handle_Generic_Game_Events( current_game_action_data_end );
 		}
-		// Enter Level
-		else if( current_game_action == GA_ENTER_LEVEL )
+		// full events
+		else
 		{
-			Leave_Game_Mode( MODE_LEVEL );
+			GameMode new_mode = MODE_NOTHING;
 
-			// check if level is active
-			bool level_active = 0;
-			// fade out
-			if( Game_Mode == MODE_MENU )
+			if( current_game_action == GA_ENTER_LEVEL )
 			{
-				// if level loaded and not entering custom level
-				if( (pMenuCore->m_menu_data && pMenuCore->m_menu_data->m_exit_to_gamemode == MODE_LEVEL) && !current_game_action_data.exists( "level" ) )
-				{
-					level_active = 1;
-				}
-				else
-				{
-					// fade music out
-					pAudio->Fadeout_Music( 1000 );
-					// fade out
-					Draw_Effect_Out( EFFECT_OUT_BLACK, 3 );
-				}
-				// unload menu
-				// todo : should be in the menu class
-				pMenuCore->Unload();
+				new_mode = MODE_LEVEL;
 			}
-			else if( Game_Mode == MODE_OVERWORLD )
+			else if( current_game_action == GA_ENTER_WORLD )
 			{
-				Draw_Effect_Out( EFFECT_OUT_FIXED_COLORBOX );
+				new_mode = MODE_OVERWORLD;
 			}
-			else if( Game_Mode == MODE_LEVEL && Game_Mode_Type == MODE_TYPE_LEVEL_CUSTOM )
+			else if( current_game_action == GA_ENTER_MENU )
 			{
-				Draw_Effect_Out( EFFECT_OUT_BLACK, 3 );
+				new_mode = MODE_MENU;
 			}
-			else if( Game_Mode == MODE_LEVEL_SETTINGS )
+			else if( current_game_action == GA_ENTER_LEVEL_SETTINGS )
 			{
-				// unload settings
-				// todo : should be in the settings class
-				pLevel_Editor->m_settings_screen->Unload();
-			}
-			else
-			{
-				Draw_Effect_Out();
+				new_mode = MODE_LEVEL_SETTINGS;
 			}
 
-			// generic events
-			Handle_Generic_Game_Events( current_game_action_data );
+			Handle_Generic_Game_Events( current_game_action_data_start );
+			Leave_Game_Mode( new_mode );
+			Handle_Generic_Game_Events( current_game_action_data_middle );
+			Enter_Game_Mode( new_mode );
+			Handle_Generic_Game_Events( current_game_action_data_end );
+		}
 
-			// loading failed
-			if( !pActive_Level->Is_Loaded() )
+	}
+}
+
+void Handle_Generic_Game_Events( const CEGUI::XMLAttributes &action_data )
+{
+	if( action_data.exists( "music_fadeout" ) )
+	{
+		pAudio->Fadeout_Music( action_data.getValueAsInteger( "music_fadeout" ) );
+	}
+	if( action_data.getValueAsBool( "reset_save" ) )
+	{
+		pLevel_Player->Reset_Save();
+	}
+	if( action_data.getValueAsBool( "unload_levels" ) )
+	{
+		pLevel_Manager->Unload();
+	}
+	if( action_data.getValueAsBool( "unload_menu" ) )
+	{
+		pMenuCore->Unload();
+	}
+	if( action_data.exists( "load_menu" ) )
+	{
+		MenuID menu = static_cast<MenuID>(action_data.getValueAsInteger( "load_menu" ));
+		pMenuCore->Load( menu, static_cast<GameMode>(action_data.getValueAsInteger( "menu_exit_back_to" )) );
+
+		if( menu == MENU_START && action_data.exists( "menu_start_current_level" ) )
+		{
+			cMenu_Start *menu_start = static_cast<cMenu_Start *>(pMenuCore->m_menu_data);
+			menu_start->Highlight_Level( action_data.getValueAsString( "menu_start_current_level" ).c_str() );
+		}
+	}
+	// set active world
+	if( action_data.exists( "enter_world" ) )
+	{
+		pOverworld_Manager->Set_Active( action_data.getValueAsString( "enter_world" ).c_str() );
+	}
+	// set player waypoint
+	if( action_data.exists( "world_player_waypoint" ) )
+	{
+		// get world waypoint
+		int waypoint_num = pActive_Overworld->Get_Waypoint_Num( action_data.getValueAsString( "world_player_waypoint" ).c_str() );
+
+		// waypoint available
+		if( waypoint_num >= 0 )
+		{
+			// set the previous waypoints accessible
+			pActive_Overworld->Set_Progress( waypoint_num, 0 );
+			pOverworld_Player->Set_Waypoint( waypoint_num );
+		}
+	}
+	// load level
+	if( action_data.exists( "load_level" ) )
+	{
+		std::string str_level = action_data.getValueAsString( "load_level" ).c_str();
+		// load new level
+		cLevel *level = pLevel_Manager->Load( str_level );
+
+		if( level )
+		{
+			pLevel_Manager->Set_Active( level );
+			level->Init();
+
+			if( action_data.exists( "load_level_entry" ) )
 			{
-				continue;
-			}
+				std::string str_entry = action_data.getValueAsString( "load_level_entry" ).c_str();
+				cLevel_Entry *entry = level->Get_Entry( str_entry );
 
-			// change game mode
-			Enter_Game_Mode( MODE_LEVEL );
-
-			// enter level entry
-			cLevel_Entry *entry = NULL;
-			if( current_game_action_data.exists( "entry" ) )
-			{
-				std::string str_entry = current_game_action_data.getValueAsString( "entry" ).c_str();
-				entry = pActive_Level->Get_Entry( str_entry.c_str() );
-
-				// set camera position to the entry
+				// set camera position to show the entry
 				if( entry )
 				{
 					// set position
@@ -521,243 +562,6 @@ void Handle_Game_Events( void )
 					printf( "Warning : Level entry %s not found\n", str_entry.c_str() );
 				}
 			}
-
-			// fade in
-			if( current_game_mode == MODE_MENU )
-			{
-				if( !level_active )
-				{
-					// fade in
-					Draw_Effect_In( EFFECT_IN_BLACK, 3 );
-				}
-			}
-			else if( current_game_mode == MODE_LEVEL && current_game_mode_type == MODE_TYPE_LEVEL_CUSTOM )
-			{
-				Draw_Effect_In( EFFECT_IN_BLACK, 3 );
-			}
-			else
-			{
-				Draw_Effect_In();
-			}
-
-			// activate entry
-			if( entry )
-			{
-				pLevel_Manager->Goto_Sub_Level( "", entry->m_entry_name, CAMERA_MOVE_NONE );
-			}
-		}
-		// Enter World
-		else if( current_game_action == GA_ENTER_WORLD )
-		{
-			Leave_Game_Mode( MODE_OVERWORLD );
-
-			Handle_Generic_Game_Events( current_game_action_data_start );
-			// check if world is active
-			bool world_active = 0;
-
-			// fade out effect
-			if( Game_Mode == MODE_MENU )
-			{
-				// todo : fade only out if not same music
-				// if origin menu is start menu
-				if( pMenuCore->m_menu_id == MENU_START )
-				{
-					// fade music out
-					pAudio->Fadeout_Music( 1000 );
-				}
-
-				// if world loaded and not entering a new world
-				if( (pMenuCore->m_menu_data && pMenuCore->m_menu_data->m_exit_to_gamemode == MODE_OVERWORLD) && !current_game_action_data.exists( "world" ) )
-				{
-					world_active = 1;
-				}
-				else
-				{
-					Draw_Effect_Out( EFFECT_OUT_BLACK, 3 );
-				}
-				// unload menu
-				// todo : should be in the menu class
-				pMenuCore->Unload();
-			}
-			else if( Game_Mode == MODE_OVERWORLD )
-			{
-				Draw_Effect_Out( EFFECT_OUT_BLACK_TILED_RECTS );
-			}
-			else
-			{
-				// random 
-				Draw_Effect_Out();
-			}
-
-			// generic events
-			Handle_Generic_Game_Events( current_game_action_data );
-			// enter world
-			Enter_Game_Mode( MODE_OVERWORLD );
-			// draw fade in
-			if( current_game_mode == MODE_MENU )
-			{
-				if( !world_active )
-				{
-					// fade in
-					Draw_Effect_In( EFFECT_IN_BLACK, 3 );
-				}
-			}
-			else
-			{
-				Draw_Effect_In();
-			}
-		}
-		// Enter Menu
-		else if( current_game_action == GA_ENTER_MENU )
-		{
-			Leave_Game_Mode( MODE_MENU );
-			// generic events
-			Handle_Generic_Game_Events( current_game_action_data );
-
-			if( !pAudio->Is_Music_Playing() || pAudio->Is_Music_Fading() == MIX_FADING_OUT )
-			{
-				if( pMenuCore->m_next_menu == MENU_CREDITS )
-				{
-					pAudio->Play_Music( "land/hyper_1.ogg", -1, 0, 1500 );
-				}
-				else
-				{
-					pAudio->Play_Music( "game/menu.ogg", -1, 0, 1500 );
-				}
-			}
-
-			// set exit game mode
-			GameMode exit_back_to_gamemode = MODE_NOTHING;
-
-			// copy previous
-			if( current_game_mode == MODE_MENU )
-			{
-				if( pMenuCore->m_menu_data )
-				{
-					exit_back_to_gamemode = pMenuCore->m_menu_data->m_exit_to_gamemode;
-				}
-			}
-			// level
-			else if( current_game_mode == MODE_LEVEL && pActive_Level->Is_Loaded() && !pActive_Level->m_delayed_unload )
-			{
-				exit_back_to_gamemode = MODE_LEVEL;
-			}
-			// world
-			else if( current_game_mode == MODE_OVERWORLD )
-			{
-				exit_back_to_gamemode = MODE_OVERWORLD;
-			}
-
-			// custom level
-			if( Game_Mode == MODE_LEVEL && Game_Mode_Type == MODE_TYPE_LEVEL_CUSTOM && current_game_action_data.exists( "current_level" ) )
-			{
-				pMenuCore->Load( MENU_START, exit_back_to_gamemode );
-
-				cMenu_Start *menu_start = static_cast<cMenu_Start *>(pMenuCore->m_menu_data);
-				menu_start->Highlight_Level( current_game_action_data.getValueAsString( "current_level" ).c_str() );
-			}
-			// default menu
-			else
-			{
-				MenuID menu_id = MENU_MAIN;
-
-				if( pMenuCore->m_next_menu != MENU_NOTHING )
-				{
-					menu_id = pMenuCore->m_next_menu;
-				}
-
-				pMenuCore->Load( menu_id, exit_back_to_gamemode );
-			}
-
-			Enter_Game_Mode( MODE_MENU );
-
-			if( current_game_mode != MODE_MENU && exit_back_to_gamemode == MODE_NOTHING )
-			{
-				// fade in
-				Draw_Effect_In( EFFECT_IN_BLACK, 3 );
-			}
-		}
-		// Enter Settings
-		else if( current_game_action == GA_ENTER_LEVEL_SETTINGS )
-		{
-			// leave
-			Leave_Game_Mode( MODE_LEVEL_SETTINGS );
-			Draw_Effect_Out( EFFECT_OUT_BLACK, 3 );
-			// generic events
-			Handle_Generic_Game_Events( current_game_action_data );
-			// enter
-			Enter_Game_Mode( MODE_LEVEL_SETTINGS );
-			Draw_Effect_In( EFFECT_IN_BLACK, 3 );
-		}
-		// Enter Credits Menu
-		else if( current_game_action == GA_ENTER_MENU_CREDITS )
-		{
-			// leave
-			Leave_Game_Mode( MODE_MENU );
-			pAudio->Fadeout_Music( 1500 );
-			Draw_Effect_Out( EFFECT_OUT_HORIZONTAL_VERTICAL );
-			// generic events
-			Handle_Generic_Game_Events( current_game_action_data );
-			pMenuCore->Load( MENU_CREDITS, MODE_OVERWORLD );
-			// enter
-			Enter_Game_Mode( MODE_MENU );
-			Draw_Effect_In();
-		}
-	}
-}
-
-void Handle_Generic_Game_Events( const CEGUI::XMLAttributes &action_data )
-{
-	// fadeout music
-	if( action_data.exists( "music_fadeout" ) )
-	{
-		pAudio->Fadeout_Music( action_data.getValueAsInteger( "music_fadeout" ) );
-	}
-	if( action_data.exists( "screen_fadeout" ) )
-	{
-		// fade out screen
-		Draw_Effect_Out( static_cast<Effect_Fadeout>(action_data.getValueAsInteger( "screen_fadeout" )), action_data.getValueAsInteger( "screen_fadeout_speed", 1 ) );
-	}
-	// reset saved data
-	if( action_data.getValueAsBool( "reset_save" ) )
-	{
-		pLevel_Player->Reset_Save();
-	}
-	// unload levels
-	if( action_data.getValueAsBool( "unload_levels" ) )
-	{
-		pLevel_Manager->Unload();
-	}
-	// set active world
-	if( action_data.exists( "world" ) )
-	{
-		pOverworld_Manager->Set_Active( action_data.getValueAsString( "world" ).c_str() );
-	}
-	// set player waypoint
-	if( action_data.exists( "player_waypoint" ) )
-	{
-		// get world waypoint
-		int waypoint_num = pActive_Overworld->Get_Waypoint_Num( action_data.getValueAsString( "player_waypoint" ).c_str() );
-
-		// waypoint available
-		if( waypoint_num >= 0 )
-		{
-			// set the previous waypoints accessible
-			pActive_Overworld->Set_Progress( waypoint_num, 0 );
-			pOverworld_Player->Set_Waypoint( waypoint_num );
-		}
-	}
-	// load level
-	if( action_data.exists( "level" ) )
-	{
-		std::string str_level = action_data.getValueAsString( "level" ).c_str();
-		// load new level
-		cLevel *level = pLevel_Manager->Load( str_level );
-
-		if( level )
-		{
-			pLevel_Manager->Set_Active( level );
-			level->Init();
 		}
 		// loading failed
 		else
@@ -768,10 +572,32 @@ void Handle_Generic_Game_Events( const CEGUI::XMLAttributes &action_data )
 			pLevel_Manager->Finish_Level();
 		}
 	}
-	// play music
-	if( action_data.exists( "music" ) )
+	if( action_data.exists( "load_savegame" ) )
 	{
-		pAudio->Play_Music( action_data.getValueAsString( "music" ).c_str(), action_data.getValueAsInteger( "music_loops" ), action_data.getValueAsBool( "music_force", 1 ), action_data.getValueAsInteger( "music_fadein" ) );
+		pSavegame->Load_Game( action_data.getValueAsInteger( "load_savegame" ) );
+	}
+	// play music
+	if( action_data.exists( "play_music" ) )
+	{
+		pAudio->Play_Music( action_data.getValueAsString( "play_music" ).c_str(), action_data.getValueAsInteger( "music_loops" ), action_data.getValueAsBool( "music_force", 1 ), action_data.getValueAsInteger( "music_fadein" ) );
+	}
+	if( action_data.exists( "screen_fadeout" ) )
+	{
+		Draw_Effect_Out( static_cast<Effect_Fadeout>(action_data.getValueAsInteger( "screen_fadeout" )), action_data.getValueAsFloat( "screen_fadeout_speed", 1 ) );
+	}
+	if( action_data.exists( "screen_fadein" ) )
+	{
+		Draw_Effect_In( static_cast<Effect_Fadein>(action_data.getValueAsInteger( "screen_fadein" )), action_data.getValueAsFloat( "screen_fadein_speed", 1 ) );
+	}
+	if( action_data.exists( "activate_level_entry" ) )
+	{
+		std::string str_entry = action_data.getValueAsString( "activate_level_entry" ).c_str();
+		cLevel_Entry *entry = pActive_Level->Get_Entry( str_entry );
+
+		if( entry )
+		{
+			pLevel_Manager->Goto_Sub_Level( "", entry->m_entry_name, CAMERA_MOVE_NONE );
+		}
 	}
 }
 

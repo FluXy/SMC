@@ -104,7 +104,7 @@ public:
 
 	// Play the given sound
 	bool Play_Sound( std::string filename, int res_id = -1, int volume = -1, int loops = 0 );
-	// If no forcing it will be played after the current Music file
+	// If no forcing it will be played after the current music
 	bool Play_Music( std::string filename, int loops = 0, bool force = 1, unsigned int fadein_ms = 0 ); 
 
 	/* Returns a pointer to the sound if it is active.
@@ -152,9 +152,17 @@ public:
 	// Set the Music position ( if .ogg in seconds )
 	void Set_Music_Position( float position ) const;
 
-	// Returns 1 if the Music is currently fading in and 2 if it's fading out else 0
+	/* Returns
+	* 0 if not fading
+	* 1 if fading out
+	* 2 if fading in
+	*/
 	Mix_Fading Is_Music_Fading( void ) const;
-	// Returns 1 if the Sound is currently fading in and 2 if it's fading out else 0
+	/* Returns
+	* 0 if not fading
+	* 1 if fading out
+	* 2 if fading in
+	*/
 	Mix_Fading Is_Sound_Fading( int sound_channel ) const;
 
 	// Returns true if the Music is paused

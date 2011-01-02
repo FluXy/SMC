@@ -270,7 +270,6 @@ unsigned int cMenuHandler :: Get_Size( void ) const
 cMenuCore :: cMenuCore( void )
 {
 	m_menu_id = MENU_NOTHING;
-	m_next_menu = MENU_NOTHING;
 
 	m_menu_data = NULL;
 	m_handler = new cMenuHandler();
@@ -380,32 +379,30 @@ bool cMenuCore :: Key_Down( SDLKey key )
 
 		if( !CEGUI::WindowManager::getSingleton().isWindowPresent( "listbox_levels" ) )
 		{
-			// Create virtual start menu
+			// Create temporary start menu
 			cMenu_Start *menu_start = new cMenu_Start();
 
 			menu_start->Init();
-			// Get Levels Listbox
+			// get levels listbox
 			CEGUI::Listbox *listbox_levels = static_cast<CEGUI::Listbox *>(CEGUI::WindowManager::getSingleton().getWindow( "listbox_levels" ));
 			// select random level
 			listbox_levels->setItemSelectState( rand() % listbox_levels->getItemCount(), 1 );
 			// get level name
 			lvl_name = listbox_levels->getFirstSelectedItem()->getText().c_str();
-			// destroy virtual menu
+			menu_start->Load_Level( lvl_name );
+			// destroy menu
 			delete menu_start;
 		}
 		else
 		{
-			// Get Levels Listbox
+			// Get levels listbox
 			CEGUI::Listbox *listbox_levels = static_cast<CEGUI::Listbox *>(CEGUI::WindowManager::getSingleton().getWindow( "listbox_levels" ));
 			// select random level
 			listbox_levels->setItemSelectState( rand() % listbox_levels->getItemCount(), 1 );
 			// get level name
 			lvl_name = listbox_levels->getFirstSelectedItem()->getText().c_str();
+			static_cast<cMenu_Start *>(pMenuCore->m_menu_data)->Load_Level( lvl_name );
 		}
-
-		Game_Action = GA_ENTER_LEVEL;
-		Game_Mode_Type = MODE_TYPE_LEVEL_CUSTOM;
-		Game_Action_Data.add( "level", lvl_name.c_str() );
 	}
 	// exit
 	else if( key == SDLK_ESCAPE )
@@ -556,42 +553,6 @@ void cMenuCore :: Load( const MenuID menu /* = MENU_MAIN */, const GameMode exit
 	// default background color to white
 	glClearColor( 1, 1, 1, 1 );
 
-	// if not entering from another menu
-	if( m_next_menu == MENU_NOTHING )
-	{
-		// set camera start position
-		m_handler->m_camera->Reset_Pos();
-
-		// pre-update animations
-		for( cSprite_List::iterator itr = m_handler->m_level->m_sprite_manager->objects.begin(); itr != m_handler->m_level->m_sprite_manager->objects.end(); ++itr )
-		{
-			cSprite *obj = (*itr);
-
-			if( obj->m_type == TYPE_PARTICLE_EMITTER )
-			{
-				cParticle_Emitter *emitter = static_cast<cParticle_Emitter *>(obj);
-				emitter->Pre_Update();
-			}
-		}
-		
-		for( cAnimation_Manager::cAnimation_List::iterator itr = m_animation_manager->objects.begin(); itr != m_animation_manager->objects.end(); ++itr )
-		{
-			cAnimation *obj = (*itr);
-
-			if( obj->m_type == TYPE_PARTICLE_EMITTER )
-			{
-				cParticle_Emitter *emitter = static_cast<cParticle_Emitter *>(obj);
-				emitter->Pre_Update();
-			}
-		}
-
-		pFramerate->Update();
-	}
-	else
-	{
-		m_next_menu = MENU_NOTHING;
-	}
-
 	// Set ID
 	m_menu_id = menu;
 
@@ -652,10 +613,61 @@ void cMenuCore :: Enter( const GameMode old_mode /* = MODE_NOTHING */ )
 	pHud_Manager->Update_Text();
 	// update animation ( for the valid draw state )
 	m_animation_manager->Update();
+	// if not entering from another menu
+	if( old_mode == MODE_NOTHING || old_mode == MODE_LEVEL || old_mode == MODE_OVERWORLD )
+	{
+		// set camera start position
+		m_handler->m_camera->Reset_Pos();
+
+		// pre-update animations
+		for( cSprite_List::iterator itr = m_handler->m_level->m_sprite_manager->objects.begin(); itr != m_handler->m_level->m_sprite_manager->objects.end(); ++itr )
+		{
+			cSprite *obj = (*itr);
+
+			if( obj->m_type == TYPE_PARTICLE_EMITTER )
+			{
+				cParticle_Emitter *emitter = static_cast<cParticle_Emitter *>(obj);
+				emitter->Pre_Update();
+			}
+		}
+		
+		for( cAnimation_Manager::cAnimation_List::iterator itr = m_animation_manager->objects.begin(); itr != m_animation_manager->objects.end(); ++itr )
+		{
+			cAnimation *obj = (*itr);
+
+			if( obj->m_type == TYPE_PARTICLE_EMITTER )
+			{
+				cParticle_Emitter *emitter = static_cast<cParticle_Emitter *>(obj);
+				emitter->Pre_Update();
+			}
+		}
+
+		pFramerate->Update();
+	}
 
 	if( m_menu_data )
 	{
 		m_menu_data->Enter( old_mode );
+	}
+
+	if( !pAudio->Is_Music_Playing() || pAudio->Is_Music_Fading() == MIX_FADING_OUT )
+	{
+		if( m_menu_id == MENU_CREDITS )
+		{
+			pAudio->Play_Music( "land/hyper_1.ogg", -1, 0, 1500 );
+		}
+		else if( m_menu_data && m_menu_data->m_exit_to_gamemode == MODE_LEVEL && pActive_Level->Is_Loaded() )
+		{
+			pAudio->Play_Music( pActive_Level->m_musicfile, -1, 0, 1500 );
+		}
+		else if( m_menu_data && m_menu_data->m_exit_to_gamemode == MODE_OVERWORLD && pActive_Overworld->Is_Loaded() )
+		{
+			pAudio->Play_Music( pActive_Overworld->m_musicfile, -1, 0, 1500 );
+		}
+		else
+		{
+			pAudio->Play_Music( "game/menu.ogg", -1, 0, 1500 );
+		}
 	}
 }
 
@@ -671,6 +683,11 @@ void cMenuCore :: Leave( const GameMode next_mode /* = MODE_NOTHING */ )
 	if( !editor_enabled )
 	{
 		pMouseCursor->Set_Active( 0 );
+	}
+
+	if( m_menu_data )
+	{
+		m_menu_data->Leave( next_mode );
 	}
 }
 
