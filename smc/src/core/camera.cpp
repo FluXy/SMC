@@ -36,7 +36,7 @@ cCamera :: cCamera( cSprite_Manager *sprite_manager )
 {
 	m_sprite_manager = sprite_manager;
 	m_x = 0.0f;
-	m_y = 0.0f;
+	m_y = -game_res_h;
 
 	m_x_offset = 0.0f;
 	m_y_offset = 0.0f;
