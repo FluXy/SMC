@@ -57,8 +57,8 @@ public:
 	// Set the current Background image
 	bool Set_Background_Image( const CEGUI::EventArgs &event );
 
-	// Saves the Settings and exits
-	bool Button_Save( const CEGUI::EventArgs &event );
+	// Save the settings and exit
+	bool Button_Apply( const CEGUI::EventArgs &event );
 
 	// Updates the Colors
 	bool Update_BG_Colors( const CEGUI::EventArgs &event );

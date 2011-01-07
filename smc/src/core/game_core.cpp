@@ -30,6 +30,7 @@
 #include "../objects/level_exit.h"
 #include "../gui/menu_data.h"
 #include "../user/savegame.h"
+#include "../overworld/world_editor.h"
 // boost filesystem
 #include "boost/filesystem/convenience.hpp"
 namespace fs = boost::filesystem;
@@ -530,11 +531,22 @@ void Handle_Generic_Game_Events( const CEGUI::XMLAttributes &action_data )
 			pOverworld_Player->Set_Waypoint( waypoint_num );
 		}
 	}
-	// load level
+	if( action_data.exists( "new_level" ) )
+	{
+		std::string str_level = action_data.getValueAsString( "new_level" ).c_str();
+		// new level
+		cLevel *level = pLevel_Manager->New( str_level );
+
+		if( level )
+		{
+			pLevel_Manager->Set_Active( level );
+			level->Init();
+		}
+	}
 	if( action_data.exists( "load_level" ) )
 	{
 		std::string str_level = action_data.getValueAsString( "load_level" ).c_str();
-		// load new level
+		// load the level
 		cLevel *level = pLevel_Manager->Load( str_level );
 
 		if( level )
@@ -576,7 +588,6 @@ void Handle_Generic_Game_Events( const CEGUI::XMLAttributes &action_data )
 	{
 		pSavegame->Load_Game( action_data.getValueAsInteger( "load_savegame" ) );
 	}
-	// play music
 	if( action_data.exists( "play_music" ) )
 	{
 		pAudio->Play_Music( action_data.getValueAsString( "play_music" ).c_str(), action_data.getValueAsInteger( "music_loops" ), action_data.getValueAsBool( "music_force", 1 ), action_data.getValueAsInteger( "music_fadein" ) );
@@ -597,6 +608,17 @@ void Handle_Generic_Game_Events( const CEGUI::XMLAttributes &action_data )
 		if( entry )
 		{
 			pLevel_Manager->Goto_Sub_Level( "", entry->m_entry_name, CAMERA_MOVE_NONE );
+		}
+	}
+	if( action_data.getValueAsBool( "activate_editor" ) )
+	{
+		if( Game_Mode == MODE_LEVEL )
+		{
+			pLevel_Editor->Enable();
+		}
+		else if( Game_Mode == MODE_OVERWORLD )
+		{
+			pWorld_Editor->Enable();
 		}
 	}
 }

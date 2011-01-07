@@ -115,8 +115,7 @@ enum GameMode
 enum GameModeType
 {
 	MODE_TYPE_DEFAULT		= 0,
-	MODE_TYPE_LEVEL_CUSTOM	= 1,
-	MODE_TYPE_LEVEL_CUSTOM_EDITOR	= 2
+	MODE_TYPE_LEVEL_CUSTOM	= 1
 };
 
 /* *** *** *** *** *** *** *** Game Action *** *** *** *** *** *** *** *** *** *** */

@@ -11,16 +11,15 @@
             <Property Name="TabPanePosition" Value="Top" />
             <Property Name="UnifiedAreaRect" Value="{{0.0,0},{0.039,0},{1.0,0},{0.93,0}}" />
         </Window>
-        <Window Type="TaharezLook/Button" Name="button_save" >
-            <Property Name="Text" Value="Save" />
-            <Property Name="Tooltip" Value="Save the settings and exit. This does not save the level." />
+        <Window Type="TaharezLook/Button" Name="button_apply" >
+            <Property Name="Text" Value="Apply" />
+            <Property Name="Tooltip" Value="Apply and exit" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
             <Property Name="UnifiedAreaRect" Value="{{0.872346,0},{0.944156,0},{0.972346,0},{0.987489,0}}" />
             <Property Name="MouseCursorImage" Value="set:TaharezLook image:MouseArrow" />
         </Window>
         <Window Type="TaharezLook/StaticText" Name="text_level_settings" >
             <Property Name="Text" Value="Level Settings" />
-            <Property Name="Tooltip" Value="The level settings. Changes are always applied." />
             <Property Name="HorzFormatting" Value="HorzCentred" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
             <Property Name="UnifiedAreaRect" Value="{{0.415083,0},{0.007132,0},{0.590224,0},{0.059864,0}}" />

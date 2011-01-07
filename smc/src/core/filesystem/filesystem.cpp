@@ -82,11 +82,6 @@ bool Dir_Exists( const std::string &dir )
 	return 0;*/
 }
 
-bool Delete_File( const std::string &filename )
-{
-	return remove( filename.c_str() ) == 0;
-}
-
 bool Create_Directory( const std::string &dir )
 {
 	return fs::create_directory( fs::path( dir, fs::native ) );

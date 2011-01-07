@@ -355,23 +355,29 @@ bool cEditor_Level :: Function_New( void )
 {
 	std::string level_name = Box_Text_Input( _("Create a new Level"), _("Name") );
 
-	// aborted/invalid
+	// aborted
 	if( level_name.empty() )
 	{
 		return 0;
 	}
 
-	if( pActive_Level->New( level_name ) )
-	{
-		pHud_Debug->Set_Text( _("Created ") + level_name );
-		return 1;
-	}
-	else
+	// if it already exists
+	if( pLevel_Manager->Get_Path( level_name, 1 ) )
 	{
 		pHud_Debug->Set_Text( _("Level ") + level_name + _(" already exists") );
+		return 0;
 	}
 
-	return 0;
+	Game_Action = GA_ENTER_LEVEL;
+	Game_Action_Data_Start.add( "music_fadeout", "1000" );
+	Game_Action_Data_Start.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK ) );
+	Game_Action_Data_Start.add( "screen_fadeout_speed", "3" );
+	Game_Action_Data_Middle.add( "new_level", level_name.c_str() );
+	Game_Action_Data_End.add( "screen_fadein", CEGUI::PropertyHelper::intToString( EFFECT_IN_RANDOM ) );
+	Game_Action_Data_End.add( "screen_fadein_speed", "3" );
+
+	pHud_Debug->Set_Text( _("Created ") + level_name );
+	return 1;
 }
 
 void cEditor_Level :: Function_Load( void )
@@ -383,7 +389,7 @@ void cEditor_Level :: Function_Load( void )
 	{
 		level_name = Box_Text_Input( level_name, _("Load a Level"), level_name.compare( _("Name") ) == 0 ? 1 : 0 );
 
-		// break if empty
+		// aborted
 		if( level_name.empty() )
 		{
 			break;
@@ -434,13 +440,13 @@ void cEditor_Level :: Function_Save_as( void )
 {
 	std::string levelname = Box_Text_Input( _("Save Level as"), _("New name"), 1 );
 
-	// aborted/invalid
+	// aborted
 	if( levelname.empty() )
 	{
 		return;
 	}
 
-	pActive_Level->Set_Levelfile( levelname, 0 );
+	pActive_Level->Set_Filename( levelname, 0 );
 	pActive_Level->Save();
 }
 
@@ -467,7 +473,7 @@ void cEditor_Level :: Function_Delete( void )
 	Game_Action_Data_Start.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK ) );
 	Game_Action_Data_Start.add( "screen_fadeout_speed", "3" );
 	Game_Action_Data_Middle.add( "load_menu", int_to_string( MENU_MAIN ) );
-	if( Game_Mode_Type != MODE_TYPE_LEVEL_CUSTOM_EDITOR )
+	if( Game_Mode_Type != MODE_TYPE_LEVEL_CUSTOM )
 	{
 		Game_Action_Data_Middle.add( "menu_exit_back_to", int_to_string( MODE_OVERWORLD ) );
 	}

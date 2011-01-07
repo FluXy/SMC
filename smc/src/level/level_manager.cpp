@@ -92,6 +92,26 @@ void cLevel_Manager :: Unload( void )
 	pActive_Level->Unload();
 }
 
+cLevel *cLevel_Manager :: New( std::string filename )
+{
+	// if it already exists
+	if( Get_Path( filename, 1 ) )
+	{
+		return NULL;
+	}
+	
+	cLevel *level = new cLevel();
+	// if failed to create
+	if( !level->New( filename ) )
+	{
+		delete level;
+		return NULL;
+	}
+
+	Add( level );
+	return level;
+}
+
 cLevel *cLevel_Manager :: Load( std::string filename )
 {
 	cLevel *level = Get( filename );

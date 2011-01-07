@@ -110,12 +110,12 @@ public:
 	 * if set to 2 the full directory will be returned
 	*/
 	std::string Get_Music_Filename( int with_dir = 2, bool with_end = 1 ) const;
-	// Set the Music from filename
+	// Set the Music filename
 	void Set_Music( std::string filename );
-	/* Set a new Level filename name and automatically re-save the level
-	 * delete_old : if set delete the old level name
+	/* Set the filename
+	 * rename_old : if set also rename the level file in the user folder
 	*/
-	void Set_Levelfile( std::string filename, bool delete_old = 1 );
+	void Set_Filename( std::string filename, bool rename_old = 1 );
 	// Set the level author
 	void Set_Author( const std::string &name );
 	// Set the level version

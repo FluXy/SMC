@@ -41,6 +41,10 @@ public:
 	// Unload
 	void Unload( void );
 
+	/* Create a level and returns it if doesn't already exists
+	 * The new level is not set active.
+	*/
+	cLevel *New( std::string filename );
 	/* Load level and returns it if successful
 	 * If the level is already loaded it is returned but not reloaded.
 	 * The loaded level is not set active.

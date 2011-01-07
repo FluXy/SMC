@@ -33,11 +33,20 @@ bool File_Exists( const std::string &filename );
 bool Dir_Exists( const std::string &dir );
 /* Deletes the given file
  * Use with Caution
- *
- * Returns:
- * true on success
+ * Returns true on success
 */
-bool Delete_File( const std::string &filename );
+inline bool Delete_File( const std::string &filename )
+{
+	return remove( filename.c_str() ) == 0;
+};
+/* Rename the given file
+ * Returns true on success
+*/
+inline bool Rename_File( const std::string &old_filename, const std::string &new_filename )
+{
+	return rename( old_filename.c_str(), new_filename.c_str() ) == 0;
+};
+
 // Create directory
 bool Create_Directory( const std::string &dir );
 /* Get the file size in bytes 

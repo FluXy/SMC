@@ -23,6 +23,8 @@
 #include "../core/filesystem/filesystem.h"
 #include "../core/framerate.h"
 #include "../audio/audio.h"
+#include "../gui/generic.h"
+#include "../core/i18n.h"
 // CEGUI
 #include "CEGUIWindowManager.h"
 #include "elements/CEGUISpinner.h"
@@ -143,9 +145,9 @@ void cLevel_Settings :: Init( void )
 	// delete background image button
 	CEGUI::PushButton *button_delete_background_image = static_cast<CEGUI::PushButton *>(wmgr.getWindow( "button_delete_background_image" ));
 	button_delete_background_image->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cLevel_Settings::Delete_Background_Image, this ) );
-	// save and exit button
-	CEGUI::PushButton *button_save = static_cast<CEGUI::PushButton *>(wmgr.getWindow( "button_save" ));
-	button_save->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cLevel_Settings::Button_Save, this ) );
+	// apply button
+	CEGUI::PushButton *button_apply = static_cast<CEGUI::PushButton *>(wmgr.getWindow( "button_apply" ));
+	button_apply->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cLevel_Settings::Button_Apply, this ) );
 
 	// Background
 	// listbox
@@ -251,11 +253,14 @@ void cLevel_Settings :: Leave( void )
 
 	// # Main Tab
 	// filename
-	if( Trim_Filename( m_level->m_level_filename, 0, 0 ).compare( wmgr.getWindow( "editbox_level_filename" )->getText().c_str() ) != 0 )
+	std::string level_filename = wmgr.getWindow( "editbox_level_filename" )->getText().c_str();
+	if( level_filename.length() > 1 && Trim_Filename( m_level->m_level_filename, 0, 0 ).compare( level_filename ) != 0 )
 	{
-		m_level->Set_Levelfile( wmgr.getWindow( "editbox_level_filename" )->getText().c_str() );
-		// show no level saved info text
-		pHud_Debug->Set_Text( "", 0 );
+		m_level->Set_Filename( level_filename );
+		if( Box_Question( _("Save ") + Trim_Filename( level_filename, 0, 0 ) + " ?" ) )
+		{
+			m_level->Save();
+		}
 	}
 	// music
 	std::string new_music = wmgr.getWindow( "editbox_music_filename" )->getText().c_str();
@@ -474,7 +479,7 @@ bool cLevel_Settings :: Set_Background_Image( const CEGUI::EventArgs &event )
 	return 1;
 }
 
-bool cLevel_Settings :: Button_Save( const CEGUI::EventArgs &event )
+bool cLevel_Settings :: Button_Apply( const CEGUI::EventArgs &event )
 {
 	Exit();
 	return 1;

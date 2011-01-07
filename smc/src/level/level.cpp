@@ -156,7 +156,7 @@ bool cLevel :: New( std::string filename )
 		return 1;
 	}
 
-	// Level already exists
+	// level already exists
 	ifs.close();
 	return 0;
 }
@@ -466,12 +466,6 @@ void cLevel :: Enter( const GameMode old_mode /* = MODE_NOTHING */ )
 			pLevel_Editor->m_editor_window->show();
 			pMouseCursor->Set_Active( 1 );
 		}
-	}
-	// enable editor
-	else if( Game_Mode_Type == MODE_TYPE_LEVEL_CUSTOM_EDITOR )
-	{
-		Game_Mode_Type = MODE_TYPE_LEVEL_CUSTOM;
-		pLevel_Editor->Enable();
 	}
 
 	// camera
@@ -983,8 +977,10 @@ void cLevel :: Set_Music( std::string filename )
 	m_valid_music = File_Exists( filename );
 }
 
-void cLevel :: Set_Levelfile( std::string filename, bool delete_old /* = 1 */ )
+void cLevel :: Set_Filename( std::string filename, bool rename_old /* = 1 */ )
 {
+	Convert_Path_Separators( filename );
+
 	// erase file type and directory
 	filename = Trim_Filename( filename, 0, 0 );
 
@@ -994,30 +990,25 @@ void cLevel :: Set_Levelfile( std::string filename, bool delete_old /* = 1 */ )
 		return;
 	}
 
-	// delete file with the old name
-	if( delete_old )
-	{
-		Delete_File( m_level_filename );
-	}
-
-	Convert_Path_Separators( filename );
-
 	// add level file type
 	if( filename.find( ".smclvl" ) == std::string::npos )
 	{
 		filename.insert( filename.length(), ".smclvl" );
 	}
 
-	m_level_filename = filename;
-
 	// add level dir
-	if( m_level_filename.find( pResource_Manager->user_data_dir + USER_LEVEL_DIR + "/" ) == std::string::npos )
+	if( filename.find( pResource_Manager->user_data_dir + USER_LEVEL_DIR + "/" ) == std::string::npos )
 	{
-		m_level_filename.insert( 0, pResource_Manager->user_data_dir + USER_LEVEL_DIR + "/" );
+		filename.insert( 0, pResource_Manager->user_data_dir + USER_LEVEL_DIR + "/" );
 	}
 
-	// save with new filename
-	Save();
+	// rename file
+	if( rename_old )
+	{
+		Rename_File( m_level_filename, filename );
+	}
+
+	m_level_filename = filename;
 }
 
 void cLevel :: Set_Author( const std::string &name )

@@ -1100,23 +1100,16 @@ bool cMenu_Start :: Level_Select_Final_List( const CEGUI::EventArgs &event )
 
 bool cMenu_Start :: Button_Level_New_Clicked( const CEGUI::EventArgs &event )
 {
-	// Create level
 	if( !pLevel_Editor->Function_New() )
 	{
 		// aborted/failed
 		return 0;
 	}
 
-	// Enter level
-	Game_Action = GA_ENTER_LEVEL;
-	Game_Mode_Type = MODE_TYPE_LEVEL_CUSTOM_EDITOR;
-	Game_Action_Data_Start.add( "music_fadeout", "1000" );
-	Game_Action_Data_Start.add( "screen_fadeout", CEGUI::PropertyHelper::intToString( EFFECT_OUT_BLACK ) );
-	Game_Action_Data_Start.add( "screen_fadeout_speed", "3" );
+	Game_Mode_Type = MODE_TYPE_LEVEL_CUSTOM;
 	Game_Action_Data_Middle.add( "unload_menu", "1" );
 	Game_Action_Data_Middle.add( "reset_save", "1" );
-	Game_Action_Data_End.add( "screen_fadein", CEGUI::PropertyHelper::intToString( EFFECT_IN_RANDOM ) );
-	Game_Action_Data_End.add( "screen_fadein_speed", "3" );
+	Game_Action_Data_End.add( "activate_editor", "1" );
 
 	return 1;
 }
@@ -1130,7 +1123,7 @@ bool cMenu_Start :: Button_Level_Edit_Clicked( const CEGUI::EventArgs &event )
 	// load level
 	if( item && Load_Level( item->getText().c_str() ) )
 	{
-		Game_Mode_Type = MODE_TYPE_LEVEL_CUSTOM_EDITOR;
+		Game_Action_Data_End.add( "activate_editor", "1" );
 	}
 
 	return 1;
