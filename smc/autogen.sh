@@ -23,7 +23,7 @@ case "x$1" in
 		echo
 		echo "If no actions are specified it will generate the build system."
 		echo
-		echo "Report bugs at: <http://www.secretmaryo.org/phpBB3>"
+		echo "Report bugs at: <http://www.secretmaryo.org/phpBB3>";;
 
 	xclean)
 		if [ -f Makefile ]; then
