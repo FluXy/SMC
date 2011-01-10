@@ -4,9 +4,9 @@
 ; ########################################################
 
 !define PRODUCT_NAME "Secret Maryo Chronicles Music Pack"
-!define PRODUCT_VERSION "4.1"
+!define PRODUCT_VERSION "5.0"
 !define PRODUCT_PUBLISHER "Florian Richter"
-!define PRODUCT_WEB_SITE "http://www.secretmaryo.org"
+!define PRODUCT_WEB_PAGE "http://www.secretmaryo.org"
 !define PRODUCT_DIR_REGKEY "Software\secretmaryo"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\secretmaryo_music"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
@@ -17,6 +17,14 @@
 OutFile "SMC_Music_${PRODUCT_VERSION}_high_win32.exe"
 ; Installer Name
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
+
+; Should be like X.X.X.X
+VIProductVersion        "${PRODUCT_VERSION}.0.0"
+VIAddVersionKey         "FileDescription"       "${PRODUCT_NAME} Setup"
+VIAddVersionKey         "ProductName"           "${PRODUCT_NAME}"
+VIAddVersionKey         "FileVersion"           "${PRODUCT_VERSION}"
+VIAddVersionKey         "ProductVersion"        "${PRODUCT_VERSION}"
+VIAddVersionKey         "LegalCopyright"        "(C) The SMC Team"
 
 ; Set Compression
 SetCompressor lzma
@@ -48,7 +56,6 @@ InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" "install_dir"
 ;---------- Pages ----------------------
 
 !insertmacro MUI_PAGE_LICENSE "..\..\..\docs\license.txt"
-;!insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 
@@ -64,15 +71,18 @@ InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" "install_dir"
 
 ; on init
 Function .onInit
+	Call Check_If_Installer_Runs
+FunctionEnd
 
-; create mutex to check if only only one installer runs
-System::Call 'kernel32::CreateMutexA(i 0, i 0, t "SMC_Mutex") i .r1 ?e'
-Pop $R0
 
-StrCmp $R0 0 +3
-	MessageBox MB_OK|MB_ICONEXCLAMATION "Secret Maryo Chronicles installer is already running."
-	Abort
-
+Function Check_If_Installer_Runs
+	; create mutex to check if only only one installer runs
+	System::Call 'kernel32::CreateMutexA(i 0, i 0, t "SMC_Mutex") i .r1 ?e'
+	Pop $R0
+ 
+	StrCmp $R0 0 +3
+		MessageBox MB_OK|MB_ICONEXCLAMATION "Secret Maryo Chronicles installer is already running."
+		Abort
 FunctionEnd
 
 ;---------- install types ----------------------
@@ -97,18 +107,19 @@ Section "!Secret Maryo Chronicles Addon : Music" Sec_Music
 	SetOutPath "$INSTDIR\docs"
   	File "Addon - Music Readme.txt"
 
-	; Set default installation directory output path
-	SetOutPath $INSTDIR
+	; Set output path to the installation directory.
+	SetOutPath "$INSTDIR"
 
   	; Write the installation path into the registry
   	WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} SOFTWARE\secretmaryo\music "install_dir" "$INSTDIR"
+	WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} SOFTWARE\secretmaryo\music "version" "${PRODUCT_VERSION}"
   
   	; Write the uninstall keys for Windows
   	WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "${PRODUCT_NAME}"
   	WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" '"$INSTDIR\uninstall_music.exe"'
 	WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\Secret Maryo Chronicles.exe"
 	WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
-	WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
+	WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_PAGE}"
 	WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
   	WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoModify" 1
   	WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoRepair" 1
@@ -118,10 +129,10 @@ SectionEnd
 
 ;------------- Descriptions -------------------
 
-  ;Assign language strings to sections
-  !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-    !insertmacro MUI_DESCRIPTION_TEXT ${Sec_Music} "Music files (required)"
-  !insertmacro MUI_FUNCTION_DESCRIPTION_END
+;Assign language strings to sections
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+	!insertmacro MUI_DESCRIPTION_TEXT ${Sec_Music} "Music files (required)"
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;------------ Uninstaller --------------------
 

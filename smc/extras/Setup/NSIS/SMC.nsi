@@ -293,13 +293,13 @@ SectionEnd
 
 ;------------- Descriptions ------------------------------------------
 
-	;Assign language strings to sections
-	!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-		!insertmacro MUI_DESCRIPTION_TEXT ${Sec_SMC} $(SMC_CORE_SECTION_DESCRIPTION)
-		!insertmacro MUI_DESCRIPTION_TEXT ${Sec_Source} $(SMC_SOURCE_CODE_SECTION_DESCRIPTION)
-		!insertmacro MUI_DESCRIPTION_TEXT ${Sec_Menu_Shortcut} $(SMC_STARTMENU_SHORTCUT_DESC)
-		!insertmacro MUI_DESCRIPTION_TEXT ${Sec_Desktop_Shortcut} $(SMC_DESKTOP_SHORTCUT_DESC)
-	!insertmacro MUI_FUNCTION_DESCRIPTION_END
+;Assign language strings to sections
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+	!insertmacro MUI_DESCRIPTION_TEXT ${Sec_SMC} $(SMC_CORE_SECTION_DESCRIPTION)
+	!insertmacro MUI_DESCRIPTION_TEXT ${Sec_Source} $(SMC_SOURCE_CODE_SECTION_DESCRIPTION)
+	!insertmacro MUI_DESCRIPTION_TEXT ${Sec_Menu_Shortcut} $(SMC_STARTMENU_SHORTCUT_DESC)
+	!insertmacro MUI_DESCRIPTION_TEXT ${Sec_Desktop_Shortcut} $(SMC_DESKTOP_SHORTCUT_DESC)
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;------------ Uninstaller ------------------------------------------
 
