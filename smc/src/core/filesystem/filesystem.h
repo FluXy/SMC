@@ -17,7 +17,6 @@
 #define SMC_FILESYSTEM_H
 
 #include "../../core/global_basic.h"
-//#include "../../core/global_game.h"
 
 namespace SMC
 {
@@ -31,25 +30,36 @@ std::string Trim_Filename( std::string filename, bool keep_dir = 1, bool keep_en
 bool File_Exists( const std::string &filename );
 // Check if the directory exists
 bool Dir_Exists( const std::string &dir );
-/* Deletes the given file
- * Use with Caution
+/* Deletes the given file.
+ * Use with caution.
  * Returns true on success
 */
-inline bool Delete_File( const std::string &filename )
-{
-	return remove( filename.c_str() ) == 0;
-};
+bool Delete_File( const std::string &filename );
+/* Deletes the given directory, which must be empty.
+ * Use with caution.
+ * Returns true on success
+*/
+bool Delete_Dir( const std::string &dir );
+/* Deletes the given directory including the contents.
+ * Use with caution.
+ * Returns true on success
+*/
+bool Delete_Dir_And_Content( const std::string &dir );
 /* Rename the given file
  * Returns true on success
 */
-inline bool Rename_File( const std::string &old_filename, const std::string &new_filename )
-{
-	return rename( old_filename.c_str(), new_filename.c_str() ) == 0;
-};
+bool Rename_File( const std::string &old_filename, const std::string &new_filename );
 
-// Create directory
+/* Create directory.
+* Returns 1 if a new directory was created, otherwise 0
+*/
 bool Create_Directory( const std::string &dir );
-/* Get the file size in bytes 
+/* Create all needed directories.
+* Returns 1 if the directories were created, otherwise 0
+*/
+bool Create_Directories( const std::string &dir );
+
+/* Get the file size in bytes.
 * returns 0 if the file does not exist
 */
 size_t Get_File_Size( const std::string &filename );
@@ -57,7 +67,7 @@ size_t Get_File_Size( const std::string &filename );
 // Converts "\" and "!" to "/"
 void Convert_Path_Separators( std::string &str );
 
-/* Get all files from the directory
+/* Get all files from the directory.
  * dir : the directory to scan
  * file_type : if set only this file type is returned
  * with_directories : if set adds directories to the returned objects

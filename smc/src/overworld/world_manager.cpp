@@ -90,14 +90,19 @@ void cOverworld_Manager :: Init( void )
 void cOverworld_Manager :: Load_Dir( const std::string &dir, bool user_dir /* = 0 */ ) 
 {
 	// set world directory
-	fs::path full_path( dir, fs::native );
+// fixme : boost should use a codecvt_facet but for now we convert to UCS-2
+#ifdef _WIN32
+	fs::path full_path( utf8_to_ucs2( dir ) );
+#else
+	fs::path full_path( dir );
+#endif
 	fs::directory_iterator end_iter;
 
 	for( fs::directory_iterator dir_itr( full_path ); dir_itr != end_iter; ++dir_itr )
 	{
 		try
 		{
-			std::string current_dir = dir_itr->path().leaf();
+			std::string current_dir = dir_itr->path().filename().string();
 
 			// only directories with an existing description
 			if( fs::is_directory( *dir_itr ) && File_Exists( dir + "/" + current_dir + "/description.xml" ) )
@@ -127,7 +132,7 @@ void cOverworld_Manager :: Load_Dir( const std::string &dir, bool user_dir /* = 
 		}
 		catch( const std::exception &ex )
 		{
-			printf( "%s %s\n", dir_itr->path().leaf().c_str(), ex.what() );
+			printf( "%s %s\n", dir_itr->path().filename().string().c_str(), ex.what() );
 		}
 	}
 }

@@ -128,10 +128,6 @@ bool cPreferences :: Load( const std::string &filename /* = "" */ )
 	else
 	{
 		m_config_filename.insert( 0, pResource_Manager->user_data_dir );
-		/* fixme : this crashes in CEGUI::DefaultResourceProvider::loadRawDataContainer because of the é
-		 * The CEGUI string encoding is UTF-8 but std::string seems to be ISO-8859-1 or Windows-1252
-		*/
-		//config_filename.insert( 0, "N:/Dokumente und Einstellungen/smc_Invité/Anwendungsdaten/smc/" );
 
 		// does not exist in user dir
 		if( !File_Exists( m_config_filename ) )
@@ -147,8 +143,12 @@ bool cPreferences :: Load( const std::string &filename /* = "" */ )
 
 	try
 	{
-		//CEGUI::String str = "N:/Dokumente und Einstellungen/smc_Invité/Anwendungsdaten/smc/config.xml";
+	// fixme : Workaround for std::string to CEGUI::String utf8 conversion. Check again if CEGUI 0.8 works with std::string utf8
+	#ifdef _WIN32
+		CEGUI::System::getSingleton().getXMLParser()->parseXMLFile( *this, (const CEGUI::utf8*)m_config_filename.c_str(), DATA_DIR "/" GAME_SCHEMA_DIR "/Config.xsd", "" );
+	#else
 		CEGUI::System::getSingleton().getXMLParser()->parseXMLFile( *this, m_config_filename, DATA_DIR "/" GAME_SCHEMA_DIR "/Config.xsd", "" );
+	#endif
 	}
 	// catch CEGUI Exceptions
 	catch( CEGUI::Exception &ex )
@@ -170,7 +170,12 @@ void cPreferences :: Save( void )
 {
 	Update();
 
+// fixme : Check if there is a more portable way f.e. with imbue()
+#ifdef _WIN32
+	ofstream file( utf8_to_ucs2( m_config_filename ).c_str(), ios::out | ios::trunc );
+#else
 	ofstream file( m_config_filename.c_str(), ios::out | ios::trunc );
+#endif
 
 	if( !file.is_open() )
 	{

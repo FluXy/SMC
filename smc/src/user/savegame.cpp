@@ -589,7 +589,13 @@ int cSavegame :: Save( unsigned int save_slot, cSave *savegame )
 	// remove old format savegame
 	Delete_File( m_savegame_dir + "/" + int_to_string( save_slot ) + ".save" );
 
+// fixme : Check if there is a more portable way f.e. with imbue()
+#ifdef _WIN32
+	ofstream file( utf8_to_ucs2( filename ).c_str(), ios::out | ios::trunc );
+#else
 	ofstream file( filename.c_str(), ios::out | ios::trunc );
+#endif
+
 	
 	if( !file.is_open() )
 	{
@@ -803,7 +809,7 @@ bool cSavegame :: Is_Valid( unsigned int save_slot ) const
 
 /* *** *** *** *** *** *** *** cSavegame_XML_Handler *** *** *** *** *** *** *** *** *** *** */
 
-cSavegame_XML_Handler :: cSavegame_XML_Handler( const CEGUI::String &filename )
+cSavegame_XML_Handler :: cSavegame_XML_Handler( const std::string &filename )
 {
 	// new savegame format
 	if( filename.rfind( ".smcsav" ) != std::string::npos )
@@ -826,10 +832,15 @@ cSavegame_XML_Handler :: cSavegame_XML_Handler( const CEGUI::String &filename )
 	{
 		xsd_name = "Savegame.xsd";
 	}
-	
+
 	try
 	{
+	// fixme : Workaround for std::string to CEGUI::String utf8 conversion. Check again if CEGUI 0.8 works with std::string utf8
+	#ifdef _WIN32
+		CEGUI::System::getSingleton().getXMLParser()->parseXMLFile( *this, (const CEGUI::utf8*)filename.c_str(), DATA_DIR "/" GAME_SCHEMA_DIR "/" + xsd_name, "" );
+	#else
 		CEGUI::System::getSingleton().getXMLParser()->parseXMLFile( *this, filename.c_str(), DATA_DIR "/" GAME_SCHEMA_DIR "/" + xsd_name, "" );
+	#endif
 	}
 	// catch CEGUI Exceptions
 	catch( CEGUI::Exception &ex )

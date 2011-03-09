@@ -331,7 +331,12 @@ void cLayer :: Load( const std::string &filename )
 	try
 	{
 		// parse layer
+	// fixme : Workaround for std::string to CEGUI::String utf8 conversion. Check again if CEGUI 0.8 works with std::string utf8
+	#ifdef _WIN32
+		CEGUI::System::getSingleton().getXMLParser()->parseXMLFile( *this, (const CEGUI::utf8*)filename.c_str(), DATA_DIR "/" GAME_SCHEMA_DIR "/World/Lines.xsd", "" );
+	#else
 		CEGUI::System::getSingleton().getXMLParser()->parseXMLFile( *this, filename.c_str(), DATA_DIR "/" GAME_SCHEMA_DIR "/World/Lines.xsd", "" );
+	#endif
 	}
 	// catch CEGUI Exceptions
 	catch( CEGUI::Exception &ex )
@@ -343,7 +348,13 @@ void cLayer :: Load( const std::string &filename )
 
 bool cLayer :: Save( const std::string &filename )
 {
+// fixme : Check if there is a more portable way f.e. with imbue()
+#ifdef _WIN32
+	ofstream file( utf8_to_ucs2( filename ).c_str(), ios::out | ios::trunc );
+#else
 	ofstream file( filename.c_str(), ios::out | ios::trunc );
+#endif
+
 
 	if( !file )
 	{

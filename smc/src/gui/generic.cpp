@@ -454,10 +454,25 @@ std::string Get_Clipboard_Content( void )
 #ifdef _WIN32
 	if( OpenClipboard( NULL ) )
 	{
-		/* CF_TEXT is Windows-1252 whereas CF_UNICODETEXT is UNICODE
-		* Both have line ends as CR-LF and a null character at the end of the data.
-		*/
-		HANDLE h = GetClipboardData( CF_TEXT );
+		bool ucs2 = 0;
+		if( IsClipboardFormatAvailable( CF_UNICODETEXT ) )
+		{
+			ucs2 = 1;
+		}
+
+		HANDLE h;
+
+		// Both have line ends as CR-LF and a null character at the end of the data.
+		if( ucs2 )
+		{
+			// CF_UNICODETEXT is UCS-2
+			h = GetClipboardData( CF_UNICODETEXT );
+		}
+		else
+		{
+			// CF_TEXT is Windows-1252
+			h = GetClipboardData( CF_TEXT ); 
+		}
 
 		// no handle
 		if( !h )
@@ -468,7 +483,14 @@ std::string Get_Clipboard_Content( void )
 		}
 
 		// get content
-		content = static_cast<char *>(GlobalLock( h ));
+		if( ucs2 )
+		{
+			content = ucs2_to_utf8(static_cast<wchar_t *>(GlobalLock( h )));
+		}
+		else
+		{
+			content = static_cast<char *>(GlobalLock( h ));
+		}
 
 		// clean up
 		GlobalUnlock( h );

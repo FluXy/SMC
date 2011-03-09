@@ -67,7 +67,12 @@ void cOverworld_description :: Load( void )
 	}
 
 	// Load Description
+// fixme : Workaround for std::string to CEGUI::String utf8 conversion. Check again if CEGUI 0.8 works with std::string utf8
+#ifdef _WIN32
+	CEGUI::System::getSingleton().getXMLParser()->parseXMLFile( *this, (const CEGUI::utf8*)filename.c_str(), DATA_DIR "/" GAME_SCHEMA_DIR "/World/Description.xsd", "" );
+#else
 	CEGUI::System::getSingleton().getXMLParser()->parseXMLFile( *this, filename.c_str(), DATA_DIR "/" GAME_SCHEMA_DIR "/World/Description.xsd", "" );
+#endif
 }
 
 void cOverworld_description :: Save( void )
@@ -75,7 +80,13 @@ void cOverworld_description :: Save( void )
 	std::string save_dir = pResource_Manager->user_data_dir + USER_WORLD_DIR + "/" + m_path;
 	std::string filename = save_dir + "/description.xml";
 
+// fixme : Check if there is a more portable way f.e. with imbue()
+#ifdef _WIN32
+	ofstream file( utf8_to_ucs2( filename ).c_str(), ios::out | ios::trunc );
+#else
 	ofstream file( filename.c_str(), ios::out | ios::trunc );
+#endif
+
 
 	if( !file )
 	{
@@ -235,7 +246,12 @@ bool cOverworld :: Load( void )
 	try
 	{
 		// parse overworld
-		CEGUI::System::getSingleton().getXMLParser()->parseXMLFile( *this, world_filename.c_str(), DATA_DIR "/" GAME_SCHEMA_DIR "/World/World.xsd", "" );
+	// fixme : Workaround for std::string to CEGUI::String utf8 conversion. Check again if CEGUI 0.8 works with std::string utf8
+	#ifdef _WIN32
+		CEGUI::System::getSingleton().getXMLParser()->parseXMLFile( *this, (const CEGUI::utf8*)world_filename.c_str(), DATA_DIR "/" GAME_SCHEMA_DIR "/World/World.xsd", "" );
+	#else
+		CEGUI::System::getSingleton().getXMLParser()->parseXMLFile( *this, world_filename.c_str(), DATA_DIR "/" GAME_SCHEMA_DIR "/World/World.xsd", "" );	
+	#endif
 	}
 	// catch CEGUI Exceptions
 	catch( CEGUI::Exception &ex )
@@ -302,7 +318,13 @@ void cOverworld :: Save( void )
 
 	std::string filename = save_dir + "/world.xml";
 
+// fixme : Check if there is a more portable way f.e. with imbue()
+#ifdef _WIN32
+	ofstream file( utf8_to_ucs2( filename ).c_str(), ios::out | ios::trunc );
+#else
 	ofstream file( filename.c_str(), ios::out | ios::trunc );
+#endif
+
 
 	if( !file )
 	{

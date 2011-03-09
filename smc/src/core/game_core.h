@@ -130,6 +130,12 @@ double string_to_double( const std::string &str );
 unsigned int string_to_version_number( std::string str );
 // Return the non-xml string
 std::string xml_string_to_string( std::string str );
+#ifdef _WIN32
+// Return it as UTF-8 string
+std::string ucs2_to_utf8( const std::wstring &str );
+// Return it as UCS-2 string
+std::wstring utf8_to_ucs2( const std::string &str );
+#endif
 
 // Handle game events
 void Handle_Game_Events( void );

@@ -414,6 +414,57 @@ std::string xml_string_to_string( std::string str )
 	return str;
 }
 
+#ifdef _WIN32
+std::string ucs2_to_utf8( const std::wstring &utf16 )
+{
+	if( utf16.empty() )
+	{
+		return std::string();
+	}
+
+	const int utf8_length = WideCharToMultiByte( CP_UTF8, 0, utf16.data(), utf16.length(), NULL, 0, NULL, NULL );
+
+	if( utf8_length == 0 )
+	{
+		printf( "Warning: ucs2_to_utf8 : WideCharToMultiByte returned zero length" );
+		return std::string();
+	}
+
+	std::string utf8( utf8_length, 0 );
+
+	if( !WideCharToMultiByte( CP_UTF8, 0 , utf16.data(), utf16.length(), &utf8[0], utf8.length(), NULL, NULL ) )
+    {
+		printf( "Warning: ucs2_to_utf8 : WideCharToMultiByte conversion failed" );
+    }
+
+	return utf8;
+}
+
+std::wstring utf8_to_ucs2( const std::string& utf8 )
+{
+	if( utf8.empty() )
+	{
+		return std::wstring();
+	}
+
+	const int utf16_length = MultiByteToWideChar( CP_UTF8, 0, utf8.data(), utf8.length(), NULL, 0 );
+
+	if( utf16_length == 0 )
+	{
+		printf( "Warning: utf8_to_ucs2 : MultiByteToWideChar returned zero length" );
+		return std::wstring();
+	}
+
+	std::wstring utf16( utf16_length, 0 );
+	if( !MultiByteToWideChar( CP_UTF8, 0, utf8.data(), utf8.length(), &utf16[0], utf16.length() ) )
+	{
+		printf( "Warning: utf8_to_ucs2 : MultiByteToWideChar conversion failed" );
+	}
+
+	return utf16;
+}
+#endif
+
 void Handle_Game_Events( void )
 {
 	// if game action is set

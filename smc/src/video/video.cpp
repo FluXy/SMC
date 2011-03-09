@@ -95,9 +95,10 @@ void cVideo :: Init_CEGUI_Fake( void ) const
 	}
 	// get a directory to dump the CEGUI log
 #ifdef _WIN32
-	std::string log_dump_dir = Get_Temp_Directory() + "cegui.log";
+	// fixme : Workaround for std::string to CEGUI::String utf8 conversion. Check again if CEGUI 0.8 works with std::string utf8
+	CEGUI::String log_dump_dir = (const CEGUI::utf8*)((Get_Temp_Directory() + "cegui.log").c_str());
 #else
-	std::string log_dump_dir = "/dev/null";
+	CEGUI::String log_dump_dir = "/dev/null";
 #endif
 	// create fake system and renderer
 	pGuiSystem = &CEGUI::System::create( CEGUI::NullRenderer::create(), rp, NULL, NULL, NULL, "", log_dump_dir );
@@ -164,7 +165,12 @@ void cVideo :: Init_CEGUI( void ) const
 	// create system
 	try
 	{
+	// fixme : Workaround for std::string to CEGUI::String utf8 conversion. Check again if CEGUI 0.8 works with std::string utf8
+	#ifdef _WIN32
+		pGuiSystem = &CEGUI::System::create( *pGuiRenderer, rp, NULL, NULL, NULL, "", (const CEGUI::utf8*)((pResource_Manager->user_data_dir + "cegui.log").c_str()) );
+	#else
 		pGuiSystem = &CEGUI::System::create( *pGuiRenderer, rp, NULL, NULL, NULL, "", pResource_Manager->user_data_dir + "cegui.log" );
+	#endif
 	}
 	// catch CEGUI Exceptions
 	catch( CEGUI::Exception &ex )
@@ -182,11 +188,6 @@ void cVideo :: Init_CEGUI_Data( void ) const
 	CEGUI::Font::setDefaultResourceGroup( "fonts" );
 	CEGUI::WidgetLookManager::setDefaultResourceGroup( "looknfeels" );
 	CEGUI::WindowManager::setDefaultResourceGroup( "layouts" );
-	// only needed for Xerces
-	if( CEGUI::System::getDefaultXMLParserName().compare( "XercesParser" ) == 0 )
-	{
-		//XercesParser::setSchemaDefaultResourceGroup( "schemas" );
-	}
 
 	// load the scheme file, which auto-loads the imageset
 	try
@@ -699,7 +700,7 @@ void cVideo :: Init_Image_Cache( bool recreate /* = 0 */, bool draw_gui /* = 0 *
 		{
 			try
 			{
-				fs::remove_all( fs::path( m_imgcache_dir, fs::native ) );
+				Delete_Dir_And_Content( m_imgcache_dir );
 			}
 			// could happen if a file is locked or we have no write rights
 			catch( const std::exception &ex )
@@ -721,7 +722,7 @@ void cVideo :: Init_Image_Cache( bool recreate /* = 0 */, bool draw_gui /* = 0 *
 	// no cache available
 	if( !Dir_Exists( imgcache_dir_active ) )
 	{
-		fs::create_directories( fs::path( imgcache_dir_active + "/" GAME_PIXMAPS_DIR, fs::native ) );
+		Create_Directories( imgcache_dir_active + "/" GAME_PIXMAPS_DIR );
 	}
 	// cache available
 	else
@@ -866,17 +867,17 @@ void cVideo :: Init_Image_Cache( bool recreate /* = 0 */, bool draw_gui /* = 0 *
 			// update progress
 			progress_bar->setProgress( static_cast<float>(loaded_files) / static_cast<float>(file_count) );
 
-#ifdef _DEBUG
+		#ifdef _DEBUG
 			// update filename
 			cGL_Surface *surface_filename = pFont->Render_Text( pFont->m_font_small, filename, white );
 			// draw filename
 			surface_filename->Blit( game_res_w * 0.2f, game_res_h * 0.8f, 0.1f );
-#endif
+		#endif
 			Loading_Screen_Draw();
-#ifdef _DEBUG
+		#ifdef _DEBUG
 			// delete
 			delete surface_filename;
-#endif
+		#endif
 		}
 	}
 
@@ -985,7 +986,7 @@ void cVideo :: Toggle_Fullscreen( void )
 	GLclampf clear_color[4];
 	glGetFloatv( GL_COLOR_CLEAR_VALUE, clear_color );
 
-#ifdef WIN32
+#ifdef _WIN32
 	// windows needs reinitialization
 	Init_Video();
 #else
@@ -1701,11 +1702,16 @@ void cVideo :: Save_Surface( const std::string &filename, const unsigned char *d
 {
 	FILE *fp = NULL;
 
-	fp = fopen( filename.c_str(), "wb" );
+	// fixme : Check if there is a more portable way f.e. with imbue()
+	#ifdef _WIN32
+		fp = _wfopen( utf8_to_ucs2( filename ).c_str(), L"wb" );
+	#else
+		fp = fopen( filename.c_str(), "wb" );
+	#endif
 
 	if( !fp )
 	{
-		printf( "Could not save Surface\n" );
+		printf( "Warning: cVideo :: Save_Surface : Could not create file for writing\n" );
 		return;
 	}
 
