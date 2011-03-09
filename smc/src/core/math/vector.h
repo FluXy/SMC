@@ -26,7 +26,8 @@ namespace SMC
 /* *** *** *** *** *** *** *** GL_Vector *** *** *** *** *** *** *** *** *** *** */
 
 /* Vector
- * parts from Clanlib
+ * parts from Clanlib (Magnus Norddahl)
+ * BSD style license
 */
 class GL_Vector
 {
@@ -78,7 +79,7 @@ public:
 		x += v.x;
 		y += v.y;
 		z += v.z;
-		w += v.z;
+		w += v.w;
 	}
 
 	// -= operator
@@ -108,7 +109,7 @@ public:
 	// - operator
 	inline GL_Vector operator - ( const GL_Vector &v ) const
 	{
-		return GL_Vector( x - v.x, y - v.y, z - v.z, w - v.z );
+		return GL_Vector( x - v.x, y - v.y, z - v.z, w - v.w );
 	}
 
 	// unary - operator
