@@ -15,7 +15,7 @@
     <Image Name="EditBoxLeft" XPos="82" YPos="216" Width="16" Height="32" />
     <Image Name="ListboxLeft" XPos="82" YPos="178" Width="14" Height="12" />
     <Image Name="MenuTopLeft" XPos="332" YPos="408" Width="4" Height="4" />
-    <Image Name="MouseTarget" XPos="364" YPos="254" Width="34" Height="34" />
+    <Image Name="MouseTarget" XPos="364" YPos="254" Width="34" Height="34" XOffset="-16" YOffset="-16" />
     <Image Name="StaticRight" XPos="126" YPos="178" Width="12" Height="12" />
     <Image Name="CheckboxMark" XPos="220" YPos="32" Width="24" Height="24" />
     <Image Name="EditBoxCarat" XPos="120" YPos="216" Width="8" Height="36" />
@@ -23,7 +23,7 @@
     <Image Name="GenericBrush" XPos="18" YPos="142" Width="2" Height="2" />
     <Image Name="ListboxRight" XPos="124" YPos="178" Width="14" Height="12" />
     <Image Name="MenuTopRight" XPos="350" YPos="408" Width="6" Height="4" />
-    <Image Name="MouseTextBar" XPos="346" YPos="254" Width="14" Height="36" />
+    <Image Name="MouseTextBar" XPos="346" YPos="254" Width="14" Height="36" XOffset="-6" YOffset="-18" />
     <Image Name="MultiListTop" XPos="362" YPos="162" Width="12" Height="14" />
     <Image Name="StaticBottom" XPos="104" YPos="200" Width="12" Height="12" />
     <Image Name="SysAreaRight" XPos="244" YPos="254" Width="26" Height="32" />
@@ -60,11 +60,11 @@
     <Image Name="ListboxBackdrop" XPos="104" YPos="178" Width="12" Height="12" />
     <Image Name="ListboxTopRight" XPos="124" YPos="156" Width="14" Height="14" />
     <Image Name="MenuBottomRight" XPos="350" YPos="426" Width="6" Height="6" />
-    <Image Name="MouseEsWeCursor" XPos="364" YPos="300" Width="36" Height="16" />
-    <Image Name="MouseMoveCursor" XPos="402" YPos="254" Width="36" Height="36" />
-    <Image Name="MouseNeSwCursor" XPos="402" YPos="294" Width="28" Height="28" />
-    <Image Name="MouseNoSoCursor" XPos="442" YPos="254" Width="16" Height="36" />
-    <Image Name="MouseNwSeCursor" XPos="460" YPos="252" Width="28" Height="28" />
+    <Image Name="MouseEsWeCursor" XPos="364" YPos="300" Width="36" Height="16" XOffset="-18" YOffset="-8" />
+    <Image Name="MouseMoveCursor" XPos="402" YPos="254" Width="36" Height="36" XOffset="-18" YOffset="-18" />
+    <Image Name="MouseNeSwCursor" XPos="402" YPos="294" Width="28" Height="28" XOffset="-14" YOffset="-14" />
+    <Image Name="MouseNoSoCursor" XPos="442" YPos="254" Width="16" Height="36" XOffset="-8" YOffset="-18" />
+    <Image Name="MouseNwSeCursor" XPos="460" YPos="252" Width="28" Height="28" XOffset="-14" YOffset="-14" />
     <Image Name="MultiListBottom" XPos="362" YPos="204" Width="12" Height="14" />
     <Image Name="NewTitlebarLeft" XPos="122" YPos="254" Width="26" Height="32" />
     <Image Name="PopupMenuMiddle" XPos="382" YPos="418" Width="2" Height="2" />
