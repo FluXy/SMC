@@ -207,6 +207,7 @@ void cVideo :: Init_CEGUI_Data( void ) const
 	CEGUI::MouseCursor::getSingleton().setImage( &CEGUI::ImagesetManager::getSingleton().get( "TaharezLook" ).getImage( "MouseArrow" ) );
 	// default tooltip
 	pGuiSystem->setDefaultTooltip( "TaharezLook/Tooltip" );
+
 	// create default root window
 	CEGUI::Window *window_root = CEGUI::WindowManager::getSingleton().loadWindowLayout( "default.layout" );
 	pGuiSystem->setGUISheet( window_root );

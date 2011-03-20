@@ -25,6 +25,8 @@
 #include "CEGUIXMLAttributes.h"
 #include "elements/CEGUIListbox.h"
 #include "elements/CEGUIListboxTextItem.h"
+#include "CEGUIImageset.h"
+#include "RendererModules\OpenGL\CEGUIOpenGLTexture.h"
 
 namespace SMC
 {
@@ -45,31 +47,40 @@ public:
 	bool advance_row;
 };
 
+/* *** *** *** *** *** *** *** *** cEditor_CEGUI_Texture *** *** *** *** *** *** *** *** *** */
+
+// Todo : Needed for CEGUI 0.7.5 to not delete our opengl texture. Remove this if CEGUI 0.8 has an option for it.
+class cEditor_CEGUI_Texture : public CEGUI::OpenGLTexture
+{
+public:
+	cEditor_CEGUI_Texture( CEGUI::OpenGLRenderer& owner, GLuint tex, const CEGUI::Size& size );
+	~cEditor_CEGUI_Texture( void );
+
+	void cleanupOpenGLTexture( void );
+};
+
 /* *** *** *** *** *** *** *** *** cEditor_Item_Object *** *** *** *** *** *** *** *** *** */
 
 class cEditor_Item_Object : public CEGUI::ListboxItem
 {
 public:
-	cEditor_Item_Object( const std::string &text );
+	cEditor_Item_Object( const std::string &text, const CEGUI::Listbox *parent );
 	virtual ~cEditor_Item_Object( void );
 
 	// Initialize
-	void Init( void );
+	void Init( cSprite *sprite );
 
-	/*!
-	\brief
-		Return the rendered pixel size of this list box item.
-	\return
-		Size object describing the size of the list box item in pixels.
-	*/
+	// overridden from base class
 	virtual	CEGUI::Size getPixelSize( void ) const;
-	// draw
-    void draw(CEGUI::GeometryBuffer& buffer, const CEGUI::Rect& targetRect, float alpha, const CEGUI::Rect* clipper) const;
-	// draw image
-	void Draw_Image( void );
+	// overridden from base class
+    void draw( CEGUI::GeometryBuffer& buffer, const CEGUI::Rect& targetRect, float alpha, const CEGUI::Rect* clipper ) const;
 
+	// parent
+	const CEGUI::Listbox *m_parent;
 	// text
 	CEGUI::ListboxTextItem *list_text;
+	// cegui image
+	CEGUI::Imageset *m_image;
 	// sprite
 	cSprite *sprite_obj;
 	// preview image scale

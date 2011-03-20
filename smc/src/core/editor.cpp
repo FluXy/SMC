@@ -40,7 +40,7 @@ namespace fs = boost::filesystem;
 #include "CEGUIWindowManager.h"
 #include "elements/CEGUITabControl.h"
 #include "elements/CEGUIScrollbar.h"
-#include "CEGUIFontManager.h"
+#include "CEGUIGeometryBuffer.h"
 
 namespace SMC
 {
@@ -62,13 +62,45 @@ cEditor_Object_Settings_Item :: ~cEditor_Object_Settings_Item( void )
 	wmgr.destroyWindow( window_setting );
 }
 
+/* *** *** *** *** *** *** *** *** cEditor_CEGUI_Texture *** *** *** *** *** *** *** *** *** */
+
+cEditor_CEGUI_Texture :: cEditor_CEGUI_Texture( CEGUI::OpenGLRenderer& owner, GLuint tex, const CEGUI::Size& size )
+: CEGUI::OpenGLTexture( owner, tex, size )
+{
+
+}
+
+cEditor_CEGUI_Texture :: ~cEditor_CEGUI_Texture( void )
+{
+	cleanupOpenGLTexture();
+}
+
+void cEditor_CEGUI_Texture :: cleanupOpenGLTexture( void )
+{
+    // from cegui
+    if (d_grabBuffer)
+    {
+        delete[] d_grabBuffer;
+        d_grabBuffer = 0;
+    }
+    // do not delete it
+    else
+    {
+        d_ogltexture = 0;
+    }
+}
+
 /* *** *** *** *** *** *** *** *** cEditor_Item_Object *** *** *** *** *** *** *** *** *** */
 
-cEditor_Item_Object :: cEditor_Item_Object( const std::string &text )
+cEditor_Item_Object :: cEditor_Item_Object( const std::string &text, const CEGUI::Listbox *parent )
 : CEGUI::ListboxItem( "" )
 {
+	m_parent = parent;
 	list_text = new CEGUI::ListboxTextItem( reinterpret_cast<const CEGUI::utf8*>(text.c_str()) );
+	list_text->setSelectionColours( CEGUI::colour( 0.33f, 0.33f, 0.33f ) );
+	list_text->setSelectionBrushImage( "TaharezLook", "ListboxSelectionBrush" );
 
+	m_image = NULL;
 	sprite_obj = NULL;
 	preview_scale = 1;
 }
@@ -77,38 +109,48 @@ cEditor_Item_Object :: ~cEditor_Item_Object( void )
 {
 	delete list_text;
 
+	if( m_image )
+	{
+		delete m_image->getTexture();
+		CEGUI::ImagesetManager::getSingleton().destroy( *m_image );
+		m_image = NULL;
+	}
+	
 	if( sprite_obj )
 	{
 		delete sprite_obj;
 	}
 }
 
-void cEditor_Item_Object :: Init( void )
+void cEditor_Item_Object :: Init( cSprite *sprite )
 {
+	if( m_image )
+	{
+		printf( "cEditor_Item_Object::Init: Warning: Image is already set\n" );
+		return;
+	}
+
+	/* Don't set sprite settings which could get copied
+	 * into the level/world like shadow and z position
+	*/
+	sprite_obj = sprite;
+
 	// CEGUI settings
 	list_text->setTextColours( Get_Massive_Type_Color( sprite_obj->m_massive_type ).Get_cegui_Color() );
-	list_text->setSelectionColours( CEGUI::colour( 0.33f, 0.33f, 0.33f ) );
-	list_text->setSelectionBrushImage( "TaharezLook", "ListboxSelectionBrush" );
 
-	// image dimension text
-	// string size_text = int_to_string( static_cast<int>(image->w) ) + "x" + int_to_string( static_cast<int>(image->h) );
+	if( !sprite_obj->m_start_image || !pPreferences->m_editor_show_item_images )
+	{
+		return;
+	}
 
 	// get scale
 	preview_scale = pVideo->Get_Scale( sprite_obj->m_start_image, static_cast<float>(pPreferences->m_editor_item_image_size) * 2.0f, static_cast<float>(pPreferences->m_editor_item_image_size) );
 
-	// check if name is fitting
-	if( sprite_obj->m_name.length() > 25 )
-	{
-		sprite_obj->m_name.erase( 25 );
-		sprite_obj->m_name += "|";
-	}
-
-	// set position
-	sprite_obj->Set_Pos_X( 20.0f, 1 );
-
-	/* Don't set sprite settings which could get copied
-	 * into the level if selected like shadow and z position
-	*/
+	// create CEGUI link
+	cEditor_CEGUI_Texture *texture = new cEditor_CEGUI_Texture( *pGuiRenderer, sprite_obj->m_start_image->m_image, CEGUI::Size( sprite_obj->m_start_image->m_tex_w, sprite_obj->m_start_image->m_tex_h ) );
+	CEGUI::String imageset_name = "editor_item " + list_text->getText() + " " + CEGUI::PropertyHelper::uintToString( m_parent->getItemCount() );
+	m_image = &CEGUI::ImagesetManager::getSingleton().create( imageset_name, *texture );
+	m_image->defineImage( "default", CEGUI::Point(0, 0), texture->getSize(), CEGUI::Point(0, 0) );
 }
 
 CEGUI::Size cEditor_Item_Object :: getPixelSize( void ) const
@@ -125,57 +167,13 @@ CEGUI::Size cEditor_Item_Object :: getPixelSize( void ) const
 
 void cEditor_Item_Object :: draw( CEGUI::GeometryBuffer &buffer, const CEGUI::Rect &targetRect, float alpha, const CEGUI::Rect *clipper ) const
 {
-	// draw text
+	// image
+	if( m_image && pPreferences->m_editor_show_item_images )
+	{
+		m_image->draw( buffer, CEGUI::Rect(CEGUI::Point(0, 0), m_image->getTexture()->getSize()), CEGUI::Rect(targetRect.d_left + 15, targetRect.d_top + 22, targetRect.d_left + 15 + (sprite_obj->m_start_image->m_start_w * preview_scale * global_upscalex), targetRect.d_top + 22 + (sprite_obj->m_start_image->m_start_h * preview_scale * global_upscaley) ), clipper, CEGUI::ColourRect(CEGUI::colour(1.0f, 1.0f, 1.0f, alpha)), CEGUI::TopLeftToBottomRight );
+	}
+	// name text
 	list_text->draw( buffer, targetRect, alpha, clipper );
-}
-
-void cEditor_Item_Object :: Draw_Image( void )
-{
-	// no image available to blit
-	if( !sprite_obj->m_start_image || !pPreferences->m_editor_show_item_images )
-	{
-		return;
-	}
-
-	const CEGUI::Listbox *owner = static_cast<const CEGUI::Listbox *>( getOwnerWindow() );
-
-	// if item is not visible
-	if( !owner->isVisible() )
-	{
-		return;
-	}
-
-	// create request
-	cSurface_Request *request = new cSurface_Request();
-
-	// scale
-	sprite_obj->m_start_scale_x = preview_scale;
-	sprite_obj->m_start_scale_y = preview_scale;
-	// set editor scale directions
-	bool scale_up_orig = sprite_obj->m_scale_up;
-	bool scale_down_orig = sprite_obj->m_scale_down;
-	bool scale_left_orig = sprite_obj->m_scale_left;
-	bool scale_right_orig = sprite_obj->m_scale_right;
-	sprite_obj->Set_Scale_Directions( 0, 1, 0, 1 );
-	// draw image
-	sprite_obj->Draw_Image_Editor( request );
-	// reset scale
-	sprite_obj->m_start_scale_x = 1;
-	sprite_obj->m_start_scale_y = 1;
-	// set original scale directions
-	sprite_obj->Set_Scale_Directions( scale_up_orig, scale_down_orig, scale_left_orig, scale_right_orig );
-
-	// ignore camera
-	request->no_camera = 1;
-	// position z
-	request->pos_z = 0.9f;
-
-	// set shadow
-	request->shadow_color = blackalpha128;
-	request->shadow_pos = 2;
-
-	// add request
-	pRenderer_GUI->Add( request );
 }
 
 /* *** *** *** *** *** *** *** *** cEditor_Menu_Object *** *** *** *** *** *** *** *** *** */
@@ -529,39 +527,6 @@ void cEditor :: Draw( void )
 
 		color = Color( static_cast<Uint8>(20), 150, 20, 192 );
 		pVideo->Draw_Line( pActive_Camera->m_limit_rect.m_x + pActive_Camera->m_limit_rect.m_w - pActive_Camera->m_x, start_y, pActive_Camera->m_limit_rect.m_x + pActive_Camera->m_limit_rect.m_w - pActive_Camera->m_x, 0, 0.124f, &color );
-	}
-
-	// if editor window is active
-	if( m_editor_window->getXPosition().asRelative( 1.0f ) >= 0.0f )
-	{
-		// Listbox dimension
-		float list_posy = m_listbox_items->getUnclippedOuterRect().d_top * global_downscaley;
-		float list_height = m_listbox_items->getUnclippedOuterRect().getHeight() * global_downscaley;
-		// Vertical ScrollBar Position
-		float scroll_pos = m_listbox_items->getVertScrollbar()->getScrollPosition() * global_downscaley;
-		// font height
-		float font_height = CEGUI::FontManager::getSingleton().get( "bluebold_medium" ).getFontHeight() * global_downscaley;
-
-		// draw items
-		for( unsigned int i = 0; i < m_listbox_items->getItemCount(); i++ )
-		{
-			// Get item
-			cEditor_Item_Object *item = static_cast<cEditor_Item_Object *>( m_listbox_items->getListboxItemFromIndex( i ) );
-			// Item height
-			float item_height = item->getPixelSize().d_height * global_downscaley;
-			// Item position
-			float item_posy = list_posy + ( item_height * i );
-			float item_image_posy = item_posy + ( font_height * 2 );
-
-			// not visible
-			if( item_posy + item_height > list_posy + list_height + scroll_pos || item_image_posy < list_posy + scroll_pos )
-			{
-				continue;
-			}
-
-			item->sprite_obj->Set_Pos_Y( item_image_posy - scroll_pos, 1 );
-			item->Draw_Image();
-		}
 	}
 
 	if( m_show_editor_help )
@@ -1280,13 +1245,9 @@ void cEditor :: Add_Item_Object( cSprite *sprite, std::string new_name /* = "" *
 		printf( "Warning : editor object %s with no name given\n", obj_name.c_str() );
 	}
 
-	cEditor_Item_Object *new_item = new cEditor_Item_Object( obj_name );
-
-	// object pointer
-	new_item->sprite_obj = sprite;
-
+	cEditor_Item_Object *new_item = new cEditor_Item_Object( obj_name, m_listbox_items );
 	// Initialize
-	new_item->Init();
+	new_item->Init( sprite );
 
 	// Add Item
 	m_listbox_items->addItem( new_item );

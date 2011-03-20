@@ -79,15 +79,9 @@ void cLevel_Settings :: Init( void )
 	
 	// Tab Control
 	m_tabcontrol = static_cast<CEGUI::TabControl *>(wmgr.getWindow( "tabcontrol_main" ));
-	// tab main
-	CEGUI::Window *tabwindow = wmgr.loadWindowLayout( "level_settings/tab_main.layout" );
-	m_tabcontrol->addTab( tabwindow );
-	// tab background
-	tabwindow = wmgr.loadWindowLayout( "level_settings/tab_background.layout" );
-	m_tabcontrol->addTab( tabwindow );
-	// tab global effects
-	tabwindow = wmgr.loadWindowLayout( "level_settings/tab_global_effect.layout" );
-	m_tabcontrol->addTab( tabwindow );
+	m_tabcontrol->addTab( wmgr.loadWindowLayout( "level_settings/tab_main.layout" ) );
+	m_tabcontrol->addTab( wmgr.loadWindowLayout( "level_settings/tab_background.layout" ) );
+	m_tabcontrol->addTab( wmgr.loadWindowLayout( "level_settings/tab_global_effect.layout" ) );
 
 	// Main
 	// level filename
