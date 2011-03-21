@@ -1,7 +1,7 @@
 /***************************************************************************
  * spikeball.cpp  -  spiky enemy
  *
- * Copyright (C) 2009 - 2010 Florian Richter
+ * Copyright (C) 2009 - 2011 Florian Richter
  ***************************************************************************/
 /*
    This program is free software; you can redistribute it and/or modify

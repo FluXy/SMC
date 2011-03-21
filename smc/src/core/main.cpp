@@ -1,7 +1,7 @@
 /***************************************************************************
  * main.cpp  -  main routines and initialization
  *
- * Copyright (C) 2003 - 2010 Florian Richter
+ * Copyright (C) 2003 - 2011 Florian Richter
  ***************************************************************************/
 /*
    This program is free software; you can redistribute it and/or modify
@@ -50,6 +50,7 @@
 // SMC namespace is set later to exclude main() from it
 using namespace SMC;
 
+// SDLmain defines this for Win32 applications but under debug we use the console
 #if defined( __WIN32__ ) && defined( _DEBUG )
 	#undef main
 #endif

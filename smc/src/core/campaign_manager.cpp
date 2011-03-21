@@ -1,7 +1,7 @@
 /***************************************************************************
  * campaign_manager.cpp  -  class for handling campaigns
  *
- * copyright (C) 2010 Florian Richter
+ * copyright (C) 2010 - 2011 Florian Richter
  ***************************************************************************/
 /*
    This program is free software; you can redistribute it and/or modify

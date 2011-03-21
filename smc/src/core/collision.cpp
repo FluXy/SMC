@@ -1,7 +1,7 @@
 /***************************************************************************
  * collison.cpp  -  internal collision functions
  *
- * Copyright (C) 2005 - 2010 Florian Richter
+ * Copyright (C) 2005 - 2011 Florian Richter
  * Copyright (C) 2005        Amir Taaki
  ***************************************************************************/
 /*

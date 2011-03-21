@@ -1,7 +1,7 @@
 /***************************************************************************
  * generic.cpp  -  generic gui stuff
  *
- * Copyright (C) 2005 - 2010 Florian Richter
+ * Copyright (C) 2005 - 2011 Florian Richter
  ***************************************************************************/
 /*
    This program is free software; you can redistribute it and/or modify

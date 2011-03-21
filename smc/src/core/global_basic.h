@@ -1,7 +1,7 @@
 /***************************************************************************
  * global_basic.h  -  global header
  *
- * Copyright (C) 2003 - 2010 Florian Richter
+ * Copyright (C) 2003 - 2011 Florian Richter
  ***************************************************************************/
 /*
    This program is free software; you can redistribute it and/or modify
@@ -39,16 +39,10 @@
 
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <string>
 #include <vector>
 #include <time.h>
 #include <math.h>
-
-
-#ifdef _MSC_VER
-	#define snprintf _snprintf
-#endif
 
 using std::vector;
 using std::ifstream;

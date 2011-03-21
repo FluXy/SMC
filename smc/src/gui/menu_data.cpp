@@ -1,7 +1,7 @@
 /***************************************************************************
  * menu_data.cpp  -  menu data and handling classes
  *
- * Copyright (C) 2004 - 2010 Florian Richter
+ * Copyright (C) 2004 - 2011 Florian Richter
  ***************************************************************************/
 /*
    This program is free software; you can redistribute it and/or modify

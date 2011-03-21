@@ -1,7 +1,7 @@
 /***************************************************************************
  * collision.h  -  header for the corresponding cpp file
  *
- * Copyright (C) 2005 - 2010 Florian Richter
+ * Copyright (C) 2005 - 2011 Florian Richter
  * Copyright (C) 2005 Amir Taaki ( Circle Collision tests ) - MIT License
  * Copyright (C) 2005 Magnus Norddahl ( Line Collision tests ) - BSD License
  ***************************************************************************/

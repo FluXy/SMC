@@ -1,7 +1,7 @@
 /***************************************************************************
  * mouse.cpp  -  mouse handling class
  *
- * Copyright (C) 2003 - 2010 Florian Richter
+ * Copyright (C) 2003 - 2011 Florian Richter
  ***************************************************************************/
 /*
    This program is free software; you can redistribute it and/or modify

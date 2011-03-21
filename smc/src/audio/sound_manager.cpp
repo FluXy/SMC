@@ -1,7 +1,7 @@
 /***************************************************************************
  * sound_manager.cpp  -  Sound Handler/Manager
  *
- * Copyright (C) 2006 - 2010 Florian Richter
+ * Copyright (C) 2006 - 2011 Florian Richter
  ***************************************************************************/
 /*
    This program is free software; you can redistribute it and/or modify

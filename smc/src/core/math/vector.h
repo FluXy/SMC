@@ -1,7 +1,7 @@
 /***************************************************************************
  * vector.h  -  header for the corresponding cpp file
  *
- * Copyright (C) 2006 - 2010 Florian Richter
+ * Copyright (C) 2006 - 2011 Florian Richter
  * Copyright (C) 2007 Clanlib Team ( original Vector class )
  ***************************************************************************/
 /*
