@@ -24,6 +24,7 @@ smc_SOURCES = \
 	core/main.cpp \
 	core/math/vector.cpp \
 	core/math/utilities.cpp \
+	core/property_helper.cpp \
 	core/sprite_manager.cpp \
 	enemies/bosses/turtle_boss.cpp \
 	enemies/eato.cpp \
