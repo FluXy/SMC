@@ -15,7 +15,7 @@
 
 #include "../core/property_helper.h"
 #include "../core/i18n.h"
-#include "../video/video.h"
+#include "../video/color.h"
 #include "../objects/sprite.h"
 // for std::ostringstream
 #include <sstream>
