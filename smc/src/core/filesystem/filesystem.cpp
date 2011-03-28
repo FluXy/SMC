@@ -52,7 +52,7 @@ bool File_Exists( const std::string &filename )
 #ifdef _WIN32
 	fs::file_type type = fs::status( fs::path( utf8_to_ucs2( filename ) ) ).type();
 #else
-	fs::file_type type = fs::exists( fs::path( filename ) ).type();
+	fs::file_type type = fs::status( fs::path( filename ) ).type();
 #endif
 
 	return type == fs::regular_file || type == fs::symlink_file;
@@ -64,7 +64,7 @@ bool Dir_Exists( const std::string &dir )
 #ifdef _WIN32
 	fs::file_type type = fs::status( fs::path( utf8_to_ucs2( dir ) ) ).type();
 #else
-	fs::file_type type = fs::exists( fs::path( dir ) ).type();
+	fs::file_type type = fs::status( fs::path( dir ) ).type();
 #endif
 
 	return type == fs::directory_file || type == fs::symlink_file;
