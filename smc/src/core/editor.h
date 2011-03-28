@@ -1,5 +1,5 @@
 /***************************************************************************
- * editor.h  -  header for the corresponding cpp file
+ * editor.h
  *
  * Copyright (C) 2006 - 2011 Florian Richter
  ***************************************************************************/
@@ -26,7 +26,7 @@
 #include "elements/CEGUIListbox.h"
 #include "elements/CEGUIListboxTextItem.h"
 #include "CEGUIImageset.h"
-#include "RendererModules\OpenGL\CEGUIOpenGLTexture.h"
+#include "RendererModules/OpenGL/CEGUIOpenGLTexture.h"
 
 namespace SMC
 {
