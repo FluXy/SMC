@@ -236,8 +236,8 @@ void cWaypoint :: Draw( cSurface_Request *request /* = NULL  */ )
 			}
 			
 			m_arrow_backward->Blit( x, y, 0.089f, surface_request );
-			surface_request->shadow_pos = 2;
-			surface_request->shadow_color = lightgreyalpha64;
+			surface_request->m_shadow_pos = 2;
+			surface_request->m_shadow_color = lightgreyalpha64;
 			// add request
 			pRenderer->Add( surface_request );
 		}
@@ -274,8 +274,8 @@ void cWaypoint :: Draw( cSurface_Request *request /* = NULL  */ )
 			}
 			
 			m_arrow_forward->Blit( x, y, 0.089f, surface_request );
-			surface_request->shadow_pos = 2;
-			surface_request->shadow_color = lightgreyalpha64;
+			surface_request->m_shadow_pos = 2;
+			surface_request->m_shadow_color = lightgreyalpha64;
 			// add request
 			pRenderer->Add( surface_request );
 		}
@@ -299,18 +299,18 @@ void cWaypoint :: Draw( cSurface_Request *request /* = NULL  */ )
 		// default color
 		if( !pOverworld_Manager->m_debug_mode )
 		{
-			request->color = Color( static_cast<Uint8>(255), 100 + static_cast<Uint8>(m_glim_color), 10 );
+			request->m_color = Color( static_cast<Uint8>(255), 100 + static_cast<Uint8>(m_glim_color), 10 );
 		}
 		// change to debug color
 		else
 		{
 			if( m_access )
 			{
-				request->color = Color( static_cast<Uint8>(255), 100 + static_cast<Uint8>(m_glim_color), 200 );
+				request->m_color = Color( static_cast<Uint8>(255), 100 + static_cast<Uint8>(m_glim_color), 200 );
 			}
 			else
 			{
-				request->color =  Color( static_cast<Uint8>(20), 100 + static_cast<Uint8>(m_glim_color), 10 );
+				request->m_color =  Color( static_cast<Uint8>(20), 100 + static_cast<Uint8>(m_glim_color), 10 );
 			}
 		}
 

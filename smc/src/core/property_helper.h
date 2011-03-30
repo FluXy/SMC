@@ -1,5 +1,5 @@
 /***************************************************************************
- * property_helper.h  -  header for the corresponding cpp file
+ * property_helper.h
  *
  * Copyright (C) 2005 - 2011 Florian Richter
  ***************************************************************************/

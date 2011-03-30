@@ -1,5 +1,5 @@
 /***************************************************************************
- * renderer.h  -  header for the corresponding cpp file
+ * renderer.h
  *
  * Copyright (C) 2006 - 2011 Florian Richter
  ***************************************************************************/
@@ -23,29 +23,60 @@
 namespace SMC
 {
 
-/* *** *** *** *** *** *** *** Render Types *** *** *** *** *** *** *** *** *** *** */
+/* *** *** *** *** *** *** *** RenderType *** *** *** *** *** *** *** *** *** *** */
 
 enum RenderType
 {
 	REND_NOTHING = 0,
-	REND_RECT = 1,
-	REND_GRADIENT = 2,
-	REND_SURFACE = 3,
-	REND_TEXT = 4, // todo
-	REND_LINE = 5,
-	REND_CIRCLE = 6
+	REND_CLEAR = 1,
+	REND_RECT = 2,
+	REND_GRADIENT = 3,
+	REND_SURFACE = 4,
+	REND_TEXT = 5, // todo
+	REND_LINE = 6,
+	REND_CIRCLE = 7
 };
 
-/* *** *** *** *** *** *** cRenderRequest *** *** *** *** *** *** *** *** *** *** *** */
+/* *** *** *** *** *** *** cRender_Request *** *** *** *** *** *** *** *** *** *** *** */
 
-class cRenderRequest
+class cRender_Request
 {
 public:
-	cRenderRequest( void );
-	virtual ~cRenderRequest( void );
+	cRender_Request( void );
+	virtual ~cRender_Request( void );
 
-	// Draw the Render Request
+	// draw
 	virtual void Draw( void );
+
+	// render type
+	RenderType m_type;
+	// Z position
+	float m_pos_z;
+	// times to render until deletion
+	int m_render_count;
+};
+
+typedef vector<cRender_Request *> RenderList;
+
+/* *** *** *** *** *** *** cClear_Request *** *** *** *** *** *** *** *** *** *** *** */
+
+class cClear_Request : public cRender_Request
+{
+public:
+	cClear_Request( void );
+	virtual ~cClear_Request( void );
+
+	// draw
+	virtual void Draw( void );
+};
+
+/* *** *** *** *** *** *** cRender_Request_Advanced *** *** *** *** *** *** *** *** *** *** *** */
+
+class cRender_Request_Advanced : public cRender_Request
+{
+public:
+	cRender_Request_Advanced( void );
+	virtual ~cRender_Request_Advanced( void );
 
 	// render basic state
 	void Render_Basic( void );
@@ -57,40 +88,32 @@ public:
 	// clear advanced render state
 	void Render_Advanced_Clear( void ) const;
 
-	// render type
-	RenderType type;
-
-	// globalscale
-	bool globalscale;
+	// global scale
+	bool m_global_scale;
 	// if not set camera position is subtracted
-	bool no_camera;
+	bool m_no_camera;
 
-	// Z position
-	float pos_z;
 	// rotation
-	float rotx, roty, rotz;
+	float m_rot_x;
+	float m_rot_y;
+	float m_rot_z;
 	// blending
-	GLenum blend_sfactor;
-	GLenum blend_dfactor;
+	GLenum m_blend_sfactor;
+	GLenum m_blend_dfactor;
 	// shadow position
-	float shadow_pos;
+	float m_shadow_pos;
 	// shadow color
-	Color shadow_color;
+	Color m_shadow_color;
 
 	// combine type
-	GLint combine_type;
+	GLint m_combine_type;
 	// combine color
-	float combine_col[3];
-
-	// times to render until deletion
-	int render_count;
+	float m_combine_color[3];
 };
 
-typedef vector<cRenderRequest *> RenderList;
+/* *** *** *** *** *** *** cLine_Request *** *** *** *** *** *** *** *** *** *** *** */
 
-/* *** *** *** *** *** *** cLineRequest *** *** *** *** *** *** *** *** *** *** *** */
-
-class cLine_Request : public cRenderRequest
+class cLine_Request : public cRender_Request_Advanced
 {
 public:
 	cLine_Request( void );
@@ -100,18 +123,18 @@ public:
 	virtual void Draw( void );
 
 	// color
-	Color color;
+	Color m_color;
 	// position
-	GL_line line;
+	GL_line m_line;
 	// width
-	float line_width;
+	float m_line_width;
 	// stipple pattern
-	GLushort stipple_pattern;
+	GLushort m_stipple_pattern;
 };
 
-/* *** *** *** *** *** *** cRectRequest *** *** *** *** *** *** *** *** *** *** *** */
+/* *** *** *** *** *** *** cRect_Request *** *** *** *** *** *** *** *** *** *** *** */
 
-class cRect_Request : public cRenderRequest
+class cRect_Request : public cRender_Request_Advanced
 {
 public:
 	cRect_Request( void );
@@ -120,24 +143,24 @@ public:
 	// draw
 	virtual void Draw( void );
 	// color
-	Color color;
+	Color m_color;
 	// rect
-	GL_rect rect;
+	GL_rect m_rect;
 	// rect is filled
-	bool filled;
+	bool m_filled;
 	// scale
-	float scale_x;
-	float scale_y;
-	float scale_z;
+	float m_scale_x;
+	float m_scale_y;
+	float m_scale_z;
 	// line width (only used if not filled)
-	float line_width;
+	float m_line_width;
 	// stipple pattern (only used if not filled)
-	GLushort stipple_pattern;
+	GLushort m_stipple_pattern;
 };
 
-/* *** *** *** *** *** *** cGradientRequest *** *** *** *** *** *** *** *** *** *** *** */
+/* *** *** *** *** *** *** cGradient_Request *** *** *** *** *** *** *** *** *** *** *** */
 
-class cGradient_Request : public cRenderRequest
+class cGradient_Request : public cRender_Request_Advanced
 {
 public:
 	cGradient_Request( void );
@@ -147,17 +170,17 @@ public:
 	virtual void Draw( void );
 
 	// rect
-	GL_rect rect;
+	GL_rect m_rect;
 	// direction
-	ObjectDirection dir;
+	ObjectDirection m_dir;
 	// colors
-	Color color_1;
-	Color color_2;
+	Color m_color_1;
+	Color m_color_2;
 };
 
-/* *** *** *** *** *** *** cCircleRequest *** *** *** *** *** *** *** *** *** *** *** */
+/* *** *** *** *** *** *** cCircle_Request *** *** *** *** *** *** *** *** *** *** *** */
 
-class cCircle_Request : public cRenderRequest
+class cCircle_Request : public cRender_Request_Advanced
 {
 public:
 	cCircle_Request( void );
@@ -166,18 +189,18 @@ public:
 	// draw
 	virtual void Draw( void );
 	// color
-	Color color;
+	Color m_color;
 	// position
-	GL_point pos;
+	GL_point m_pos;
 	// radius
-	float radius;
+	float m_radius;
 	// if set circle is not filled
-	float line_width;
+	float m_line_width;
 };
 
-/* *** *** *** *** *** *** cSurfaceRequest *** *** *** *** *** *** *** *** *** *** *** */
+/* *** *** *** *** *** *** cSurface_Request *** *** *** *** *** *** *** *** *** *** *** */
 
-class cSurface_Request : public cRenderRequest
+class cSurface_Request : public cRender_Request_Advanced
 {
 public:
 	cSurface_Request( void );
@@ -187,21 +210,23 @@ public:
 	virtual void Draw( void );
 
 	// texture id
-	GLuint texture_id;
+	GLuint m_texture_id;
 	// position
-	float pos_x, pos_y;
+	float m_pos_x;
+	float m_pos_y;
 	// scale
-	float scale_x;
-	float scale_y;
-	float scale_z;
+	float m_scale_x;
+	float m_scale_y;
+	float m_scale_z;
 	// size
-	float w, h;
+	float m_w;
+	float m_h;
 
 	// color
-	Color color;
+	Color m_color;
 
 	// delete texture after request finished
-	bool delete_texture;
+	bool m_delete_texture;
 };
 
 /* *** *** *** *** *** *** cRenderQueue *** *** *** *** *** *** *** *** *** *** *** */
@@ -214,7 +239,7 @@ public:
 
 	/* Add a Render Request
 	*/
-	void Add( cRenderRequest *obj );
+	void Add( cRender_Request *obj );
 
 	/* Render current data
 	 * clear: if set clear the finished data after rendering
@@ -232,15 +257,15 @@ public:
 	*/
 	void Clear( bool force = 1 );
 
-	// renderdata array
-	RenderList renderdata;
+	// render data array
+	RenderList m_render_data;
 
 	// Z position sort
 	struct zpos_sort
 	{
-		bool operator()( const cRenderRequest *a, const cRenderRequest *b ) const
+		bool operator()( const cRender_Request *a, const cRender_Request *b ) const
 		{
-			return a->pos_z < b->pos_z;
+			return a->m_pos_z < b->m_pos_z;
 		}
 	};
 };
@@ -249,8 +274,7 @@ public:
 
 // Renderer class
 extern cRenderQueue *pRenderer;
-// Renderer after GUI was drawn
-extern cRenderQueue *pRenderer_GUI;
+extern cRenderQueue *pRenderer_current;
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 

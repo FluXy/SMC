@@ -210,7 +210,7 @@ void cLayer_Line_Point_Start :: Draw( cSurface_Request *request /* = NULL */ )
 	}
 
 	pVideo->Draw_Line( Get_Line_Pos_X() - pActive_Camera->m_x, Get_Line_Pos_Y() - pActive_Camera->m_y, m_linked_point->Get_Line_Pos_X() - pActive_Camera->m_x, m_linked_point->Get_Line_Pos_Y() - pActive_Camera->m_y, 0.085f, &color, line_request );
-	line_request->line_width = 6;
+	line_request->m_line_width = 6;
 
 	// add request
 	pRenderer->Add( line_request );
@@ -509,16 +509,16 @@ cLine_collision cLayer :: Get_Nearest_Line( cLayer_Line_Point_Start *map_layer_l
 			// create request
 			cLine_Request *line_request = new cLine_Request();
 			pVideo->Draw_Line( line_1.m_x1 - pActive_Camera->m_x, line_1.m_y1 - pActive_Camera->m_y, line_1.m_x2 - pActive_Camera->m_x, line_1.m_y2 - pActive_Camera->m_y, map_layer_line->m_pos_z + 0.001f, &white, line_request );
-			line_request->line_width = 2;
-			line_request->render_count = 50;
+			line_request->m_line_width = 2;
+			line_request->m_render_count = 50;
 			// add request
 			pRenderer->Add( line_request );
 
 			// create request
 			line_request = new cLine_Request();
 			pVideo->Draw_Line( line_2.m_x1 - pActive_Camera->m_x, line_2.m_y1 - pActive_Camera->m_y, line_2.m_x2 - pActive_Camera->m_x, line_2.m_y2 - pActive_Camera->m_y, map_layer_line->m_pos_z + 0.001f, &black, line_request );
-			line_request->line_width = 2;
-			line_request->render_count = 50;
+			line_request->m_line_width = 2;
+			line_request->m_render_count = 50;
 			// add request
 			pRenderer->Add( line_request );
 		}

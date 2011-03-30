@@ -27,24 +27,24 @@ namespace SMC
 
 cSaved_Texture :: cSaved_Texture( void )
 {
-	base = NULL;
-	pixels = NULL;
+	m_base = NULL;
+	m_pixels = NULL;
 
-	width = 0;
-	height = 0;
-	format = 0;
+	m_width = 0;
+	m_height = 0;
+	m_format = 0;
 
-	min_filter = 0;
-	mag_filter = 0;
-	wrap_s = 0;
-	wrap_t = 0;
+	m_min_filter = 0;
+	m_mag_filter = 0;
+	m_wrap_s = 0;
+	m_wrap_t = 0;
 }
 
 cSaved_Texture :: ~cSaved_Texture( void )
 {
-	if( pixels )
+	if( m_pixels )
 	{
-		delete[] pixels;
+		delete[] m_pixels;
 	}
 }
 
@@ -53,7 +53,7 @@ cSaved_Texture :: ~cSaved_Texture( void )
 cImage_Manager :: cImage_Manager( void )
 : cObject_Manager<cGL_Surface>()
 {
-	high_texture_id = 0;
+	m_high_texture_id = 0;
 }
 
 cImage_Manager :: ~cImage_Manager( void )
@@ -140,7 +140,7 @@ void cImage_Manager :: Grab_Textures( bool from_file /* = 0 */, bool draw_gui /*
 		}
 
 		// get software texture and save it to software memory
-		saved_textures.push_back( obj->Get_Software_Texture( from_file ) );
+		m_saved_textures.push_back( obj->Get_Software_Texture( from_file ) );
 		// delete hardware texture
 		if( glIsTexture( obj->m_image ) )
 		{
@@ -176,16 +176,16 @@ void cImage_Manager :: Restore_Textures( bool draw_gui /* = 0 */ )
 	}
 
 	unsigned int loaded_files = 0;
-	unsigned int file_count = saved_textures.size();
+	unsigned int file_count = m_saved_textures.size();
 
 	// load back into hardware textures
-	for( Saved_Texture_List::iterator itr = saved_textures.begin(); itr != saved_textures.end(); ++itr )
+	for( Saved_Texture_List::iterator itr = m_saved_textures.begin(); itr != m_saved_textures.end(); ++itr )
 	{
 		// get saved texture
 		cSaved_Texture *soft_tex = (*itr);
 
 		// load it
-		soft_tex->base->Load_Software_Texture( soft_tex );
+		soft_tex->m_base->Load_Software_Texture( soft_tex );
 		// delete
 		delete soft_tex;
 
@@ -202,7 +202,7 @@ void cImage_Manager :: Restore_Textures( bool draw_gui /* = 0 */ )
 		}
 	}
 
-	saved_textures.clear();
+	m_saved_textures.clear();
 }
 
 void cImage_Manager :: Delete_Image_Textures( void )
@@ -222,7 +222,7 @@ void cImage_Manager :: Delete_Image_Textures( void )
 void cImage_Manager :: Delete_Hardware_Textures( void )
 {
 	// delete all hardware surfaces
-	for( GLuint i = 0; i < high_texture_id; i++ )
+	for( GLuint i = 0; i < m_high_texture_id; i++ )
 	{
 		if( glIsTexture( i ) )
 		{
@@ -231,7 +231,7 @@ void cImage_Manager :: Delete_Hardware_Textures( void )
 		}
 	}
 
-	high_texture_id = 0;
+	m_high_texture_id = 0;
 }
 
 void cImage_Manager :: Delete_All( void )

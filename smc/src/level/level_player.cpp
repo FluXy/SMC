@@ -2574,10 +2574,10 @@ void cLevel_Player :: Draw( cSurface_Request *request /* = NULL */ )
 				cRect_Request *rect_request = new cRect_Request();
 				// draw
 				pVideo->Draw_Rect( &m_ground_object->m_col_rect, m_pos_z + 0.000009f, &grey, rect_request );
-				rect_request->no_camera = 0;
+				rect_request->m_no_camera = 0;
 				// blending
-				rect_request->blend_sfactor = GL_SRC_COLOR;
-				rect_request->blend_dfactor = GL_DST_ALPHA;
+				rect_request->m_blend_sfactor = GL_SRC_COLOR;
+				rect_request->m_blend_dfactor = GL_DST_ALPHA;
 
 				// add request
 				pRenderer->Add( rect_request );

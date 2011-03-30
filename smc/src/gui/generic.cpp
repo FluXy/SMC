@@ -126,6 +126,7 @@ void cDialogBox_Text :: Init( std::string title_text )
 
 std::string cDialogBox_Text :: Enter( std::string default_text, std::string title_text, bool auto_no_text /* = 1 */ )
 {
+	pVideo->Render_Finish();
 	Init( title_text );
 
 	box_editbox->setText( reinterpret_cast<const CEGUI::utf8*>(default_text.c_str()) );
@@ -207,6 +208,7 @@ cDialogBox_Question :: ~cDialogBox_Question( void )
 
 void cDialogBox_Question :: Init( bool with_cancel )
 {
+	pVideo->Render_Finish();
 	cDialogBox::Init();
 
 	// get window
@@ -388,7 +390,7 @@ void Draw_Static_Text( const std::string &text, const Color *color_text /* = &wh
 			cRect_Request *request = new cRect_Request();
 
 			pVideo->Draw_Rect( NULL, 0.9f, color_bg, request );
-			request->render_count = wait_for_input ? 4 : 1;
+			request->m_render_count = wait_for_input ? 4 : 1;
 
 			// add request
 			pRenderer->Add( request );

@@ -1,5 +1,5 @@
 /***************************************************************************
- * level_manager.h  -  header for the corresponding cpp file
+ * level_manager.h
  *
  * Copyright (C) 2007 - 2011 Florian Richter
  ***************************************************************************/

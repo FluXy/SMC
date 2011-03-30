@@ -419,12 +419,12 @@ void cPlayerPoints :: Draw( cSurface_Request *request /* = NULL */ )
 			obj->m_image->Blit( x, y, m_pos_z, request );
 
 			// shadow
-			request->shadow_color = black;
-			request->shadow_color.alpha = obj->m_color.alpha;
-			request->shadow_pos = 1;
+			request->m_shadow_color = black;
+			request->m_shadow_color.alpha = obj->m_color.alpha;
+			request->m_shadow_pos = 1;
 
 			// color
-			request->color = Color( static_cast<Uint8>( 255 - ( obj->m_points / 150 ) ), static_cast<Uint8>( 255 - ( obj->m_points / 150 ) ), static_cast<Uint8>( 255 - ( obj->m_points / 30 ) ), obj->m_color.alpha );
+			request->m_color = Color( static_cast<Uint8>( 255 - ( obj->m_points / 150 ) ), static_cast<Uint8>( 255 - ( obj->m_points / 150 ) ), static_cast<Uint8>( 255 - ( obj->m_points / 30 ) ), obj->m_color.alpha );
 
 			// add request
 			pRenderer->Add( request );
@@ -1039,7 +1039,7 @@ void cDebugDisplay :: Draw_Debug_Mode( void )
 	// Active objects rect
 	cRect_Request *request = new cRect_Request();
 	pVideo->Draw_Rect( m_sprites[11]->m_pos_x - 4, m_sprites[11]->m_pos_y - 4, 135, 95, m_pos_z, &white, request );
-	request->filled = 0;
+	request->m_filled = 0;
 	pRenderer->Add( request );
 
 	// fps
@@ -1370,11 +1370,11 @@ void cDebugDisplay :: Draw_Performance_Debug_Mode( void )
 		// create request
 		cSurface_Request *request = new cSurface_Request();
 		surface_temp->Blit( xpos, ypos, m_pos_z, request );
-		request->delete_texture = 1;
+		request->m_delete_texture = 1;
 
 		// shadow
-		request->shadow_pos = 1;
-		request->shadow_color = black;
+		request->m_shadow_pos = 1;
+		request->m_shadow_color = black;
 
 		// add request
 		pRenderer->Add( request );

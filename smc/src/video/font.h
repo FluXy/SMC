@@ -1,5 +1,5 @@
 /***************************************************************************
- * font.h  -  header for the corresponding cpp file
+ * font.h
  *
  * Copyright (C) 2006 - 2011 Florian Richter
  ***************************************************************************/
@@ -56,7 +56,9 @@ public:
 	void Restore_Textures( void );
 
 	// TTF loaded fonts
-	TTF_Font *m_font_normal, *m_font_small, *m_font_very_small;
+	TTF_Font *m_font_normal;
+	TTF_Font *m_font_small;
+	TTF_Font *m_font_very_small;
 
 	// current active loaded font list
 	typedef vector<cGL_Surface *> ActiveFontList;

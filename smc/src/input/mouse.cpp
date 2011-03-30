@@ -431,11 +431,6 @@ void cMouseCursor :: Draw( void )
 	}
 }
 
-void cMouseCursor :: Render( void ) const
-{
-
-}
-
 void cMouseCursor :: Update_Position( void )
 {
 	if( !m_mover_mode )
@@ -1423,13 +1418,13 @@ void cMouseCursor :: Draw_Object_Rects( void )
 
 		if( m_fastcopy_mode )
 		{
-			request->color.alpha = 64;
+			request->m_color.alpha = 64;
 		}
 		// not fastcopy
 		else
 		{
 			// not filled
-			request->filled = 0;
+			request->m_filled = 0;
 		}
 
 		// add request
@@ -1482,9 +1477,9 @@ void cMouseCursor :: Draw_Object_Rects( void )
 			pVideo->Draw_Rect( &hover_rect, pos_z, &obj_color, rect_request );
 
 			// not filled
-			rect_request->filled = 0;
+			rect_request->m_filled = 0;
 			// with stipple
-			rect_request->stipple_pattern = 0xAAAA;
+			rect_request->m_stipple_pattern = 0xAAAA;
 
 			// add request
 			pRenderer->Add( rect_request );
@@ -1500,7 +1495,7 @@ void cMouseCursor :: Draw_Object_Rects( void )
 		pVideo->Draw_Rect( sel_rect.m_x - pActive_Camera->m_x, sel_rect.m_y - pActive_Camera->m_y, sel_rect.m_w, sel_rect.m_h, 0.51f, &lightgrey, rect_request );
 
 		// not filled
-		rect_request->filled = 0;
+		rect_request->m_filled = 0;
 
 		// add request
 		pRenderer->Add( rect_request );
@@ -1600,9 +1595,9 @@ void cMouseCursor :: Update_Selection( void )
 	pVideo->Draw_Rect( m_selection_rect.m_x - pActive_Camera->m_x + 0.5f, m_selection_rect.m_y - pActive_Camera->m_y + 0.5f, m_selection_rect.m_w, m_selection_rect.m_h, 0.509f, &white, rect_request );
 
 	// not filled
-	rect_request->filled = 0;
+	rect_request->m_filled = 0;
 	// color
-	rect_request->color.alpha = 128;
+	rect_request->m_color.alpha = 128;
 
 	// add request
 	pRenderer->Add( rect_request );
@@ -1613,7 +1608,7 @@ void cMouseCursor :: Update_Selection( void )
 	pVideo->Draw_Rect( m_selection_rect.m_x - pActive_Camera->m_x, m_selection_rect.m_y - pActive_Camera->m_y, m_selection_rect.m_w, m_selection_rect.m_h, 0.51f, &lightblue, rect_request );
 
 	// not filled
-	rect_request->filled = 0;
+	rect_request->m_filled = 0;
 
 	// add request
 	pRenderer->Add( rect_request );
@@ -1784,11 +1779,11 @@ void cMouseCursor :: Editor_Update( void )
 		// create request
 		cSurface_Request *request = new cSurface_Request();
 		position_info->Blit( static_cast<float>( m_x + 20 ), static_cast<float>( m_y + 35 ), 0.52f, request );
-		request->delete_texture = 1;
+		request->m_delete_texture = 1;
 
 		// shadow
-		request->shadow_pos = 1.0f;
-		request->shadow_color = black;
+		request->m_shadow_pos = 1.0f;
+		request->m_shadow_color = black;
 
 		// add request
 		pRenderer->Add( request );
@@ -1814,11 +1809,11 @@ void cMouseCursor :: Editor_Update( void )
 			// create request
 			request = new cSurface_Request();
 			position_info->Blit( static_cast<float>( m_x + 20 ), static_cast<float>( m_y + 55 ), 0.52f, request );
-			request->delete_texture = 1;
+			request->m_delete_texture = 1;
 
 			// shadow
-			request->shadow_pos = 1.0f;
-			request->shadow_color = black;
+			request->m_shadow_pos = 1.0f;
+			request->m_shadow_color = black;
 
 			// add request
 			pRenderer->Add( request );

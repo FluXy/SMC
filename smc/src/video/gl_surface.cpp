@@ -121,9 +121,9 @@ void cGL_Surface :: Blit( float x, float y, float z, cSurface_Request *request /
 	Blit_Data( request );
 
 	// position
-	request->pos_x += x;
-	request->pos_y += y;
-	request->pos_z = z;
+	request->m_pos_x += x;
+	request->m_pos_y += y;
+	request->m_pos_z = z;
 
 	if( create_request )
 	{
@@ -135,20 +135,20 @@ void cGL_Surface :: Blit( float x, float y, float z, cSurface_Request *request /
 void cGL_Surface :: Blit_Data( cSurface_Request *request ) const
 {
 	// texture id
-	request->texture_id = m_image;
+	request->m_texture_id = m_image;
 
 	// position
-	request->pos_x += m_int_x;
-	request->pos_y += m_int_y;
+	request->m_pos_x += m_int_x;
+	request->m_pos_y += m_int_y;
 
 	// size
-	request->w = m_start_w;
-	request->h = m_start_h;
+	request->m_w = m_start_w;
+	request->m_h = m_start_h;
 	
 	// rotation
-	request->rotx += m_base_rot_x;
-	request->roty += m_base_rot_y;
-	request->rotz += m_base_rot_z;
+	request->m_rot_x += m_base_rot_x;
+	request->m_rot_y += m_base_rot_y;
+	request->m_rot_z += m_base_rot_z;
 }
 
 void cGL_Surface :: Save( const std::string &filename )
@@ -208,22 +208,22 @@ cSaved_Texture *cGL_Surface :: Get_Software_Texture( bool only_filename /* = 0 *
 		glBindTexture( GL_TEXTURE_2D, m_image );
 
 		// texture settings
-		glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &soft_tex->width );
-		glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &soft_tex->height );
-		glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_INTERNAL_FORMAT, &soft_tex->format );
+		glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &soft_tex->m_width );
+		glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &soft_tex->m_height );
+		glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_INTERNAL_FORMAT, &soft_tex->m_format );
 
-		glGetTexParameteriv( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &soft_tex->wrap_s );
-		glGetTexParameteriv( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, &soft_tex->wrap_t );
-		glGetTexParameteriv( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &soft_tex->min_filter );
-		glGetTexParameteriv( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, &soft_tex->mag_filter );
+		glGetTexParameteriv( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &soft_tex->m_wrap_s );
+		glGetTexParameteriv( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, &soft_tex->m_wrap_t );
+		glGetTexParameteriv( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &soft_tex->m_min_filter );
+		glGetTexParameteriv( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, &soft_tex->m_mag_filter );
 
 		unsigned int bpp;
 
-		if( soft_tex->format == GL_RGBA )
+		if( soft_tex->m_format == GL_RGBA )
 		{
 			bpp = 4;
 		}
-		else if( soft_tex->format == GL_RGB )
+		else if( soft_tex->m_format == GL_RGB )
 		{
 			bpp = 3;
 		}
@@ -234,13 +234,13 @@ cSaved_Texture *cGL_Surface :: Get_Software_Texture( bool only_filename /* = 0 *
 		}
 
 		// texture data
-		soft_tex->pixels = new GLubyte[soft_tex->width * soft_tex->height * bpp];
+		soft_tex->m_pixels = new GLubyte[soft_tex->m_width * soft_tex->m_height * bpp];
 
-		glGetTexImage( GL_TEXTURE_2D, 0, soft_tex->format, GL_UNSIGNED_BYTE, soft_tex->pixels );
+		glGetTexImage( GL_TEXTURE_2D, 0, soft_tex->m_format, GL_UNSIGNED_BYTE, soft_tex->m_pixels );
 	}
 
 	// surface pointer
-	soft_tex->base = this;
+	soft_tex->m_base = this;
 
 	return soft_tex;
 }
@@ -253,29 +253,29 @@ void cGL_Surface :: Load_Software_Texture( cSaved_Texture *soft_tex )
 	}
 	
 	// software texture
-	if( soft_tex->pixels )
+	if( soft_tex->m_pixels )
 	{
 		GLuint tex_id;
 		glGenTextures( 1, &tex_id );
 
 		glBindTexture( GL_TEXTURE_2D, tex_id );
 
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, soft_tex->wrap_s );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, soft_tex->wrap_t );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, soft_tex->min_filter );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, soft_tex->mag_filter );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, soft_tex->m_wrap_s );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, soft_tex->m_wrap_t );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, soft_tex->m_min_filter );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, soft_tex->m_mag_filter );
 
 		// check if mipmaps are enabled
 		bool mipmaps = 0;
 
 		// if mipmaps are enabled
-		if( soft_tex->min_filter == GL_LINEAR_MIPMAP_LINEAR )
+		if( soft_tex->m_min_filter == GL_LINEAR_MIPMAP_LINEAR )
 		{
 			mipmaps = 1;
 		}
 
 		// Create Hardware Texture
-		pVideo->Create_GL_Texture( soft_tex->width, soft_tex->height, soft_tex->pixels, mipmaps );
+		pVideo->Create_GL_Texture( soft_tex->m_width, soft_tex->m_height, soft_tex->m_pixels, mipmaps );
 
 		m_image = tex_id;
 	}

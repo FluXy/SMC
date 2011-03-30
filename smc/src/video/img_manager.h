@@ -1,5 +1,5 @@
 /***************************************************************************
- * img_manager.h  -  header for the corresponding cpp file
+ * img_manager.h
  *
  * Copyright (C) 2003 - 2011 Florian Richter
  ***************************************************************************/
@@ -34,22 +34,22 @@ public:
 	~cSaved_Texture( void );
 
 	// base surface
-	cGL_Surface *base;
+	cGL_Surface *m_base;
 
 	// pixel data
-	GLubyte *pixels;
+	GLubyte *m_pixels;
 
 	// size
-	GLint width;
-	GLint height;
+	GLint m_width;
+	GLint m_height;
 	// format
-	GLint format;
+	GLint m_format;
 
 	// settings
-	GLint min_filter;
-	GLint mag_filter;
-	GLint wrap_s;
-	GLint wrap_t;
+	GLint m_min_filter;
+	GLint m_mag_filter;
+	GLint m_wrap_s;
+	GLint m_wrap_t;
 };
 
 typedef vector<cSaved_Texture *> Saved_Texture_List;
@@ -109,11 +109,11 @@ public:
 	virtual void Delete_All( void );
 
 	// highest opengl texture id found
-	GLuint high_texture_id;
+	GLuint m_high_texture_id;
 
 private:
 	// saved textures for reloading
-	Saved_Texture_List saved_textures;
+	Saved_Texture_List m_saved_textures;
 };
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */

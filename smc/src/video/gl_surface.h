@@ -1,5 +1,5 @@
 /***************************************************************************
- * gl_surface.h  -  header for the corresponding cpp file
+ * gl_surface.h
  *
  * Copyright (C) 2005 - 2011 Florian Richter
  ***************************************************************************/
@@ -67,18 +67,25 @@ public:
 	// GL texture number
 	GLuint m_image;
 	// internal drawing offset
-	float m_int_x, m_int_y;
+	float m_int_x;
+	float m_int_y;
 	// starting drawing dimension without modifications like rotation and scaling
-	float m_start_w, m_start_h;
+	float m_start_w;
+	float m_start_h;
 	// final drawing dimension
-	float m_w, m_h;
+	float m_w;
+	float m_h;
 	// texture dimension
-	unsigned int m_tex_w, m_tex_h;
+	unsigned int m_tex_w;
+	unsigned int m_tex_h;
 	// internal rotation
-	float m_base_rot_x, m_base_rot_y, m_base_rot_z;
+	float m_base_rot_x;
+	float m_base_rot_y;
+	float m_base_rot_z;
 	// image collision data
 	GL_point m_col_pos;
-	float m_col_w, m_col_h;
+	float m_col_w;
+	float m_col_h;
 
 	// origin if created from a file
 	std::string m_filename;

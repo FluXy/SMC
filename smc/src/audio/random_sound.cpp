@@ -419,13 +419,13 @@ void cRandom_Sound :: Draw( cSurface_Request *request /* = NULL */ )
 	// volume reduction begin
 	cCircle_Request *circle_request = new cCircle_Request();
 	pVideo->Draw_Circle( m_col_rect.m_x - pActive_Camera->m_x, m_col_rect.m_y - pActive_Camera->m_y, m_volume_reduction_begin, m_editor_pos_z - 0.0001f, &m_editor_color_volume_reduction_begin, circle_request );
-	circle_request->line_width = 3;
+	circle_request->m_line_width = 3;
 	// add request
 	pRenderer->Add( circle_request );
 	// volume reduction end
 	circle_request = new cCircle_Request();
 	pVideo->Draw_Circle( m_col_rect.m_x - pActive_Camera->m_x, m_col_rect.m_y - pActive_Camera->m_y, m_volume_reduction_end, m_editor_pos_z - 0.0002f, &m_editor_color_volume_reduction_end, circle_request  );
-	circle_request->line_width = 3;
+	circle_request->m_line_width = 3;
 	// add request
 	pRenderer->Add( circle_request );
 }

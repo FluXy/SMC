@@ -373,11 +373,11 @@ void cAnimation_Fireball :: Draw( cSurface_Request *request /* = NULL */ )
 		obj->m_image->Blit( obj->m_pos_x - ( pActive_Camera->m_x - m_pos_x ), obj->m_pos_y - ( pActive_Camera->m_y - m_pos_y ), obj->m_pos_z, request );
 
 		// scale
-		request->scale_x = obj->m_scale_x;
-		request->scale_y = obj->m_scale_y;
+		request->m_scale_x = obj->m_scale_x;
+		request->m_scale_y = obj->m_scale_y;
 
 		// color
-		request->color = m_color;
+		request->m_color = m_color;
 
 		// add request
 		pRenderer->Add( request );
@@ -470,34 +470,34 @@ void cParticle :: Draw( cSurface_Request *request /* = NULL */ )
 	// based on emitter position
 	if( m_parent->m_particle_based_on_emitter_pos > 0.0f )
 	{
-		request->pos_x += (m_parent->m_pos_x * m_parent->m_particle_based_on_emitter_pos);
-		request->pos_y += (m_parent->m_pos_y * m_parent->m_particle_based_on_emitter_pos);
+		request->m_pos_x += (m_parent->m_pos_x * m_parent->m_particle_based_on_emitter_pos);
+		request->m_pos_y += (m_parent->m_pos_y * m_parent->m_particle_based_on_emitter_pos);
 	}
 	
 	// blending
 	if( m_parent->m_blending == BLEND_ADD )
 	{
-		request->blend_sfactor = GL_SRC_ALPHA;
-		request->blend_dfactor = GL_ONE;
+		request->m_blend_sfactor = GL_SRC_ALPHA;
+		request->m_blend_dfactor = GL_ONE;
 	}
 	else if( m_parent->m_blending == BLEND_DRIVE )
 	{
-		request->blend_sfactor = GL_SRC_COLOR;
-		request->blend_dfactor = GL_DST_ALPHA;
+		request->m_blend_sfactor = GL_SRC_COLOR;
+		request->m_blend_dfactor = GL_DST_ALPHA;
 	}
 
 	// color fading
 	if( m_parent->m_fade_color )
 	{
-		request->color.red = static_cast<Uint8>(m_color.red * m_fade_pos);
-		request->color.green = static_cast<Uint8>(m_color.green * m_fade_pos);
-		request->color.blue = static_cast<Uint8>(m_color.blue * m_fade_pos);
+		request->m_color.red = static_cast<Uint8>(m_color.red * m_fade_pos);
+		request->m_color.green = static_cast<Uint8>(m_color.green * m_fade_pos);
+		request->m_color.blue = static_cast<Uint8>(m_color.blue * m_fade_pos);
 	}
 
 	// alpha fading
 	if( m_parent->m_fade_alpha )
 	{
-		request->color.alpha = static_cast<Uint8>(request->color.alpha * m_fade_pos);
+		request->m_color.alpha = static_cast<Uint8>(request->m_color.alpha * m_fade_pos);
 	}
 
 	if( create_request )
@@ -1045,7 +1045,7 @@ void cParticle_Emitter :: Draw( cSurface_Request *request /* = NULL */ )
 
 			cRect_Request *rect_request = new cRect_Request();
 			pVideo->Draw_Rect( &color_rect, m_editor_pos_z, &darkgreen, rect_request );
-			rect_request->filled = 0;
+			rect_request->m_filled = 0;
 			pRenderer->Add( rect_request );
 
 			// if active mouse object
@@ -1058,8 +1058,8 @@ void cParticle_Emitter :: Draw( cSurface_Request *request /* = NULL */ )
 
 					rect_request = new cRect_Request();
 					pVideo->Draw_Rect( &color_rect, m_editor_pos_z, &lightgrey, rect_request );
-					rect_request->filled = 0;
-					rect_request->line_width = 2.0f;
+					rect_request->m_filled = 0;
+					rect_request->m_line_width = 2.0f;
 					pRenderer->Add( rect_request );
 				}
 			}

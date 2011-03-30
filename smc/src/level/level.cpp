@@ -653,11 +653,11 @@ void cLevel :: Draw_Layer_2( LevelDrawType type /* = LVL_DRAW */ )
 
 		pVideo->Draw_Rect( 0, 0, static_cast<float>(game_res_w), static_cast<float>(game_res_h), 0.12f, &color, request );
 
-		request->combine_type = GL_MODULATE;
+		request->m_combine_type = GL_MODULATE;
 
-		request->combine_col[0] = 0.9f;
-		request->combine_col[1] = 0.6f;
-		request->combine_col[2] = 0.8f;
+		request->m_combine_color[0] = 0.9f;
+		request->m_combine_color[1] = 0.6f;
+		request->m_combine_color[2] = 0.8f;
 
 		// add request
 		pRenderer->Add( request );

@@ -1,5 +1,5 @@
 /***************************************************************************
- * mouse.h  -  header for the corresponding cpp file
+ * mouse.h
  *
  * Copyright (C) 2003 - 2011 Florian Richter
  ***************************************************************************/
@@ -104,8 +104,6 @@ public:
 	virtual void Update( void );
 	// Draw
 	virtual void Draw( void );
-	// Render
-	void Render( void ) const;
 
 	// Update the Mouse Position
 	void Update_Position( void );

@@ -192,8 +192,8 @@ void cLevel_Entry :: Draw( cSurface_Request *request /* = NULL */ )
 		cSurface_Request *surface_request = new cSurface_Request();
 		// blit
 		m_editor_entry_name->Blit( m_col_rect.m_x + m_col_rect.m_w + 5 - pActive_Camera->m_x, m_col_rect.m_y - pActive_Camera->m_y, m_editor_pos_z, surface_request );
-		surface_request->shadow_pos = 2;
-		surface_request->shadow_color = lightgreyalpha64;
+		surface_request->m_shadow_pos = 2;
+		surface_request->m_shadow_color = lightgreyalpha64;
 		// add request
 		pRenderer->Add( surface_request );
 	}

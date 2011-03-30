@@ -1,5 +1,5 @@
 /***************************************************************************
- * preferences.h  -  header for the corresponding cpp file
+ * preferences.h
  *
  * Copyright (C) 2003 - 2011 Florian Richter
  ***************************************************************************/

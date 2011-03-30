@@ -1,5 +1,5 @@
 /***************************************************************************
- * img_settings.h  -  header for the corresponding cpp file
+ * img_settings.h
  *
  * Copyright (C) 2005 - 2011 Florian Richter
  ***************************************************************************/
@@ -45,7 +45,8 @@ public:
 	bool m_base_settings;
 
 	// internal drawing offset
-	int m_int_x, m_int_y;
+	int m_int_x;
+	int m_int_y;
 	// collision rect
 	GL_rect m_col_rect;
 	// width

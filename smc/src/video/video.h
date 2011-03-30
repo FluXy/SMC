@@ -1,5 +1,5 @@
 /***************************************************************************
- * video.h  -  header for the corresponding cpp file
+ * video.h
  *
  * Copyright (C) 2005 - 2011 Florian Richter
  ***************************************************************************/
@@ -19,13 +19,26 @@
 #include "../core/global_basic.h"
 #include "../core/global_game.h"
 #include "../video/color.h"
+// glx
+#ifdef __unix__
+	#include <GL/glx.h>
+#endif
 // SDL
-// also includes SDL.h
+#include "SDL.h"
 #include "SDL_image.h"
+#ifdef __unix__
+	#define NO_SDL_GLEXT
+#endif
 #include "SDL_opengl.h"
+#ifdef __unix__
+	#undef NO_SDL_GLEXT
+#endif
+#include "SDL_syswm.h"
 // CEGUI
 #include "CEGUISystem.h"
 #include "RendererModules/OpenGL/CEGUIOpenGLRenderer.h"
+// boost thread
+#include <boost/thread/thread.hpp>
 
 namespace SMC
 {
@@ -82,11 +95,11 @@ public:
 	*/
 	void Init_Video( bool reload_textures_from_file = 0, bool use_preferences = 1 );
 	// Initialize OpenGL with current settings
-	void Init_OpenGL( void ) const;
+	void Init_OpenGL( void );
 	// Initialize Geometry with current settings
-	void Init_Geometry( void ) const;
+	void Init_Geometry( void );
 	// Initialize Texture detail settings
-	void Init_Texture_Detail( void ) const;
+	void Init_Texture_Detail( void );
 	// initialize the up/down scaling value for the current resolution ( image/mouse scale )
 	void Init_Resolution_Scale( void ) const;
 	/* Initialize the image cache and recreates cache if game version changed
@@ -107,11 +120,17 @@ public:
 	*/
 	vector<cSize_Int> Get_Supported_Resolutions( int flags = 0 ) const;
 
-	// Reset and clear the screen
-	void Clear_Screen( void ) const;
+	// make the opengl context active for the current thread
+	void Make_GL_Context_Current( void );
+	// make the opengl context inactive for the current thread
+	void Make_GL_Context_Inactive( void );
 
-	// Render the Queue, GUI and Swap Buffers
-	void Render( void ) const;
+	// Render. Should be called from a thread
+	void Render_From_Thread( void );
+	// Render game, GUI and swap the opengl buffer
+	void Render( bool threaded = 0 );
+	// Finish thread rendering
+	void Render_Finish( void );
 
 	// Toggle fullscreen video mode ( new mode is set to preferences )
 	void Toggle_Fullscreen( void );
@@ -156,13 +175,14 @@ public:
 	*/
 	SDL_Surface *Convert_To_Final_Software_Image( SDL_Surface *surface ) const;
 
-	/* Create a GL image from a SDL_Surface
+	/* Convert a SDL_Surface to a GL image
+	 * surface : the source SDL_surface which will be auto-deleted.
 	 * mipmap : create texture mipmaps
 	 * force_width/height : force the given width and height
 	*/
 	cGL_Surface *Create_Texture( SDL_Surface *surface, bool mipmap = 0, unsigned int force_width = 0, unsigned int force_height = 0 ) const;
 
-	/* Create a texture into the bound GL texture
+	/* Copy pixels to the bound GL texture
 	 * mipmap : create texture mipmaps
 	*/
 	void Create_GL_Texture( unsigned int width, unsigned int height, const void *pixels, bool mipmap = 0 ) const;
@@ -170,9 +190,8 @@ public:
 	// Get pixel color of the given position on the screen
 	Color Get_Pixel( int x, int y ) const;
 
-	// Draw a line
-	void Draw_Line( const GL_line *line, float z, const Color *color, cLine_Request *request = NULL ) const;
-	void Draw_Line( float x1, float y1, float x2, float y2, float z, const Color *color, cLine_Request *request = NULL ) const;
+	// Reset and clear the screen
+	void Clear_Screen( void ) const;
 	/* Draw a rectangle
 	 * if request is NULL automatically creates the request
 	*/
@@ -186,6 +205,9 @@ public:
 	// Draw a circle
 	//void Draw_Circle( GL_circle *circle, float z, Color *color, cCircleRequest *request = NULL );
 	void Draw_Circle( float x, float y, float radius, float z, const Color *color, cCircle_Request *request = NULL ) const;
+	// Draw a line
+	void Draw_Line( const GL_line *line, float z, const Color *color, cLine_Request *request = NULL ) const;
+	void Draw_Line( float x1, float y1, float x2, float y2, float z, const Color *color, cLine_Request *request = NULL ) const;
 
 	/* Return the scale size if the image is bigger as the given size
 	 * also upscales if only_downscale is set to 0
@@ -201,7 +223,7 @@ public:
 	bool Downscale_Image( const unsigned char *const orig, int width, int height, int channels, unsigned char *resampled, int block_size_x, int block_size_y ) const;
 
 	// Save an image of the current screen
-	void Save_Screenshot( void ) const;
+	void Save_Screenshot( void );
 	// Save data as png image
 	void Save_Surface( const std::string &filename, const unsigned char *data, unsigned int width, unsigned int height, unsigned int bpp = 4, bool reverse_data = 0 ) const;
 
@@ -231,6 +253,16 @@ public:
 	float m_geometry_quality;
 	// texture quality level 0.0 - 1.0
 	float m_texture_quality;
+
+	// window manager information
+	SDL_SysWMinfo wm_info;
+#ifdef __unix__
+	// current opengl context
+	GLXContext glx_context;
+#endif
+	// rendering thread
+	boost::thread m_render_thread;
+
 private:
 	// if set video is initialized successfully
 	bool m_initialised;

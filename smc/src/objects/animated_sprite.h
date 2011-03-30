@@ -1,5 +1,5 @@
 /***************************************************************************
- * animated_sprite.h  -  header for the corresponding cpp file
+ * animated_sprite.h
  *
  * Copyright (C) 2005 - 2011 Florian Richter
  ***************************************************************************/

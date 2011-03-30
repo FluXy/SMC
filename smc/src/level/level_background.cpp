@@ -334,8 +334,6 @@ void cBackground :: Draw( void )
 
 void cBackground :: Draw_Gradient( void )
 {
-	pVideo->Clear_Screen();
-
 	// no need to draw a gradient if both colors are the same
 	if( m_color_1 == m_color_2 )
 	{

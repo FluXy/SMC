@@ -1,5 +1,5 @@
 /***************************************************************************
- * level_background.h  -  header for the corresponding cpp file
+ * level_background.h
  *
  * Copyright (C) 2005 - 2011 Florian Richter
  ***************************************************************************/

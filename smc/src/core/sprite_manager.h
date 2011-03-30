@@ -1,5 +1,5 @@
 /***************************************************************************
- * sprite_manager.h  -  header for the corresponding cpp file
+ * sprite_manager.h
  *
  * Copyright (C) 2005 - 2011 Florian Richter
  ***************************************************************************/

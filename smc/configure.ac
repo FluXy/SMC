@@ -15,6 +15,10 @@ AC_LANG(C++)
 AC_CHECK_LIB(boost_filesystem, main, ,
 	AC_MSG_ERROR([Unable to find Boost Filesystem library]))
 
+# Check for the Boost Thread library
+AC_CHECK_LIB(boost_thread, main, ,
+	AC_MSG_ERROR([Unable to find Boost Thread Filesystem library]))
+
 # Check for the OpenGL and GLU library
 case "${host}" in
 *darwin*|*macosx*)

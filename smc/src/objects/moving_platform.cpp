@@ -829,7 +829,7 @@ void cMoving_Platform :: Draw( cSurface_Request *request /* = NULL */ )
 		surface_request = new cSurface_Request();
 		// draw only first image complete
 		cAnimated_Sprite::Draw( surface_request );
-		surface_request->pos_x += x;
+		surface_request->m_pos_x += x;
 		x += m_images[0].m_image->m_w;
 		// add request
 		pRenderer->Add( surface_request );
@@ -846,7 +846,7 @@ void cMoving_Platform :: Draw( cSurface_Request *request /* = NULL */ )
 			// create request
 			surface_request = new cSurface_Request();
 			cAnimated_Sprite::Draw_Image( surface_request);
-			surface_request->pos_x += x;
+			surface_request->m_pos_x += x;
 			x += m_images[1].m_image->m_w;
 			// add request
 			pRenderer->Add( surface_request );
@@ -862,7 +862,7 @@ void cMoving_Platform :: Draw( cSurface_Request *request /* = NULL */ )
 		// create request
 		surface_request = new cSurface_Request();
 		cAnimated_Sprite::Draw_Image( surface_request );
-		surface_request->pos_x += x;
+		surface_request->m_pos_x += x;
 		//x += m_images[2]->w;
 		// add request
 		pRenderer->Add( surface_request );
@@ -900,7 +900,7 @@ void cMoving_Platform :: Draw( cSurface_Request *request /* = NULL */ )
 			// circle
 			cCircle_Request *circle_request = new cCircle_Request();
 			pVideo->Draw_Circle( m_start_pos_x - pActive_Camera->m_x, m_start_pos_y - m_max_distance - pActive_Camera->m_y, static_cast<float>(m_max_distance), m_pos_z - 0.0001f, &m_editor_color, circle_request );
-			circle_request->line_width = 2;
+			circle_request->m_line_width = 2;
 			// add request
 			pRenderer->Add( circle_request );
 		}

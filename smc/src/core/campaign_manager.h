@@ -1,5 +1,5 @@
 /***************************************************************************
- * campaign_manager.h  -  header for the corresponding cpp file
+ * campaign_manager.h
  *
  * Copyright (C) 2010 - 2011 Florian Richter
  ***************************************************************************/

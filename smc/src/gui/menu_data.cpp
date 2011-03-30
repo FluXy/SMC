@@ -48,6 +48,10 @@ namespace fs = boost::filesystem;
 #include "elements/CEGUISpinner.h"
 #include "elements/CEGUIMultiLineEditbox.h"
 #include "elements/CEGUISlider.h"
+// unix hackfix : undef None from SDL_syswm.h
+#ifdef None
+	#undef None
+#endif
 #include "elements/CEGUIMultiColumnList.h"
 
 namespace SMC
@@ -158,7 +162,6 @@ void cMenu_Base :: Draw( void )
 		// gui
 		pMenuCore->m_handler->Draw();
 	}
-
 
 	// menu items
 	for( HudSpriteList::iterator itr = m_draw_list.begin(); itr != m_draw_list.end(); ++itr )
@@ -1861,18 +1864,12 @@ void cMenu_Options :: Update( void )
 		return;
 	}
 
-	// only menu actions
-	if( pMenuCore->m_handler->m_active > 4 )
-	{
-		return;
-	}
-
 	m_action = 0;
 
-	// back
-	if( pMenuCore->m_handler->m_active == 0 )
+	// only menu actions
+	if( pMenuCore->m_handler->m_active > 0 )
 	{
-		Exit();
+		return;
 	}
 
 	// todo : use this functionality again
@@ -3579,10 +3576,10 @@ void cMenu_Credits :: Draw( void )
 	// darken background
 	cRect_Request *request = new cRect_Request();
 	pVideo->Draw_Rect( NULL, 0.095f, &pMenuCore->m_handler->m_level->m_background_manager->Get_Pointer( 0 )->m_color_2, request );
-	request->color.red = static_cast<Uint8>(request->color.red * 0.1f);
-	request->color.green = static_cast<Uint8>(request->color.green * 0.1f);
-	request->color.blue = static_cast<Uint8>(request->color.blue * 0.1f);
-	request->color.alpha = 195;
+	request->m_color.red = static_cast<Uint8>(request->m_color.red * 0.1f);
+	request->m_color.green = static_cast<Uint8>(request->m_color.green * 0.1f);
+	request->m_color.blue = static_cast<Uint8>(request->m_color.blue * 0.1f);
+	request->m_color.alpha = 195;
 	pRenderer->Add( request );
 
 	Draw_End();
@@ -3689,10 +3686,10 @@ void cMenu_Credits :: Menu_Fade( bool fade_in /* = 1 */ )
 		// create request
 		cRect_Request *request = new cRect_Request();
 		pVideo->Draw_Rect( NULL, 0.095f, &pMenuCore->m_handler->m_level->m_background_manager->Get_Pointer( 0 )->m_color_2, request );
-		request->color.red = static_cast<Uint8>(request->color.red * 0.1f);
-		request->color.green = static_cast<Uint8>(request->color.green * 0.1f);
-		request->color.blue = static_cast<Uint8>(request->color.blue * 0.1f);
-		request->color.alpha = 255 - static_cast<Uint8>(counter);
+		request->m_color.red = static_cast<Uint8>(request->m_color.red * 0.1f);
+		request->m_color.green = static_cast<Uint8>(request->m_color.green * 0.1f);
+		request->m_color.blue = static_cast<Uint8>(request->m_color.blue * 0.1f);
+		request->m_color.alpha = 255 - static_cast<Uint8>(counter);
 		// add request
 		pRenderer->Add( request );
 

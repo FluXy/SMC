@@ -286,6 +286,9 @@ void cLevel_Manager :: Update( void )
 
 void cLevel_Manager :: Draw( void )
 {
+	// clear
+	pVideo->Clear_Screen();
+
 	// draw level layer 1
 	pActive_Level->Draw_Layer_1();
 

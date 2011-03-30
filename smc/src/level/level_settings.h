@@ -1,5 +1,5 @@
 /***************************************************************************
- * level_settings.h  -  header for the corresponding cpp file
+ * level_settings.h
  *
  * Copyright (C) 2006 - 2011 Florian Richter
  ***************************************************************************/
@@ -65,8 +65,6 @@ public:
 	// Loads the Background image List
 	void Load_BG_Image_List( void );
 
-	// Set the Background image preview
-	void Set_Background_Image_Preview( std::string filename );
 	// Updates the Background image
 	bool Update_BG_Image( const CEGUI::EventArgs &event );
 	// Clears the background Layer fields
@@ -89,9 +87,6 @@ public:
 	CEGUI::Spinner *m_spinner_difficulty;
 	CEGUI::Slider *m_slider_difficulty;
 	CEGUI::Window *m_text_difficulty_name;
-
-	// background image preview
-	cHudSprite *m_background_preview;
 
 	// Background colors
 	Color m_bg_color_1;

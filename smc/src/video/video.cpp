@@ -75,6 +75,12 @@ cVideo :: cVideo( void )
 	m_geometry_quality = cPreferences::m_geometry_quality_default;
 	m_texture_quality = cPreferences::m_texture_quality_default;
 
+	SDL_VERSION( &wm_info.version );
+#ifdef __unix__
+	glx_context = NULL;
+#endif
+	m_render_thread = boost::thread();
+
 	m_initialised = 0;
 }
 
@@ -254,6 +260,8 @@ void cVideo :: Init_SDL( void )
 
 void cVideo :: Init_Video( bool reload_textures_from_file /* = 0 */, bool use_preferences /* = 1 */ )
 {
+	Render_Finish();
+
 	// set the video flags
 	int flags = SDL_OPENGL | SDL_SWSURFACE;
 
@@ -489,6 +497,16 @@ void cVideo :: Init_Video( bool reload_textures_from_file /* = 0 */, bool use_pr
 	SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL, &accelerated );
 	printf( "accel %d\n", accelerated );*/
 
+	// get window manager information
+	if( !SDL_GetWMInfo( &wm_info ) )
+	{
+		printf( "Error: SDL_GetWMInfo not implemented\n" );
+	}
+#ifdef __unix__
+	// get context
+	glx_context = glXGetCurrentContext();
+#endif
+
 	// initialize opengl
 	Init_OpenGL();
 
@@ -496,7 +514,7 @@ void cVideo :: Init_Video( bool reload_textures_from_file /* = 0 */, bool use_pr
 	if( m_initialised )
 	{
 		// reset highest texture id
-		pImage_Manager->high_texture_id = 0;
+		pImage_Manager->m_high_texture_id = 0;
 
 		/* restore GUI textures
 		 * must be the first CEGUI call after the grabTextures function
@@ -559,7 +577,7 @@ void cVideo :: Init_Video( bool reload_textures_from_file /* = 0 */, bool use_pr
 	}
 }
 
-void cVideo :: Init_OpenGL( void ) const
+void cVideo :: Init_OpenGL( void )
 {
 	// viewport should cover the whole screen
 	glViewport( 0, 0, pPreferences->m_video_screen_w, pPreferences->m_video_screen_h );
@@ -607,14 +625,16 @@ void cVideo :: Init_OpenGL( void ) const
 	// Resolution Scale
 	Init_Resolution_Scale();
 
-	// Clear Screen
-	Clear_Screen();
+	// clear screen
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	SDL_GL_SwapBuffers();
 }
 
-void cVideo :: Init_Geometry( void ) const
+void cVideo :: Init_Geometry( void )
 {
+	Render_Finish();
+
 	// Geometry Anti-Aliasing
 	if( m_geometry_quality > 0.5f )
 	{
@@ -654,8 +674,10 @@ void cVideo :: Init_Geometry( void ) const
 	}
 }
 
-void cVideo :: Init_Texture_Detail( void ) const
+void cVideo :: Init_Texture_Detail( void )
 {
+	Render_Finish();
+
 	/* filter quality of generated mipmap images
 	 * only available if OpenGL version is 1.4 or greater
 	*/
@@ -950,36 +972,125 @@ vector<cSize_Int> cVideo :: Get_Supported_Resolutions( int flags /* = 0 */ ) con
 	return valid_resolutions;
 }
 
-void cVideo :: Clear_Screen( void ) const
+void cVideo :: Make_GL_Context_Current( void )
 {
-	// clear screen
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	// clear the matrix (default position and orientation)
-	glLoadIdentity();
+	// scoped context lock here
+#ifdef _WIN32
+	if( wglGetCurrentContext() != wm_info.hglrc )
+	{
+		wglMakeCurrent( GetDC( wm_info.window ), wm_info.hglrc );
+	}
+#elif __unix__
+	if( glx_context != NULL )
+	{
+		glXMakeCurrent( wm_info.info.x11.gfxdisplay, wm_info.info.x11.window, glx_context );
+	}
+#elif __APPLE__
+	// party time
+#endif
+
+	// update info (needed?)
+	SDL_GetWMInfo( &wm_info );
 }
 
-void cVideo :: Render( void ) const
+void cVideo :: Make_GL_Context_Inactive( void )
 {
-	pRenderer->Render();
+#ifdef _WIN32
+	wglMakeCurrent( NULL, NULL );
+#elif __unix__
+	glXMakeCurrent( wm_info.info.x11.gfxdisplay, None, NULL );
+#elif __APPLE__
+	// party time
+#endif
+
+	// update info (needed?)
+	SDL_GetWMInfo( &wm_info );
+}
+
+void cVideo :: Render_From_Thread( void )
+{
+	Make_GL_Context_Current();
+
+	pRenderer_current->Render();
+	// under linux with sofware mesa 7.9 it only showed the rendered output with SDL_GL_SwapBuffers()
 
 	// update performance timer
-	pFramerate->m_perf_timer[PERF_RENDER_GAME]->Update();
+	//pFramerate->m_perf_timer[PERF_RENDER_GAME]->Update();
 
-	pGuiSystem->renderGUI();
-	pRenderer_GUI->Render();
-	pMouseCursor->Render();
+	Make_GL_Context_Inactive();
+}
 
-	// update performance timer
-	pFramerate->m_perf_timer[PERF_RENDER_GUI]->Update();
+void cVideo :: Render( bool threaded /* = 0 */ )
+{
+	Render_Finish();
 
-	SDL_GL_SwapBuffers();
+	if( threaded )
+	{
+		pGuiSystem->renderGUI();
 
-	// update performance timer
-	pFramerate->m_perf_timer[PERF_RENDER_BUFFER]->Update();
+		// update performance timer
+		pFramerate->m_perf_timer[PERF_RENDER_GUI]->Update();
+
+		SDL_GL_SwapBuffers();
+
+		// update performance timer
+		pFramerate->m_perf_timer[PERF_RENDER_BUFFER]->Update();
+
+		// switch active renderer
+		cRenderQueue *new_render = pRenderer;
+		pRenderer = pRenderer_current;
+		pRenderer_current = new_render;
+
+		// move objects that should render more than once
+		if( !pRenderer->m_render_data.empty() )
+		{
+			pRenderer_current->m_render_data.insert( pRenderer_current->m_render_data.begin(), pRenderer->m_render_data.begin(), pRenderer->m_render_data.end() );
+			pRenderer->m_render_data.clear();
+		}
+		
+		// make main thread inactive
+		Make_GL_Context_Inactive();
+		// start render thread
+		m_render_thread = boost::thread(&cVideo::Render_From_Thread, this);
+	}
+	// single thread mode
+	else
+	{
+		pRenderer->Render();
+
+		// update performance timer
+		pFramerate->m_perf_timer[PERF_RENDER_GAME]->Update();
+
+		pGuiSystem->renderGUI();
+
+		// update performance timer
+		pFramerate->m_perf_timer[PERF_RENDER_GUI]->Update();
+
+		SDL_GL_SwapBuffers();
+
+		// update performance timer
+		pFramerate->m_perf_timer[PERF_RENDER_BUFFER]->Update();
+	}
+}
+
+void cVideo :: Render_Finish( void )
+{
+#ifndef SMC_RENDER_THREAD_TEST
+	return;
+#endif
+	if( m_render_thread.joinable() )
+	{
+		m_render_thread.join();
+	}
+
+	// todo : use opengl in only one thread
+	Make_GL_Context_Current();
 }
 
 void cVideo :: Toggle_Fullscreen( void )
 {
+	Render_Finish();
+
 	// toggle fullscreen
 	pPreferences->m_video_fullscreen = !pPreferences->m_video_fullscreen;
 
@@ -1207,6 +1318,11 @@ cGL_Surface *cVideo :: Create_Texture( SDL_Surface *surface, bool mipmap /* = 0 
 	// create final image
 	surface = Convert_To_Final_Software_Image( surface );
 
+	/* todo : Make this a render request because it forces an early thread render finish as opengl commands are used directly.
+	 * Reduces performance if the render thread is on. It's usually called from the text rendering in cTimeDisplay::Update.
+	*/
+	pVideo->Render_Finish();
+
 	// create one texture
 	GLuint image_num = 0;
 	glGenTextures( 1, &image_num );
@@ -1220,9 +1336,9 @@ cGL_Surface *cVideo :: Create_Texture( SDL_Surface *surface, bool mipmap /* = 0 
 	}
 	
 	// set highest texture id
-	if( pImage_Manager->high_texture_id < image_num )
+	if( pImage_Manager->m_high_texture_id < image_num )
 	{
-		pImage_Manager->high_texture_id = image_num;
+		pImage_Manager->m_high_texture_id = image_num;
 	}
 
 	int width = surface->w;
@@ -1297,18 +1413,12 @@ cGL_Surface *cVideo :: Create_Texture( SDL_Surface *surface, bool mipmap /* = 0 
 
 	// if debug build check for errors
 #ifdef _DEBUG
-	while( 1 )
-	{
-		GLenum error = glGetError();
+	// glGetError only saves one error flag
+	GLenum error = glGetError();
 
-		if( error != GL_NO_ERROR )
-		{
-			printf( "CreateTexture : GL Error found : %s\n", gluErrorString( error ) );
-		}
-		else
-		{
-			break;
-		}
+	if( error != GL_NO_ERROR )
+	{
+		printf( "CreateTexture : GL Error found : %s\n", gluErrorString( error ) );
 	}
 #endif
 
@@ -1363,49 +1473,9 @@ Color cVideo :: Get_Pixel( int x, int y ) const
 	return color;
 }
 
-void cVideo :: Draw_Line( const GL_line *line, float z, const Color *color, cLine_Request *request /* = NULL */ ) const
+void cVideo :: Clear_Screen( void ) const
 {
-	if( !line )
-	{
-		return;
-	}
-
-	Draw_Line( line->m_x1, line->m_y1, line->m_x2, line->m_y2, z, color, request );
-}
-
-void cVideo :: Draw_Line( float x1, float y1, float x2, float y2, float z, const Color *color, cLine_Request *request /* = NULL */ ) const
-{
-	if( !color )
-	{
-		return;
-	}
-
-	bool create_request = 0;
-
-	if( !request )
-	{
-		create_request = 1;
-		// create request
-		request = new cLine_Request();
-	}
-
-	// line
-	request->line.m_x1 = x1;
-	request->line.m_y1 = y1;
-	request->line.m_x2 = x2;
-	request->line.m_y2 = y2;
-
-	// z position
-	request->pos_z = z;
-
-	// color
-	request->color = *color;
-
-	if( create_request )
-	{
-		// add request
-		pRenderer->Add( request );
-	}
+	pRenderer->Add( new cClear_Request() );
 }
 
 void cVideo :: Draw_Rect( const GL_rect *rect, float z, const Color *color, cRect_Request *request /* = NULL */ ) const
@@ -1437,16 +1507,16 @@ void cVideo :: Draw_Rect( float x, float y, float width, float height, float z, 
 	}
 
 	// rect
-	request->rect.m_x = x;
-	request->rect.m_y = y;
-	request->rect.m_w = width;
-	request->rect.m_h = height;
+	request->m_rect.m_x = x;
+	request->m_rect.m_y = y;
+	request->m_rect.m_w = width;
+	request->m_rect.m_h = height;
 
 	// z position
-	request->pos_z = z;
+	request->m_pos_z = z;
 
 	// color
-	request->color = *color;
+	request->m_color = *color;
 
 	if( create_request )
 	{
@@ -1484,20 +1554,20 @@ void cVideo :: Draw_Gradient( float x, float y, float width, float height, float
 	}
 
 	// rect
-	request->rect.m_x = x;
-	request->rect.m_y = y;
-	request->rect.m_w = width;
-	request->rect.m_h = height;
+	request->m_rect.m_x = x;
+	request->m_rect.m_y = y;
+	request->m_rect.m_w = width;
+	request->m_rect.m_h = height;
 
 	// z position
-	request->pos_z = z;
+	request->m_pos_z = z;
 
 	// color
-	request->color_1 = *color_1;
-	request->color_2 = *color_2;
+	request->m_color_1 = *color_1;
+	request->m_color_2 = *color_2;
 
 	// direction
-	request->dir = direction;
+	request->m_dir = direction;
 
 	if( create_request )
 	{
@@ -1523,16 +1593,61 @@ void cVideo :: Draw_Circle( float x, float y, float radius, float z, const Color
 	}
 
 	// position
-	request->pos.m_x = x;
-	request->pos.m_y = y;
+	request->m_pos.m_x = x;
+	request->m_pos.m_y = y;
 	// radius
-	request->radius = radius;
+	request->m_radius = radius;
 
 	// z position
-	request->pos_z = z;
+	request->m_pos_z = z;
 
 	// color
-	request->color = *color;
+	request->m_color = *color;
+
+	if( create_request )
+	{
+		// add request
+		pRenderer->Add( request );
+	}
+}
+
+void cVideo :: Draw_Line( const GL_line *line, float z, const Color *color, cLine_Request *request /* = NULL */ ) const
+{
+	if( !line )
+	{
+		return;
+	}
+
+	Draw_Line( line->m_x1, line->m_y1, line->m_x2, line->m_y2, z, color, request );
+}
+
+void cVideo :: Draw_Line( float x1, float y1, float x2, float y2, float z, const Color *color, cLine_Request *request /* = NULL */ ) const
+{
+	if( !color )
+	{
+		return;
+	}
+
+	bool create_request = 0;
+
+	if( !request )
+	{
+		create_request = 1;
+		// create request
+		request = new cLine_Request();
+	}
+
+	// line
+	request->m_line.m_x1 = x1;
+	request->m_line.m_y1 = y1;
+	request->m_line.m_x2 = x2;
+	request->m_line.m_y2 = y2;
+
+	// z position
+	request->m_pos_z = z;
+
+	// color
+	request->m_color = *color;
 
 	if( create_request )
 	{
@@ -1671,8 +1786,10 @@ bool cVideo :: Downscale_Image( const unsigned char* const orig, int width, int 
 	return 1;
 }
 
-void cVideo :: Save_Screenshot( void ) const
+void cVideo :: Save_Screenshot( void )
 {
+	Render_Finish();
+
 	std::string filename;
 	
 	for( unsigned int i = 1; i < 1000; i++ )
@@ -1807,7 +1924,7 @@ void Draw_Effect_Out( Effect_Fadeout effect /* = EFFECT_OUT_RANDOM */, float spe
 			cRect_Request *request = new cRect_Request();
 			pVideo->Draw_Rect( NULL, 0.9f, &color, request );
 			
-			request->render_count = 2;
+			request->m_render_count = 2;
 
 			// add request
 			pRenderer->Add( request );
@@ -1876,7 +1993,7 @@ void Draw_Effect_Out( Effect_Fadeout effect /* = EFFECT_OUT_RANDOM */, float spe
 				pVideo->Draw_Gradient( 0, 0, static_cast<float>(game_res_w), pos_end, 0.9f, &color, &black, DIR_VERTICAL, gradient_request );
 			}
 
-			gradient_request->render_count = 2;
+			gradient_request->m_render_count = 2;
 			// add request
 			pRenderer->Add( gradient_request );
 
@@ -1895,7 +2012,7 @@ void Draw_Effect_Out( Effect_Fadeout effect /* = EFFECT_OUT_RANDOM */, float spe
 				pVideo->Draw_Gradient( 0, static_cast<float>(game_res_h) - pos_end, static_cast<float>(game_res_w), pos_end, 0.9f, &color, &black, DIR_VERTICAL, gradient_request );
 			}
 
-			gradient_request->render_count = 2;
+			gradient_request->m_render_count = 2;
 			// add request
 			pRenderer->Add( gradient_request );
 
@@ -1952,14 +2069,14 @@ void Draw_Effect_Out( Effect_Fadeout effect /* = EFFECT_OUT_RANDOM */, float spe
 			cSurface_Request *request = new cSurface_Request();
 			image->Blit( ( game_res_w * 0.5f ) - ( ( image->m_w * f ) / 2 ) , game_res_h * 0.5f - ( ( image->m_h * f ) / 2 ), 0.9f, request );
 
-			request->blend_sfactor = GL_SRC_ALPHA;
-			request->blend_dfactor = GL_ONE;
+			request->m_blend_sfactor = GL_SRC_ALPHA;
+			request->m_blend_dfactor = GL_ONE;
 
-			request->color = color;
+			request->m_color = color;
 
 			// scale
-			request->scale_x = f;
-			request->scale_y = f;
+			request->m_scale_x = f;
+			request->m_scale_y = f;
 
 			// add request
 			pRenderer->Add( request );
@@ -2021,10 +2138,10 @@ void Draw_Effect_Out( Effect_Fadeout effect /* = EFFECT_OUT_RANDOM */, float spe
 				cRect_Request *request = new cRect_Request();
 				pVideo->Draw_Rect( Get_Random_Float( -rect_size * 0.5f, game_res_w - rect_size * 0.5f ), Get_Random_Float( -rect_size * 0.5f, game_res_h - rect_size * 0.5f ), rect_size, rect_size, 0.9f, &rand_color, request );
 
-				request->render_count = 2;
+				request->m_render_count = 2;
 
-				request->blend_sfactor = GL_SRC_ALPHA;
-				request->blend_dfactor = GL_ONE_MINUS_SRC_COLOR;
+				request->m_blend_sfactor = GL_SRC_ALPHA;
+				request->m_blend_dfactor = GL_ONE_MINUS_SRC_COLOR;
 
 				// add request
 				pRenderer->Add( request );
@@ -2115,16 +2232,16 @@ void Draw_Effect_Out( Effect_Fadeout effect /* = EFFECT_OUT_RANDOM */, float spe
 					pVideo->Draw_Rect( &dest, 0.9f, &color, request );
 
 					// rotation
-					request->rotz = grid[y][x] * 5.0f;
+					request->m_rot_z = grid[y][x] * 5.0f;
 
 					// scale
-					request->scale_x = 0.1f + (grid[y][x] * 0.02f);
-					request->scale_y = request->scale_x;
-					request->rect.m_x -= ( dest.m_w * 0.5f ) * ( request->scale_x - 1.0f );
-					request->rect.m_y -= ( dest.m_h * 0.5f ) * ( request->scale_y - 1.0f );
+					request->m_scale_x = 0.1f + (grid[y][x] * 0.02f);
+					request->m_scale_y = request->m_scale_x;
+					request->m_rect.m_x -= ( dest.m_w * 0.5f ) * ( request->m_scale_x - 1.0f );
+					request->m_rect.m_y -= ( dest.m_h * 0.5f ) * ( request->m_scale_y - 1.0f );
 
 
-					request->render_count = 2;
+					request->m_render_count = 2;
 					// add request
 					pRenderer->Add( request );
 				}
@@ -2207,7 +2324,7 @@ void Draw_Effect_Out( Effect_Fadeout effect /* = EFFECT_OUT_RANDOM */, float spe
 					cRect_Request *request = new cRect_Request();
 					pVideo->Draw_Rect( &rect, 0.9f, &color, request );
 
-					request->render_count = 2;
+					request->m_render_count = 2;
 
 					// add request
 					pRenderer->Add( request );
@@ -2223,10 +2340,10 @@ void Draw_Effect_Out( Effect_Fadeout effect /* = EFFECT_OUT_RANDOM */, float spe
 			cRect_Request *request = new cRect_Request();
 			pVideo->Draw_Rect( NULL, 0.9f, &rect_color, request );
 			
-			request->render_count = 2;
+			request->m_render_count = 2;
 
-			request->blend_sfactor = GL_SRC_ALPHA;
-			request->blend_dfactor = GL_ONE_MINUS_SRC_COLOR;
+			request->m_blend_sfactor = GL_SRC_ALPHA;
+			request->m_blend_dfactor = GL_ONE_MINUS_SRC_COLOR;
 
 			// add request
 			pRenderer->Add( request );
@@ -2345,7 +2462,6 @@ void Loading_Screen_Draw( void )
 	// Render
 	pRenderer->Render();
 	pGuiSystem->renderGUI();
-	pRenderer_GUI->Render();
 	SDL_GL_SwapBuffers();
 }
 

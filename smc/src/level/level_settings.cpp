@@ -46,9 +46,6 @@ cLevel_Settings :: cLevel_Settings( cSprite_Manager *sprite_manager, cLevel *lev
 {
 	m_active = 0;
 
-	// Main
-	m_background_preview = new cHudSprite( sprite_manager );
-
 	m_level = level;
 	m_camera = new cCamera( sprite_manager );
 	m_gui_window = NULL;
@@ -59,7 +56,6 @@ cLevel_Settings :: ~cLevel_Settings( void )
 {
 	Unload();
 
-	delete m_background_preview;
 	delete m_camera;
 }
 
@@ -199,10 +195,6 @@ void cLevel_Settings :: Init( void )
 	editbox = static_cast<CEGUI::Editbox *>(wmgr.getWindow( "editbox_bg_color_end_blue" ));
 	editbox->subscribeEvent( CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber( &cLevel_Settings::Update_BG_Colors, this ) );
 	editbox->setText( int_to_string( m_bg_color_2.blue ).c_str() );
-	// preview window
-	CEGUI::Window *window_background_preview = wmgr.getWindow( "window_background_preview" );
-	m_background_preview->Set_Pos_X( window_background_preview->getUnclippedOuterRect().d_left * global_downscalex, 1 );
-	m_background_preview->Set_Pos_Y( window_background_preview->getUnclippedOuterRect().d_top * global_downscaley, 1 );
 
 	Update_BG_Colors( CEGUI::EventArgs() );
 	Clear_Layer_Field();
@@ -305,9 +297,6 @@ void cLevel_Settings :: Unload( void )
 	m_gui_window = NULL;
 	m_tabcontrol = NULL;
 
-	// clear preview images
-	m_background_preview->Set_Image( NULL, 1 );
-
 	m_active = 0;
 }
 
@@ -323,31 +312,6 @@ void cLevel_Settings :: Draw( void )
 {
 	pVideo->Clear_Screen();
 	pVideo->Draw_Rect( NULL, 0.00001f, &black );
-
-	// background Tab
-	if( m_tabcontrol->getSelectedTabIndex() == 1 )
-	{
-		// create request
-		cGradient_Request *gradient_request = new cGradient_Request();
-		// draw background gradient
-		pVideo->Draw_Gradient( &m_background_preview->m_rect, 0.0001f, &m_bg_color_1, &m_bg_color_2, DIR_VERTICAL, gradient_request );
-		// scale with image
-		if( m_background_preview->m_image )
-		{
-			// set scale
-			gradient_request->rect.m_w *= m_background_preview->m_scale_x;
-			gradient_request->rect.m_h *= m_background_preview->m_scale_y;
-		}
-		// add request
-		pRenderer_GUI->Add( gradient_request );
-
-		// create request
-		cSurface_Request *request = new cSurface_Request();
-		// draw background image preview
-		m_background_preview->Draw( request );
-		// add request
-		pRenderer_GUI->Add( request );
-	}
 
 	// update performance timer
 	pFramerate->m_perf_timer[PERF_DRAW_LEVEL_SETTINGS]->Update();
@@ -381,7 +345,6 @@ void cLevel_Settings :: Set_Level( cLevel *level )
 
 void cLevel_Settings :: Set_Sprite_Manager( cSprite_Manager *sprite_manager )
 {
-	m_background_preview->Set_Sprite_Manager( sprite_manager );
 	m_camera->Set_Sprite_Manager( sprite_manager );
 }
 
@@ -459,10 +422,6 @@ bool cLevel_Settings :: Set_Background_Image( const CEGUI::EventArgs &event )
 		spinner->setCurrentValue( background->m_const_vel_x );
 		spinner = static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_bg_image_const_vel_y" ));
 		spinner->setCurrentValue( background->m_const_vel_y );
-
-		// set image preview
-		background_filename.insert( 0, DATA_DIR "/" GAME_PIXMAPS_DIR "/" );
-		Set_Background_Image_Preview( background_filename );
 	}
 	// deselected
 	else
@@ -550,42 +509,6 @@ void cLevel_Settings :: Load_BG_Image_List( void )
 	}
 }
 
-void cLevel_Settings :: Set_Background_Image_Preview( std::string filename )
-{
-	Convert_Path_Separators( filename );
-
-	// unset image
-	m_background_preview->Set_Image( NULL );
-
-	// set default rect
-	CEGUI::Window *window_background_preview = CEGUI::WindowManager::getSingleton().getWindow( "window_background_preview" );
-	m_background_preview->m_rect.m_w = window_background_preview->getUnclippedOuterRect().getWidth() * global_downscalex;
-	m_background_preview->m_rect.m_h = window_background_preview->getUnclippedOuterRect().getHeight() * global_downscaley;
-
-	if( !File_Exists( filename ) )
-	{
-		return;
-	}
-
-	cGL_Surface *temp = pVideo->Get_Surface( filename );
-	
-	if( !temp )
-	{
-		return;
-	}
-
-	// reset scale
-	m_background_preview->m_scale_x = 1.0f;
-	m_background_preview->m_scale_y = 1.0f;
-	// Get zoom before setting image
-	float zoom = pVideo->Get_Scale( temp, m_background_preview->m_rect.m_w, m_background_preview->m_rect.m_h );
-	// Set image
-	m_background_preview->Set_Image( temp );
-	// Set Zoom
-	m_background_preview->m_scale_x *= zoom;
-	m_background_preview->m_scale_y *= zoom;
-}
-
 bool cLevel_Settings :: Update_BG_Image( const CEGUI::EventArgs &event )
 {
 	// get window manager
@@ -611,9 +534,6 @@ bool cLevel_Settings :: Update_BG_Image( const CEGUI::EventArgs &event )
 	float const_vel_x = (static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_bg_image_const_vel_x" )))->getCurrentValue();
 	float const_vel_y = (static_cast<CEGUI::Spinner *>(wmgr.getWindow( "spinner_bg_image_const_vel_y" )))->getCurrentValue();
 
-	// full filename for validation
-	bg_filename.insert( 0, DATA_DIR "/" GAME_PIXMAPS_DIR "/" );
-
 	// get background
 	cBackground *background = static_cast<cBackground *>(item->getUserData());
 	// set type
@@ -628,15 +548,11 @@ bool cLevel_Settings :: Update_BG_Image( const CEGUI::EventArgs &event )
 	background->Set_Const_Velocity_X( const_vel_x );
 	background->Set_Const_Velocity_Y( const_vel_y );
 
+	// full filename for validation
+	bg_filename.insert( 0, DATA_DIR "/" GAME_PIXMAPS_DIR "/" );
 
-	// valid
-	if( File_Exists( bg_filename ) )
-	{
-		// update image preview
-		Set_Background_Image_Preview( bg_filename );
-	}
-	// invalid
-	else
+	// invalid file
+	if( !File_Exists( bg_filename ) )
 	{
 		// clear image
 		bg_filename.clear();
@@ -666,7 +582,6 @@ void cLevel_Settings :: Clear_Layer_Field( void )
 	wmgr.getWindow( "spinner_bg_image_speed_y" )->setText( "" );
 	wmgr.getWindow( "spinner_bg_image_const_vel_x" )->setText( "" );
 	wmgr.getWindow( "spinner_bg_image_const_vel_y" )->setText( "" );
-	Set_Background_Image_Preview( "" );
 }
 
 bool cLevel_Settings :: Spinner_Difficulty_Changed( const CEGUI::EventArgs &event )

@@ -359,7 +359,7 @@ void cRokko :: Draw( cSurface_Request *request /* = NULL */ )
 	// alpha in debug mode
 	if( editor_level_enabled )
 	{
-		request->color.alpha = 64;
+		request->m_color.alpha = 64;
 	}
 
 	if( create_request )

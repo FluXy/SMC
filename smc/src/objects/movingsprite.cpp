@@ -597,7 +597,7 @@ void cMovingSprite :: Draw( cSurface_Request *request /* = NULL */ )
 		// frozen
 		if( m_freeze_counter )
 		{
-			request->combine_type = GL_ADD;
+			request->m_combine_type = GL_ADD;
 
 			float counter_add = m_freeze_counter;
 
@@ -606,9 +606,9 @@ void cMovingSprite :: Draw( cSurface_Request *request /* = NULL */ )
 				counter_add = 1000.0f;
 			}
 
-			request->combine_col[0] = counter_add * 0.003f;
-			request->combine_col[1] = counter_add * 0.003f;
-			request->combine_col[2] = counter_add * 0.0099f;
+			request->m_combine_color[0] = counter_add * 0.003f;
+			request->m_combine_color[1] = counter_add * 0.003f;
+			request->m_combine_color[2] = counter_add * 0.0099f;
 		}
 	}
 
@@ -671,10 +671,10 @@ cObjectCollisionType *cMovingSprite :: Collision_Check_Absolute( const float x, 
 		cRect_Request *request = new cRect_Request();
 
 		pVideo->Draw_Rect( &new_rect, m_pos_z + 0.00001f, &green, request );
-		request->no_camera = 0;
+		request->m_no_camera = 0;
 
-		request->blend_sfactor = GL_SRC_COLOR;
-		request->blend_dfactor = GL_DST_ALPHA;
+		request->m_blend_sfactor = GL_SRC_COLOR;
+		request->m_blend_dfactor = GL_DST_ALPHA;
 
 
 		// add request

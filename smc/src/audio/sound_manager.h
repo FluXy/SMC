@@ -1,5 +1,5 @@
 /***************************************************************************
- * sound_manager.h  -  header for the corresponding cpp file
+ * sound_manager.h
  *
  * Copyright (C) 2006 - 2011 Florian Richter
  ***************************************************************************/

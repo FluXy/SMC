@@ -1,5 +1,5 @@
 /***************************************************************************
- * global_basic.h  -  global header
+ * global_basic.h
  *
  * Copyright (C) 2003 - 2011 Florian Richter
  ***************************************************************************/
@@ -15,6 +15,11 @@
 
 #ifndef SMC_GLOBAL_BASIC_H
 #define SMC_GLOBAL_BASIC_H
+
+/* uncomment to enable experimental rendering in a thread
+* still randomly crashes because gl functions are called while the render thread is active
+*/
+//#define SMC_RENDER_THREAD_TEST
 
 /* *** *** *** *** *** *** *** Debugging *** *** *** *** *** *** *** *** *** *** */
 

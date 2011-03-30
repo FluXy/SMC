@@ -210,7 +210,7 @@ void cOverworld_Player :: Draw( cSurface_Request *request /* = NULL */ )
 	// alpha in debug mode
 	if( pOverworld_Manager->m_debug_mode )
 	{
-		request->color.alpha = 64;
+		request->m_color.alpha = 64;
 	}
 
 	if( create_request )
@@ -249,24 +249,24 @@ void cOverworld_Player :: Draw_Debug_Text( void )
 	// Draw Line count
 	cSurface_Request *request = new cSurface_Request();
 	m_debug_lines->Draw( request );
-	request->shadow_pos = 1.0f;
-	request->shadow_color = black;
+	request->m_shadow_pos = 1.0f;
+	request->m_shadow_color = black;
 	// add request
 	pRenderer->Add( request );
 
 	// Draw Current Line
 	request = new cSurface_Request();
 	m_debug_current_line->Draw( request );
-	request->shadow_pos = 1.0f;
-	request->shadow_color = black;
+	request->m_shadow_pos = 1.0f;
+	request->m_shadow_color = black;
 	// add request
 	pRenderer->Add( request );
 	
 	// Draw Current Waypoint
 	request = new cSurface_Request();
 	m_debug_current_waypoint->Draw( request );
-	request->shadow_pos = 1.0f;
-	request->shadow_color = black;
+	request->m_shadow_pos = 1.0f;
+	request->m_shadow_color = black;
 	// add request
 	pRenderer->Add( request );
 }

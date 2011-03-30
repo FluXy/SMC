@@ -1,5 +1,5 @@
 /***************************************************************************
- * moving_platform.h  -  header for the corresponding cpp file
+ * moving_platform.h
  *
  * Copyright (C) 2005 - 2011 Florian Richter
  ***************************************************************************/

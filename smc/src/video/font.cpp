@@ -165,7 +165,7 @@ void cFont_Manager :: Restore_Textures( void )
 		// get saved texture
 		cSaved_Texture *soft_tex = (*itr);
 		// load it
-		soft_tex->base->Load_Software_Texture( soft_tex );
+		soft_tex->m_base->Load_Software_Texture( soft_tex );
 	}
 
 	// delete software textures

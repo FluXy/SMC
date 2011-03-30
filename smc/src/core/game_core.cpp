@@ -140,7 +140,6 @@ void Handle_Game_Events( void )
 			Enter_Game_Mode( new_mode );
 			Handle_Generic_Game_Events( current_game_action_data_end );
 		}
-
 	}
 }
 

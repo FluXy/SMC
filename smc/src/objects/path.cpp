@@ -733,7 +733,7 @@ void cPath :: Draw( cSurface_Request *request /* = NULL */ )
 		// create request
 		cLine_Request *line_request = new cLine_Request();
 		pVideo->Draw_Line( m_col_rect.m_x + obj.m_x1 - pActive_Camera->m_x, m_col_rect.m_y + obj.m_y1 - pActive_Camera->m_y, m_col_rect.m_x + obj.m_x2 - pActive_Camera->m_x, m_col_rect.m_y + obj.m_y2 - pActive_Camera->m_y, m_editor_pos_z + 0.00001f, &line_color, line_request );
-		line_request->line_width = 2;
+		line_request->m_line_width = 2;
 		// add request
 		pRenderer->Add( line_request );
 

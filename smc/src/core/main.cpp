@@ -223,7 +223,11 @@ int main( int argc, char **argv )
 		Draw_Game();
 
 		// render
+#ifdef SMC_RENDER_THREAD_TEST
+		pVideo->Render( 1 );
+#else
 		pVideo->Render();
+#endif
 
 		// update speedfactor
 		pFramerate->Update();
@@ -249,7 +253,7 @@ void Init_Game( void )
 	pFont = new cFont_Manager();
 	pFramerate = new cFramerate();
 	pRenderer = new cRenderQueue( 200 );
-	pRenderer_GUI = new cRenderQueue( 5 );
+	pRenderer_current = new cRenderQueue( 200 );
 	pPreferences = new cPreferences();
 	pImage_Manager = new cImage_Manager();
 	pSound_Manager = new cSound_Manager();
@@ -449,10 +453,10 @@ void Exit_Game( void )
 		pRenderer = NULL;
 	}
 
-	if( pRenderer_GUI )
+	if( pRenderer_current )
 	{
-		delete pRenderer_GUI;
-		pRenderer_GUI = NULL;
+		delete pRenderer_current;
+		pRenderer_current = NULL;
 	}
 
 	if( pGuiSystem )
@@ -656,6 +660,11 @@ void Update_Game( void )
 	else if( pPreferences->m_video_fps_limit )
 	{
 		Correct_Frame_Time( pPreferences->m_video_fps_limit );
+	}
+	
+	if( Game_Action != GA_NONE )
+	{
+		pVideo->Render_Finish();
 	}
 	
 	// ## game events

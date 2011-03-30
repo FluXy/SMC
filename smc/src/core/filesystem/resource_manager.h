@@ -1,5 +1,5 @@
 /***************************************************************************
- * resource_manager.h  -  header for the corresponding cpp file
+ * resource_manager.h
  *
  * Copyright (C) 2009 - 2011 Florian Richter
  ***************************************************************************/
