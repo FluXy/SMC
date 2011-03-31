@@ -240,9 +240,6 @@ public:
 	 * if start_rotation is set also set the start/editor rotation
 	*/
 	void Update_Rotation_Hor( bool start_rotation = 0 );
-	/* set the horizontal sprite rotation based on the current direction
-	 * if start_rotation is set also set the start/editor rotation
-	*/
 
 	/* handle collision with object that moves it with the current velocity
 	 * if moved object gets stuck it is downgraded

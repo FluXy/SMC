@@ -30,8 +30,7 @@ void Init_Game( void );
 // Save preferences, delete globals, and closes SDL
 void Exit_Game( void );
 
-/*
- * Top-level input function.
+/* Top-level input function.
  * Calls either KeyDown, KeyUp, or passes control to pMouseCursor or pJoystick
  * Returns true if the event was handled.
 */ 

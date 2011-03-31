@@ -111,6 +111,7 @@ public:
 			(*itr)->Draw();
 		}
 	}
+
 	// Create Collision data and Handle the collisions
 	void Handle_Collision_Items( void );
 
