@@ -1798,7 +1798,7 @@ void cMouseCursor :: Editor_Update( void )
 			info = "Curr.  X : " + int_to_string( static_cast<int>(m_hovering_object->m_obj->m_pos_x) ) + "  Y : " + int_to_string( static_cast<int>(m_hovering_object->m_obj->m_pos_y) ) + "  Z : " + float_to_string( m_hovering_object->m_obj->m_pos_z, 6 );
 			
 			// if also got editor z position
-			if( !Is_Float_Equal( col->m_obj->m_editor_pos_z, 0.0f ) )
+			if( !Is_Float_Equal( m_hovering_object->m_obj->m_editor_pos_z, 0.0f ) )
 			{
 				info.insert( info.length(), _("  Editor Z : ") + float_to_string( m_hovering_object->m_obj->m_editor_pos_z, 6 ) );
 			}
