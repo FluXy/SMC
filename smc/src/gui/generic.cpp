@@ -177,9 +177,7 @@ std::string cDialogBox_Text :: Enter( std::string default_text, std::string titl
 		Draw();
 	}
 
-	// fixme : CEGUI 0.6 doesn't return first set text with setText()
 	std::string return_string = box_editbox->getText().c_str();
-
 	Exit();
 	return return_string;
 }

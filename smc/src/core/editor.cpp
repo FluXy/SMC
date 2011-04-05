@@ -38,6 +38,8 @@ namespace fs = boost::filesystem;
 // CEGUI
 #include "CEGUIXMLParser.h"
 #include "CEGUIWindowManager.h"
+#include "elements/CEGUIFrameWindow.h"
+#include "elements/CEGUIPushButton.h"
 #include "elements/CEGUITabControl.h"
 #include "elements/CEGUIScrollbar.h"
 #include "CEGUIGeometryBuffer.h"
@@ -205,7 +207,6 @@ cEditor :: cEditor( cSprite_Manager *sprite_manager )
 
 	m_camera_speed = 35;
 	m_menu_timer = 0;
-	m_show_editor_help = 0;
 	m_editor_window = NULL;
 	m_listbox_menu = NULL;
 	m_listbox_items = NULL;
@@ -275,6 +276,12 @@ void cEditor :: Unload( void )
 	// Unload Items
 	Unload_Item_Menu();
 
+	// close help window
+	if( CEGUI::WindowManager::getSingleton().isWindowPresent( "editor_help_window" ) )
+	{
+		Window_Help_Exit_Clicked( CEGUI::EventArgs() );
+	}
+
 	// if editor window is loaded
 	if( m_editor_window )
 	{
@@ -301,15 +308,6 @@ void cEditor :: Unload( void )
 	}
 
 	m_tagged_item_images.clear();
-
-
-	// Help Sprites
-	for( HudSpriteList::iterator itr = m_help_sprites.begin(); itr != m_help_sprites.end(); ++itr )
-	{
-		delete *itr;
-	}
-
-	m_help_sprites.clear();
 }
 
 void cEditor :: Toggle( void )
@@ -369,8 +367,6 @@ void cEditor :: Disable( bool native_mode /* = 1 */ )
 	Unload();
 
 	m_enabled = 0;
-	// disable help screen
-	m_show_editor_help = 0;
 
 	if( native_mode )
 	{
@@ -528,11 +524,6 @@ void cEditor :: Draw( void )
 		color = Color( static_cast<Uint8>(20), 150, 20, 192 );
 		pVideo->Draw_Line( pActive_Camera->m_limit_rect.m_x + pActive_Camera->m_limit_rect.m_w - pActive_Camera->m_x, start_y, pActive_Camera->m_limit_rect.m_x + pActive_Camera->m_limit_rect.m_w - pActive_Camera->m_x, 0, 0.124f, &color );
 	}
-
-	if( m_show_editor_help )
-	{
-		Draw_Editor_Help();
-	}
 }
 
 void cEditor :: Process_Input( void )
@@ -653,7 +644,78 @@ bool cEditor :: Key_Down( SDLKey key )
 	// help
 	else if( key == SDLK_F1 )
 	{
-		m_show_editor_help = !m_show_editor_help;
+		if( CEGUI::WindowManager::getSingleton().isWindowPresent( "editor_help_window" ) )
+		{
+			Window_Help_Exit_Clicked( CEGUI::EventArgs() );
+		}
+		else
+		{
+			CEGUI::FrameWindow *window_help = static_cast<CEGUI::FrameWindow *>(CEGUI::WindowManager::getSingleton().createWindow( "TaharezLook/FrameWindow", "editor_help_window" ));
+			window_help->setPosition( CEGUI::UVector2( CEGUI::UDim( 0, ( game_res_w * 0.1f ) * global_upscalex ), CEGUI::UDim( 0, ( game_res_h * 0.1f ) * global_upscalex ) ) );
+			window_help->setSize( CEGUI::UVector2( CEGUI::UDim( 0, ( game_res_w * 0.8f ) * global_upscalex ), CEGUI::UDim( 0, ( game_res_h * 0.8f ) * global_upscalex ) )  );
+			window_help->getCloseButton()->subscribeEvent( CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber( &cEditor::Window_Help_Exit_Clicked, this ) );
+			window_help->setText( "Editor Help" );
+
+			CEGUI::Window *text_help = CEGUI::WindowManager::getSingleton().createWindow( "TaharezLook/StaticText", "editor_help_text" );
+			text_help->setPosition( CEGUI::UVector2( CEGUI::UDim( 0.00f, 0.0f ), CEGUI::UDim( 0.00f, 0.0f ) ) );
+			text_help->setSize( CEGUI::UVector2( CEGUI::UDim( 1, 0.0f ), CEGUI::UDim( 1, 0.0f ) )  );
+			text_help->setProperty( "VertScrollbar", "True" );
+			text_help->setProperty( "FrameEnabled", "False" );
+			text_help->setProperty( "BackgroundEnabled", "False" );
+			text_help->setProperty( "VertFormatting", "TopAligned" );
+
+			text_help->setText( " \n"
+				"----- [colour='FFFFCF5F']General[colour='FFFFFFFF'] -----\n"
+				" \n"
+				"F1 - Toggle this Help Window\n"
+				"F8 - Open/Close the Editor\n"
+				"F10 - Toggle sound effects\n"
+				"F11 - Toggle music play\n"
+				"Home - Focus level start\n"
+				"End - Focus last level exit\n"
+				"Ctrl + G - Goto Camera position\n"
+				"N - Step one screen to the right ( Next Screen )\n"
+				"P - Step one screen to the left ( Previous Screen )\n"
+				"Ctrl + N - Create a new Level\n"
+				"Ctrl + L - Load a Level\n"
+				"Ctrl + W - Load an Overworld\n"
+				"Ctrl + S - Save the current Level/World\n"
+				"Ctrl + Shift + S - Save the current Level/World under a new name\n"
+				"Ctrl + D - Toggle debug mode\n"
+				"Ctrl + P - Toggle performance mode\n"
+				" \n"
+				"----- [colour='FFFFCF5F']Objects[colour='FFFFFFFF'] -----\n"
+				" \n"
+				"M - Cycle selected object(s) through massive types\n"
+				"Massive types with their color:\n"
+				"   [colour='FFFF2F0F']Massive[colour='FFFFFFFF']->[colour='FFFFAF2F']Halfmassive[colour='FFFFFFFF']->[colour='FFDF00FF']Climbable[colour='FFFFFFFF']->[colour='FF1FFF1F']Passive[colour='FFFFFFFF']->[colour='FF1FFF1F']Front Passive[colour='FFFFFFFF']\n"
+				"O - Enable snap to object mode\n"
+				"Ctrl + A - Select all objects\n"
+				"Ctrl + X - Cut currently selected objects\n"
+				"Ctrl + C - Copy currently selected objects\n"
+				"Ctrl + V or Insert - Paste current copied / cutted objects\n"
+				"Ctrl + R - Replace the selected basic sprite(s) image with another one\n"
+				"Del - If Mouse is over an object: Delete current object\n"
+				"Del - If Mouse has nothing selected: Delete selected objects\n"
+				"Numpad:\n"
+				" + - Bring object to front\n"
+				" - - Send object to back\n"
+				" 2/4/6/8 - Move selected object 1 pixel into the direction\n"
+				"Mouse:\n"
+				" Left (Hold) - Drag objects\n"
+				" Left (Click) - With shift to select / deselect single objects\n"
+				" Right - Delete intersecting Object\n"
+				" Middle - Toggle Mover Mode\n"
+				" Ctrl + Shift + Left (Click) - Select objects with the same type\n"
+				"Arrow keys:\n"
+				" Use arrow keys to move around. Press shift for faster movement\n"
+				" \n"
+			);
+
+			CEGUI::Window *guisheet = pGuiSystem->getGUISheet();
+			window_help->addChildWindow( text_help );
+			guisheet->addChildWindow( window_help );
+		}
 	}
 	// focus level start
 	else if( key == SDLK_HOME )
@@ -1629,113 +1691,13 @@ bool cEditor :: Is_Tag_Available( const std::string &str, const std::string &tag
 	return Is_Tag_Available( str, tag, end_pos );
 }
 
-void cEditor :: Draw_Editor_Help( void )
+bool cEditor :: Window_Help_Exit_Clicked( const CEGUI::EventArgs &event )
 {
-	// Help Window Background Rect
-	pVideo->Draw_Rect( 50, 5, 700, 565, 0.58f, &blackalpha192 );
+	CEGUI::Window *window_help = CEGUI::WindowManager::getSingleton().getWindow( "editor_help_window" );
+	pGuiSystem->getGUISheet()->removeChildWindow( window_help );
+	CEGUI::WindowManager::getSingleton().destroyWindow( window_help );
 
-	// no help text set
-	if( m_help_sprites.empty() )
-	{
-		// Add/Create the Help Text
-		// todo : create a CEGUI help box with tabs and translate with gettext then
-		Add_Help_Line( "Editor Help", "", 5, 300 );
-		Add_Help_Line( "F1", "Toggle this Help Window" );
-		Add_Help_Line( "F8", "Open / Close the Editor" );
-		Add_Help_Line( "F10", "Toggle sound effects" );
-		Add_Help_Line( "F11", "Toggle music play" );
-		Add_Help_Line( "Home", "Focus level start" );
-		Add_Help_Line( "End", "Focus last level exit" );
-		Add_Help_Line( "Ctrl + G", "Goto Camera position" );
-		Add_Help_Line( "N", "Step one screen to the right ( Next Screen )" );
-		Add_Help_Line( "P", "Step one screen to the left ( Previous Screen )" );
-		Add_Help_Line( "M", "Cycle selected object(s) through massive types" );
-		Add_Help_Line( "Massive types (color):" );
-		Add_Help_Line( "Massive(red) ->   Halfmassive(orange) ->   Climbable(lila) ->   Passive(green) ->   Front Passive(green)", "" , 0, 80 );
-		Add_Help_Line( "O", "Enable snap to object mode" );
-		Add_Help_Line( "Ctrl + N", "Create a new Level" );
-		Add_Help_Line( "Ctrl + L", "Load a Level" );
-		Add_Help_Line( "Ctrl + W", "Load an Overworld" );
-		Add_Help_Line( "Ctrl + S", "Save the current Level/World" );
-		Add_Help_Line( "Ctrl + Shift + S", "Save the current Level/World under a new name" );
-		Add_Help_Line( "Ctrl + D", "Toggle debug mode" );
-		Add_Help_Line( "Ctrl + P", "Toggle performance mode" );
-		Add_Help_Line( "Ctrl + A", "Select all objects" );
-		Add_Help_Line( "Ctrl + X", "Cut currently selected objects" );
-		Add_Help_Line( "Ctrl + C", "Copy currently selected objects" );
-		Add_Help_Line( "Ctrl + V or Insert", "Paste current copied / cutted objects" );
-		Add_Help_Line( "Ctrl + R", "Replace the selected basic sprite(s) image with another one" );
-		Add_Help_Line( "Del", "If Mouse is over an object: Delete current object" );
-		Add_Help_Line( "Del", "If Mouse has nothing selected: Delete selected objects" );
-		Add_Help_Line( "Numpad:" );
-		Add_Help_Line( " +", "Bring object to front" );
-		Add_Help_Line( " -", "Send object to back" );
-		Add_Help_Line( " 2/4/6/8", "Move selected object 1 pixel into the direction" );
-		Add_Help_Line( "Mouse:" );
-		Add_Help_Line( " Left (Hold)", "Drag objects" );
-		Add_Help_Line( " Left (Click)", "With shift to select / deselect single objects" );
-		Add_Help_Line( " Right", "Delete intersecting Object" );
-		Add_Help_Line( " Middle", "Toggle Mover Mode" );
-		Add_Help_Line( " Ctrl + Shift + Left (Click)", "Select objects with the same type" );
-		Add_Help_Line( "Arrow keys:" );
-		Add_Help_Line( " Use arrow keys to move around. Press shift for faster movement" );
-	}
-
-	// draw
-	for( HudSpriteList::const_iterator itr = m_help_sprites.begin(); itr != m_help_sprites.end(); ++itr )
-	{
-		(*itr)->Draw();
-	}
-}
-
-void cEditor :: Add_Help_Line( std::string key_text, std::string description /* = "" */, float spacing /* = 0 */, float pos_x /* = 60 */ )
-{
-	// create help sprites
-	cHudSprite *help_sprite_key_text = new cHudSprite( m_sprite_manager );
-	cHudSprite *help_sprite_text = new cHudSprite( m_sprite_manager );
-	// with shadow
-	help_sprite_key_text->Set_Shadow( black, 0.5f );
-	help_sprite_text->Set_Shadow( black, 0.5f );
-	// position in front
-	help_sprite_key_text->m_pos_z = 0.591f;
-	help_sprite_text->m_pos_z = 0.59f;
-
-	// Set Y position
-	float pos_y = spacing;
-	// if not the first help sprite use the last position
-	if( !m_help_sprites.empty() )
-	{
-		// get last help sprite
-		cHudSprite *last_hud_sprite = m_help_sprites[ m_help_sprites.size() - 1 ];
-		// set correct position
-		pos_y += last_hud_sprite->m_pos_y + last_hud_sprite->m_rect.m_h - 2.0f;
-	}
-	// first item
-	else
-	{
-		pos_y += 5.0f;
-	}
-
-	// text must be filled with something to get created by Render_Text
-	if( key_text.empty() )
-	{
-		key_text = " ";
-	}
-	if( description.empty() )
-	{
-		description = " ";
-	}
-
-	// set key text
-	help_sprite_key_text->Set_Image( pFont->Render_Text( pFont->m_font_very_small, key_text, lightorange ), 0, 1 );
-	help_sprite_key_text->Set_Pos( pos_x, pos_y, 1 );
-	// set text
-	help_sprite_text->Set_Image( pFont->Render_Text( pFont->m_font_very_small, description, white ), 0, 1 );
-	help_sprite_text->Set_Pos( pos_x + 150, pos_y, 1 );
-
-	// add to array
-	m_help_sprites.push_back( help_sprite_key_text );
-	m_help_sprites.push_back( help_sprite_text );
+	return 1;
 }
 
 void cEditor :: elementStart( const CEGUI::String &element, const CEGUI::XMLAttributes &attributes )

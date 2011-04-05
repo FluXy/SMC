@@ -243,19 +243,9 @@ protected:
 	// Check if the given tag is available in the string
 	bool Is_Tag_Available( const std::string &str, const std::string &tag, unsigned int search_pos = 0 );
 
-	// Draw Editor Help Box
-	void Draw_Editor_Help( void );
-	/* Add a text line to the Help Box
-	 * spacing : can be used f.e. a header
-	 * pos_x : the line start position x
-	*/
-	void Add_Help_Line( std::string key_text, std::string description = "", float spacing = 0, float pos_x = 60 );
+	// Exit the help window
+	bool Window_Help_Exit_Clicked( const CEGUI::EventArgs &event );
 
-	// if true show the editor help
-	bool m_show_editor_help;
-	// help sprites
-	typedef vector<cHudSprite *> HudSpriteList;
-	HudSpriteList m_help_sprites;
 private:
 	// XML element start
 	virtual void elementStart( const CEGUI::String &element, const CEGUI::XMLAttributes &attributes );
