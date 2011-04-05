@@ -977,13 +977,20 @@ void cDebugDisplay :: Update( void )
 		// update position
 		CEGUI::Font *font = &CEGUI::FontManager::getSingleton().get( "bluebold_medium" );
 		float text_width = font->getTextExtent( gui_text ) * global_downscalex;
+		float text_height = font->getLineSpacing() * global_downscaley;
 
+		// fixme : works only correctly for one too long line
 		if( text_width > 800.0f )
 		{
+			// add wrapped newlines
+			text_height *= 1 + static_cast<int>(text_width / 800.0f);
 			text_width = 800.0f;
 		}
 
-		m_text_debug_text->setWidth( CEGUI::UDim( 0, ( text_width + 15 ) * global_upscalex ) );
+		// add newlines
+		text_height *= 1 + std::count(m_text.begin(), m_text.end(), '\n');
+
+		m_text_debug_text->setSize( CEGUI::UVector2( CEGUI::UDim( 0, ( text_width + 15 ) * global_upscalex ), CEGUI::UDim( 0, ( text_height + 15 ) * global_upscaley ) ) );
 		m_text_debug_text->setXPosition( CEGUI::UDim( 0, ( ( game_res_w * 0.5f ) - text_width * 0.5f ) * global_upscalex ) );
 	}
 }

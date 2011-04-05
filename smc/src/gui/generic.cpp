@@ -374,8 +374,10 @@ void Draw_Static_Text( const std::string &text, const Color *color_text /* = &wh
 	text_default->setXPosition( CEGUI::UDim( 0, ( game_res_w * 0.5f - text_width * 0.5f ) * global_upscalex ) );
 	text_default->moveToFront();
 
+	float text_height = font->getLineSpacing();
+	text_height *= 1 + std::count(text.begin(), text.end(), '\n');
 	// set window height
-	text_default->setHeight( CEGUI::UDim( 0, (font->getFontHeight() * 2) + ( 12 * global_upscaley ) ) );
+	text_default->setHeight( CEGUI::UDim( 0, text_height + ( 12 * global_upscaley ) ) );
 
 	while( draw )
 	{
