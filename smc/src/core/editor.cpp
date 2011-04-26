@@ -1757,7 +1757,7 @@ void cEditor :: Handle_Item( const CEGUI::XMLAttributes &attributes )
 	// if creation failed
 	if( !object )
 	{
-		printf( "Warning : Editor Item %s could not be created : %s\n", name.c_str() );
+		printf( "Warning : Editor Item could not be created : %s\n", name.c_str() );
 		return;
 	}
 
