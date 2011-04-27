@@ -112,7 +112,7 @@ public:
 
 	// Editor left click
 	void Left_Click_Down( void );
-	// Editor default float left click
+	// Editor default double left click
 	void Double_Click( bool activate = 1 );
 
 	// ## Hovered Object

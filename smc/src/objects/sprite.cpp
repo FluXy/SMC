@@ -401,8 +401,8 @@ void cSprite :: Init( void )
 cSprite *cSprite :: Copy( void ) const
 {
 	cSprite *basic_sprite = new cSprite( m_sprite_manager );
-	basic_sprite->Set_Image( m_start_image );
-	basic_sprite->Set_Pos( m_start_pos_x, m_start_pos_y );
+	basic_sprite->Set_Image( m_start_image, 1 );
+	basic_sprite->Set_Pos( m_start_pos_x, m_start_pos_y, 1 );
 	basic_sprite->m_type = m_type;
 	basic_sprite->m_sprite_array = m_sprite_array;
 	basic_sprite->Set_Massive_Type( m_massive_type );

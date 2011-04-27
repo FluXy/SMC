@@ -179,7 +179,7 @@ public:
 	// Active Item Entry
 	virtual void Activate_Item( cEditor_Item_Object *entry );
 	// return the sprite object
-	virtual cSprite *Get_Object( const CEGUI::String &element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager );
+	virtual cSprite *Get_Object( const CEGUI::String &element, CEGUI::XMLAttributes &attributes, int engine_version );
 
 	// #### Editor Functions
 	/* copy the given object(s) next to itself into the given direction

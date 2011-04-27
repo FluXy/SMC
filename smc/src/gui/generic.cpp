@@ -211,7 +211,7 @@ void cDialogBox_Question :: Init( bool with_cancel )
 
 	// get window
 	box_window = static_cast<CEGUI::FrameWindow *>(CEGUI::WindowManager::getSingleton().getWindow( "box_question_window" ));
-	box_window->moveToFront();
+	box_window->activate();
 
 	// subscribe close button
 	if( with_cancel )

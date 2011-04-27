@@ -52,7 +52,7 @@ cHudSprite *cHudSprite :: Copy( void ) const
 {
 	cHudSprite *hud_sprite = new cHudSprite( m_sprite_manager );
 	hud_sprite->Set_Image( m_start_image );
-	hud_sprite->Set_Pos( m_pos_x, m_pos_y );
+	hud_sprite->Set_Pos( m_start_pos_x, m_start_pos_y, 1 );
 	hud_sprite->m_type = m_type;
 	hud_sprite->m_sprite_array = m_sprite_array;
 	hud_sprite->m_massive_type = m_massive_type;

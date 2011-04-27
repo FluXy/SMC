@@ -70,7 +70,7 @@ void cMovingSprite :: Init( void )
 cMovingSprite *cMovingSprite :: Copy( void ) const
 {
 	cMovingSprite *moving_sprite = new cMovingSprite( m_sprite_manager );
-	moving_sprite->Set_Image( m_start_image );
+	moving_sprite->Set_Image( m_start_image, 1 );
 	moving_sprite->Set_Pos( m_start_pos_x, m_start_pos_y, 1 );
 	moving_sprite->m_type = m_type;
 	moving_sprite->m_sprite_array = m_sprite_array;

@@ -49,7 +49,7 @@ public:
 	// Set Active Menu Entry
 	virtual void Activate_Menu_Item( cEditor_Menu_Object *entry );
 	// return the sprite object
-	virtual cSprite *Get_Object( const CEGUI::String &element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager );
+	virtual cSprite *Get_Object( const CEGUI::String &element, CEGUI::XMLAttributes &attributes, int engine_version );
 
 	// Menu functions
 	virtual bool Function_New( void );

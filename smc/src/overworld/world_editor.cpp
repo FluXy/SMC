@@ -168,7 +168,7 @@ void cEditor_World :: Activate_Menu_Item( cEditor_Menu_Object *entry )
 	}
 }
 
-cSprite *cEditor_World :: Get_Object( const CEGUI::String &element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager )
+cSprite *cEditor_World :: Get_Object( const CEGUI::String &element, CEGUI::XMLAttributes &attributes, int engine_version )
 {
 	return Create_World_Object_From_XML( element, attributes, engine_version, m_sprite_manager, m_overworld );
 }

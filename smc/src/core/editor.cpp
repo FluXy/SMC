@@ -1381,7 +1381,7 @@ void cEditor :: Activate_Item( cEditor_Item_Object *entry )
 	pMouseCursor->Set_Hovered_Object( new_sprite );
 }
 
-cSprite *cEditor :: Get_Object( const CEGUI::String &element, CEGUI::XMLAttributes &attributes, int engine_version, cSprite_Manager *sprite_manager )
+cSprite *cEditor :: Get_Object( const CEGUI::String &element, CEGUI::XMLAttributes &attributes, int engine_version )
 {
 	// virtual
 	return NULL;
@@ -1752,7 +1752,7 @@ void cEditor :: Handle_Item( const CEGUI::XMLAttributes &attributes )
 	CEGUI::String tags = m_xml_attributes.getValueAsString( "object_tags" );
 
 	// create
-	cSprite *object = Get_Object( name, m_xml_attributes, level_engine_version, m_sprite_manager );
+	cSprite *object = Get_Object( name, m_xml_attributes, level_engine_version );
 
 	// if creation failed
 	if( !object )
