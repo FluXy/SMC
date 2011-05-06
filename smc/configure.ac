@@ -1,13 +1,19 @@
 AC_PREREQ(2.57)
 AC_INIT(smc, 2.0, , smc, http://www.secretmaryo.org/)
-AC_CANONICAL_TARGET
+AC_CANONICAL_HOST
 AC_CONFIG_HEADERS(config.h)
+AC_CONFIG_SRCDIR(src/core/main.cpp)
+AC_CONFIG_MACRO_DIR(m4)
 AM_INIT_AUTOMAKE(foreign)
 
 ### Check for programs ###
 
 AC_PROG_CXX
 AC_LANG(C++)
+CXXFLAGS="${CXXFLAGS} -Wall"
+AC_PROG_INSTALL
+AC_PROG_MKDIR_P
+PKG_PROG_PKG_CONFIG
 
 ### Check for libraries ###
 

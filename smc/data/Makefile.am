@@ -1,9 +1,21 @@
+EXTRA_DIST = \
+	campaign \
+	editor \
+	gui \
+	icon \
+	levels \
+	music \
+	pixmaps \
+	schema \
+	sounds \
+	translations \
+	world
+
 install-data-local: uninstall-local
-	mkdir -p "$(DESTDIR)$(pkgdatadir)"; \
-	for dir in * ; do \
-		test -d "$$dir" || continue; \
-		cp -r "$$dir" "$(DESTDIR)$(pkgdatadir)"; \
-	done
+	$(MKDIR_P) "$(DESTDIR)$(pkgdatadir)"; \
+	( for d in $(EXTRA_DIST); \
+		do cp -r "$(srcdir)/$$d" "$(DESTDIR)$(pkgdatadir)/"; \
+	done )
 
 uninstall-local:
-	-test -d "$(DESTDIR)$(pkgdatadir)" && rm -rf "$(DESTDIR)$(pkgdatadir)"
+	rm -rf "$(DESTDIR)$(pkgdatadir)"
