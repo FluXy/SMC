@@ -4,7 +4,8 @@ AC_CANONICAL_HOST
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([src/core/main.cpp])
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([foreign])
+AM_INIT_AUTOMAKE([1.11 foreign])
+AM_SILENT_RULES([yes])
 
 ### Check for programs ###
 
