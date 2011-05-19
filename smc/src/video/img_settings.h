@@ -24,20 +24,20 @@
 namespace SMC
 {
 
-/* *** *** *** *** *** *** cImage_settings_data *** *** *** *** *** *** *** *** *** *** *** */
+/* *** *** *** *** *** *** cImage_Settings_Data *** *** *** *** *** *** *** *** *** *** *** */
 
-class cImage_settings_data
+class cImage_Settings_Data
 {
 public:
-	cImage_settings_data( void );
-	~cImage_settings_data( void );
+	cImage_Settings_Data( void );
+	~cImage_Settings_Data( void );
 
 	// returns the best surface size for the current resolution
-	cSize_Float Get_Surface_Size( const SDL_Surface *sdl_surface ) const;
+	cSize_Int Get_Surface_Size( const SDL_Surface *sdl_surface ) const;
 	// Apply settings to an image
 	void Apply( cGL_Surface *image ) const;
 	// Apply base settings
-	void Apply_Base( const cImage_settings_data *base_settings_data );
+	void Apply_Base( const cImage_Settings_Data *base_settings_data );
 
 	// base image/settings path
 	std::string m_base;
@@ -72,35 +72,33 @@ public:
 	bool m_obsolete;
 };
 
-/* *** *** *** *** *** *** cImage_settings *** *** *** *** *** *** *** *** *** *** *** */
+/* *** *** *** *** *** *** cImage_Settings_Parser *** *** *** *** *** *** *** *** *** *** *** */
 
-// Image Settings Handler
-// Inherits from cFile_parser
-class cImage_settings : public cFile_parser
+class cImage_Settings_Parser : public cFile_parser
 {
 public:
-	cImage_settings( void );
-	virtual ~cImage_settings( void );
+	cImage_Settings_Parser( void );
+	virtual ~cImage_Settings_Parser( void );
 
 	/* Returns the settings from the given file
 	 * load_base_settings : if set will overwrite settings with all base settings if available
 	 * The returned settings data should be deleted if not used anymore
 	*/
-	cImage_settings_data *Get( const std::string &filename, bool load_base_settings = 1 );
+	cImage_Settings_Data *Get( const std::string &filename, bool load_base_settings = 1 );
 
-	// Handles the Image Settings Line
+	// Handle one tokenized line
 	virtual bool HandleMessage( const std::string *parts, unsigned int count, unsigned int line );
 
 	// temp settings used for loading
-	cImage_settings_data *m_settings_temp;
+	cImage_Settings_Data *m_settings_temp;
 	// load base settings
 	bool m_load_base;
 };
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-// Image Settings Handler class
-extern cImage_settings *pSettingsParser;
+// Image settings parser
+extern cImage_Settings_Parser *pSettingsParser;
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 

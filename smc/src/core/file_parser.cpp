@@ -1,5 +1,5 @@
 /***************************************************************************
- * file_parser.cpp  -  Image Settings Handler
+ * file_parser.cpp  -  text file parser
  *
  * Copyright (C) 2005 - 2011 Florian Richter
  ***************************************************************************/
@@ -21,11 +21,11 @@
 namespace SMC
 {
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+/* *** *** *** *** *** *** *** *** cFile_parser *** *** *** *** *** *** *** *** *** */
 
 cFile_parser :: cFile_parser( void )
 {
-	error_count = 0;
+	//
 }
 
 cFile_parser :: ~cFile_parser( void )
@@ -35,8 +35,6 @@ cFile_parser :: ~cFile_parser( void )
 
 bool cFile_parser :: Parse( const std::string &filename )
 {
-	error_count = 0;
-
 	ifstream ifs( filename.c_str(), ios::in );
 	
 	if( !ifs )
@@ -52,10 +50,7 @@ bool cFile_parser :: Parse( const std::string &filename )
 
 	for( unsigned int i = 0; ifs.getline( contents, sizeof( contents ) ); i++ )
 	{
-		if( !Parse_Line( contents, i ) )
-		{
-			error_count++;
-		}
+		Parse_Line( contents, i );
 	}
 
 	return 1;

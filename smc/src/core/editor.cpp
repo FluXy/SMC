@@ -1145,7 +1145,7 @@ bool cEditor :: Load_Item_Menu( std::string item_tags )
 	// Get all Images with the Tags
 	for( TaggedItemImageSettingsList::const_iterator itr = m_tagged_item_images.begin(); itr != m_tagged_item_images.end(); ++itr )
 	{
-		const cImage_settings_data *settings = (*itr);
+		const cImage_Settings_Data *settings = (*itr);
 
 		// search
 		while( Is_Tag_Available( settings->m_editor_tags, array_tags[tag_pos] ) )
@@ -1326,7 +1326,7 @@ void cEditor :: Load_Image_Items( std::string dir )
 		std::string filename = (*itr);
 
 		// load settings
-		cImage_settings_data *settings = pSettingsParser->Get( filename );
+		cImage_Settings_Data *settings = pSettingsParser->Get( filename );
 
 		// if settings are available
 		if( settings )

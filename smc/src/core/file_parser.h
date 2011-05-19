@@ -33,16 +33,14 @@ public:
 	// Parses the given file
 	bool Parse( const std::string &filename );
 
-	// Parses a line of a description file into string parts
+	// Tokenize a line
 	bool Parse_Line( std::string str_line, int line_num );
 
-	// Handle one line of the file
+	// Handle one tokenized line
 	virtual bool HandleMessage( const std::string *parts, unsigned int count, unsigned int line );
 
 	// data filename
 	std::string data_file;
-	// data error count
-	unsigned int error_count;
 };
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */

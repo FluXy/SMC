@@ -344,7 +344,7 @@ void Gui_Handle_Time( void )
 	float t = 0.001f * SDL_GetTicks();
 
 	// inject the time that passed since the last call
-	CEGUI::System::getSingleton().injectTimePulse( static_cast<float>( t - last_time_pulse ) );
+	CEGUI::System::getSingleton().injectTimePulse( t - last_time_pulse );
 
 	// store the new time as the last time
 	last_time_pulse = t;

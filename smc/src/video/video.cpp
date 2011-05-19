@@ -810,7 +810,7 @@ void cVideo :: Init_Image_Cache( bool recreate /* = 0 */, bool draw_gui /* = 0 *
 		// load software image
 		cSoftware_Image software_image = Load_Image( filename );
 		SDL_Surface *sdl_surface = software_image.m_sdl_surface;
-		cImage_settings_data *settings = software_image.m_settings;
+		cImage_Settings_Data *settings = software_image.m_settings;
 
 		// failed to load image
 		if( !sdl_surface )
@@ -840,10 +840,10 @@ void cVideo :: Init_Image_Cache( bool recreate /* = 0 */, bool draw_gui /* = 0 *
 		sdl_surface = Convert_To_Final_Software_Image( sdl_surface );
 
 		// get final size for this resolution
-		cSize_Float size = settings->Get_Surface_Size( sdl_surface );
+		cSize_Int size = settings->Get_Surface_Size( sdl_surface );
 		delete settings;
-		int new_width = static_cast<int>(size.m_width);
-		int new_height = static_cast<int>(size.m_height);
+		int new_width = size.m_width;
+		int new_height = size.m_height;
 
 		// apply maximum texture size
 		Apply_Max_Texture_Size( new_width, new_height );
@@ -1154,7 +1154,7 @@ cVideo::cSoftware_Image cVideo :: Load_Image( std::string filename, bool load_se
 
 	cSoftware_Image software_image = cSoftware_Image();
 	SDL_Surface *sdl_surface = NULL;
-	cImage_settings_data *settings = NULL;
+	cImage_Settings_Data *settings = NULL;
 
 	// load settings if available
 	if( load_settings )
@@ -1243,7 +1243,7 @@ cGL_Surface *cVideo :: Load_GL_Surface( std::string filename, bool use_settings 
 	// load software image
 	cSoftware_Image software_image = Load_Image( filename, use_settings, print_errors );
 	SDL_Surface *sdl_surface = software_image.m_sdl_surface;
-	cImage_settings_data *settings = software_image.m_settings;
+	cImage_Settings_Data *settings = software_image.m_settings;
 
 	// final surface
 	cGL_Surface *image = NULL;
@@ -1252,9 +1252,10 @@ cGL_Surface *cVideo :: Load_GL_Surface( std::string filename, bool use_settings 
 	if( settings )
 	{
 		// get the size
-		cSize_Float size = settings->Get_Surface_Size( sdl_surface );
+		cSize_Int size = settings->Get_Surface_Size( sdl_surface );
+		Apply_Max_Texture_Size( size.m_width, size.m_height );
 		// get basic settings surface
-		image = pVideo->Create_Texture( sdl_surface, settings->m_mipmap, static_cast<unsigned int>(size.m_width), static_cast<unsigned int>(size.m_height) );
+		image = pVideo->Create_Texture( sdl_surface, settings->m_mipmap, size.m_width, size.m_height );
 		// apply settings
 		settings->Apply( image );
 		delete settings;

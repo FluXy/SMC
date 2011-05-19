@@ -257,7 +257,7 @@ void Init_Game( void )
 	pPreferences = new cPreferences();
 	pImage_Manager = new cImage_Manager();
 	pSound_Manager = new cSound_Manager();
-	pSettingsParser = new cImage_settings();
+	pSettingsParser = new cImage_Settings_Parser();
 
 	// Init Stage 2 - set preferences and init audio and the video screen
 	/* Set default user directory

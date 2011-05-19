@@ -432,7 +432,7 @@ class cCircle_Request;
 class cEditor_Object_Settings_Item;
 class cGL_Surface;
 class cGradient_Request;
-class cImage_settings_data;
+class cImage_Settings_Data;
 class cLayer_Line_Point_Start;
 class cLevel;
 class cLine_collision;

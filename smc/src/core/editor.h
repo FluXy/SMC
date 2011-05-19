@@ -228,7 +228,7 @@ public:
 	float m_menu_timer;
 
 	// Objects with tags
-	typedef vector<cImage_settings_data *> TaggedItemImageSettingsList;
+	typedef vector<cImage_Settings_Data *> TaggedItemImageSettingsList;
 	TaggedItemImageSettingsList m_tagged_item_images;
 	typedef vector<cSprite *> TaggedItemObjectsList;
 	TaggedItemObjectsList m_tagged_item_objects;

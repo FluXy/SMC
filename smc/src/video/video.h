@@ -151,7 +151,7 @@ public:
 		};
 
 		SDL_Surface *m_sdl_surface;
-		cImage_settings_data *m_settings;
+		cImage_Settings_Data *m_settings;
 	};
 
 	/* Load and return the software image with the settings data

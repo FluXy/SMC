@@ -1,5 +1,5 @@
 /***************************************************************************
- * img_settings.cpp  -  Image Settings Handler
+ * img_settings.cpp  -  Image settings
  *
  * Copyright (C) 2005 - 2011 Florian Richter
  ***************************************************************************/
@@ -22,9 +22,9 @@
 namespace SMC
 {
 
-/* *** *** *** *** *** *** cImage_settings_data *** *** *** *** *** *** *** *** *** *** *** */
+/* *** *** *** *** *** *** cImage_Settings_Data *** *** *** *** *** *** *** *** *** *** *** */
 
-cImage_settings_data :: cImage_settings_data( void )
+cImage_Settings_Data :: cImage_Settings_Data( void )
 {
 	m_base_settings = 0;
 
@@ -43,23 +43,22 @@ cImage_settings_data :: cImage_settings_data( void )
 	m_obsolete = 0;
 }
 
-cImage_settings_data :: ~cImage_settings_data( void )
+cImage_Settings_Data :: ~cImage_Settings_Data( void )
 {
 
 }
 
-cSize_Float cImage_settings_data :: Get_Surface_Size( const SDL_Surface *sdl_surface ) const
+cSize_Int cImage_Settings_Data :: Get_Surface_Size( const SDL_Surface *sdl_surface ) const
 {
 	if( !sdl_surface )
 	{
-		return cSize_Float();
+		return cSize_Int();
 	}
 
 	// check if texture needs to get downscaled
 	float new_w = static_cast<float>(Get_Power_of_2( sdl_surface->w ));
 	float new_h = static_cast<float>(Get_Power_of_2( sdl_surface->h ));
 	
-	// todo : add check for maximum opengl texture size
 	// if image settings dimension
 	if( m_width > 0 && m_height > 0 )
 	{
@@ -84,10 +83,10 @@ cSize_Float cImage_settings_data :: Get_Surface_Size( const SDL_Surface *sdl_sur
 		}
 	}
 
-	return cSize_Float( new_w, new_h);
+	return cSize_Int( new_w, new_h);
 }
 
-void cImage_settings_data :: Apply( cGL_Surface *image ) const
+void cImage_Settings_Data :: Apply( cGL_Surface *image ) const
 {
 	// empty image
 	if( !image )
@@ -96,18 +95,16 @@ void cImage_settings_data :: Apply( cGL_Surface *image ) const
 		return;
 	}
 
-	// ## int_x/int_y
 	image->m_int_x = static_cast<float>(m_int_x);
 	image->m_int_y = static_cast<float>(m_int_y);
 
-	// ## width
 	if( m_width > 0 )
 	{
 		image->m_start_w = static_cast<float>(m_width);
 		image->m_w = image->m_start_w;
 		image->m_col_w = image->m_w;
 	}
-	// ## height
+
 	if( m_height > 0 )
 	{
 		image->m_start_h = static_cast<float>(m_height);
@@ -115,7 +112,6 @@ void cImage_settings_data :: Apply( cGL_Surface *image ) const
 		image->m_col_h = image->m_h;
 	}
 
-	// ## collision rect
 	if( m_col_rect.m_w > 0.0f && m_col_rect.m_h > 0.0f )
 	{
 		// position
@@ -126,7 +122,6 @@ void cImage_settings_data :: Apply( cGL_Surface *image ) const
 		image->m_col_h = m_col_rect.m_h;
 	}
 
-	// ## rotation x
 	if( m_rotation_x != 0 )
 	{
 		image->m_base_rot_x = static_cast<float>(m_rotation_x);
@@ -138,7 +133,7 @@ void cImage_settings_data :: Apply( cGL_Surface *image ) const
 			image->m_col_pos.m_y = image->m_h - ( image->m_col_h + image->m_col_pos.m_y );
 		}
 	}
-	// ## rotation y
+
 	if( m_rotation_y != 0 )
 	{
 		image->m_base_rot_y = static_cast<float>(m_rotation_y);
@@ -150,7 +145,7 @@ void cImage_settings_data :: Apply( cGL_Surface *image ) const
 			image->m_col_pos.m_x = image->m_w - ( image->m_col_w + image->m_col_pos.m_x );
 		}
 	}
-	// ## rotation z
+
 	if( m_rotation_z != 0 )
 	{
 		image->m_base_rot_z = static_cast<float>(m_rotation_z);
@@ -207,13 +202,11 @@ void cImage_settings_data :: Apply( cGL_Surface *image ) const
 		}
 	}
 
-	// ## editor_tags
 	if( !m_editor_tags.empty() )
 	{
 		image->m_editor_tags = m_editor_tags;
 	}
 
-	// ## name
 	if( !m_name.empty() )
 	{
 		image->m_name = m_name;
@@ -229,20 +222,16 @@ void cImage_settings_data :: Apply( cGL_Surface *image ) const
 		}
 	}
 
-	// ## type
 	if( m_type > 0 )
 	{
 		image->m_type = m_type;
 	}
 
-	// ## ground type
 	image->m_ground_type = m_ground_type;
-
-	// ## obsolete
 	image->m_obsolete = m_obsolete;
 }
 
-void cImage_settings_data :: Apply_Base( const cImage_settings_data *base_settings_data )
+void cImage_Settings_Data :: Apply_Base( const cImage_Settings_Data *base_settings_data )
 {
 	if( !base_settings_data->m_base.empty() )
 	{
@@ -271,32 +260,32 @@ void cImage_settings_data :: Apply_Base( const cImage_settings_data *base_settin
 	}
 }
 
-/* *** *** *** *** *** *** cImage_settings *** *** *** *** *** *** *** *** *** *** *** */
+/* *** *** *** *** *** *** cImage_Settings_Parser *** *** *** *** *** *** *** *** *** *** *** */
 
-cImage_settings :: cImage_settings( void )
+cImage_Settings_Parser :: cImage_Settings_Parser( void )
 : cFile_parser()
 {
 	m_settings_temp = NULL;
 	m_load_base = 1;
 }
 
-cImage_settings :: ~cImage_settings( void )
+cImage_Settings_Parser :: ~cImage_Settings_Parser( void )
 {
 	//
 }
 
-cImage_settings_data *cImage_settings :: Get( const std::string &filename, bool load_base_settings /* = 1 */ )
+cImage_Settings_Data *cImage_Settings_Parser :: Get( const std::string &filename, bool load_base_settings /* = 1 */ )
 {
 	m_load_base = load_base_settings;
-	m_settings_temp = new cImage_settings_data();
+	m_settings_temp = new cImage_Settings_Data();
 
 	Parse( filename );
-	cImage_settings_data *settings = m_settings_temp;
+	cImage_Settings_Data *settings = m_settings_temp;
 	m_settings_temp = NULL;
 	return settings;
 }
 
-bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int count, unsigned int line )
+bool cImage_Settings_Parser :: HandleMessage( const std::string *parts, unsigned int count, unsigned int line )
 {
 	if( parts[0].compare( "base" ) == 0 )
 	{
@@ -304,14 +293,14 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 		{
 			printf( "%s : line %d Error :\n", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "Error : %s %s\n", parts[0].c_str(), "needs 2-3 parameters" );
-			return 0; // error
+			return 0;
 		}
 
 		if( !Is_Valid_Number( parts[2] ) )
 		{
 			printf( "%s : line %d Error : ", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "%s is not a valid integer value\n", parts[1].c_str() );
-			return 0; // error
+			return 0;
 		}
 
 		m_settings_temp->m_base = data_file.substr( 0, data_file.rfind( "/" ) + 1 ) + parts[1];
@@ -342,8 +331,8 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 					}
 
 					// create new temporary parser
-					cImage_settings *temp_parser = new cImage_settings();
-					cImage_settings_data *base_settings = temp_parser->Get( settings_file );
+					cImage_Settings_Parser *temp_parser = new cImage_Settings_Parser();
+					cImage_Settings_Data *base_settings = temp_parser->Get( settings_file );
 					// finished loading base settings
 					delete temp_parser;
 					settings_file.clear();
@@ -372,14 +361,14 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 		{
 			printf( "%s : line %d Error :\n", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "Error : %s %s\n", parts[0].c_str(), "needs 2 parameters" );
-			return 0; // error
+			return 0;
 		}
 
 		if( !Is_Valid_Number( parts[1] ) )
 		{
 			printf( "%s : line %d Error : ", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "%s is not a valid integer value\n", parts[1].c_str() );
-			return 0; // error
+			return 0;
 		}
 
 		m_settings_temp->m_int_x = string_to_int( parts[1] );
@@ -390,14 +379,14 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 		{
 			printf( "%s : line %d Error :\n", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "Error : %s %s\n", parts[0].c_str(), "needs 2 parameters" );
-			return 0; // error
+			return 0;
 		}
 
 		if( !Is_Valid_Number( parts[1] ) )
 		{
 			printf( "%s : line %d Error : ", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "%s is not a valid integer value\n", parts[1].c_str() );
-			return 0; // error
+			return 0;
 		}
 
 		m_settings_temp->m_int_y = string_to_int( parts[1] );
@@ -408,7 +397,7 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 		{
 			printf( "%s : line %d Error :\n", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "Error : %s %s\n", parts[0].c_str(), "needs 5 parameters" );
-			return 0; // error
+			return 0;
 		}
 
 		for( unsigned int i = 1; i < 5; i++ )
@@ -417,7 +406,7 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 			{
 				printf( "%s : line %d Error : ", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 				printf( "%s is not a valid integer value\n", parts[1].c_str() );
-				return 0; // error
+				return 0;
 			}
 		}
 
@@ -430,14 +419,14 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 		{
 			printf( "%s : line %d Error :\n", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "Error : %s %s\n", parts[0].c_str(), "needs 2 parameters" );
-			return 0; // error
+			return 0;
 		}
 
 		if( !Is_Valid_Number( parts[1] ) )
 		{
 			printf( "%s : line %d Error : ", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "%s is not a valid integer value\n", parts[1].c_str() );
-			return 0; // error
+			return 0;
 		}
 
 		m_settings_temp->m_width = string_to_int( parts[1] );
@@ -448,14 +437,14 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 		{
 			printf( "%s : line %d Error :\n", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "Error : %s %s\n", parts[0].c_str(), "needs 2 parameters" );
-			return 0; // error
+			return 0;
 		}
 
 		if( !Is_Valid_Number( parts[1] ) )
 		{
 			printf( "%s : line %d Error : ", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "%s is not a valid integer value\n", parts[1].c_str() );
-			return 0; // error
+			return 0;
 		}
 
 		m_settings_temp->m_height = string_to_int( parts[1] );
@@ -466,14 +455,14 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 		{
 			printf( "%s : line %d Error :\n", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "Error : %s %s\n", parts[0].c_str(), "needs 2-5 parameters" );
-			return 0; // error
+			return 0;
 		}
 
 		if( !Is_Valid_Number( parts[1] ) )
 		{
 			printf( "%s : line %d Error : ", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "%s is not a valid integer value\n", parts[1].c_str() );
-			return 0; // error
+			return 0;
 		}
 
 		// x
@@ -498,7 +487,7 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 			{
 				printf( "%s : line %d Error : ", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 				printf( "%s is not a valid integer value\n", parts[3].c_str() );
-				return 0; // error
+				return 0;
 			}
 
 			m_settings_temp->m_rotation_z = string_to_int( parts[3] );
@@ -510,14 +499,14 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 		{
 			printf( "%s : line %d Error :\n", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "Error : %s %s\n", parts[0].c_str(), "needs 2 parameters" );
-			return 0; // error
+			return 0;
 		}
 
 		if( !Is_Valid_Number( parts[1] ) )
 		{
 			printf( "%s : line %d Error : ", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "%s is not a valid integer value\n", parts[1].c_str() );
-			return 0; // error
+			return 0;
 		}
 
 		// if mipmaps enabled
@@ -532,7 +521,7 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 		{
 			printf( "%s : line %d Error :\n", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "Error : %s %s\n", parts[0].c_str(), "needs 2 parameters" );
-			return 0; // error
+			return 0;
 		}
 
 		m_settings_temp->m_editor_tags = parts[1];
@@ -543,7 +532,7 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 		{
 			printf( "%s : line %d Error :\n", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "Error : %s %s\n", parts[0].c_str(), "needs 2 parameters" );
-			return 0; // error
+			return 0;
 		}
 
 		m_settings_temp->m_name = parts[1];
@@ -554,7 +543,7 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 		{
 			printf( "%s : line %d Error :\n", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "Error : %s %s\n", parts[0].c_str(), "needs 2 parameters" );
-			return 0; // error
+			return 0;
 		}
 
 		m_settings_temp->m_type = Get_Sprite_Type_Id( parts[1] );
@@ -565,7 +554,7 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 		{
 			printf( "%s : line %d Error :\n", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "Error : %s %s\n", parts[0].c_str(), "needs 2 parameters" );
-			return 0; // error
+			return 0;
 		}
 
 		m_settings_temp->m_ground_type = Get_Ground_Type_Id( parts[1] );
@@ -576,7 +565,7 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 		{
 			printf( "%s : line %d Error :\n", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "Error : %s %s\n", parts[0].c_str(), "needs 2 parameters" );
-			return 0; // error
+			return 0;
 		}
 
 		m_settings_temp->m_author = parts[1];
@@ -587,7 +576,7 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 		{
 			printf( "%s : line %d Error :\n", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 			printf( "Error : %s %s\n", parts[0].c_str(), "needs 2 parameters" );
-			return 0; // error
+			return 0;
 		}
 
 		if( !Is_Valid_Number( parts[1] ) )
@@ -607,7 +596,7 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 	{
 		printf( "%s : line %d Error : ", Trim_Filename( data_file, 0, 0 ).c_str(), line );
 		printf( "Unknown Command : %s\n", parts[0].c_str() );
-		return 0; // error
+		return 0;
 	}
 
 	return 1;
@@ -615,7 +604,7 @@ bool cImage_settings :: HandleMessage( const std::string *parts, unsigned int co
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-cImage_settings *pSettingsParser = NULL;
+cImage_Settings_Parser *pSettingsParser = NULL;
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
