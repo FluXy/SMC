@@ -6,6 +6,9 @@ set -x # print commands
 case "x$1" in
 	x)
 		echo "Generating build system..."
+		mkdir -p m4
+		cp -f /usr/share/gettext/config.rpath . || \
+		cp -f /usr/local/share/gettext/config.rpath . || true
 		if autoreconf --force --install --verbose $*; then
 			echo "Build system has been generated."
 		else

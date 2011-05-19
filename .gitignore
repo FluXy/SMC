@@ -16,7 +16,7 @@
 # For more details about how this file works, see:
 # http://www.kernel.org/pub/software/scm/git/docs/gitignore.html
 #
- 
+
 # Generated
 /smc/*.log
 /smc/*.exe
@@ -49,3 +49,23 @@ Thumbs.db
 /*.txt
 /*.rtf
 /*.lnk
+
+# Autotools
+/smc/aclocal.m4
+/smc/autom4te.cache/
+/smc/config.*
+/smc/configure
+/smc/data/Makefile
+/smc/data/Makefile.in
+/smc/depcomp
+/smc/install-sh
+/smc/m4/
+/smc/Makefile
+/smc/Makefile.in
+/smc/missing
+/smc/src/.deps/
+/smc/src/Makefile
+/smc/src/Makefile.in
+/smc/src/*.o
+/smc/src/smc
+/smc/stamp-h1
