@@ -54,11 +54,11 @@ public:
 class cFramerate
 {
 public:
-	cFramerate( const float tfps = speedfactor_fps );
+	cFramerate( void );
 	~cFramerate( void );
 	
 	// Initialize with the given target fps
-	void Init( const float tfps );
+	void Init( const float target_fps = speedfactor_fps );
 	// update speed factor
 	void Update( void );
 	// reset speed factor and worst/best fps statistic
@@ -100,8 +100,6 @@ public:
 	 * based on target fps
 	 */
 	float m_speed_factor;
-
-
 	// fixed speed factor value
 	float m_force_speed_factor;
 

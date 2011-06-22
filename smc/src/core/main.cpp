@@ -290,6 +290,8 @@ void Init_Game( void )
 	pVideo->Init_CEGUI();
 	pVideo->Init_CEGUI_Data();
 	pFont->Init();
+	// framerate init ( must be after SDL init because of SDL_GetTicks() )
+	pFramerate->Init();
 	// audio init
 	pAudio->Init();
 

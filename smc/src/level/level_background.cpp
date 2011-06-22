@@ -56,7 +56,6 @@ void cBackground :: Init( void )
 	m_color_1 = static_cast<Uint8>(0);
 	m_color_2 = static_cast<Uint8>(0);
 
-	m_image_1_filename.reserve( 120 );
 	m_image_1 = NULL;
 
 	m_speed_x = 0.5f;
@@ -88,7 +87,7 @@ void cBackground :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 
 void cBackground :: Save_To_XML( CEGUI::XMLSerializer &stream )
 {
-	if( m_type == BG_NONE && m_image_1_filename.length() <= 3 )
+	if( m_type == BG_NONE )
 	{
 		return;
 	}

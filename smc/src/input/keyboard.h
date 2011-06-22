@@ -35,26 +35,22 @@ public:
 	// Reset all keys
 	void Reset_Keys( void );
 
-	/* Function : CEGUI_Handle_KeyUp
-	 * CEGUI Key Up handler
+	/* CEGUI Key Up handler
 	 * returns true if CEGUI processed the given key up event
 	*/
 	bool CEGUI_Handle_Key_Up( SDLKey key ) const;
 
-	/* Function : KeyUp
-	 * Gives player various cues depending on the key
+	/* Key Up Handler
 	 * returns true if the event was processed
 	*/
 	bool Key_Up( SDLKey key );
 
-	/* Function : CEGUI_Handle_KeyDown
-	 * CEGUI Key Down handler
+	/* CEGUI Key Down handler
 	 * returns true if CEGUI processed the given key down event
 	*/
 	bool CEGUI_Handle_Key_Down( SDLKey key ) const;
 
-	/* Function : KeyDown
-	 * Key Down handler
+	/* Key Down handler
 	 * returns true if the event was processed
 	*/
 	bool Key_Down( SDLKey key );

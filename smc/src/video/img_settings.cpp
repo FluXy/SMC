@@ -210,16 +210,8 @@ void cImage_Settings_Data :: Apply( cGL_Surface *image ) const
 	if( !m_name.empty() )
 	{
 		image->m_name = m_name;
-
-		// finds all "_" and replaces them with " "
-		for( std::string::iterator itr = image->m_name.begin(); itr != image->m_name.end(); ++itr )
-		{
-			// change
-			if( *itr == '_' )
-			{
-				*itr = ' ';
-			}
-		}
+		// replace "_" with " "
+		string_replace_all( image->m_name, "_", " " );
 	}
 
 	if( m_type > 0 )
@@ -251,6 +243,7 @@ void cImage_Settings_Data :: Apply_Base( const cImage_Settings_Data *base_settin
 	m_editor_tags = base_settings_data->m_editor_tags;
 	m_name = base_settings_data->m_name;
 	m_type = base_settings_data->m_type;
+	m_ground_type = base_settings_data->m_ground_type;
 	m_author = base_settings_data->m_author;
 
 	// only set if this isn't obsolete

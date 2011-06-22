@@ -605,7 +605,7 @@ bool cEditor :: Handle_Event( SDL_Event *ev )
 	{
 		if( pMouseCursor->m_mover_mode )
 		{
-			pMouseCursor->Mover_Update( input_event.motion.xrel, input_event.motion.yrel );
+			pMouseCursor->Mover_Update( ev->motion.xrel, ev->motion.yrel );
 		}
 
 		break;

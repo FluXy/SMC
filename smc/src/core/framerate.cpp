@@ -64,25 +64,26 @@ void cPerformance_Timer :: Update( void )
 
 /* *** *** *** *** *** *** cFramerate *** *** *** *** *** *** *** *** *** *** *** */
 
-cFramerate :: cFramerate( const float tfps /* = DESIRED_FPS */ )
+cFramerate :: cFramerate( void )
 {
-	m_speed_factor = 0.1f;
+	m_fps_target = 0;
 	m_fps = 0.0f;
 	m_fps_best = 0.0f;
-	m_fps_worst = 100.0f;
+	m_fps_worst = 100000.0f;
 	m_fps_average = 0;
-
+	m_fps_average_framedelay = 0;
+	m_frames_counted = 0;
+	m_last_ticks = 0;
+	m_elapsed_ticks = 1;
+	m_max_elapsed_ticks = 100;
+	m_speed_factor = 0.1f;
 	m_force_speed_factor = 0.0f;
-
-	m_perf_last_ticks = 0;
 
 	// create performance timers
 	for( unsigned int i = 0; i < 24; i++ )
 	{
 		m_perf_timer.push_back( new cPerformance_Timer() );
 	}
-
-	Init( tfps );
 }
 
 cFramerate :: ~cFramerate( void )
@@ -96,10 +97,11 @@ cFramerate :: ~cFramerate( void )
 	m_perf_timer.clear();
 }
 
-void cFramerate :: Init( const float tfps )
+void cFramerate :: Init( const float target_fps /* = speedfactor_fps */ )
 {
-	m_fps_target = tfps;
+	m_fps_target = target_fps;
 	m_max_elapsed_ticks = 100;
+	m_force_speed_factor = 0.0f;
 
 	Reset();
 }
@@ -178,8 +180,9 @@ void cFramerate :: Reset( void )
 	m_elapsed_ticks = 1;
 	m_speed_factor = 0.001f;
 	m_fps_best = 0;
-	m_fps_worst = 100000;
+	m_fps_worst = 100000.0f;
 	m_fps_average = 0;
+	m_fps_average_framedelay = m_last_ticks;
 	m_frames_counted = 0;
 
 	// reset performance timer
@@ -213,7 +216,7 @@ bool Is_Frame_Time( const unsigned int fps )
 {
 	static Uint32 static_time = 0;
 
-	if( SDL_GetTicks () - static_time < 1000 / fps )
+	if( SDL_GetTicks() - static_time < 1000 / fps )
 	{
 		return 0;
 	}

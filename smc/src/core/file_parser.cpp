@@ -45,12 +45,13 @@ bool cFile_parser :: Parse( const std::string &filename )
 
 	data_file = filename;
 
-	// maximum length of a line
-	char contents[500];
+	std::string line;
+	unsigned int line_num = 0;
 
-	for( unsigned int i = 0; ifs.getline( contents, sizeof( contents ) ); i++ )
+	while( std::getline( ifs, line ) )
 	{
-		Parse_Line( contents, i );
+		line_num++;
+		Parse_Line( line, line_num );
 	}
 
 	return 1;
