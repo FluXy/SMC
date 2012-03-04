@@ -26,6 +26,10 @@ AC_CHECK_LIB([boost_filesystem], [main], ,
 AC_CHECK_LIB([boost_thread], [main], ,
 	[AC_MSG_ERROR([Unable to find Boost Thread library])])
 
+# Check for the Boost system library
+AC_CHECK_LIB([boost_system], [main], ,
+  [AC_MSG_ERROR([Unable to find Boost System library])])
+
 # Check for the OpenGL and GLU library
 case "${host}" in
 *darwin*|*macosx*)
@@ -34,6 +38,7 @@ case "${host}" in
   ;;
 *)
   # Other Unix (Linux)
+  AC_CHECK_LIB([X11], [main], , AC_MSG_ERROR([Unable to find X11 library.]))
   AC_CHECK_LIB([GL], [main], , [has_gl=no])
   AC_CHECK_LIB([GLU], [main], , [has_glu=no])
   if test "x$has_gl" = "xno" -o "x$has_glu" = "xno"; then
