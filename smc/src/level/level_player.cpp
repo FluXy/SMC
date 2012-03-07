@@ -1065,7 +1065,16 @@ void cLevel_Player :: Start_Ducking( void )
 		return;
 	}
 
-	m_duck_direction = m_direction;
+	/* Always set the initial duck direction according to the moving direction,
+	 * not to Maryo’s direction, because the player could run otherwise, turn
+	 * around, and duck then, allowing him to hop through narrow passages
+	 * where it isn’t allowed (see Start_Jumping() for the actual test
+	 * of the m_duck_direction variable). */
+	if (m_velx > 0.0f)
+		m_duck_direction = DIR_RIGHT;
+	else if (m_velx < 0.0f)
+		m_duck_direction = DIR_LEFT;
+
 	Release_Item( 1, 1 );
 
 	// set ducking image ( without Check_OutofLevel from cMovingSprite )
