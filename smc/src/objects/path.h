@@ -163,6 +163,8 @@ public:
 
 	// Set the identifier
 	void Set_Identifier( const std::string &identifier );
+	// Set the showing of the line
+	void Set_Show_Line( bool show );
 	// Set if we move from the beginning again if reached the end instead of turning around
 	void Set_Rewind( bool rewind );
 
@@ -187,6 +189,8 @@ public:
 	virtual void Editor_State_Update( void );
 	// editor identifier text changed event
 	bool Editor_Identifier_Text_Changed( const CEGUI::EventArgs &event );
+	// editor show line option selected event
+	bool Editor_Show_Line_Select( const CEGUI::EventArgs &event );
 	// editor move type option selected event
 	bool Editor_Move_Type_Select( const CEGUI::EventArgs &event );
 	// editor selected segment option selected event
@@ -210,6 +214,8 @@ public:
 	std::string m_identifier;
 	// move from the beginning again if reached the end instead of turning around
 	bool m_rewind;
+	// show moving lines ingame if set
+	bool m_show_line;
 
 	// line segments
 	typedef vector<cPath_Segment> PathList;

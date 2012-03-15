@@ -516,6 +516,8 @@ void cPath :: Load_From_XML( CEGUI::XMLAttributes &attributes )
 	Set_Pos( static_cast<float>(attributes.getValueAsInteger( "posx" )), static_cast<float>(attributes.getValueAsInteger( "posy" )), 1 );
 	// identifier
 	Set_Identifier( attributes.getValueAsString( "identifier" ).c_str() );
+	// show line
+	Set_Show_Line(attributes.getValueAsBool("show_line", m_show_line));
 	// rewind
 	Set_Rewind( attributes.getValueAsBool( "rewind", m_rewind ) );
 
@@ -551,6 +553,8 @@ void cPath :: Save_To_XML( CEGUI::XMLSerializer &stream )
 	Write_Property( stream, "posy", static_cast<int>( m_start_pos_y ) );
 	// identifier
 	Write_Property( stream, "identifier", m_identifier );
+	// show line
+	Write_Property( stream, "show_line", m_show_line );
 	// rewind
 	Write_Property( stream, "rewind", m_rewind );
 
@@ -639,6 +643,11 @@ void cPath :: Set_Identifier( const std::string &identifier )
 	}
 }
 
+void cPath :: Set_Show_Line( bool show )
+{
+	m_show_line = show;
+}
+
 void cPath :: Set_Rewind( bool rewind )
 {
 	// already set
@@ -714,8 +723,11 @@ void cPath :: Draw( cSurface_Request *request /* = NULL */ )
 		return;
 	}
 
-	// draw color rect
-	pVideo->Draw_Rect( m_col_rect.m_x - pActive_Camera->m_x, m_col_rect.m_y - pActive_Camera->m_y, m_col_rect.m_w, m_col_rect.m_h, m_editor_pos_z, &m_editor_color );
+	// Draw the color rect (the path’s clickable area in the editor).
+	// When ingame path drawing has been requested, don’t do so as it
+	// doesn’t belong to the real path.
+	if (!m_show_line || editor_enabled || game_debug)
+		pVideo->Draw_Rect( m_col_rect.m_x - pActive_Camera->m_x, m_col_rect.m_y - pActive_Camera->m_y, m_col_rect.m_w, m_col_rect.m_h, m_editor_pos_z, &m_editor_color );
 
 	// draw segments
 	int count = 0;
@@ -743,8 +755,9 @@ void cPath :: Draw( cSurface_Request *request /* = NULL */ )
 
 bool cPath :: Is_Draw_Valid( void )
 {
-	// if editor not enabled
-	if( !editor_enabled && !game_debug )
+	// if editor not enabled, line drawing hasn’t been requested
+	// manually and debug mode is not active
+	if( !editor_enabled && !m_show_line && !game_debug)
 	{
 		return 0;
 	}
@@ -768,6 +781,20 @@ void cPath :: Editor_Activate( void )
 
 	editbox->setText( m_identifier.c_str() );
 	editbox->subscribeEvent( CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber( &cPath::Editor_Identifier_Text_Changed, this ) );
+
+	// show path moving line
+	CEGUI::Combobox *combobox_line = static_cast<CEGUI::Combobox *>(wmgr.createWindow( "TaharezLook/Combobox", "path_show_line" ));
+	Editor_Add(UTF8_("Show Line"), UTF8_("Wether or not to show the path's moving line ingame."), combobox_line, 100, 105);
+
+	combobox_line->addItem(new CEGUI::ListboxTextItem("show"));
+	combobox_line->addItem(new CEGUI::ListboxTextItem("hide"));
+
+	if (m_show_line)
+		combobox_line->setText("show");
+	else
+		combobox_line->setText("hide");
+
+	combobox_line->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber(&cPath::Editor_Show_Line_Select, this));
 
 	// move type
 	CEGUI::Combobox *combobox = static_cast<CEGUI::Combobox *>(wmgr.createWindow( "TaharezLook/Combobox", "path_move_type" ));
@@ -901,6 +928,19 @@ bool cPath :: Editor_Identifier_Text_Changed( const CEGUI::EventArgs &event )
 	Set_Identifier( str_text );
 
 	return 1;
+}
+
+bool cPath :: Editor_Show_Line_Select( const CEGUI::EventArgs& event)
+{
+	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>(event);
+	CEGUI::ListboxItem *item = static_cast<CEGUI::Combobox *>(windowEventArgs.window)->getSelectedItem();
+
+	if (item->getText() == "show")
+		Set_Show_Line(true);
+	else
+		Set_Show_Line(false);
+
+	return true;
 }
 
 bool cPath :: Editor_Move_Type_Select( const CEGUI::EventArgs &event )
