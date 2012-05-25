@@ -43,9 +43,6 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "elements/CEGUIProgressBar.h"
 #include "RendererModules/Null/CEGUINullRenderer.h"
-// boost filesystem
-#include "boost/filesystem/convenience.hpp"
-namespace fs = boost::filesystem;
 // png
 #include <png.h>
 #ifndef PNG_COLOR_TYPE_RGBA

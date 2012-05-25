@@ -20,9 +20,6 @@
 #include "../video/gl_surface.h"
 #include "../core/i18n.h"
 #include "../core/filesystem/filesystem.h"
-// boost filesystem
-#include "boost/filesystem/convenience.hpp"
-namespace fs = boost::filesystem;
 // CEGUI
 #include "CEGUIXMLAttributes.h"
 #include "CEGUIWindowManager.h"
