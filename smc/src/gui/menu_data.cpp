@@ -35,9 +35,6 @@
 #include "../core/math/size.h"
 #include "../core/filesystem/filesystem.h"
 #include "../core/filesystem/resource_manager.h"
-// boost filesystem
-#include "boost/filesystem/convenience.hpp"
-namespace fs = boost::filesystem;
 // CEGUI
 #include "CEGUIWindowManager.h"
 #include "CEGUIFontManager.h"
