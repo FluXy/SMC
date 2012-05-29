@@ -21,9 +21,6 @@
 #include "../overworld/world_editor.h"
 #include "../input/mouse.h"
 #include "../video/animation.h"
-// boost filesystem
-#include "boost/filesystem/convenience.hpp"
-namespace fs = boost::filesystem;
 // CEGUI
 #include "CEGUIXMLParser.h"
 
@@ -90,22 +87,16 @@ void cOverworld_Manager :: Init( void )
 void cOverworld_Manager :: Load_Dir( const std::string &dir, bool user_dir /* = 0 */ ) 
 {
 	// set world directory
-// fixme : boost should use a codecvt_facet but for now we convert to UCS-2
-#ifdef _WIN32
-	fs::path full_path( utf8_to_ucs2( dir ) );
-#else
-	fs::path full_path( dir );
-#endif
-	fs::directory_iterator end_iter;
+	vector<std::string> subdirs = Get_Directory_Files( dir, "", 1, 0 );
 
-	for( fs::directory_iterator dir_itr( full_path ); dir_itr != end_iter; ++dir_itr )
+	for( vector<std::string>::iterator curdir = subdirs.begin(); curdir != subdirs.end(); ++curdir )
 	{
 		try
 		{
-			std::string current_dir = dir_itr->path().filename().string();
+			std::string current_dir = *curdir;
 
 			// only directories with an existing description
-			if( fs::is_directory( *dir_itr ) && File_Exists( dir + "/" + current_dir + "/description.xml" ) )
+			if( File_Exists( current_dir + "/description.xml" ) )
 			{
 				cOverworld *overworld = Get_from_Path( current_dir );
 
@@ -118,10 +109,13 @@ void cOverworld_Manager :: Load_Dir( const std::string &dir, bool user_dir /* = 
 
 				overworld = new cOverworld();
 
-				// set path
-				overworld->m_description->m_path = current_dir;
+				// get relative path
+				std::string relative_path( current_dir, current_dir.rfind( '/' ) );
+
+				// set relative path
+				overworld->m_description->m_path = relative_path;
 				// default name is the path
-				overworld->m_description->m_name = current_dir;
+				overworld->m_description->m_name = relative_path;
 				// set user
 				overworld->m_description->m_user = user_dir;
 
@@ -132,7 +126,7 @@ void cOverworld_Manager :: Load_Dir( const std::string &dir, bool user_dir /* = 
 		}
 		catch( const std::exception &ex )
 		{
-			printf( "%s %s\n", dir_itr->path().filename().string().c_str(), ex.what() );
+			printf( "%s %s\n", curdir->c_str(), ex.what() );
 		}
 	}
 }

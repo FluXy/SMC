@@ -36,7 +36,7 @@ case "x$1" in
 			fi
 		fi
 		echo "Removing various generated files..."
-		rm -rf aclocal.m4 config.h.in configure autom4te.cache/ build-aux/
+		rm -rf aclocal.m4 config.h.in config.guess config.sub config.rpath configure depcomp install-sh autom4te.cache/ build-aux/ m4/
 		echo "Removing 'Makefile.in's recursively..."
 		for file in `find -name Makefile.in`; do
 			rm -f $file
