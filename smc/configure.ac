@@ -18,6 +18,10 @@ PKG_PROG_PKG_CONFIG
 
 ### Check for libraries ###
 
+# Check for the Boost System library
+AC_CHECK_LIB([boost_system], [main], ,
+	[AC_MSG_ERROR([Unable to find Boost System library])])
+
 # Check for the Boost Filesystem library
 AC_CHECK_LIB([boost_filesystem], [main], ,
 	[AC_MSG_ERROR([Unable to find Boost Filesystem library])])
@@ -25,10 +29,6 @@ AC_CHECK_LIB([boost_filesystem], [main], ,
 # Check for the Boost Thread library
 AC_CHECK_LIB([boost_thread], [main], ,
 	[AC_MSG_ERROR([Unable to find Boost Thread library])])
-
-# Check for the Boost System library
-AC_CHECK_LIB([boost_system], [main], ,
-	[AC_MSG_ERROR([Unable to find Boost System library])])
 
 # Check for the OpenGL and GLU library
 case "${host}" in
