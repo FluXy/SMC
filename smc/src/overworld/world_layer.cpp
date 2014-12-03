@@ -457,7 +457,8 @@ cLine_collision cLayer :: Get_Nearest( float x, float y, ObjectDirection dir /* 
 		cLayer_Line_Point_Start *layer_line = (*itr);
 
 		// line is not from waypoint
-		if( only_origin_id >= 0 && only_origin_id != layer_line->m_origin )
+		if( only_origin_id >= 0)
+		if((unsigned)only_origin_id != layer_line->m_origin )
 		{
 			continue;
 		}

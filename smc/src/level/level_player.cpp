@@ -44,7 +44,7 @@ namespace SMC
 {
 
 // Milliseconds to enable power jump when ducking
-const int power_jump_delta = 1000;
+const unsigned int power_jump_delta = 1000;
 
 const float cLevel_Player::m_default_pos_x = 200.0f;
 const float cLevel_Player::m_default_pos_y = -300.0f;

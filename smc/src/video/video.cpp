@@ -1279,8 +1279,8 @@ cGL_Surface *cVideo :: Load_GL_Surface( std::string filename, bool use_settings 
 SDL_Surface *cVideo :: Convert_To_Final_Software_Image( SDL_Surface *surface ) const
 {
 	// get power of two size
-	const unsigned int width = Get_Power_of_2( surface->w );
-	const unsigned int height = Get_Power_of_2( surface->h );
+	const int width = Get_Power_of_2( surface->w );
+	const int height = Get_Power_of_2( surface->h );
 
 	// if it needs to be changed
 	if( width != surface->w || height != surface->h || surface->format->BitsPerPixel != 32 )
@@ -1306,7 +1306,7 @@ SDL_Surface *cVideo :: Convert_To_Final_Software_Image( SDL_Surface *surface ) c
 	return surface;
 }
 
-cGL_Surface *cVideo :: Create_Texture( SDL_Surface *surface, bool mipmap /* = 0 */, unsigned int force_width /* = 0 */, unsigned int force_height /* = 0 */ ) const
+cGL_Surface *cVideo :: Create_Texture( SDL_Surface *surface, bool mipmap /* = 0 */,unsigned int force_width /* = 0 */, unsigned int force_height /* = 0 */ ) const
 {
 	if( !surface )
 	{
@@ -1343,14 +1343,14 @@ cGL_Surface *cVideo :: Create_Texture( SDL_Surface *surface, bool mipmap /* = 0 
 	int height = surface->h;
 
 	// forced size is set
-	if( force_width > 0 && force_height > 0 )
+	if( force_width != 0 && force_height != 0 )
 	{
 		// get power of two size
 		force_width = Get_Power_of_2( force_width );
 		force_height = Get_Power_of_2( force_height );
 
 		// apply forced size
-		if( force_width != width || force_height != height )
+		if( force_width != (unsigned)width || force_height != (unsigned)height )
 		{
 			width = force_width;
 			height = force_height;

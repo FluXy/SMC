@@ -78,8 +78,6 @@ void Handle_Game_Events( void )
 	while( Game_Action != GA_NONE )
 	{
 		// get current data
-		const GameMode current_game_mode = Game_Mode;
-		const GameModeType current_game_mode_type = Game_Mode_Type;
 		const GameAction current_game_action = Game_Action;
 		const CEGUI::XMLAttributes current_game_action_data_start = Game_Action_Data_Start;
 		const CEGUI::XMLAttributes current_game_action_data_middle = Game_Action_Data_Middle;

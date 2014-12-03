@@ -1196,8 +1196,6 @@ void cMenu_Options :: Init( void )
 	m_vid_geometry_detail = pVideo->m_geometry_quality;
 	m_vid_texture_detail = pVideo->m_texture_quality;
 
-	cMenu_Item *temp_item = NULL;
-
 	// options image
 	cHudSprite *hud_sprite = new cHudSprite( pMenuCore->m_handler->m_level->m_sprite_manager );
 	hud_sprite->Set_Image( pVideo->Get_Surface( "menu/options.png" ) );

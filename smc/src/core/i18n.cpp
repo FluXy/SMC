@@ -43,11 +43,13 @@ void I18N_Init( void )
 		printf( "Warning: bindtextdomain failed for %s\n", DATA_DIR "/" GAME_TRANSLATION_DIR );
 	}
 
+#	ifdef _DEBUG
 	const char *textdomain_codeset = bind_textdomain_codeset( CAPTION, "UTF-8" );
 	const char *textdomain_default = textdomain( CAPTION );
 
 	debug_print( "Translation support with gettext set to:\n\tDirectory %s\n\tCodeset: %s\n\tText domain: %s\n",
 		textdomain_directory, textdomain_codeset, textdomain_default );
+#	endif
 }
 
 #ifdef _WIN32
