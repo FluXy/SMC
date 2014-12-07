@@ -203,7 +203,16 @@ cOverworld *cOverworld_Manager :: Get_from_Path( const std::string &path )
 		if( obj->m_description->m_path.compare( path ) == 0 )
 		{
 			return obj;
+		}else if(obj->m_description->m_path.at(0) == '/'){
+
+		std::string newPath ( obj->m_description->m_path );
+		newPath.erase(0,1);
+		if(newPath.compare( path ) == 0){
+
+			return obj;
+
 		}
+
 	}
 
 	return NULL;
